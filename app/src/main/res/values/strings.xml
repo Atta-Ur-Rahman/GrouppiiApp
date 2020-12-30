@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Groupii Application</string>
+    <string name="valid_name">Please write your name</string>
+    <string name="valid_email">Please write a valid email address</string>
+    <string name="password_should_be_six">Password should be alphanumeric with special six characters</string>
+    <string name="password_dont_match_validation">Password doesn\'t match</string>
+    <string name="no_internet_connection">No Internet Connection!</string>
+    <string name="plesase_write_your_name">Please write your name</string>
+    <string name="plesase_write_your_phone_number">Please write your phone number</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="plesase_write_your_title">Please write your title</string>
+    <string name="plesase_write_your_description">Please write your description</string>
+    <string name="plesase_write_your_location">Please write your valid location</string>
+    <string name="plesase_write_start_date">Please write start date</string>
+    <string name="plesase_write_end_date">Please write end date</string>
+    <string name="plesase_write_pay_date">Please write pay by date</string>
+    <string name="group_view"><u>Group View</u></string>
+
+
+</resources>

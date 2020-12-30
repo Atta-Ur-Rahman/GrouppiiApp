@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Drop Shadow Stack -->
+    <item>
+        <shape>
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <solid android:color="#00CCCCCC" />
+
+            <corners android:radius="@dimen/round_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <solid android:color="#10CCCCCC" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/round_radius"
+                android:bottomRightRadius="@dimen/round_radius"
+                android:topLeftRadius="@dimen/round_radius"
+                android:topRightRadius="@dimen/round_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <solid android:color="#20CCCCCC" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/round_radius"
+                android:bottomRightRadius="@dimen/round_radius"
+                android:topLeftRadius="@dimen/round_radius"
+                android:topRightRadius="@dimen/round_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <solid android:color="#30CCCCCC" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/round_radius"
+                android:bottomRightRadius="@dimen/round_radius"
+                android:topLeftRadius="@dimen/round_radius"
+                android:topRightRadius="@dimen/round_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <solid android:color="#50CCCCCC" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/round_radius"
+                android:bottomRightRadius="@dimen/round_radius"
+                android:topLeftRadius="@dimen/round_radius"
+                android:topRightRadius="@dimen/round_radius" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item>
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#FFFFFF" />
+
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/round_radius"
+                android:bottomRightRadius="@dimen/round_radius"
+                android:topLeftRadius="@dimen/round_radius"
+                android:topRightRadius="@dimen/round_radius" />
+
+        </shape>
+    </item>
+
+</layer-list>

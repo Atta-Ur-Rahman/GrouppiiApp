@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.activity.TripDetailScreenActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_thumbnail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+        android:id="@+id/ivTripImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/round_bg"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
+
+    <TextView
+        android:id="@+id/tvTripTypeName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/fifty_dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Active Trip"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/main_heading_text_size"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/ivChat"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ivMenu"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin"
+        android:background="@drawable/round_bg"
+        android:padding="@dimen/widget_margin"
+        android:src="@mipmap/chats" />
+
+    <ImageView
+        android:id="@+id/ivMenu"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:background="@drawable/round_bg"
+        android:padding="@dimen/widget_margin"
+        android:src="@drawable/dots" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/transparent_color">
+
+
+        <TextView
+            android:id="@+id/tvTripTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Best Dubai Adventure Holiday Trip 15 days."
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvDescription"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/fifty_dp"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvLocation"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dubai United Arab Emirates"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:textColor="@android:color/white"
+            android:drawableLeft="@mipmap/my_trips_selected"
+            android:drawablePadding="@dimen/widget_margin"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 day left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cvMenu"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin"
+            android:textColor="@android:color/white"
+            android:drawableLeft="@mipmap/payment"
+            android:drawablePadding="@dimen/widget_margin"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvGroupView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:textColor="@color/purple_500"
+            android:textStyle="bold" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvImages"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cvMenu"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/tvGroupView"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"/>
+
+
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/cvMenu"
+            android:layout_width="match_parent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:cardBackgroundColor="@color/transparent_color"
+            card_view:cardElevation="10dp"
+            card_view:cardCornerRadius="10dp"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/fifty_dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:padding="@dimen/widget_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/days_plan_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Days Plan"
+                        android:gravity="center"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reservs_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reservs"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@android:color/transparent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/payment_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Payments"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@android:color/transparent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/photos_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Photos"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@android:color/transparent" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <ImageView
+            android:id="@+id/ivMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_expand_less_24"
+            app:layout_constraintTop_toBottomOf="@id/cvMenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_expand_less_24"
+            app:layout_constraintTop_toBottomOf="@id/ivMore"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@android:color/white"
+            android:text="More Details" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/bottom_sheet_behavior_id"
+                layout="@layout/bottom_sheet_more_detail"
+                android:layout_height="438dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

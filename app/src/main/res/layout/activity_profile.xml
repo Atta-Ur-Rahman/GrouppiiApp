@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gry"
+    tools:context=".ui.activity.profile.ProfileActivity">
+
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/round_bg"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/tvMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/widget_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:text="My Profile" />
+
+
+    <ImageView
+        android:id="@+id/ivEdit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin"
+        android:layout_marginRight="@dimen/widget_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/round_bg"
+        android:src="@mipmap/edit"
+        android:padding="14dp" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvProfilePicture"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toBottomOf="@id/tvMyProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="@dimen/widget_margin">
+
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_bg"
+            android:src="@drawable/dubai1"
+            android:scaleType="centerCrop" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toBottomOf="@id/cvProfilePicture"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
+        android:textSize="27sp"
+        android:textColor="@android:color/black"
+        android:text="Daryl Wright" />
+
+
+    <TextView
+        android:id="@+id/tvProfileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/middle_text_size"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="daryl.wright@example.com" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileEmail"
+        android:layout_marginTop="@dimen/main_heading_text_size"
+        android:orientation="vertical">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvFinances"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/ivPayment"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/main_heading_text_size"
+            android:text="Finances" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_height"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/ivPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/paymentss"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ivPayment"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/middle_text_size"
+                android:text="Payments" />
+
+
+            <ImageView
+                android:id="@+id/ivPaymentForword"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@android:color/darker_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_height"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/ivCurrency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/currency"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ivCurrency"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/middle_text_size"
+                android:text="Currency" />
+
+
+            <TextView
+                android:id="@+id/tvCurrencyType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/ivCurrencyForword"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/middle_text_size"
+                android:text="USD" />
+
+            <ImageView
+                android:id="@+id/ivCurrencyForword"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@android:color/darker_gray" />
+
+
+        <TextView
+            android:id="@+id/tvAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/ivPayment"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/main_heading_text_size"
+            android:text="Connected Accounts" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_height"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/ivAirbnb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/currency"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ivAirbnb"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/middle_text_size"
+                android:text="Airbnb" />
+
+            <TextView
+                android:id="@+id/tvAirbnbEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/edit"
+                android:drawablePadding="@dimen/widget_margin"
+                android:text="Edit" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@android:color/darker_gray" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_height"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/ivTripadvisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/currency"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ivTripadvisor"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/middle_text_size"
+                android:text="Tripadvisor" />
+
+
+
+            <TextView
+                android:id="@+id/tvTripadvisorEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/edit"
+                android:drawablePadding="@dimen/widget_margin"
+                android:text="Edit" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@android:color/darker_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_height"
+            android:paddingLeft="@dimen/widget_margin_left_right"
+            android:paddingRight="@dimen/widget_margin_left_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/ivCashApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/currency"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ivCashApp"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/middle_text_size"
+                android:text="CashApp" />
+
+
+            <TextView
+                android:id="@+id/tvCashAppAddAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/add"
+                android:drawablePadding="@dimen/widget_margin"
+                android:textColor="@color/purple_500"
+                android:text="Account" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@android:color/darker_gray" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

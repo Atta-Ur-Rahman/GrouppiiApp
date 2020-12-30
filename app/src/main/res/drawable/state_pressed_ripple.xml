@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+    <ripple xmlns:android="http://schemas.android.com/apk/res/android" tools:targetApi="lollipop">
+        <item>
+            <shape android:shape="oval">
+                <solid android:color="#1AFFFFFF"/>
+            </shape>
+            <color android:color="#FFF"/>
+        </item>
+    </ripple>
+</selector>

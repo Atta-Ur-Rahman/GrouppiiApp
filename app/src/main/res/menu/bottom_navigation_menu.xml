@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="My Trip"
+        android:id="@+id/bottomNavigationAlarmMenuId"
+        android:icon="@mipmap/my_trips_selected"/>
+    <item android:title="Chat"
+        android:id="@+id/bottomNavigationClockMenuId"
+        android:icon="@mipmap/chat_selected"/>
+    <item android:title="Add"
+        android:id="@+id/bottomNavigationTimerMenuId"
+        android:icon="@mipmap/activity_selected"/>
+    <item android:title="Activity"
+        android:id="@+id/bottomNavigationStopWatchMenuId"
+        android:icon="@mipmap/settings_selected"/>
+</menu>

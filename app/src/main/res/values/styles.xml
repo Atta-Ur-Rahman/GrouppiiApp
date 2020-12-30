@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="FilledBoxEndIconTint">fill_color</style>
+
+    <style name="CounterText" tools:ignore="DuplicateDefinition"></style>
+    <style name="HintText" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/purple_500</item>
+
+    </style>
+
+    <style name="MyCustomTextAppearance" parent="TextAppearance.AppCompat.Body1">
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+
+    <!--Style Material Dialog Bottom Sheet-->
+    <style name="MaterialDialogSheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
+    </style>
+    <style name="MaterialDialogSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide</item>
+    </style>
+
+
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/teal_700</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#f1f1f1
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f
+        </item>
+
+    </style>
+
+
+    <style name="ActionItem">
+        <item name="android:textSize">@dimen/main_heading_text_size</item>
+        <item name="android:drawablePadding">@dimen/widget_margin_left_right</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/widget_margin_left_right</item>
+        <item name="android:paddingRight">@dimen/widget_margin_left_right</item>
+        <item name="android:paddingTop">@dimen/widget_margin</item>
+        <item name="android:paddingBottom">@dimen/widget_margin</item>
+
+
+    </style>
+
+    </resources>

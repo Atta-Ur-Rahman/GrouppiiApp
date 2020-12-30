@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gry"
+    tools:context=".ui.activity.AddTrip.AddNewTripThreeHotelActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/round_bg"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginLeft="@dimen/widget_margin" />
+
+
+        <TextView
+            android:id="@+id/tvNewTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_view_edittext_height"
+            android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textColor="@android:color/black"
+            android:text="New Trip" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvNewTrip"
+            android:layout_marginBottom="21dp"
+            android:progress="74" />
+
+
+        <TextView
+            android:id="@+id/tv_short_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_view_edittext_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin"
+            android:text="Steps 3/4" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/tvCityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dubai UAE"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/widget_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableLeft="@mipmap/my_trips_selected"
+        android:drawablePadding="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toBottomOf="@id/clHeader" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTripDetail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/widget_margin"
+        app:layout_constraintBottom_toTopOf="@id/btnReverse"
+        app:layout_constraintTop_toBottomOf="@id/tvCityTitle" />
+
+
+    <Button
+        android:id="@+id/btnReverse"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/round_button_conner"
+        android:layout_marginBottom="@dimen/widget_margin_left_right"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Reverse 3 night for $294" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

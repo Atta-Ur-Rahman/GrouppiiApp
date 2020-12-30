@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/widget_margin_left_right"
+    android:background="@drawable/top_side_round_conner">
+
+    <TextView
+        android:id="@+id/tvEditTrip"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@mipmap/edit"
+        android:drawableStart="@mipmap/edit"
+        android:text="Edit trip settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/ActionItem"
+
+        />
+
+    <TextView
+        android:id="@+id/tvManageParticipants"
+        android:drawableLeft="@mipmap/manage_participants"
+        android:drawableStart="@mipmap/manage_participants"
+        android:text="Manage participants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEditTrip"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvManageBooking"
+        android:drawableLeft="@mipmap/manage_bookings"
+        android:drawableStart="@mipmap/manage_bookings"
+        android:text="Manage booking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvManageParticipants"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvRequestPayment"
+        android:drawableLeft="@mipmap/request_a_payment"
+        android:drawableStart="@mipmap/request_a_payment"
+        android:text="Request a payment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvManageBooking"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvCancelTrip"
+        android:drawableLeft="@mipmap/cancel_the_trip"
+        android:drawableStart="@mipmap/cancel_the_trip"
+        android:text="Cancel Trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRequestPayment"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvShareTrip"
+        android:drawableLeft="@mipmap/share_trip"
+        android:drawableStart="@mipmap/share_trip"
+        android:text="Share Trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCancelTrip"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvManageNotification"
+        android:drawableLeft="@mipmap/manage_notification"
+        android:drawableStart="@mipmap/manage_notification"
+        android:text="Manage notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvShareTrip"
+        style="@style/ActionItem" />
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:drawableLeft="@mipmap/cancel_the_trip"
+        android:drawableStart="@mipmap/cancel_the_trip"
+        android:background="?attr/selectableItemBackground"
+        android:text="Cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvManageNotification"
+        style="@style/ActionItem" />
+</androidx.constraintlayout.widget.ConstraintLayout>
