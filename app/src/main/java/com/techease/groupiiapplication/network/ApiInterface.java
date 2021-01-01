@@ -1,10 +1,12 @@
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
+import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.hotel.HotelResponse;
 import com.techease.groupiiapplication.dataModel.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
@@ -21,6 +23,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -100,12 +103,10 @@ public interface ApiInterface {
             @Part("coverimage") RequestBody fileName);
 
 
-
     @FormUrlEncoded
     @POST("trips/deletetrip")
     Call<DeleteTripResponse> deleteTrip(
             @Field("tripid") String tripId);
-
 
 
     @GET("hotel-offers?")
@@ -113,6 +114,23 @@ public interface ApiInterface {
             @Query("cityCode") String cityCode,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude);
+
+
+    @FormUrlEncoded
+    @POST("tripdays/add")
+    Call<AddTripDayResponse> addTripDay(
+            @Field("title") String title,
+            @Field("description") String description,
+            @Field("date") String date,
+            @Field("time") String time,
+            @Field("tripid") String tripId,
+            @Field("userid") String userId);
+
+
+    @GET
+    Call<AllTripDayResponse> getAllTripDayResponse(
+            @Url String userId);
+
 
 //
 //    @Multipart

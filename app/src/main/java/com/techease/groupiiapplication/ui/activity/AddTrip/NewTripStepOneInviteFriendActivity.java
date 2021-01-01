@@ -185,6 +185,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     private void ApiCallForAddInviteFriend() {
         dialog.show();
+        addTripDataModels.clear();
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strEmail, strPhoneNumber, strShareCost, AppRepository.mTripId(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override

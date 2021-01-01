@@ -117,9 +117,7 @@ public class APIClient {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request original = chain.request();
-
                         // Customize the request
-
                         Request request = original.newBuilder()
                                 .header("Accept", "application/json")
                                 .header("Authorization", "Bearer " + token)

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
@@ -21,13 +20,16 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.ViewPagerAdapter;
+import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
 import com.techease.groupiiapplication.dataModel.tripDetail.Past;
 import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
 import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
+import com.techease.groupiiapplication.ui.fragment.trip.ActiveFragment;
+import com.techease.groupiiapplication.ui.fragment.trip.PastFragment;
+import com.techease.groupiiapplication.ui.fragment.trip.UpcomingFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
@@ -46,26 +48,20 @@ import retrofit2.Response;
 public class TripFragment extends Fragment implements View.OnClickListener {
 
     View view;
-
-
     Dialog dialog;
-
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
     @BindView(R.id.ivProfile)
     ImageView ivProfile;
     @BindView(R.id.searchView)
     SearchView searchView;
-
     @BindView(R.id.tabs)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
     public static boolean aBooleanRefreshApi = true;
-
     public static ViewPager viewPagerTrip;
-
     public static List<Active> activeList = new ArrayList<>();
     public static List<Past> pastList = new ArrayList<>();
     public static List<Upcoming> upcomingList = new ArrayList<>();
@@ -79,7 +75,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         viewPagerTrip = viewPager;
 
         aBooleanRefreshApi = true;
-
 
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search a trip...");
@@ -103,7 +98,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
 
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new ActiveFragment(), "Active");
         adapter.addFragment(new UpcomingFragment(), "Upcomming");
         adapter.addFragment(new PastFragment(), "Past");
@@ -125,12 +120,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-
         if (aBooleanRefreshApi) {
-//            FragmentManager fm = getActivity().getSupportFragmentManager();
-//            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-//                fm.popBackStack();
-//            }
             apiCallGetTripDetail();
             aBooleanRefreshApi = false;
         }
@@ -142,7 +132,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         activeList.clear();
         pastList.clear();
         upcomingList.clear();
-        Toast.makeText(getActivity(), "api call", Toast.LENGTH_SHORT).show();
         Call<TripDetailResponse> call = BaseNetworking.ApiInterface().getTripDetail(AppRepository.mUserID(getActivity()));
         call.enqueue(new Callback<TripDetailResponse>() {
             @Override
@@ -159,8 +148,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
                     Collections.reverse(pastList);
                     setupViewPager(viewPager);
                     tabLayout.setupWithViewPager(viewPager);
-
-                    Toast.makeText(getActivity(), "Size" + pastList.size(), Toast.LENGTH_SHORT).show();
 
                 } else {
                     dialog.dismiss();

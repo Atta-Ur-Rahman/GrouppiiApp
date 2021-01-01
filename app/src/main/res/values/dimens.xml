@@ -15,5 +15,10 @@
     <dimen name="fourty_dp">40dp</dimen>
     <dimen name="top_corner_radius">20dp</dimen>
     <dimen name="activity_horizontal_margin">40dp</dimen>
+    <dimen name="card_view_elevation">10dp</dimen>
+    <dimen name="add_activity_sw_iv_height">100dp</dimen>
+    <dimen name="top_minus_height">10dp</dimen>
+    <dimen name="top_minus_width">70sp</dimen>
+    <dimen name="card_view_padding">7dp</dimen>
 
 </resources>

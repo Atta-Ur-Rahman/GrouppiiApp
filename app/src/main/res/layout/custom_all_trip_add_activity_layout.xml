@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="@dimen/widget_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tvActivityTime"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="10:00 am"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/widget_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/ivTick"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        app:layout_constraintLeft_toRightOf="@+id/cvImage"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        app:layout_constraintTop_toBottomOf="@id/tvActivityTime"
+        android:src="@mipmap/taxi_wheel" />
+
+    <View
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/ivTick"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/vertical_dot_line"/>
+
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingLeft="@dimen/widget_margin"
+        android:paddingRight="@dimen/widget_margin"
+        android:paddingBottom="@dimen/widget_margin"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp"
+        android:background="@drawable/round_bg">
+
+
+        <ImageView
+            android:id="@+id/ivTaxi"
+            android:layout_width="30dp"
+            android:layout_height="40sp"
+            android:src="@drawable/car"
+            android:paddingRight="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/widget_margin" />
+
+
+        <TextView
+            android:id="@+id/tvActivityTitleName"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Babby Farell"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintLeft_toRightOf="@id/ivTaxi"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_heading_text_size" />
+
+
+        <TextView
+            android:id="@+id/tvActivityDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Uber Mobile app"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:layout_constraintLeft_toRightOf="@+id/cvImage"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/tvActivityTitleName" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B.Farell"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvActivityDescription"
+            android:drawableLeft="@mipmap/user"
+            android:drawablePadding="@dimen/widget_margin"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

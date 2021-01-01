@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    android:background="@android:color/transparent"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/top_side_round_conner"
+        android:paddingTop="@dimen/widget_margin_left_right">
+
+        <ImageView
+            android:id="@+id/ivMinusIcon"
+            android:layout_width="@dimen/top_minus_width"
+            android:layout_height="@dimen/top_minus_height"
+            android:scaleType="fitXY"
+            android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/minus" />
+
+
+        <RelativeLayout
+            android:id="@+id/rlAddActivity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24">
+
+            <ImageView
+                android:id="@+id/ivAddActivityBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
+
+            <TextView
+                android:id="@+id/tvAddActivityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/main_heading_text_size"
+                android:text="Add Activity"
+                android:layout_centerInParent="true" />
+
+
+            <TextView
+                android:id="@+id/tvActivityAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/purple_500"
+                android:textStyle="bold"
+                android:textSize="@dimen/main_heading_text_size"
+                android:text="Add"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvProfile"
+            android:layout_width="@dimen/add_activity_sw_iv_height"
+            android:layout_height="@dimen/add_activity_sw_iv_height"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/rlAddActivity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardCornerRadius="@dimen/round_radius"
+            app:cardElevation="@dimen/card_view_elevation">
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/widget_margin"
+                android:background="@drawable/round_bg"
+                android:src="@mipmap/flight" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swAddGroupActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/add_activity_sw_iv_height"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/rlAddActivity"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            android:checked="false"
+            android:theme="@style/SCBSwitch"
+            android:text="Group activity  " />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvTripTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cvProfile"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:cardBackgroundColor="@color/light_gry"
+            app:cardElevation="@dimen/card_view_elevation">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilActivityTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gry"
+                android:hint="Trip title">
+
+                <EditText
+                    android:id="@+id/etActivityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvAddActivityDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@color/light_gry"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cvEndDate"
+            app:layout_constraintHorizontal_weight="5"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:layout_constraintTop_toBottomOf="@id/cvTripTitle">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tillAddActivityDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gry"
+                android:hint="Date">
+
+                <EditText
+                    android:id="@+id/etAddActivityDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:drawableRight="@mipmap/manage_bookings"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvEndDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_gry"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            app:layout_constraintLeft_toRightOf="@+id/cvAddActivityDate"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_weight="5"
+            app:layout_constraintTop_toBottomOf="@id/cvTripTitle"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tillActivitTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Time"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:background="@color/light_gry">
+
+                <EditText
+                    android:id="@+id/etActivityTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:drawableRight="@mipmap/manage_bookings"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvAddActivityNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_gry"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:layout_constraintTop_toBottomOf="@id/cvAddActivityDate">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAddActivityNote"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:gravity="top"
+                android:background="@color/light_gry"
+                app:counterTextAppearance="@style/CounterText"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintTextAppearance="@style/HintText"
+                android:hint="Write a note here">
+
+                <EditText
+                    android:id="@+id/etAddActivityNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:minLines="2"
+                    android:maxLines="9"
+                    android:scrollbars="vertical"
+                    android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <ImageView
+            android:id="@+id/ivBottomMinusIcon"
+            android:layout_width="170sp"
+            android:layout_height="@dimen/top_minus_height"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/cvAddActivityNote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/minus" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

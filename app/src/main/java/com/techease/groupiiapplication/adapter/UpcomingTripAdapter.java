@@ -61,7 +61,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new DataAdapter(context, userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
 
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {

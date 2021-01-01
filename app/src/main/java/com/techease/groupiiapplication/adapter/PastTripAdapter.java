@@ -20,6 +20,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.Past;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
@@ -61,7 +62,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new DataAdapter(context, userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
+
+        AppRepository.mPutValue(context).putString("tripID",String.valueOf(data.getId())).commit();
 
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {

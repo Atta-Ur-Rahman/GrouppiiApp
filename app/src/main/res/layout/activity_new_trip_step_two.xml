@@ -60,34 +60,34 @@
             android:text="Steps 2/4" />
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvTripTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
-            app:layout_constraintTop_toTopOf="@id/progressBar"
-            android:layout_marginTop="@dimen/widget_margin_left_right"
-            app:cardBackgroundColor="@color/light_gry">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTripTitle"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvTripTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
-                android:hint="Trip title">
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+                app:layout_constraintTop_toTopOf="@id/progressBar"
+                android:layout_marginTop="@dimen/widget_margin_left_right"
+                app:cardBackgroundColor="@color/light_gry">
 
-                <EditText
-                    android:id="@+id/etTripTitle"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTripTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#D7F7F7" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:background="@color/light_gry"
+                    android:hint="Trip title">
 
-        </androidx.cardview.widget.CardView>
+                    <EditText
+                        android:id="@+id/etTripTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="#D7F7F7" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView

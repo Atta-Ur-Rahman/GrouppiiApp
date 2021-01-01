@@ -303,9 +303,8 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/bottom_sheet_behavior_id"
-                layout="@layout/bottom_sheet_more_detail"
-                android:layout_height="438dp" />
+                android:id="@+id/llBottomSheetBehaviorId"
+                layout="@layout/custom_bottom_sheet_more_detail"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

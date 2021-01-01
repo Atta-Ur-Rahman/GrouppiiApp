@@ -1,7 +1,6 @@
 package com.techease.groupiiapplication.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCircleImagesAdapter.ViewHolder> {
 
     private Context context;
     private List<User> arrayList;
     int anIntImage;
 
-    public DataAdapter(Context context, List<User> imagesArray) {
+    public UserTripCircleImagesAdapter(Context context, List<User> imagesArray) {
         this.context = context;
         arrayList = imagesArray;
     }

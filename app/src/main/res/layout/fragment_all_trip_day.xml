@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.bottomSheetFragment.AllTripDayFragment">
+
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abCalender"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fifty_dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+            android:id="@+id/main_single_row_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:deselection="false"
+            app:longPress="false"
+            app:multiSelection="false" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllTripDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/widget_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/abCalender"
+        android:scrollbars="vertical"
+        app:layout_constrainedHeight="true"
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="120dp"/>
+
+
+    <TextView
+        android:visibility="visible"
+        android:id="@+id/tvTripDayNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/main_heading_text_size"
+        android:text="Trip Day Not Found"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

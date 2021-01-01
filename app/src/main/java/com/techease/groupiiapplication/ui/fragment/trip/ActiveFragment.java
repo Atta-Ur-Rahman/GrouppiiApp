@@ -1,4 +1,4 @@
-package com.techease.groupiiapplication.ui.fragment;
+package com.techease.groupiiapplication.ui.fragment.trip;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

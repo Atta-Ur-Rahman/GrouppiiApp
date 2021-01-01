@@ -230,9 +230,14 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
 
-            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-            sourceFile = new File(Environment.getExternalStorageState(),
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+
+            sourceFile = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            sourceFile = new File(sourceFile,
                     System.currentTimeMillis() + ".jpg");
+
             FileOutputStream fo;
             try {
                 sourceFile.createNewFile();
@@ -245,6 +250,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 e.printStackTrace();
             }
 
+
+            sourceFile.getAbsoluteFile();
 
             Toast.makeText(this, String.valueOf(sourceFile.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
