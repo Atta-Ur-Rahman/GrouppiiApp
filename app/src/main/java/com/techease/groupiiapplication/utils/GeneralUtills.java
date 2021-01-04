@@ -9,11 +9,13 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,8 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -243,8 +247,8 @@ public class GeneralUtills {
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);
 
-        if (password.length()<6){
-            return  false;
+        if (password.length() < 6) {
+            return false;
         }
 
         return matcher.matches();
@@ -272,6 +276,40 @@ public class GeneralUtills {
 
         }
 
+    }
+
+
+    public static boolean PopupMenuDelete(ApiCallback apiCallback,Context context, ImageView tvLanguage, String tripId) {
+        PopupMenu popup = new PopupMenu(context, tvLanguage);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.bottom_language_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(
+//                        LoginSignupSelectionActivity.this,
+//                        "You Clicked : " + item.getTitle(),
+//                        Toast.LENGTH_SHORT
+//                ).show();
+
+//                tvLanguage.setText(item.getTitle().toString());
+                if (item.getTitle().toString().equals("Delete")) {
+                    ApiClass.apiCallForTripDelete(context, apiCallback, tripId);
+
+                }
+
+
+
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
+
+
+        return false;
     }
 
 }

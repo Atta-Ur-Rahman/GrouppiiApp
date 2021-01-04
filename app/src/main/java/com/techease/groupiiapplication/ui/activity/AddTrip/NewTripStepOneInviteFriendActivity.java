@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.AddTripAdapter;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
@@ -255,7 +257,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        apiCallForTripDelete();
+//        apiCallForTripDelete();
+
+
+
     }
 
     private void apiCallForTripDelete() {

@@ -106,6 +106,8 @@ public class AllTripDayFragment extends Fragment {
         rvAllTripDay.setAdapter(allTripDayAdapter);
         rvAllTripDay.setHasFixedSize(true);
         allTripDayAdapter.notifyDataSetChanged();
+        rvAllTripDay.setNestedScrollingEnabled(true);
+        rvAllTripDay.setHasFixedSize(true);
         tvTripDayNotFound.setVisibility(View.GONE);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
@@ -67,19 +70,25 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, TripDetailScreenActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("image", data.getCoverimage());
-                bundle.putString("title",data.getTitle());
-                bundle.putString("trip_type","Upcoming Trip");
-                bundle.putString("description",data.getDescription());
-                bundle.putString("location",data.getLocation());
 
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (data.getTitle().equals("unpublished")) {
+                    Log.d("zma tripid", String.valueOf(data.getId()));
+                    AppRepository.mPutValue(context).putString(String.valueOf(data.getId()), "tripID").commit();
+                    context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
+                } else {
+                    Intent intent = new Intent(context, TripDetailScreenActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("image", data.getCoverimage());
+                    bundle.putString("title", data.getTitle());
+                    bundle.putString("trip_type", "Upcoming Trip");
+                    bundle.putString("description", data.getDescription());
+                    bundle.putString("location", data.getLocation());
+
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
             }
         });
-
 
 
     }
@@ -92,7 +101,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate,tvLocation;
+        TextView tvTitle, tvStartEndDate, tvLocation;
         ImageView ivImage;
         RecyclerView rvUsers;
 
@@ -101,7 +110,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
             ivImage = view.findViewById(R.id.ivTripDetail);
             tvTitle = view.findViewById(R.id.tvTripTitle);
             tvStartEndDate = view.findViewById(R.id.tvStartEndDate);
-            tvLocation=view.findViewById(R.id.tvLocation);
+            tvLocation = view.findViewById(R.id.tvLocation);
             rvUsers = view.findViewById(R.id.rvUsers);
 
 

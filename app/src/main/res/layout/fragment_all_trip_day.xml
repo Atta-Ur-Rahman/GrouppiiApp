@@ -9,10 +9,10 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
+        android:visibility="gone"
         android:id="@+id/abCalender"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fifty_dp"
-        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -36,7 +36,6 @@
         app:layout_constraintTop_toBottomOf="@id/abCalender"
         android:scrollbars="vertical"
         app:layout_constrainedHeight="true"
-        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
         android:paddingBottom="120dp"/>
 
 
