@@ -17,6 +17,10 @@
     <string name="plesase_write_end_date">Please write end date</string>
     <string name="plesase_write_pay_date">Please write pay by date</string>
     <string name="group_view"><u>Group View</u></string>
+    <string name="days_plan">Days Plan</string>
+    <string name="reserves">Reserves</string>
+    <string name="payments">Payments</string>
+    <string name="photos">Photos</string>
 
 
 </resources>

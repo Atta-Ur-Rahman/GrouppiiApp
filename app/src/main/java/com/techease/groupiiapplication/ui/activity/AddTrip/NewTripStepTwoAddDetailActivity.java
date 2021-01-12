@@ -222,6 +222,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             String imagepath = getPath(selectedImageUri);
             sourceFile = new File(imagepath);
 
+            Log.d("zma image",String.valueOf(sourceFile.getAbsoluteFile()));
+
             ivCoverImage.setVisibility(View.VISIBLE);
             ivCoverImage.setImageURI(selectedImageUri);
 

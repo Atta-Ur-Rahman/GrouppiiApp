@@ -2,9 +2,18 @@
 
 package com.techease.groupiiapplication.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,28 +31,49 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.UserTripCircleImagesAdapter;
+import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.AllTripDayFragment;
 import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.PaymentsFragment;
-import com.techease.groupiiapplication.ui.fragment.trip.PastFragment;
-import com.techease.groupiiapplication.ui.fragment.trip.UpcomingFragment;
+import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.PhotosFragment;
+import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.ReservesFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DatePickerClass;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,6 +106,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.tvMore)
     TextView tvMore;
 
+    @BindView(R.id.llDayPlan)
+    LinearLayout llDayPlan;
+
+    @BindView(R.id.llPayment)
+    LinearLayout llPayments;
+
     boolean valid = true;
 
     @BindView(R.id.llBottomSheetBehaviorId)
@@ -88,12 +124,25 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+    BottomNavigationView bottomNavigationView;
+
+    ArrayList<String> stringArrayList = new ArrayList<>();
+
 
     TextInputLayout tillActivityTitle, tillDate, tillTime, tillActivityNote;
     EditText etActivityTitle, etActivityDate, etActivityTime, etActivityNote;
     ImageView ivAddActivity, ivAddActivityBack;
     TextView tvAddActivity;
     SwitchCompat switchCompatGroupActivity;
+
+
+    int anIntViewPagerPosition = 0;
+
+
+    final int CAMERA_CAPTURE = 1;
+    final int RESULT_LOAD_IMAGE = 2;
+    File sourceFile;
+
 
     String strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strActivityGroup;
 
@@ -122,6 +171,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvLocation.setText(bundle.getString("location"));
 
 
+        stringArrayList = bundle.getStringArrayList("users");
+        Log.d("zma array", String.valueOf(stringArrayList));
+
         rvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvImages.addItemDecoration(new GeneralUtills.OverlapDecoration());
         rvImages.setHasFixedSize(true);
@@ -147,7 +199,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore})
+    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment})
 
     @Override
     public void onClick(View view) {
@@ -164,7 +216,11 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 break;
             case R.id.ivAddActivity:
-                addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                if (anIntViewPagerPosition == 0) {
+                    addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else if (anIntViewPagerPosition == 3) {
+                    checkImagePermission();
+                }
                 break;
             case R.id.tvActivityAdd:
                 if (isValid()) {
@@ -182,16 +238,25 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 DatePickerClass.GetTimeDialog(etActivityTime, this);
                 break;
+            case R.id.llDayPlan:
+                startActivity(new Intent(this, BottomSheetViewFragmentActivity.class));
+                break;
+            case R.id.llPayment:
+
+                break;
 
         }
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void initializeBottomSheet() {
         llBottomSheetAddDayActivity = llActivityMoreBottomSheet.findViewById(R.id.bottom_sheet_add_activity);
 
         bottomSheetBehavior = BottomSheetBehavior.from(llActivityMoreBottomSheet);
         addActivityBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddDayActivity);
+
+        bottomNavigationView = llActivityMoreBottomSheet.findViewById(R.id.navigation);
 
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -234,22 +299,22 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Days Plan");
+        tabOne.setText(R.string.days_plan);
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.days_plan_selected, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Reservs");
+        tabTwo.setText(R.string.reserves);
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.reserv_selected, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText("Payments");
+        tabThree.setText(R.string.payments);
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.payment_selected, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
 
         TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabFour.setText("Photos");
+        tabFour.setText(R.string.photos);
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.photos_selected, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabFour);
 
@@ -260,6 +325,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         etActivityDate.setOnClickListener(this);
         etActivityTime.setOnClickListener(this);
+
 
     }
 
@@ -361,10 +427,188 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     private void setupViewPager(ViewPager viewPager) {
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AllTripDayFragment(), "Days Plan");
-        adapter.addFragment(new PastFragment(), "Reservs");
+        adapter.addFragment(new ReservesFragment(), "Reserves");
         adapter.addFragment(new PaymentsFragment(), "Payments");
-        adapter.addFragment(new UpcomingFragment(), "Photos");
+        adapter.addFragment(new PhotosFragment(), "Photos");
         viewPager.setAdapter(adapter);
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                anIntViewPagerPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
+
+    private void checkImagePermission() {
+        Dexter.withActivity(this).withPermissions(
+                Manifest.permission.INTERNET,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                cameraBuilder();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken
+                    token) {
+
+            }
+        }).check();
+    }
+
+    public void cameraIntent() {
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+    }
+
+    public void galleryIntent() {
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, RESULT_LOAD_IMAGE);
+    }
+
+    //open camera view
+    public void cameraBuilder() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Open");
+        String[] pictureDialogItems = {
+                "\tGallery",
+                "\tCamera"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                galleryIntent();
+
+                                break;
+                            case 1:
+                                cameraIntent();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && null != data) {
+            Uri selectedImageUri = data.getData();
+            String imagepath = getPath(selectedImageUri);
+            sourceFile = new File(imagepath);
+            ApiCallForUpdatePic();
+
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE && data != null) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+
+            sourceFile = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            sourceFile = new File(sourceFile,
+                    System.currentTimeMillis() + ".jpg");
+
+            FileOutputStream fo;
+            try {
+                sourceFile.createNewFile();
+                fo = new FileOutputStream(sourceFile);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            sourceFile.getAbsoluteFile();
+
+            ApiCallForUpdatePic();
+
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+        String filePath = cursor.getString(columnIndex);
+        return cursor.getString(column_index);
+
+    }
+
+
+    private void ApiCallForUpdatePic() {
+
+        dialog.show();
+
+        RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
+        final MultipartBody.Part picture = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
+        RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
+        RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyTitle = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyTime = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyDate = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+
+
+        Call<AddPhotoToGalleryResponse> addPhotoToGalleryResponseCall = BaseNetworking.ApiInterface().addPhotoToGallery(BodyTripId, BodyTitle, BodyTime, BodyDate, picture, BodyName);
+        addPhotoToGalleryResponseCall.enqueue(new Callback<AddPhotoToGalleryResponse>() {
+            @Override
+            public void onResponse(Call<AddPhotoToGalleryResponse> call, Response<AddPhotoToGalleryResponse> response) {
+                if (response.isSuccessful()) {
+
+                    dialog.dismiss();
+                    Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                        Toast.makeText(TripDetailScreenActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddPhotoToGalleryResponse> call, Throwable t) {
+                Toast.makeText(TripDetailScreenActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 
 }

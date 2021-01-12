@@ -1,5 +1,6 @@
 package com.techease.groupiiapplication.network;
 
+import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
@@ -12,6 +13,7 @@ import com.techease.groupiiapplication.dataModel.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
 import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
+import com.techease.groupiiapplication.dataModel.updateProfilePicture.UpdateProfilePicResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -66,6 +68,14 @@ public interface ApiInterface {
     Call<ChangePasswordResponse> changePassword(
             @Field("password") String userPassword,
             @Field("token") String userToken);
+
+    @Multipart
+    @POST("users/profilepicture")
+    Call<UpdateProfilePicResponse> updateProfilePic(
+            @Part("userid") RequestBody userID,
+            @Part MultipartBody.Part photo,
+            @Part("picture") RequestBody fileName);
+
 
 
     @FormUrlEncoded
@@ -126,10 +136,29 @@ public interface ApiInterface {
             @Field("tripid") String tripId,
             @Field("userid") String userId);
 
+    @Multipart
+    @POST("trips/photo")
+    Call<AddPhotoToGalleryResponse> addPhotoToGallery(
+            @Part("tripid") RequestBody tripID,
+            @Part("title") RequestBody title,
+            @Part("time") RequestBody time,
+            @Part("date") RequestBody date,
+            @Part MultipartBody.Part photo,
+            @Part("photo") RequestBody fileName);
+
+
 
     @GET
     Call<AllTripDayResponse> getAllTripDayResponse(
             @Url String userId);
+
+
+
+    @FormUrlEncoded
+    @POST("tripdays/getbydate")
+    Call<AllTripDayResponse> getTripByDate(
+            @Field("date") String date,
+            @Field("tripid") String tripId);
 
 
 //

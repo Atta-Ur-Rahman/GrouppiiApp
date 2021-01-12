@@ -34,6 +34,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     private Context context;
     private List<Past> pastList;
     private List<User> userList = new ArrayList<>();
+    private ArrayList<String> stringArrayList=new ArrayList<>();
 
 
     public PastTripAdapter(Context context, List<Past> pasts) {
@@ -60,12 +61,10 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         holder.tvLocation.setText(data.getLocation());
 
 
-        userList.addAll(data.getUsers());
-
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, data.getUsers()));
 
 
         if (data.getTitle().equals("unpublished")) {
@@ -109,6 +108,11 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
                 } else {
 
+                    stringArrayList.clear();
+                    for (int i=0;i<userList.size();i++){
+                        stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
+                    }
+
                     Intent intent = new Intent(context, TripDetailScreenActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("image", data.getCoverimage());
@@ -116,6 +120,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     bundle.putString("trip_type", "Past Trip");
                     bundle.putString("description", data.getDescription());
                     bundle.putString("location", data.getLocation());
+                    bundle.putStringArrayList("users",stringArrayList);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
 
@@ -128,6 +133,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
 
 
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
 
     @Override
     public int getItemCount() {

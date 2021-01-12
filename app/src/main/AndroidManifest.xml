@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupiiApplication">
-        <activity android:name=".ui.activity.profile.ProfileActivity"></activity>
+        <activity android:name=".ui.activity.BottomSheetViewFragmentActivity"></activity>
+        <activity android:name=".ui.activity.profile.ProfileActivity" />
         <activity android:name=".ui.activity.TripDetailScreenActivity" />
         <activity android:name=".ui.activity.AddTrip.NewTripStepFourPaymentActivity" />
         <activity android:name=".ui.activity.AddTrip.AddNewTripThreeHotelActivity" />

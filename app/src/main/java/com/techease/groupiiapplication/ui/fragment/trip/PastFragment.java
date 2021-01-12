@@ -51,6 +51,7 @@ public class PastFragment extends Fragment {
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         rvTripDetail.setAdapter(pastTripDetailAdapter);
         pastTripDetailAdapter.notifyDataSetChanged();
+        rvTripDetail.setItemViewCacheSize(pastList.size());
 
         if (pastList.size()==0){
             tvNoPastTripFound.setVisibility(View.VISIBLE);

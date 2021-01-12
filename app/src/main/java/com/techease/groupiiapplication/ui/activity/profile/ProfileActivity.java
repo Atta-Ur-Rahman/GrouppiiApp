@@ -27,7 +27,13 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.updateProfilePicture.UpdateProfilePicResponse;
+import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,6 +45,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
+        dialog= AlertUtils.createProgressDialog(this);
         setProfileImageAndName();
 
 
@@ -228,10 +241,49 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
     private void ApiCallForUpdatePic() {
 
-    }
+        dialog.show();
 
+        RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
+        final MultipartBody.Part picture = MultipartBody.Part.createFormData("picture", sourceFile.getAbsoluteFile().getName(), requestFile);
+        RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
+        RequestBody BodyUserId = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+
+
+        Call<UpdateProfilePicResponse> updateProfilePicResponseCall = BaseNetworking.ApiInterface().updateProfilePic(BodyUserId, picture, BodyName);
+        updateProfilePicResponseCall.enqueue(new Callback<UpdateProfilePicResponse>() {
+            @Override
+            public void onResponse(Call<UpdateProfilePicResponse> call, Response<UpdateProfilePicResponse> response) {
+                if (response.isSuccessful()) {
+                    AppRepository.mPutValue(ProfileActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
+                    dialog.dismiss();
+                    Toast.makeText(ProfileActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                        Toast.makeText(ProfileActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateProfilePicResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(ProfileActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
 
 
 }

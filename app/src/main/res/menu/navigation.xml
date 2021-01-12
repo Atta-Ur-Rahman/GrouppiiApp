@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_days_plan"
+        android:icon="@mipmap/days_plan_selected"
+        android:title="@string/days_plan"/>
+
+    <item
+        android:id="@+id/navigation_reserves"
+        android:icon="@mipmap/reserv_selected"
+        android:title="@string/reserves"/>
+
+    <item
+        android:id="@+id/navigation_payments"
+        android:icon="@mipmap/payment_selected"
+        android:title="@string/payments"/>
+
+    <item
+        android:id="@+id/navigation_photos"
+        android:icon="@mipmap/photos_selected"
+        android:title="@string/photos"/>
+
+</menu>

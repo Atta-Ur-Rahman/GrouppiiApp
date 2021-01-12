@@ -7,40 +7,30 @@
     tools:context=".ui.fragment.bottomSheetFragment.AllTripDayFragment">
 
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:visibility="gone"
-        android:id="@+id/abCalender"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fifty_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-            android:id="@+id/main_single_row_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:deselection="false"
-            app:longPress="false"
-            app:multiSelection="false" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAllTripDay"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/widget_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/abCalender"
+        android:paddingBottom="100dp"
         android:scrollbars="vertical"
-        app:layout_constrainedHeight="true"
-        android:paddingBottom="120dp"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/datePickerTimeline" />
 
+
+    <com.vivekkaushik.datepicker.DatePickerTimeline
+        android:id="@+id/datePickerTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/widget_margin_left_right"
+        android:layout_marginEnd="@dimen/widget_margin_left_right"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/tvTripDayNotFound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +40,6 @@
         android:text="Trip Day Not Found"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/datePickerTimeline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

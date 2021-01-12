@@ -12,7 +12,8 @@
         android:src="@drawable/image_thumbnail"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ImageView
         android:id="@+id/ivTripImage"
         android:layout_width="match_parent"
@@ -157,121 +158,137 @@
             android:layout_marginTop="@dimen/widget_margin_left_right"
             app:layout_constraintTop_toBottomOf="@id/tvGroupView"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginBottom="@dimen/widget_margin_left_right"/>
+            android:layout_marginBottom="@dimen/widget_margin_left_right" />
 
 
+        <!--
+                <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/cvMenu"
+                    android:layout_width="match_parent"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardBackgroundColor="@color/transparent_color"
+                    card_view:cardElevation="10dp"
+                    card_view:cardCornerRadius="10dp"
+                    android:layout_marginRight="@dimen/widget_margin_left_right"
+                    android:layout_marginLeft="@dimen/widget_margin_left_right"
+                    android:layout_marginBottom="@dimen/fifty_dp">-->
 
-        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <LinearLayout
             android:id="@+id/cvMenu"
             android:layout_width="match_parent"
-            card_view:layout_constraintBottom_toBottomOf="parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            card_view:cardBackgroundColor="@color/transparent_color"
-            card_view:cardElevation="10dp"
-            card_view:cardCornerRadius="10dp"
+            android:background="@drawable/round_card_transparent_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginRight="@dimen/widget_margin_left_right"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginBottom="@dimen/fifty_dp">
+            android:layout_marginBottom="@dimen/fifty_dp"
+            android:elevation="@dimen/widget_margin"
+            android:outlineProvider="background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/llDayPlan"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/widget_margin_left_right"
-                android:layout_marginRight="@dimen/widget_margin_left_right"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:padding="@dimen/widget_margin"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
 
-                <LinearLayout
-                    android:layout_width="0sp"
+                <ImageView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1">
+                    android:src="@mipmap/days_plan_white" />
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/days_plan_white" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Days Plan"
-                        android:gravity="center"
-                        android:textColor="@color/white"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0sp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:text="Days Plan"
                     android:gravity="center"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/reservs_white" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Reservs"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:background="@android:color/transparent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0sp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/payment_white" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Payments"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:background="@android:color/transparent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0sp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/photos_white" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Photos"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:background="@android:color/transparent" />
-                </LinearLayout>
-
+                    android:textColor="@color/white" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/reservs_white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reservs"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPayment"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/payment_white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Payments"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/photos_white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Photos"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
+        </LinearLayout>
+        </LinearLayout>
+        <!--        </androidx.cardview.widget.CardView>-->
 
 
         <ImageView
@@ -297,17 +314,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <include
-                android:id="@+id/llBottomSheetBehaviorId"
-                layout="@layout/custom_bottom_sheet_more_detail"/>
+        <include
+            android:id="@+id/llBottomSheetBehaviorId"
+            layout="@layout/custom_bottom_sheet_more_detail" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
