@@ -242,12 +242,12 @@ public class GeneralUtills {
         Pattern pattern;
         Matcher matcher;
 
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[';:?.,!@#$%^&+=/<>(){}|€£¥₩])(?=\\S+$).{8,}$";
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[';:?.,!@#$%^&+=/<>(){}|€£¥₩_\\u0022\\\u005D\\\u005B\\\u002A\\\u00F7\\\u00D7\\\u2212\\\uFE63\\\u002D\\\u005D\"])(?=\\S+$).{8,}$";
 
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);
 
-        if (password.length() < 6) {
+        if (password.length() < 6 || password.length() > 20) {
             return false;
         }
 
@@ -279,7 +279,7 @@ public class GeneralUtills {
     }
 
 
-    public static boolean PopupMenuDelete(ApiCallback apiCallback,Context context, ImageView tvLanguage, String tripId) {
+    public static boolean PopupMenuDelete(ApiCallback apiCallback, Context context, ImageView tvLanguage, String tripId) {
         PopupMenu popup = new PopupMenu(context, tvLanguage);
         //Inflating the Popup using xml file
         popup.getMenuInflater()
@@ -299,7 +299,6 @@ public class GeneralUtills {
                     ApiClass.apiCallForTripDelete(context, apiCallback, tripId);
 
                 }
-
 
 
                 return true;
