@@ -1,12 +1,18 @@
 package com.techease.groupiiapplication.ui.activity.AddTrip;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,10 +29,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.AddTripAdapter;
-import com.techease.groupiiapplication.api.ApiCallback;
-import com.techease.groupiiapplication.api.ApiClass;
+import com.techease.groupiiapplication.adapter.MyContactsAdapter;
+import com.techease.groupiiapplication.adapter.RecyclerViewClickListener;
+import com.techease.groupiiapplication.dataModel.ContactDataModel;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
@@ -39,6 +51,7 @@ import com.techease.groupiiapplication.utils.Connectivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,7 +61,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implements View.OnClickListener, MyContactsAdapter.ContactsAdapterListener {
 
 
     @BindView(R.id.clInviteFriend)
@@ -75,6 +88,11 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.etPhone)
     EditText etPhone;
 
+
+    @BindView(R.id.tvInviteFriend)
+    TextView tvInviteFriend;
+
+
     @BindView(R.id.tvSendInviteFriend)
     TextView tvSendInviteFriend;
 
@@ -97,6 +115,22 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     Button btnNext;
 
 
+    private List<ContactDataModel> contactDataModelList;
+    Cursor cursor;
+    private String name, phoneNumber;
+    public static final int RequestPermissionCode = 1;
+
+    MyContactsAdapter contactsAdapter;
+
+    RecyclerViewClickListener listener;
+
+
+    @BindView(R.id.rvMyContact)
+    RecyclerView rvMyContact;
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +141,40 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
         tvInviteFriendNotFound.setVisibility(View.VISIBLE);
 
+        InitAdapter();
+        ApiCallGetTripID();
+        ContactGetAndCheckPermission();
 
-        apiCallGetTripID();
 
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = editable.toString();
+                Log.d("zma text", text);
+                contactsAdapter.getFilter().filter(text);
+                if (tilEmail.getVisibility() == View.VISIBLE) {
+                    ContactLayoutVisible();
+                }
+            }
+        });
+
+        etPhone.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, @SuppressLint("ClickableViewAccessibility") MotionEvent motionEvent) {
+                ContactLayoutVisible();
+                return false;
+            }
+        });
         cbShareCost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -123,7 +188,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     }
 
-    private void apiCallGetTripID() {
+    private void ApiCallGetTripID() {
         dialog.show();
         Call<CreateTripResponse> createTripResponseCall = BaseNetworking.ApiInterface().getTripID(AppRepository.mUserID(this));
         createTripResponseCall.enqueue(new Callback<CreateTripResponse>() {
@@ -148,19 +213,26 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend})
+    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone})
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.ivBack:
-                if (clInviteFriend.getVisibility() == View.VISIBLE) {
-                    clAddInvite.setVisibility(View.VISIBLE);
-                    clInviteFriend.setVisibility(View.GONE);
 
+                if (tilEmail.getVisibility() == View.VISIBLE) {
+
+                    if (clInviteFriend.getVisibility() == View.VISIBLE) {
+                        clAddInvite.setVisibility(View.VISIBLE);
+                        clInviteFriend.setVisibility(View.GONE);
+
+                    } else {
+                        onBackPressed();
+                        apiCallForTripDelete();
+                    }
                 } else {
-                    onBackPressed();
-                    apiCallForTripDelete();
+                    ContactLayoutGone();
+
                 }
 
                 break;
@@ -182,7 +254,21 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
                 break;
 
+            case R.id.etPhone:
+
+                ContactLayoutVisible();
+
+
         }
+    }
+
+
+    private void ContactLayoutVisible() {
+        tilEmail.setVisibility(View.GONE);
+        tvSendInviteFriend.setVisibility(View.GONE);
+        tvInviteFriend.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
+        rvMyContact.setVisibility(View.VISIBLE);
     }
 
     private void ApiCallForAddInviteFriend() {
@@ -203,7 +289,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                         etPhone.setText("");
                         cbShareCost.setChecked(false);
                         addTripDataModels.addAll(response.body().getData());
-                        initAdapter();
+                        InitAdapter();
                     }
 
                 } else {
@@ -256,11 +342,30 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-//        apiCallForTripDelete();
+        if (tilEmail.getVisibility() == View.VISIBLE) {
+
+            if (clInviteFriend.getVisibility() == View.VISIBLE) {
+                clAddInvite.setVisibility(View.VISIBLE);
+                clInviteFriend.setVisibility(View.GONE);
+
+            } else {
+                apiCallForTripDelete();
+                super.onBackPressed();
+            }
+        } else {
+            ContactLayoutGone();
+
+        }
 
 
+    }
 
+    private void ContactLayoutGone() {
+        tilEmail.setVisibility(View.VISIBLE);
+        tvSendInviteFriend.setVisibility(View.VISIBLE);
+        tvInviteFriend.setVisibility(View.VISIBLE);
+        btnNext.setVisibility(View.VISIBLE);
+        rvMyContact.setVisibility(View.GONE);
     }
 
     private void apiCallForTripDelete() {
@@ -270,7 +375,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             public void onResponse(Call<DeleteTripResponse> call, Response<DeleteTripResponse> response) {
                 if (response.isSuccessful()) {
                     Log.d("zma trip", "delete sho");
-//                    onBackPressed();
                 }
             }
 
@@ -278,14 +382,14 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             public void onFailure(Call<DeleteTripResponse> call, Throwable t) {
 
                 Log.d("zma trip", "delete " + t.getMessage());
-//                onBackPressed();
 
             }
         });
     }
 
 
-    private void initAdapter() {
+    private void InitAdapter() {
+
 
         linearLayoutManager = new LinearLayoutManager(this);
         dialog = AlertUtils.createProgressDialog(this);
@@ -296,5 +400,86 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         Collections.reverse(addTripDataModels);
         addTripAdapter.notifyDataSetChanged();
         tvInviteFriendNotFound.setVisibility(View.GONE);
+
+        contactDataModelList = new ArrayList<>();
+        rvMyContact.setLayoutManager(new LinearLayoutManager(this));
+        rvMyContact.setHasFixedSize(true);
+
+        listener = (view, position) -> {
+
+            etPhone.setText(contactDataModelList.get(position).getNumContact());
+            ContactLayoutGone();
+        };
+
+        contactsAdapter = new MyContactsAdapter(this, contactDataModelList, this);
+        rvMyContact.setAdapter(contactsAdapter);
+
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void GetContactsIntoArrayList() {
+
+        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+
+            name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            ContactDataModel number = new ContactDataModel();
+            number.setNameContact(name);
+            number.setNumContact(phoneNumber);
+
+
+            if (!containsContactNumber(contactDataModelList, phoneNumber)) {
+                contactDataModelList.add(number);
+            }
+//
+//            Comparator<ContactDataModel> compareById = (ContactDataModel o1, ContactDataModel o2) -> o1.getNameContact().compareTo(o2.getNameContact());
+//            Collections.sort(contactDataModelList, compareById);
+
+            contactsAdapter.notifyDataSetChanged();
+
+        }
+
+
+        cursor.close();
+
+    }
+
+    boolean containsContactNumber(List<ContactDataModel> list, String phoneNumber) {
+        for (ContactDataModel item : list) {
+            if (item.getNumContact().equals(phoneNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void ContactGetAndCheckPermission() {
+        Dexter.withActivity(this).withPermissions(
+                Manifest.permission.READ_CONTACTS
+        ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    GetContactsIntoArrayList();
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+            }
+        }).check();
+    }
+
+
+    @Override
+    public void onContactSelected(ContactDataModel contact) {
+        etPhone.setText(contact.getNumContact());
+        etPhone.setSelection(etPhone.getText().length());
     }
 }

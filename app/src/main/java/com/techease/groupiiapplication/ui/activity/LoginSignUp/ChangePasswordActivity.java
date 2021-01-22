@@ -123,7 +123,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         strAgainPassword = etAgainPassword.getText().toString();
 
 
-        if (GeneralUtills.isValidPassword(strNewPassword)) {
+        if (!GeneralUtills.isValidPassword(strNewPassword)) {
             tilNewPassword.setErrorEnabled(true);
             tilNewPassword.setError(getString(R.string.password_should_be_six));
             valid = false;

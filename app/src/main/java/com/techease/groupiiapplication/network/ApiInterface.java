@@ -8,6 +8,7 @@ import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
+import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.hotel.HotelResponse;
 import com.techease.groupiiapplication.dataModel.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
@@ -159,6 +160,11 @@ public interface ApiInterface {
     Call<AllTripDayResponse> getTripByDate(
             @Field("date") String date,
             @Field("tripid") String tripId);
+
+
+    @GET
+    Call<GetGalleryPhotoResponse> getAllGalleryPhoto(
+            @Url String tripId);
 
 
 //

@@ -143,7 +143,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:textSize="@dimen/main_heading_text_size"
                 android:text="Invite Friend Not Found"
-                android:gravity="center"/>
+                android:gravity="center" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -223,7 +223,7 @@
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="phone"
+                        android:inputType="text"
                         android:background="@android:color/transparent"
                         android:backgroundTint="#D7F7F7" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -260,6 +260,17 @@
                     android:text="Send Invite"
                     android:background="@drawable/round_white_bg" />
             </androidx.cardview.widget.CardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/rvMyContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/widget_margin"
+                app:layout_constraintTop_toBottomOf="@id/cvPhone"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/white" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

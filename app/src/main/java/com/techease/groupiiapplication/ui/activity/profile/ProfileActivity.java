@@ -95,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tvProfileEmail.setText(AppRepository.mEmail(this));
         }
         if (AppRepository.mUserProfileImage(this).length() > 0) {
-            Picasso.get().load(AppRepository.mUserProfileImage(this)).placeholder(R.drawable.dubai).into(ivProfilePicture);
+            Picasso.get().load(AppRepository.mUserProfileImage(this)).into(ivProfilePicture);
         }
     }
 
