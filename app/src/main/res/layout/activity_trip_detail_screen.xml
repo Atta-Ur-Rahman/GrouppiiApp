@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backColor"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.TripDetailScreenActivity">
 
@@ -28,8 +29,8 @@
         android:layout_marginLeft="@dimen/widget_margin_left_right"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/round_bg"
-        android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+        android:src="@mipmap/back"
+        android:background="@drawable/round_card_transparent_bg"/>
 
 
     <TextView
@@ -55,9 +56,8 @@
         app:layout_constraintRight_toLeftOf="@id/ivMenu"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginRight="@dimen/widget_margin"
-        android:background="@drawable/round_bg"
-        android:padding="@dimen/widget_margin"
-        android:src="@mipmap/chats" />
+        android:src="@mipmap/chat_white"
+        android:background="@drawable/round_card_transparent_bg"/>
 
     <ImageView
         android:id="@+id/ivMenu"
@@ -67,16 +67,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginRight="@dimen/widget_margin_left_right"
-        android:background="@drawable/round_bg"
-        android:padding="@dimen/widget_margin"
-        android:src="@drawable/dots" />
+        android:src="@mipmap/menu"
+        android:background="@drawable/round_card_transparent_bg"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/transparent_color">
+        android:background="@mipmap/shadow">
 
 
         <TextView
@@ -116,7 +116,7 @@
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
             android:textColor="@android:color/white"
-            android:drawableLeft="@mipmap/my_trips_selected"
+            android:drawableLeft="@mipmap/my_trip_unselected"
             android:drawablePadding="@dimen/widget_margin"
             android:textStyle="bold" />
 

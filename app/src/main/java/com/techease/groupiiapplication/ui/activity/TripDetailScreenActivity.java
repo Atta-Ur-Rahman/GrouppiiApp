@@ -6,8 +6,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -42,6 +45,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.adapter.Connect;
+import com.techease.groupiiapplication.adapter.ConnectionBooleanChangedListener;
 import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.UserTripCircleImagesAdapter;
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -296,6 +301,22 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+
+
+//        BroadcastReceiver broadcastReceiver;
+//        IntentFilter intentFilter=new IntentFilter();
+//
+//        intentFilter.addAction(Intent.ACTION_TIME_TICK);
+//        broadcastReceiver=new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                Toast.makeText(context, "show tost time", Toast.LENGTH_SHORT).show();
+//            }
+//        };
+//        registerReceiver(broadcastReceiver,intentFilter);
+
+
+
 
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
@@ -585,6 +606,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             public void onResponse(Call<AddPhotoToGalleryResponse> call, Response<AddPhotoToGalleryResponse> response) {
                 if (response.isSuccessful()) {
 
+
+                    Connect.setMyBoolean(true);
                     dialog.dismiss();
                     Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
 

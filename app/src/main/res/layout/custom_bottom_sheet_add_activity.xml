@@ -166,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="date"
-                    android:drawableRight="@mipmap/manage_bookings"
+                    android:drawableRight="@mipmap/date"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
                     android:cursorVisible="false"

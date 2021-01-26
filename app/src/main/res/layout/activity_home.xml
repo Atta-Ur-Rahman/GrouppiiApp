@@ -78,6 +78,7 @@
 
 
         <LinearLayout
+            android:id="@+id/llChat"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -87,11 +88,13 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
+                android:id="@+id/ivChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/chats" />
 
             <TextView
+                android:id="@+id/tvChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chats" />
@@ -106,6 +109,7 @@
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llActivity"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -114,7 +118,7 @@
             android:paddingTop="@dimen/padding_top"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless">
+            android:background="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/ivActivity"

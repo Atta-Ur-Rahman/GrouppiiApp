@@ -100,7 +100,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     private void setupViewPager(ViewPager viewPager) {
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new ActiveFragment(), "Active");
-        adapter.addFragment(new UpcomingFragment(), "Upcomming");
+        adapter.addFragment(new UpcomingFragment(), "Upcoming");
         adapter.addFragment(new PastFragment(), "Past");
         viewPager.setAdapter(adapter);
 
@@ -119,7 +119,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
+        setProfileImageAndName();
         if (aBooleanRefreshApi) {
             apiCallGetTripDetail();
             aBooleanRefreshApi = false;
@@ -174,4 +174,5 @@ public class TripFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
 }

@@ -51,7 +51,6 @@ import com.techease.groupiiapplication.utils.Connectivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -114,8 +113,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.btnNext)
     Button btnNext;
 
-
-    private List<ContactDataModel> contactDataModelList;
+    private List<ContactDataModel> contactDataModelList = new ArrayList<>();
     Cursor cursor;
     private String name, phoneNumber;
     public static final int RequestPermissionCode = 1;
@@ -141,7 +139,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
         tvInviteFriendNotFound.setVisibility(View.VISIBLE);
 
-        InitAdapter();
+        initAdapter();
+        initContactAdapter();
         ApiCallGetTripID();
         ContactGetAndCheckPermission();
 
@@ -225,14 +224,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                     if (clInviteFriend.getVisibility() == View.VISIBLE) {
                         clAddInvite.setVisibility(View.VISIBLE);
                         clInviteFriend.setVisibility(View.GONE);
-
                     } else {
                         onBackPressed();
                         apiCallForTripDelete();
                     }
                 } else {
                     ContactLayoutGone();
-
                 }
 
                 break;
@@ -246,6 +243,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             case R.id.ivAddUserTrip:
                 clAddInvite.setVisibility(View.GONE);
                 clInviteFriend.setVisibility(View.VISIBLE);
+                ContactLayoutGone();
+
                 break;
             case R.id.btnNext:
                 TripFragment.aBooleanRefreshApi = false;
@@ -289,7 +288,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                         etPhone.setText("");
                         cbShareCost.setChecked(false);
                         addTripDataModels.addAll(response.body().getData());
-                        InitAdapter();
+                        initAdapter();
                     }
 
                 } else {
@@ -388,7 +387,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
 
-    private void InitAdapter() {
+    private void initAdapter() {
 
 
         linearLayoutManager = new LinearLayoutManager(this);
@@ -401,7 +400,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         addTripAdapter.notifyDataSetChanged();
         tvInviteFriendNotFound.setVisibility(View.GONE);
 
-        contactDataModelList = new ArrayList<>();
+    }
+
+
+    private void initContactAdapter() {
+
+        contactDataModelList.clear();
         rvMyContact.setLayoutManager(new LinearLayoutManager(this));
         rvMyContact.setHasFixedSize(true);
 

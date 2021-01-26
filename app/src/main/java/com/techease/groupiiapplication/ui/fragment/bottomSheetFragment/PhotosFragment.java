@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.adapter.Connect;
+import com.techease.groupiiapplication.adapter.ConnectionBooleanChangedListener;
 import com.techease.groupiiapplication.adapter.GalleryPhotoAdapter;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GalleryPhotoDataModel;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
@@ -47,6 +49,15 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
         ApiCallGetAllGalleryPhoto();
         dialog = AlertUtils.createProgressDialog(getActivity());
 
+
+        Connect.addMyBooleanListener(new ConnectionBooleanChangedListener() {
+            @Override
+            public void OnMyBooleanChanged() {
+                ApiCallGetAllGalleryPhoto();
+
+            }
+        });
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         galleryPhotoAdapter = new GalleryPhotoAdapter(getActivity(), galleryPhotoDataModels, R.layout.custom_gallery_photo_layout);
         rvGalleryPhoto.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -60,12 +71,12 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
     private void ApiCallGetAllGalleryPhoto() {
 
 
-        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/"+AppRepository.mTripId(getActivity()));
+        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/" + AppRepository.mTripId(getActivity()));
         getGalleryPhotoResponseCall.enqueue(new Callback<GetGalleryPhotoResponse>() {
             @Override
             public void onResponse(Call<GetGalleryPhotoResponse> call, Response<GetGalleryPhotoResponse> response) {
 
-                Log.d("zma image response",String.valueOf(response));
+                Log.d("zma image response", String.valueOf(response));
                 if (response.isSuccessful()) {
                     galleryPhotoDataModels.addAll(response.body().getData());
                     galleryPhotoAdapter.notifyDataSetChanged();

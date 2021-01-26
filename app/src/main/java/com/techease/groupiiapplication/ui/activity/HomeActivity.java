@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,52 +18,55 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.Active;
-import com.techease.groupiiapplication.dataModel.tripDetail.Past;
-import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
-import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
-import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
 import com.techease.groupiiapplication.ui.fragment.SettingsFragment;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
 
 
-    @BindView(R.id.llSettings)
-    LinearLayout llSettings;
     @BindView(R.id.llTrip)
     LinearLayout llTrip;
+    @BindView(R.id.ivTrip)
+    ImageView ivTrip;
+    @BindView(R.id.tvTrip)
+    TextView tvTrip;
 
+    @BindView(R.id.llChat)
+    LinearLayout llChat;
+    @BindView(R.id.ivChat)
+    ImageView ivChat;
+    @BindView(R.id.tvChat)
+    TextView tvChat;
+
+    @BindView(R.id.llActivity)
+    LinearLayout llActivity;
+    @BindView(R.id.ivActivity)
+    ImageView ivActivity;
+    @BindView(R.id.tvActivity)
+    TextView tvActivity;
+
+
+    @BindView(R.id.llSettings)
+    LinearLayout llSettings;
     @BindView(R.id.ivSettings)
     ImageView ivSettings;
     @BindView(R.id.tvSettings)
     TextView tvSettings;
 
 
-    @BindView(R.id.ivTrip)
-    ImageView ivTrip;
-    @BindView(R.id.tvTrip)
-    TextView tvTrip;
+
 
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
     Dialog dialog;
-
 
 
     final Fragment fragmentTrip = new TripFragment();
@@ -88,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @OnClick({R.id.llSettings, R.id.llTrip, R.id.fab})
+    @OnClick({R.id.llTrip,R.id.llChat,R.id.llActivity, R.id.llSettings, R.id.fab})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -103,16 +105,57 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 active = fragmentTrip;
 
                 tvTrip.setTextColor(getColor(R.color.purple_500));
-                Picasso.get().load(R.mipmap.my_trips_selected).into(ivSettings);
+                tvChat.setTextColor(getColor(R.color.gry));
+                tvActivity.setTextColor(getColor(R.color.gry));
                 tvSettings.setTextColor(getColor(R.color.gry));
-                Picasso.get().load(R.mipmap.settings).into(ivSettings);
+
+                ivTrip.setImageResource(R.mipmap.my_trips_selected);
+                ivChat.setImageResource(R.mipmap.chats);
+                ivActivity.setImageResource(R.mipmap.activity);
+                ivSettings.setImageResource(R.mipmap.settings);
+
                 break;
 
+
+            case R.id.llChat:
+
+                tvTrip.setTextColor(getColor(R.color.gry));
+                tvChat.setTextColor(getColor(R.color.purple_500));
+                tvActivity.setTextColor(getColor(R.color.gry));
+                tvSettings.setTextColor(getColor(R.color.gry));
+
+                ivTrip.setImageResource(R.mipmap.my_trip_unselected);
+                ivChat.setImageResource(R.mipmap.chat_selected);
+                ivActivity.setImageResource(R.mipmap.activity);
+                ivSettings.setImageResource(R.mipmap.settings);
+
+                break;
+            case R.id.llActivity:
+
+                tvTrip.setTextColor(getColor(R.color.gry));
+                tvChat.setTextColor(getColor(R.color.gry));
+                tvActivity.setTextColor(getColor(R.color.purple_500));
+                tvSettings.setTextColor(getColor(R.color.gry));
+
+                ivTrip.setImageResource(R.mipmap.my_trip_unselected);
+                ivChat.setImageResource(R.mipmap.chats);
+                ivActivity.setImageResource(R.mipmap.activity_selected);
+                ivSettings.setImageResource(R.mipmap.settings);
+
+                break;
             case R.id.llSettings:
 
-                tvSettings.setTextColor(getColor(R.color.purple_500));
-                Picasso.get().load(R.mipmap.settings_selected).into(ivSettings);
+
+
                 tvTrip.setTextColor(getColor(R.color.gry));
+                tvChat.setTextColor(getColor(R.color.gry));
+                tvActivity.setTextColor(getColor(R.color.gry));
+                tvSettings.setTextColor(getColor(R.color.purple_500));
+
+                ivTrip.setImageResource(R.mipmap.my_trip_unselected);
+                ivChat.setImageResource(R.mipmap.chats);
+                ivActivity.setImageResource(R.mipmap.activity);
+                ivSettings.setImageResource(R.mipmap.settings_selected);
 
                 fm.beginTransaction().hide(active).show(fragmentSettings).commit();
                 active = fragmentSettings;
@@ -125,11 +168,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
-
-
-
-
 
 
 }
