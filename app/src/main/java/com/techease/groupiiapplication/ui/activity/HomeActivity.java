@@ -16,11 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
 import com.techease.groupiiapplication.ui.fragment.SettingsFragment;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
+import com.techease.groupiiapplication.ui.fragment.ChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 
 import butterknife.BindView;
@@ -70,6 +70,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     final Fragment fragmentTrip = new TripFragment();
+    final Fragment fragmentChatActivity = new ChatFragment();
+
     final Fragment fragmentSettings = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentTrip;
@@ -83,8 +85,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
+        fm.beginTransaction().add(R.id.container, fragmentChatActivity, "3").hide(fragmentChatActivity).commit();
         fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
         fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
+
+
 
     }
 
@@ -116,9 +121,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
-
             case R.id.llChat:
-
                 tvTrip.setTextColor(getColor(R.color.gry));
                 tvChat.setTextColor(getColor(R.color.purple_500));
                 tvActivity.setTextColor(getColor(R.color.gry));
@@ -128,6 +131,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ivChat.setImageResource(R.mipmap.chat_selected);
                 ivActivity.setImageResource(R.mipmap.activity);
                 ivSettings.setImageResource(R.mipmap.settings);
+
+
+//                fm.beginTransaction().add(R.id.container, fragmentTrip, "4").hide(fragmentTrip).commit();
+//                fm.beginTransaction().add(R.id.container, fragmentChatActivity, "3").commit();
+
+                fm.beginTransaction().hide(active).show(fragmentChatActivity).commit();
+                active = fragmentChatActivity;
 
                 break;
             case R.id.llActivity:

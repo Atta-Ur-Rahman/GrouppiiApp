@@ -100,7 +100,7 @@ public class AllTripDayFragment extends Fragment {
     public static void ApiCallAllTirp(String tripId) {
 
         addTripDataModels.clear();
-        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getAllTripDayResponse("tripdays/getall/" + "21");
+        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getAllTripDayResponse("tripdays/getall/" + tripId);
         allTripDayResponseCall.enqueue(new Callback<AllTripDayResponse>() {
             @Override
             public void onResponse(Call<AllTripDayResponse> call, Response<AllTripDayResponse> response) {

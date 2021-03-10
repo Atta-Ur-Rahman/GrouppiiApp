@@ -3,11 +3,13 @@ package com.techease.groupiiapplication.ui.activity.AddTrip;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
+import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +22,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity {
     CircularSeekBar circularSeekBar;
     @BindView(R.id.btnDone)
     Button btnDone;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         circularSeekBar.setEnabled(false);
-
+        ProcessBarAnimation();
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,5 +41,12 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    private void ProcessBarAnimation() {
+        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 75, 100);
+        anim.setDuration(1000);
+        progressBar.startAnimation(anim);
     }
 }

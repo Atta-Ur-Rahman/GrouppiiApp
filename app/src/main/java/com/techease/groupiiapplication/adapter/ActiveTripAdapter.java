@@ -22,6 +22,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
@@ -70,6 +71,9 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("image", data.getCoverimage());

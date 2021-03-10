@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <font
+        app:fontStyle="normal"
+        app:fontWeight="400"
+        app:font="@font/roboto_black"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="400"
+        app:font="@font/roboto_blackitalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="normal"
+        app:fontWeight="700"
+        app:font="@font/roboto_bolditalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_italic"
+        tools:ignore="ResourceCycle" />
+
+
+
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_light"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_lightitalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_medium"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_mediumitalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_regular"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_thin"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/roboto_thinitalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_bold"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_bolditalic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_italic"
+        tools:ignore="ResourceCycle" />
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_light"
+        tools:ignore="ResourceCycle" />
+
+
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_lightitalic"
+        tools:ignore="ResourceCycle" />
+
+    <font
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/robotocondensed_regular"
+        tools:ignore="ResourceCycle" />
+
+</font-family>

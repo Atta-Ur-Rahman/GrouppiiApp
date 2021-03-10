@@ -1,3 +1,4 @@
+
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -9,7 +10,8 @@ import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
-import com.techease.groupiiapplication.dataModel.hotel.HotelResponse;
+import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.dataModel.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
 import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
@@ -19,13 +21,13 @@ import com.techease.groupiiapplication.dataModel.updateProfilePicture.UpdateProf
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface ApiInterface {
@@ -38,6 +40,8 @@ public interface ApiInterface {
 //            @Field("deviceToken") String deviceToken,
 //            @Field("latitude") String latitude,
 //            @Field("longitude") String longitude);
+
+
 
 
     @FormUrlEncoded
@@ -78,7 +82,6 @@ public interface ApiInterface {
             @Part("picture") RequestBody fileName);
 
 
-
     @FormUrlEncoded
     @POST("trips/createtrip")
     Call<CreateTripResponse> getTripID(
@@ -97,7 +100,8 @@ public interface ApiInterface {
             @Field("email") String email,
             @Field("phone") String phone,
             @Field("share_cost") String shareCost,
-            @Field("tripid") String tripId);
+            @Field("tripid") String tripId,
+            @Field("userid") String userId);
 
 
     @Multipart
@@ -120,11 +124,8 @@ public interface ApiInterface {
             @Field("tripid") String tripId);
 
 
-    @GET("hotel-offers?")
-    Call<HotelResponse> getNearHotel(
-            @Query("cityCode") String cityCode,
-            @Query("latitude") String latitude,
-            @Query("longitude") String longitude);
+    @POST("lt_v1")
+    Call<OgodaHotelResponse> getAllHotel(@Body MainHotelObject mainObject);
 
 
     @FormUrlEncoded
@@ -148,11 +149,9 @@ public interface ApiInterface {
             @Part("photo") RequestBody fileName);
 
 
-
     @GET
     Call<AllTripDayResponse> getAllTripDayResponse(
             @Url String userId);
-
 
 
     @FormUrlEncoded

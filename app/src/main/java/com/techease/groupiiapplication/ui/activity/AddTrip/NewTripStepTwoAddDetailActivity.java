@@ -2,9 +2,11 @@ package com.techease.groupiiapplication.ui.activity.AddTrip;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -39,6 +42,7 @@ import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -96,6 +100,9 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @BindView(R.id.tillPayByDate)
     TextInputLayout tillPayByDate;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
 
     String strTripTitle, strDescription, strLocation, strStartDate, strEndDate, strPayByDate;
 
@@ -116,6 +123,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     Dialog dialog;
 
     boolean valid;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +132,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
+        ProcessBarAnimation();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -155,6 +164,12 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         }
     }
 
+    private void ProcessBarAnimation() {
+        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 25, 50);
+        anim.setDuration(1000);
+        progressBar.startAnimation(anim);
+    }
+
 
     private void checkImagePermission() {
         Dexter.withActivity(this).withPermissions(
@@ -177,8 +192,20 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     }
 
     public void cameraIntent() {
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+
+        ContentValues cv;
+
+        cv = new ContentValues();
+        cv.put(MediaStore.Images.Media.TITLE, "My Picture");
+        cv.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+        imageUri = getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, CAMERA_CAPTURE);
+//
+//        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(captureIntent, CAMERA_CAPTURE);
     }
 
     public void galleryIntent() {
@@ -217,17 +244,65 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+//        switch (requestCode) {
+//            case CAMERA_CAPTURE:
+//                if (requestCode == CAMERA_CAPTURE)
+//                    if (resultCode == Activity.RESULT_OK) {
+//                        try {
+//                            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
+//                                    getContentResolver(), imageUri);
+//                            ivCoverImage.setVisibility(View.VISIBLE);
+//
+//                            ivCoverImage.setImageBitmap(thumbnail);
+//                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                            thumbnail.compress(Bitmap.CompressFormat.JPEG, 70, bytes);
+//
+//
+//                            sourceFile = Environment.getExternalStoragePublicDirectory(
+//                                    Environment.DIRECTORY_PICTURES);
+//                            sourceFile = new File(sourceFile,
+//                                    System.currentTimeMillis() + ".jpg");
+//
+//                            FileOutputStream fo;
+//                            try {
+//                                sourceFile.createNewFile();
+//                                fo = new FileOutputStream(sourceFile);
+//                                fo.write(bytes.toByteArray());
+//                                fo.close();
+//                            } catch (FileNotFoundException e) {
+//                                e.printStackTrace();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//
+//                            sourceFile.getAbsoluteFile();
+//
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//        }
+
         if (requestCode == RESULT_LOAD_IMAGE && null != data) {
             Uri selectedImageUri = data.getData();
             String imagepath = getPath(selectedImageUri);
             sourceFile = new File(imagepath);
 
-            Log.d("zma image",String.valueOf(sourceFile.getAbsoluteFile()));
+            Log.d("zma image", String.valueOf(sourceFile.getAbsoluteFile()));
 
             ivCoverImage.setVisibility(View.VISIBLE);
             ivCoverImage.setImageURI(selectedImageUri);
 
+
+
+
         } else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE && data != null) {
+
+
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 

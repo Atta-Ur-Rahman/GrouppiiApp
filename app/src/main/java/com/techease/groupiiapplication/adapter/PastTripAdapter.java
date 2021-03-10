@@ -102,9 +102,10 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             @Override
             public void onClick(View view) {
 
+                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+
                 if (data.getTitle().equals("unpublished")) {
                     Log.d("zma tripid", String.valueOf(data.getId()));
-                    AppRepository.mPutValue(context).putString(String.valueOf(data.getId()), "tripID").commit();
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
                 } else {
 
@@ -112,7 +113,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     for (int i=0;i<userList.size();i++){
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
-
                     Intent intent = new Intent(context, TripDetailScreenActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("image", data.getCoverimage());

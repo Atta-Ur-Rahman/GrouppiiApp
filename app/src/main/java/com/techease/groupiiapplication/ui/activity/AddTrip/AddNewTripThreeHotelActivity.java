@@ -3,9 +3,9 @@ package com.techease.groupiiapplication.ui.activity.AddTrip;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.HotelAdapter;
-import com.techease.groupiiapplication.dataModel.hotel.HotelDataModel;
-import com.techease.groupiiapplication.dataModel.hotel.HotelResponse;
+import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
+import com.techease.groupiiapplication.dataModel.ogodaHotelObject.AreaDataObject;
+import com.techease.groupiiapplication.dataModel.ogodaHotelObject.CriteriaDataObject;
+import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
+import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +40,13 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
 
     LinearLayoutManager linearLayoutManager;
     HotelAdapter hotelAdapter;
-    List<HotelDataModel> hotelDataModels = new ArrayList<>();
+    List<Result> hotelDataModels = new ArrayList<>();
     @BindView(R.id.rvTripDetail)
     RecyclerView rvTripDetail;
     @BindView(R.id.btnReverse)
     Button btnReverse;
-
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     Dialog dialog;
 
     @Override
@@ -48,56 +56,56 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         initAdapter();
-        apiCallGetTripDetail();
+        try {
+            apiCallGetTripDetail();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        ProcessBarAnimation();
 
     }
 
-    private void apiCallGetTripDetail() {
-        dialog.show();
-        Call<HotelResponse> hotelResponseCall = BaseNetworking.ApiInterfaceForHotel("9TdgK5GOeFSRUB8sxYRPIfbSAeKX").getNearHotel("PEW", "52.5238", "13.3835");
-        hotelResponseCall.enqueue(new Callback<HotelResponse>() {
-            @Override
-            public void onResponse(Call<HotelResponse> call, Response<HotelResponse> response) {
-                if (response.isSuccessful()) {
+    private void ProcessBarAnimation() {
+        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 50, 75);
+        anim.setDuration(1000);
+        progressBar.startAnimation(anim);
+    }
 
-                    hotelDataModels.addAll(response.body().getData());
+    private void apiCallGetTripDetail() throws JSONException, IOException {
+        dialog.show();
+
+        MainHotelObject mainObject = new MainHotelObject();
+        AreaDataObject areaDataObject = new AreaDataObject();
+        CriteriaDataObject criteriaDataObject = new CriteriaDataObject();
+
+        areaDataObject.setId(26023);
+        areaDataObject.setCityId(9395);
+
+        criteriaDataObject.setAreaDataObject(areaDataObject);
+        criteriaDataObject.setCheckInDate("2021-10-14");
+        criteriaDataObject.setCheckOutDate("2021-10-15");
+
+        mainObject.setCriteriaDataObject(criteriaDataObject);
+
+
+        Call<OgodaHotelResponse> ogodaHotelResponseCall = BaseNetworking.ApiInterfaceForHotel().getAllHotel(mainObject);
+        ogodaHotelResponseCall.enqueue(new Callback<OgodaHotelResponse>() {
+            @Override
+            public void onResponse(Call<OgodaHotelResponse> call, Response<OgodaHotelResponse> response) {
+
+                if (response.isSuccessful()) {
+                    hotelDataModels.addAll(response.body().getResults());
                     hotelAdapter.notifyDataSetChanged();
-                    Log.d("zma hotel",String.valueOf(response.message()));
                 }
                 dialog.dismiss();
+
             }
 
             @Override
-            public void onFailure(Call<HotelResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("zma hotel",String.valueOf(t.getMessage()));
-
+            public void onFailure(Call<OgodaHotelResponse> call, Throwable t) {
             }
-        });
 
-//        Call<TripDetailResponse> call = BaseNetworking.ApiInterface().getTripDetail(AppRepository.mUserID(this));
-//        call.enqueue(new Callback<TripDetailResponse>() {
-//            @Override
-//            public void onResponse(Call<TripDetailResponse> call, Response<TripDetailResponse> response) {
-//                if (response.isSuccessful()) {
-//                    dialog.dismiss();
-//                    tripDetailDataModels.addAll(response.body().getData());
-//                    Log.d("zma response",String.valueOf(response.message()+tripDetailDataModels.size()));
-//
-//                    tripDetailAdapter.notifyDataSetChanged();
-//                } else {
-//                    dialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<TripDetailResponse> call, Throwable t) {
-//                dialog.dismiss();
-//
-//                Log.d("zma response",String.valueOf(t.getMessage() ));
-//
-//            }
-//        });
+        });
     }
 
     private void initAdapter() {

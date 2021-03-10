@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvNewTrip"
             android:layout_marginBottom="21dp"
             android:layout_marginTop="@dimen/widget_margin"
-            android:progress="24" />
+            android:progress="0" />
 
 
         <TextView

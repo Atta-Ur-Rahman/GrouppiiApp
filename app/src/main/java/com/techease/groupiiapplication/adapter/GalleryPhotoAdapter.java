@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GalleryPhotoDataModel;
@@ -44,7 +45,7 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         GalleryPhotoDataModel data = galleryPhotoDataModels.get(position);
-        Picasso.get().load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
+        Glide.with(context).load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
         holder.tvTitle.setText(data.getTitle());
         holder.tvHotelPrice.setText(data.getTime() + "," + data.getDate());
 

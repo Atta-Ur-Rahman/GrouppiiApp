@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tvVerify"
             android:layout_marginBottom="21dp"
-            android:progress="50" />
+            android:progress="25" />
 
 
         <TextView
@@ -111,9 +111,6 @@
                 app:counterMaxLength="100"
                 android:background="@color/light_gry"
                 app:counterTextAppearance="@style/CounterText"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintTextAppearance="@style/HintText"
                 android:hint="Trip description">
 
                 <EditText
@@ -130,9 +127,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.cardview.widget.CardView>
-
-
-
 
 
         <androidx.cardview.widget.CardView

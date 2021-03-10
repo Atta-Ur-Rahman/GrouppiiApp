@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
 
@@ -41,5 +42,14 @@ public class AlertUtils {
         return dialog;
     }
 
+
+    public static void makeNotification(String notification, Activity activity) {
+
+        Toast.makeText(activity, notification, Toast.LENGTH_SHORT).show();
+//        ToastFragmentManager manager = ToastFragmentManager.getInstance(activity);
+//        manager.showToast(notification);
+
+//        AlertDialogUtils.showNotificationAlertDialog(activity,null,notification);
+    }
 
 }

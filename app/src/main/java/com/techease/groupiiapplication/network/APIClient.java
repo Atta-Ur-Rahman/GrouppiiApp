@@ -13,10 +13,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
     APIClient context = this;
-    public static final String BASE_URL = "http://grouppii.com:4000/api/v1/";
-    public static final String HOTEL_BASE_URL="https://test.api.amadeus.com/v2/shopping/";
+    public static final String BASE_URL = "http://104.131.66.116:4000/api/v1/";
+    public static final String HOTEL_BASE_URL = "http://affiliateapi7643.agoda.com/affiliateservice/";
     private static Retrofit retrofit = null;
-    private static Retrofit retrofitHotel= null;
+    private static Retrofit retrofitHotel = null;
 
 
     public static Retrofit getClient() {
@@ -88,7 +88,7 @@ public class APIClient {
                         return response;
                     }
                 });
-
+//
         OkHttpClient OkHttpClient = httpClient.build();
 
 
@@ -101,44 +101,42 @@ public class APIClient {
     }
 
 
-    public static Retrofit getClientForHotel(String token) {
+    public static Retrofit getClientForHotel() {
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY);
-        HttpLoggingInterceptor interceptor1 = new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS);
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
-                .addInterceptor(interceptor1)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request original = chain.request();
-                        // Customize the request
-                        Request request = original.newBuilder()
-                                .header("Accept", "application/json")
-                                .header("Authorization", "Bearer " + token)
-                                .method(original.method(), original.body())
-                                .build();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
 
-                        Response response = chain.proceed(request);
+                // Customize the request
 
-                        // Customize or return the response
-                        return response;
-                    }
-                });
+                Request request = original.newBuilder()
+//                        .header("Accept", "application/json")
+                        .header("Authorization", "1893031:ddc91d03-4be1-4996-bf8b-00c76fd20f29")
+                        .method(original.method(), original.body())
+                        .build();
+
+                Response response = chain.proceed(request);
+
+                // Customize or return the response
+                return response;
+            }
+        });
 
         OkHttpClient OkHttpClient = httpClient.build();
 
 
-        retrofitHotel = new Retrofit.Builder()
-                .baseUrl(HOTEL_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(OkHttpClient)
-                .build();
+        if (retrofitHotel == null) {
+
+            retrofitHotel = new Retrofit.Builder()
+                    .baseUrl(HOTEL_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(OkHttpClient)
+                    .build();
+        }
         return retrofitHotel;
     }
 
@@ -184,7 +182,6 @@ public class APIClient {
                 .build();
         return retrofit;
     }
-
 
 
 }

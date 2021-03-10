@@ -16,8 +16,8 @@ public class BaseNetworking {
         return services;
     }
 
-    public static ApiInterface ApiInterfaceForHotel(String token) {
-        services = APIClient.getClientForHotel(token).create(ApiInterface.class);
+    public static ApiInterface ApiInterfaceForHotel() {
+        services = APIClient.getClientForHotel().create(ApiInterface.class);
         return services;
     }
 }

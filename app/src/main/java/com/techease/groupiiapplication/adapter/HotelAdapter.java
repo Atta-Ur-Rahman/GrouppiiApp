@@ -2,9 +2,7 @@ package com.techease.groupiiapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.hotel.HotelDataModel;
+import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
 
 import java.util.List;
 
 public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder> {
 
     private Context context;
-    private List<HotelDataModel> hotelDataModels;
+    private List<Result> hotelDataModels;
 
 
-    public HotelAdapter(Context context, List<HotelDataModel> hotelDataModelList) {
+    public HotelAdapter(Context context, List<Result> hotelDataModelList) {
         this.hotelDataModels = hotelDataModelList;
         this.context = context;
 
@@ -43,15 +41,27 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        HotelDataModel data = hotelDataModels.get(position);
-        Picasso.get().load(data.getHotel().getMedia().get(0).getUri()).placeholder(R.drawable.progress_animation).into(holder.ivImage);
-//        holder.ivImage.setImageURI(Uri.parse(data.getHotel().getMedia().get(0).getUri()));
-        holder.tvTitle.setText(data.getHotel().getName());
-        holder.tvRoom.setText(data.getHotel().getType());
-        holder.tvHotelPrice.setText(data.getHotel().getRating());
+        Result data = hotelDataModels.get(position);
+        Picasso.get().load(data.getImageURL()).into(holder.ivImage);
+        holder.tvTitle.setText(data.getHotelName());
+        holder.tvRoom.setText(data.getDailyRate() + "");
+        holder.tvHotelPrice.setText(data.getDailyRate() + " " + data.getCurrency());
+        holder.tvReview.setText(data.getStarRating() + " / 5.0");
+        holder.tvRecommended.setText("Recommended for " + data.getDiscountPercentage() + " of guests");
 
-        Log.d("zma image",String.valueOf(data.getHotel().getMedia().get(0).getUri()));
-
+//
+//        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+//        List<Address> addresses = null;
+//        try {
+//            addresses = geocoder.getFromLocation(data.getLatitude(), data.getLongitude(), 1);
+//            String cityName = addresses.get(0).getAddressLine(0);
+//            String stateName = addresses.get(0).getAddressLine(1);
+//            String countryName = addresses.get(0).getAddressLine(2);
+//
+//            Log.d("zma loc", stateName + "  " + cityName);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
@@ -64,7 +74,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvRoom,tvDescription, tvHotelPrice;
+        TextView tvTitle, tvRoom, tvDescription, tvReview, tvHotelPrice, tvRecommended;
         ImageView ivImage;
 
         MyViewHolder(View view) {
@@ -72,7 +82,9 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
             ivImage = view.findViewById(R.id.ivTripDetail);
             tvTitle = view.findViewById(R.id.tvTripTitle);
             tvRoom = view.findViewById(R.id.tvRoom);
-            tvHotelPrice =view.findViewById(R.id.tvHotelPrice);
+            tvHotelPrice = view.findViewById(R.id.tvHotelPrice);
+            tvReview = view.findViewById(R.id.tvReview);
+            tvRecommended = view.findViewById(R.id.tvRecommended);
 
         }
     }

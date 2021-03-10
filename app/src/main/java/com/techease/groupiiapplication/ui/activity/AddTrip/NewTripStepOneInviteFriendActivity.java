@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
+import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,6 +111,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     LinearLayoutManager linearLayoutManager;
     AddTripAdapter addTripAdapter;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @BindView(R.id.btnNext)
     Button btnNext;
@@ -143,6 +147,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         initContactAdapter();
         ApiCallGetTripID();
         ContactGetAndCheckPermission();
+        ProcessBarAnimation();
 
 
         etPhone.addTextChangedListener(new TextWatcher() {
@@ -185,6 +190,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             }
         });
 
+    }
+
+    private void ProcessBarAnimation() {
+        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 1, 25);
+        anim.setDuration(1000);
+        progressBar.startAnimation(anim);
     }
 
     private void ApiCallGetTripID() {
@@ -273,7 +284,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriend() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strEmail, strPhoneNumber, strShareCost, AppRepository.mTripId(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strEmail, strPhoneNumber, strShareCost,
+                AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {

@@ -110,12 +110,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
             @Override
             public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+
+                Log.d("zma signup response", String.valueOf(response));
+
                 if (response.isSuccessful()) {
                     alertDialog.dismiss();
                     finishAffinity();
                     Toast.makeText(SignUpActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
-                    Log.d("zma signup response", String.valueOf(response.message()));
                     AppRepository.mPutValue(SignUpActivity.this).putString("userID", String.valueOf(response.body().getData().getId())).commit();
                     AppRepository.mPutValue(SignUpActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
 //                    AppRepository.mPutValue(SignUpActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().ge())).commit();

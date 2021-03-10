@@ -71,9 +71,10 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
             @Override
             public void onClick(View view) {
 
+                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+
                 if (data.getTitle().equals("unpublished")) {
                     Log.d("zma tripid", String.valueOf(data.getId()));
-                    AppRepository.mPutValue(context).putString(String.valueOf(data.getId()), "tripID").commit();
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
                 } else {
                     Intent intent = new Intent(context, TripDetailScreenActivity.class);
