@@ -16,6 +16,8 @@
     <color name="progress_un_fill_color">#3E5887</color>
     <color name="circle_gry_color">#9B93B5</color>
 
+    <color name="bubble_back_color">#F5F5F5</color>
+
 
     <color name="colorPrimary">#125688</color>
     <color name="colorPrimaryDark">#125688</color>

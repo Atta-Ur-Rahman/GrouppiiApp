@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlGroupChat"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp">
+
+
+        <ImageView
+            android:id="@+id/ivChatImage"
+            android:layout_width="@dimen/fifty_dp"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin"
+            android:src="@drawable/group_image" />
+
+
+        <TextView
+            android:id="@+id/tvTitleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/widget_margin"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/ivChatImage"
+            android:textColor="@color/black"
+            android:textSize="@dimen/middle_text_size"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvChatTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/widget_margin"
+            android:text="Now"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvChatType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitleName"
+            android:layout_marginStart="@dimen/widget_margin"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/ivChatImage"
+            android:text="Me:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/middle_text_size" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitleName"
+            android:layout_marginStart="@dimen/widget_margin"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/tvChatType"
+            android:textSize="@dimen/middle_text_size" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/widget_margin"
+            android:layout_toEndOf="@id/ivChatImage"
+            android:background="@android:color/darker_gray" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

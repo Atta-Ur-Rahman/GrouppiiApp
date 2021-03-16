@@ -8,6 +8,7 @@
     android:clipToPadding="false">
 
     <View
+        android:visibility="gone"
         android:id="@+id/avatar"
         android:layout_alignParentLeft="true"
         android:scaleType="centerInside"
@@ -16,6 +17,7 @@
         android:layout_height="34dp" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/name"
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/avatar"

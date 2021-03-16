@@ -137,7 +137,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<TripDetailResponse> call, Response<TripDetailResponse> response) {
 
-                Log.d("zma", String.valueOf(response));
+//                Log.d("zma", String.valueOf(response));
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     activeList.addAll(response.body().getData().getActive());

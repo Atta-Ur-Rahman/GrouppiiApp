@@ -2,54 +2,61 @@ package com.techease.groupiiapplication.ui.fragment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.chatAdapter.ChatBoxAdapter;
+import com.techease.groupiiapplication.adapter.ActiveTripAdapter;
+import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
+import com.techease.groupiiapplication.dataModel.chat.ChatAllUserDataModel;
 import com.techease.groupiiapplication.dataModel.socketModel.Message;
 import com.techease.groupiiapplication.socket.ChatApplication;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+
+import static com.techease.groupiiapplication.ui.fragment.TripFragment.activeList;
 
 public class ChatFragment extends Fragment implements View.OnClickListener {
 
     @BindView(R.id.etChat)
     EditText etChat;
-    @BindView(R.id.btnChat)
-    Button btnChat;
+
+
+    @BindView(R.id.searchViewChat)
+    SearchView searchView;
+
 
     @BindView(R.id.rvMessagelist)
     RecyclerView rvMessageList;
     public List<Message> messageList;
-    public ChatBoxAdapter chatBoxAdapter;
+    public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String message;
+    String id, strMessage, strTitleName;
     private Socket mSocket;
+    JSONObject jsonObjectGetAllUsers = new JSONObject();
+    LinearLayoutManager linearLayoutManager;
+    private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
 
 
     @Override
@@ -57,17 +64,34 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_chat_activity, container, false);
         ButterKnife.bind(this, view);
 
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        allUserChatAdapter = new AllUserChatAdapter(getActivity(),chatAllUserDataModels);
+        rvMessageList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rvMessageList.setAdapter(allUserChatAdapter);
+
+
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint("Search here...");
 
         ChatApplication app = new ChatApplication();
         mSocket = app.getSocket();
+
+         jsonObjectGetAllUsers = new JSONObject();
+        try {
+            jsonObjectGetAllUsers.put("userid", "33");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("new message", onNewMessage);
         mSocket.connect();
+
 
 
         messageList = new ArrayList<>();
@@ -76,43 +100,82 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         rvMessageList.setItemAnimator(new DefaultItemAnimator());
 
 
+
+        JSONObject object = new JSONObject();
+        try {
+
+            object.put("userid", 33);
+            object.put("touser", null);
+            object.put("tripid", 40);
+            object.put("message", "testing message second ");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mSocket.emit("sendmessage", object);
+        mSocket.on("getbacksendmessage", getSingleMessages);
+
+
+        JSONObject objectGetAll = new JSONObject();
+        try {
+
+            object.put("userid", 33);
+            object.put("touser", 33);
+            object.put("tripid", 38);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        mSocket.emit("getAllMessages", objectGetAll);
+        mSocket.on("AllMessages", getAllMessages);
+
         return view;
     }
 
 
-    private void scrollToBottom() {
-        rvMessageList.scrollToPosition(chatBoxAdapter.getItemCount() - 1);
+    //sending message to coach
+    private void attemptMessageSend(String message, String type) {
+        if (mSocket.connected()) {
+
+            JSONObject object = new JSONObject();
+            try {
+
+                object.put("userid", 33);
+                object.put("touser", null);
+                object.put("tripid", 38);
+                object.put("message", message);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            mSocket.emit("sendmessage", object);
+            mSocket.on("getbacksendmessage", getSingleMessages);
+        }
+
     }
 
-    @OnClick({R.id.btnChat, R.id.etChat})
+
+    private void addMessage(String from, String to, String message, String date, String receiverImage, String type) {
+//        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), message, date, receiverImage, type));
+//        chatAdapter.notifyItemInserted(mMessages.size() - 1);
+//        scrollToBottom();
+    }
+
+
+    private void scrollToBottom() {
+        rvMessageList.scrollToPosition(allUserChatAdapter.getItemCount() - 1);
+    }
+
+    @OnClick({R.id.etChat})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnChat:
-
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("userid", "33");
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (mSocket.connected()) {
-                    mSocket.emit("getusers", jsonObject);
-                    mSocket.on("allusers", new Emitter.Listener() {
-                        @Override
-                        public void call(Object... args) {
-                            Log.d("zma", "new emit");
-                        }
-                    });
-                }
-
-                if (mSocket.connected()) {
-                    Toast.makeText(getActivity(), "socket connected", Toast.LENGTH_SHORT).show();
-                }
 
 
                 break;
@@ -137,8 +200,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             isConnected = true;
 
 
-            // This doesn't run in the UI thread, so use:
-            // .runOnUiThread if you want to do something in the UI
+            mSocket.emit("getusers", jsonObjectGetAllUsers);
+            mSocket.on("allusers", getAllUsers);
 
         }
     };
@@ -162,71 +225,98 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     };
 
 
-    protected Emitter.Listener getAlluser = new Emitter.Listener() {
+    protected Emitter.Listener getAllUsers = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            chatAllUserDataModels.clear();
+            ChatAllUserDataModel chatAllUserDataModel = new ChatAllUserDataModel();
+            if (mSocket.connected()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        JSONObject jsonObject = (JSONObject) args[0];
+                        try {
+                            JSONArray jsonArray = jsonObject.getJSONArray("groups");
+
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.getJSONObject(i);
+                                String strTitle = c.getString("group_title");
+                                String message = c.getString("latest_message");
+
+//                                JSONArray jsonGroupUsers = jsonObject.getJSONArray("group_users");
+
+
+
+
+                                chatAllUserDataModel.setTitleName(strTitle);
+                                chatAllUserDataModel.setMessage(message);
+
+                                chatAllUserDataModels.add(chatAllUserDataModel);
+                                allUserChatAdapter.notifyDataSetChanged();
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+
+                        Log.d("zma all user", jsonObject + "");
+
+
+                    }
+                });
+            }
+        }
+    };
+
+
+    protected Emitter.Listener getSingleMessages = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
 
+            if (mSocket.connected()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    JSONObject data = (JSONObject) args[0];
-
-                    Log.d("zma", "alluser" + data);
+                        JSONObject jsonObject = (JSONObject) args[0];
 
 
-                }
-            });
+                        Log.d("zma single user", "" + jsonObject);
+
+
+                    }
+                });
+            }
         }
     };
 
 
-    protected Emitter.Listener getSingleUser = args -> {
-        Log.d("zma object", "single");
+    protected Emitter.Listener getAllMessages = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
 
-        try {
-            JSONObject messageJson = new JSONObject(args[0].toString());
-            Log.d("zma object", messageJson + "");
-            message = messageJson.getString("allusers");
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    etChat.setText(message);
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (mSocket.connected()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        JSONObject jsonArray = (JSONObject) args[0];
+
+
+                        Log.d("zma all messag", "" + jsonArray);
+
+
+                    }
+                });
+            }
         }
-
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
     };
-
-    private Emitter.Listener onNewMessage = args -> {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                JSONObject data = (JSONObject) args[0];
-                String username;
-                String message;
-                try {
-                    username = data.getString("id");
-                    message = data.getString("message");
-                } catch (JSONException e) {
-                    return;
-                }
-
-                // add the message to view
-            }
-        });
-    };
-
 
 }
 
