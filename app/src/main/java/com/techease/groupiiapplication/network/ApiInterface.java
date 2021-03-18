@@ -85,13 +85,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("trips/createtrip")
     Call<CreateTripResponse> getTripID(
-            @Field("userid") String userId);
+            @Field("userid") int userId);
 
 
     @FormUrlEncoded
     @POST("trips/getusertrips")
     Call<TripDetailResponse> getTripDetail(
-            @Field("userid") String userId);
+            @Field("userid") int userId);
 
 
     @FormUrlEncoded
@@ -101,7 +101,7 @@ public interface ApiInterface {
             @Field("phone") String phone,
             @Field("share_cost") String shareCost,
             @Field("tripid") String tripId,
-            @Field("userid") String userId);
+            @Field("userid") int userId);
 
 
     @Multipart
@@ -136,7 +136,7 @@ public interface ApiInterface {
             @Field("date") String date,
             @Field("time") String time,
             @Field("tripid") String tripId,
-            @Field("userid") String userId);
+            @Field("userid") int userId);
 
     @Multipart
     @POST("trips/photo")
@@ -151,7 +151,7 @@ public interface ApiInterface {
 
     @GET
     Call<AllTripDayResponse> getAllTripDayResponse(
-            @Url String userId);
+            @Url String url);
 
 
     @FormUrlEncoded

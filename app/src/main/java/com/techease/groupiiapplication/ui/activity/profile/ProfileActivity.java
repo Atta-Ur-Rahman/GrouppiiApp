@@ -249,7 +249,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part picture = MultipartBody.Part.createFormData("picture", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
-        RequestBody BodyUserId = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyUserId = RequestBody.create(AppRepository.mUserID(this)+"", MediaType.parse("multipart/form-data"));
 
 
         Call<UpdateProfilePicResponse> updateProfilePicResponseCall = BaseNetworking.ApiInterface().updateProfilePic(BodyUserId, picture, BodyName);

@@ -20,7 +20,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
 import com.techease.groupiiapplication.ui.fragment.SettingsFragment;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
-import com.techease.groupiiapplication.ui.fragment.ChatFragment;
+import com.techease.groupiiapplication.ui.fragment.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 
 import butterknife.BindView;
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     final Fragment fragmentTrip = new TripFragment();
-    final Fragment fragmentChatActivity = new ChatFragment();
+    final Fragment fragmentChatActivity = new AllUsersChatFragment();
 
     final Fragment fragmentSettings = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();

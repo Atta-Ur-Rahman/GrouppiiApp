@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chat.ChatModel;
+import com.techease.groupiiapplication.utils.AppRepository;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,10 +43,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         int layout;
 
-        if (viewType == 33) {
-            layout = R.layout.custom_reciever_message;
-        } else {
+        if (viewType == AppRepository.mUserID(context)) {
             layout = R.layout.custom_sender_layout;
+        } else {
+            layout = R.layout.custom_reciever_message;
         }
 
         View v = LayoutInflater
@@ -59,10 +60,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         ChatModel message = mMessages.get(position);
 //        viewHolder.setDate(String.valueOf(message.getDate()));
 //        viewHolder.setImage(message.getSenderImage());
-//        viewHolder.setMessage(message.messages, "0");
-        viewHolder.mMessageView.setText(message.getMessages());
+        viewHolder.setMessage(message.messages, "0");
+//        viewHolder.mMessageView.setText(message.getMessages());
 
-        Log.d("zma message",message.getMessages());
+//        Log.d("zma message", message.getMessages());
 //        viewHolder.ivMessage.setOnClickListener(v -> {
 //
 //        });
@@ -117,7 +118,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             if (null == mMessageView) return;
 
             try {
-                if (type.equals("1")) {
+                if (type.equals("image")) {
                     mMessageView.setVisibility(View.GONE);
                     messageLayout.setVisibility(View.VISIBLE);
 
@@ -138,8 +139,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                             })
                             .into(ivMessage);
                 } else {
-                    mMessageView.setVisibility(View.VISIBLE);
-                    messageLayout.setVisibility(View.GONE);
+//                    mMessageView.setVisibility(View.VISIBLE);
+//                    messageLayout.setVisibility(View.GONE);
                     mMessageView.setText(message);
                 }
             } catch (Exception e) {

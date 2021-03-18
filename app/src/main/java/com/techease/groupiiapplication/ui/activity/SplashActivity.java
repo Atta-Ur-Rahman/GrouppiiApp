@@ -62,17 +62,17 @@ public class SplashActivity extends AppCompatActivity {
         }, 1000);
 
 
-        try {
-            mSocket = IO.socket("http://104.131.66.116:9000/");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            mSocket = IO.socket("http://104.131.66.116:9000/");
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
 
 
-        mSocket.on(Socket.EVENT_CONNECT, onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.connect();
+//        mSocket.on(Socket.EVENT_CONNECT, onConnect);
+//        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
+//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+//        mSocket.connect();
 
     }
 

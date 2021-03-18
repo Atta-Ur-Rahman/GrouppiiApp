@@ -6,11 +6,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -46,7 +43,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.Connect;
-import com.techease.groupiiapplication.adapter.ConnectionBooleanChangedListener;
 import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.UserTripCircleImagesAdapter;
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -361,7 +357,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     dialog.dismiss();
                     Log.d("zma", String.valueOf(response.message()));
 
-                    AllTripDayFragment.ApiCallAllTirp(AppRepository.mUserID(TripDetailScreenActivity.this));
+                    AllTripDayFragment.ApiCallAllTirp(AppRepository.mTripId(TripDetailScreenActivity.this));
 
                     addActivityBottomSheetBehavior.setHideable(true);
                     addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -538,7 +534,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             Uri selectedImageUri = data.getData();
             String imagepath = getPath(selectedImageUri);
             sourceFile = new File(imagepath);
-            ApiCallForUpdatePic();
+            ApiCallForAddPhotoToGallery();
 
         } else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE && data != null) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
@@ -568,7 +564,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
             sourceFile.getAbsoluteFile();
 
-            ApiCallForUpdatePic();
+            ApiCallForAddPhotoToGallery();
 
         }
     }
@@ -587,17 +583,20 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-    private void ApiCallForUpdatePic() {
+    private void ApiCallForAddPhotoToGallery() {
 
         dialog.show();
+
+        Log.d("zma",AppRepository.mTripId(this));
+
 
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part picture = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
         RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
-        RequestBody BodyTitle = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
-        RequestBody BodyTime = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
-        RequestBody BodyDate = RequestBody.create(AppRepository.mUserID(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyTitle = RequestBody.create("Image title", MediaType.parse("multipart/form-data"));
+        RequestBody BodyTime = RequestBody.create("12:00 pm", MediaType.parse("multipart/form-data"));
+        RequestBody BodyDate = RequestBody.create("14:march", MediaType.parse("multipart/form-data"));
 
 
         Call<AddPhotoToGalleryResponse> addPhotoToGalleryResponseCall = BaseNetworking.ApiInterface().addPhotoToGallery(BodyTripId, BodyTitle, BodyTime, BodyDate, picture, BodyName);

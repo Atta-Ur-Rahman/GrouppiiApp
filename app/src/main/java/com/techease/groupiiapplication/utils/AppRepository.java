@@ -46,8 +46,8 @@ public class AppRepository {
         return mGetValue(context).getString("lng", "");
     }
 
-    public static String mUserID(Context context) {
-        return mGetValue(context).getString("userID", "");
+    public static int mUserID(Context context) {
+        return mGetValue(context).getInt("userID", 0);
     }
 
     public static String mUserProfileImage(Context context) {

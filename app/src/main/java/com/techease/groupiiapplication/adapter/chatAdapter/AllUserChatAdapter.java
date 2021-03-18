@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
+//        Log.d("zma tilte",chatAllUserDataModel.getTitleName());
+
         holder.rlGroupChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +84,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
                 Bundle bundle = new Bundle();
                 bundle.putString("title_name", chatAllUserDataModel.getTitleName());
                 bundle.putString("tripId", chatAllUserDataModel.getTripId());
+                bundle.putString("toUserId", chatAllUserDataModel.getToUser());
+
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
             }

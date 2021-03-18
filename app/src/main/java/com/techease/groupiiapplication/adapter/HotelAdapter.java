@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
@@ -42,7 +43,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Result data = hotelDataModels.get(position);
-        Picasso.get().load(data.getImageURL()).into(holder.ivImage);
+        Glide.with(context).load(data.getImageURL()).into(holder.ivImage);
         holder.tvTitle.setText(data.getHotelName());
         holder.tvRoom.setText(data.getDailyRate() + "");
         holder.tvHotelPrice.setText(data.getDailyRate() + " " + data.getCurrency());
