@@ -95,6 +95,8 @@ public class AllUsersChatFragment extends Fragment {
 
     private void GetAllUser() {
 
+        messageList.clear();
+
         jsonObjectGetAllUsers = new JSONObject();
         try {
             jsonObjectGetAllUsers.put("userid", AppRepository.mUserID(getActivity()));
@@ -216,6 +218,12 @@ public class AllUsersChatFragment extends Fragment {
         super.onDestroy();
         mSocket.disconnect();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        GetAllUser();
     }
 }
 
