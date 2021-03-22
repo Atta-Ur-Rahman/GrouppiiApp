@@ -62,9 +62,6 @@ public class AllUsersChatFragment extends Fragment {
         GetAllUser();
 
 
-
-
-
         return view;
     }
 
@@ -158,15 +155,20 @@ public class AllUsersChatFragment extends Fragment {
                                 String message = c.getString("chat_type");
                                 String tripId = c.getString("tripid");
 
-                                Log.d("zma title name ", title);
+                                Log.d("zma title name ", title + " " + AppRepository.mUserID(getActivity()));
 
                                 JSONArray jsonGroupUsers = c.getJSONArray("group_users");
                                 for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
                                     JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
                                     toUserId = groupUser.getString("touser");
-//                                    Log.d("zma touser id",groupUser.getString("touser"));
+                                    Log.d("zma touser id", toUserId);
                                 }
-                                addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa");
+
+
+                                //check condition if user id and user
+                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa");
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
