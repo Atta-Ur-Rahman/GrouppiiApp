@@ -69,7 +69,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     boolean isConnected;
 
     private String strTripId, strToUserId, strUsername, strMessageType = "1";
-    private String message, sender, reciever, fromUserName, date, senderImage, type;
+    private String message, sender, reciever, fromUserName, checkDate, date, senderImage, type;
     int userID;
 
 
@@ -185,6 +185,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
         ButterKnife.bind(this);
+        checkDate="null";
+
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Bundle bundle = getIntent().getExtras();
         tvUserName.setText(bundle.getString("title_name"));
@@ -251,6 +253,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             date = data.getString("created_at");
                                             senderImage = data.getString("picture");
                                             type = data.getString("type");
+
+
+                                            if (checkDate.equals(date)) {
+                                                checkDate = data.getString("created_at");
+                                                Log.d("zma date","equal");
+                                            }else {
+                                                checkDate = data.getString("created_at");
+                                            }
 
                                             if (strToUserId.equals(reciever) || strToUserId.equals(sender)) {
                                                 addMessage(sender, reciever, fromUserName, message, date, senderImage, type);
