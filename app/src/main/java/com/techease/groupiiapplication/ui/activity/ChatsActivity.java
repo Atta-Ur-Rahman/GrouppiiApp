@@ -69,7 +69,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     boolean isConnected;
 
     private String strTripId, strToUserId, strUsername, strMessageType = "1";
-    private String message, sender, reciever, date, senderImage, type;
+    private String message, sender, reciever, fromUserName, date, senderImage, type;
     int userID;
 
 
@@ -92,94 +92,94 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         GetAllMessages();
 
 
-        etMessageView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (null == strUsername) return;
-                if (!mSocket.connected()) return;
-
-                if (!mTyping) {
-                    mTyping = true;
-                    JSONObject typingObject = new JSONObject();
-                    try {
-                        typingObject.put("username", strUsername);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    mSocket.emit("typing", typingObject);
-                }
-
-                mTypingHandler.removeCallbacks(onTypingTimeout);
-                mTypingHandler.postDelayed(onTypingTimeout, 600);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                removeTyping();
-            }
-        });
+//        etMessageView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (null == strUsername) return;
+//                if (!mSocket.connected()) return;
+//
+//                if (!mTyping) {
+//                    mTyping = true;
+//                    JSONObject typingObject = new JSONObject();
+//                    try {
+//                        typingObject.put("username", strUsername);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    mSocket.emit("typing", typingObject);
+//                }
+//
+//                mTypingHandler.removeCallbacks(onTypingTimeout);
+//                mTypingHandler.postDelayed(onTypingTimeout, 600);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                removeTyping();
+//            }
+//        });
     }
 
 
-    private Emitter.Listener onTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
+//    private Emitter.Listener onTyping = new Emitter.Listener() {
+//        @Override
+//        public void call(final Object... args) {
+//
+//
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    JSONObject data = (JSONObject) args[0];
+//                    String username;
+//                    try {
+//                        username = data.getString("username");
+//                    } catch (JSONException e) {
+//                        Log.d("TAG", e.getMessage());
+//                        return;
+//                    }
+//
+//                    if (username == null || username.equals("")) {
+//                        removeTyping();
+//                    } else {
+//                        addTyping(username);
+//                    }
+//
+//
+//                }
+//            });
+//
+//        }
+//    };
 
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        Log.d("TAG", e.getMessage());
-                        return;
-                    }
-
-                    if (username == null || username.equals("")) {
-                        removeTyping();
-                    } else {
-                        addTyping(username);
-                    }
-
-
-                }
-            });
-
-        }
-    };
-
-
-    private void addTyping(String username) {
-        if (username.equals(strUsername)) {
-            removeTyping();
-        } else {
-            layoutTyping.setVisibility(View.VISIBLE);
-            tvSenderName.setText(username);
-            scrollToBottom();
-        }
-
-    }
-
-
-    private void removeTyping() {
-        layoutTyping.setVisibility(View.GONE);
-    }
-
-    private Runnable onTypingTimeout = new Runnable() {
-        @Override
-        public void run() {
-            if (!mTyping) return;
-            mTyping = false;
-            mSocket.emit("stop typing");
-        }
-    };
+//
+//    private void addTyping(String username) {
+//        if (username.equals(strUsername)) {
+//            removeTyping();
+//        } else {
+//            layoutTyping.setVisibility(View.VISIBLE);
+//            tvSenderName.setText(username);
+//            scrollToBottom();
+//        }
+//
+//    }
+//
+//
+//    private void removeTyping() {
+//        layoutTyping.setVisibility(View.GONE);
+//    }
+//
+//    private Runnable onTypingTimeout = new Runnable() {
+//        @Override
+//        public void run() {
+//            if (!mTyping) return;
+//            mTyping = false;
+//            mSocket.emit("stop typing");
+//        }
+//    };
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -246,13 +246,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             JSONObject data = jsonArray.getJSONObject(i);
                                             sender = data.getString("touser");
                                             reciever = data.getString("fromuser");
+                                            fromUserName = data.getString("fromusername");
                                             message = data.getString("message");
                                             date = data.getString("created_at");
                                             senderImage = data.getString("picture");
                                             type = data.getString("type");
 
                                             if (strToUserId.equals(reciever) || strToUserId.equals(sender)) {
-                                                addMessage(sender, reciever, message, date, senderImage, type);
+                                                addMessage(sender, reciever, fromUserName, message, date, senderImage, type);
 
                                             }
 
@@ -296,6 +297,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
 
+                    tvSend.setEnabled(false);
                     mSocket.emit("sendmessage", object);
                 }
                 break;
@@ -316,14 +318,16 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void run() {
                             etMessageView.setText("");
+                            tvSend.setEnabled(true);
                             JSONObject jsonObject = (JSONObject) args[0];
                             try {
                                 if (jsonObject != null) {
                                     String sender = jsonObject.getString("touser");
-                                    String reciever = jsonObject.getString("fromuser");
+                                    String fromuser = jsonObject.getString("fromuser");
+//                                    String fromuserName = jsonObject.getString("fromusername");
                                     String message = jsonObject.getString("message");
                                     String date = jsonObject.getString("created_at");
-                                    String tripId=jsonObject.getString("tripid");
+                                    String tripId = jsonObject.getString("tripid");
 //                            senderImage = jsonObject.getString("picture");
                                     String type = jsonObject.getString("type");
 
@@ -331,7 +335,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
                                     if (strTripId.equals(tripId)) {
-                                        addMessage(sender, reciever, message, date, "senderImage", type);
+                                        addMessage(sender, fromuser, "", message, date, "senderImage", type);
 
                                     }
                                 }
@@ -348,8 +352,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     };
 
 
-    private void addMessage(String from, String to, String message, String date, String receiverImage, String type) {
-        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), message, date, receiverImage, type));
+    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type) {
+        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
     }
@@ -371,7 +375,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         mSocket.on("getbacksendmessage", sendMessages);
         mSocket.connect();
 
-        mSocket.on("typing", onTyping);
+//        mSocket.on("typing", onTyping);
     }
 
 

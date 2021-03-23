@@ -32,6 +32,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private List<ChatModel> mMessages;
     private Context context;
+    int anIntFromUser = 0;
 
     public ChatAdapter(Context context, List<ChatModel> messages) {
         this.context = context;
@@ -58,10 +59,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         ChatModel message = mMessages.get(position);
-//        viewHolder.setDate(String.valueOf(message.getDate()));
+        viewHolder.setDate(String.valueOf(message.getDate()));
 //        viewHolder.setImage(message.getSenderImage());
+
+
         viewHolder.setMessage(message.messages, "0");
-//        viewHolder.mMessageView.setText(message.getMessages());
+        viewHolder.tvDate.setText(message.getDate());
+
+        if (message.getDate() != null) {
+            viewHolder.setDate(message.getDate());
+        }
+        if (message.getFromuserName() != null) {
+            viewHolder.tvName.setText(message.getFromuserName());
+
+        }
+
+
+//        if (message.getFromuserName() != null) {
+//
+//            if (anIntFromUser == message.getRecieverID()) {
+//                viewHolder.tvName.setVisibility(View.GONE);
+//                anIntFromUser = message.getRecieverID();
+//            } else {
+//                viewHolder.tvName.setVisibility(View.VISIBLE);
+//                anIntFromUser = message.getRecieverID();
+//
+//            }
+//        }
+
 
 //        Log.d("zma message", message.getMessages());
 //        viewHolder.ivMessage.setOnClickListener(v -> {
@@ -87,16 +112,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvDate;
-        private TextView mMessageView;
+
+        private TextView tvMessageView, tvDate, tvName;
         private ImageView ivSender, ivMessage;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
         private ViewHolder(View itemView) {
             super(itemView);
-//            tvDate = itemView.findViewById(R.id.date);
-            mMessageView = itemView.findViewById(R.id.message_body);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvMessageView = itemView.findViewById(R.id.tvMessageBody);
+            tvName = itemView.findViewById(R.id.tvName);
+
 //            ivSender = itemView.findViewById(R.id.iv_sender);
 //            ivMessage = itemView.findViewById(R.id.message_image);
 //            progressBar = itemView.findViewById(R.id.progress);
@@ -115,11 +142,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
         private void setMessage(String message, String type) {
-            if (null == mMessageView) return;
+            if (null == tvMessageView) return;
 
             try {
                 if (type.equals("image")) {
-                    mMessageView.setVisibility(View.GONE);
+                    tvMessageView.setVisibility(View.GONE);
                     messageLayout.setVisibility(View.VISIBLE);
 
                     Glide.with(context)
@@ -141,7 +168,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 } else {
 //                    mMessageView.setVisibility(View.VISIBLE);
 //                    messageLayout.setVisibility(View.GONE);
-                    mMessageView.setText(message);
+                    tvMessageView.setText(message);
                 }
             } catch (Exception e) {
                 Log.d("error", "" + e.getMessage());

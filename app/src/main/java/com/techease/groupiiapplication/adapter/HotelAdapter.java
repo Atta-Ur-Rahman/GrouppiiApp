@@ -2,7 +2,9 @@ package com.techease.groupiiapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +45,16 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Result data = hotelDataModels.get(position);
-        Glide.with(context).load(data.getImageURL()).into(holder.ivImage);
+//        Glide.with(context).load("http://pix6.agoda.net/hotelImages/4497893/-1/58f312df20dad50f928195abb4006081.jpg?s=800x600").into(holder.ivImage);
+        holder.ivImage.setImageURI(Uri.parse("http://pix6.agoda.net/hotelImages/4497893/-1/58f312df20dad50f928195abb4006081.jpg?s=800x600"));
         holder.tvTitle.setText(data.getHotelName());
         holder.tvRoom.setText(data.getDailyRate() + "");
         holder.tvHotelPrice.setText(data.getDailyRate() + " " + data.getCurrency());
         holder.tvReview.setText(data.getStarRating() + " / 5.0");
         holder.tvRecommended.setText("Recommended for " + data.getDiscountPercentage() + " of guests");
+
+
+            Log.d("zma hotel pic", data.getImageURL());
 
 //
 //        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
@@ -80,7 +86,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
 
         MyViewHolder(View view) {
             super(view);
-            ivImage = view.findViewById(R.id.ivTripDetail);
+            ivImage = view.findViewById(R.id.ivHotelImages);
             tvTitle = view.findViewById(R.id.tvTripTitle);
             tvRoom = view.findViewById(R.id.tvRoom);
             tvHotelPrice = view.findViewById(R.id.tvHotelPrice);

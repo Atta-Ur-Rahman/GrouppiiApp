@@ -2,43 +2,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToPadding="false"
     android:paddingVertical="10dp"
     android:paddingLeft="15dp"
-    android:paddingRight="60dp"
-    android:clipToPadding="false">
+    android:paddingRight="60dp">
 
     <View
-        android:visibility="gone"
         android:id="@+id/avatar"
-        android:layout_alignParentLeft="true"
-        android:scaleType="centerInside"
-        android:background="@drawable/circle"
         android:layout_width="34dp"
-        android:layout_height="34dp" />
+        android:layout_height="34dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/circle"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
+
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/name"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/avatar"
-        android:layout_alignTop="@+id/avatar"
+        android:id="@+id/tvMessageBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        android:text="Rose"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/message_body"
-        android:layout_below="@+id/name"
-        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/tvName"
         android:background="@drawable/their_message"
-        android:paddingVertical="12dp"
-        android:paddingHorizontal="16dp"
         android:elevation="2dp"
-        android:textSize="18dp"
-        android:text="How are you doing? This is a long message that should probably wrap."
-        />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:text="Recivier message"
+        android:textSize="18dp" />
+
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="4dp"
+        android:text="Rose"
+        android:textSize="10sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMessageBody"
+        android:layout_alignRight="@id/tvMessageBody"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="4dp"
+        android:paddingRight="5dp"
+        android:text="15m"
+        android:textSize="10sp"
+        android:visibility="visible" />
+
 
 </RelativeLayout>
