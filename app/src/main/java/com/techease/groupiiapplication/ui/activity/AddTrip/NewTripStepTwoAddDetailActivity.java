@@ -29,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -42,7 +43,9 @@ import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.utils.FileUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
+import com.techease.groupiiapplication.utils.StringHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -73,7 +76,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     TextInputLayout tilTripTitle;
     @BindView(R.id.etTripTitle)
     EditText etTripTitle;
-
 
     @BindView(R.id.tilTripDescription)
     TextInputLayout tilTripDescription;
@@ -115,8 +117,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     RelativeLayout rlCoverImage;
 
 
-    final int CAMERA_CAPTURE = 1;
-    final int RESULT_LOAD_IMAGE = 2;
+    private static final int REQUEST_CODE_SELECT_PICTURE = 3;
     File sourceFile;
 
 
@@ -180,7 +181,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
-                cameraBuilder();
+                chooseAction();
             }
 
             @Override
@@ -191,167 +192,83 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         }).check();
     }
 
-    public void cameraIntent() {
+    void chooseAction() {
+        File dir = FileUtils.getDiskCacheDir(this, "temp");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String name = StringHelper.getDateRandomString() + ".png";
+        sourceFile = new File(dir, name);
+        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
 
-        ContentValues cv;
+        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        pickIntent.setType("image/*");
 
-        cv = new ContentValues();
-        cv.put(MediaStore.Images.Media.TITLE, "My Picture");
-        cv.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
-        imageUri = getContentResolver().insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, CAMERA_CAPTURE);
-//
-//        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.profile_photo));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
     }
 
-    public void galleryIntent() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RESULT_LOAD_IMAGE);
+    boolean checkActionType(Intent data) {
+        boolean isCamera = true;
+        if (data != null) {
+            String action = data.getAction();
+            if ((data.getData() == null) && (data.getClipData() == null)) {
+                isCamera = true;
+            } else {
+                isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+            }
+        }
+        return isCamera;
     }
 
-    //open camera view
-    public void cameraBuilder() {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Open");
-        String[] pictureDialogItems = {
-                "\tGallery",
-                "\tCamera"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                galleryIntent();
-
-                                break;
-                            case 1:
-                                cameraIntent();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
+    public Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera ? Uri.fromFile(sourceFile) : data.getData();
     }
 
+
+    void finishWithResult() {
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
 
-//        switch (requestCode) {
-//            case CAMERA_CAPTURE:
-//                if (requestCode == CAMERA_CAPTURE)
-//                    if (resultCode == Activity.RESULT_OK) {
-//                        try {
-//                            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
-//                                    getContentResolver(), imageUri);
-//                            ivCoverImage.setVisibility(View.VISIBLE);
-//
-//                            ivCoverImage.setImageBitmap(thumbnail);
-//                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//                            thumbnail.compress(Bitmap.CompressFormat.JPEG, 70, bytes);
-//
-//
-//                            sourceFile = Environment.getExternalStoragePublicDirectory(
-//                                    Environment.DIRECTORY_PICTURES);
-//                            sourceFile = new File(sourceFile,
-//                                    System.currentTimeMillis() + ".jpg");
-//
-//                            FileOutputStream fo;
-//                            try {
-//                                sourceFile.createNewFile();
-//                                fo = new FileOutputStream(sourceFile);
-//                                fo.write(bytes.toByteArray());
-//                                fo.close();
-//                            } catch (FileNotFoundException e) {
-//                                e.printStackTrace();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//
-//                            sourceFile.getAbsoluteFile();
-//
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//        }
+            case REQUEST_CODE_SELECT_PICTURE:
+                if (checkActionType(data)) { // Camera
+                    Uri imageUri = getPickImageResultUri(data);
+                    ivCoverImage.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(imageUri).into(ivCoverImage);
+                     sourceFile = new File(imageUri.getPath());
 
-        if (requestCode == RESULT_LOAD_IMAGE && null != data) {
-            Uri selectedImageUri = data.getData();
-            String imagepath = getPath(selectedImageUri);
-            sourceFile = new File(imagepath);
+                    sourceFile = FileUtils.compressImage(this, sourceFile);
 
-            Log.d("zma image", String.valueOf(sourceFile.getAbsoluteFile()));
+                } else {  // Gallery
+                    if (data.getData() != null) {
+                        Uri uri = data.getData();
+                         sourceFile = FileUtils.getFile(this, uri);
+//                        sourceFile = FileUtils.compressImage(this, originFile);
+                        ivCoverImage.setVisibility(View.VISIBLE);
+                        Glide.with(this).load(uri).into(ivCoverImage);
 
-            ivCoverImage.setVisibility(View.VISIBLE);
-            ivCoverImage.setImageURI(selectedImageUri);
+                    }
+                }
 
-
-
-
-        } else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE && data != null) {
-
-
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-
-            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
-
-            sourceFile = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-            sourceFile = new File(sourceFile,
-                    System.currentTimeMillis() + ".jpg");
-
-            FileOutputStream fo;
-            try {
-                sourceFile.createNewFile();
-                fo = new FileOutputStream(sourceFile);
-                fo.write(bytes.toByteArray());
-                fo.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            sourceFile.getAbsoluteFile();
-
-            Toast.makeText(this, String.valueOf(sourceFile.getAbsolutePath()), Toast.LENGTH_SHORT).show();
-
-
-            ivCoverImage.setVisibility(View.VISIBLE);
-            ivCoverImage.setImageBitmap(thumbnail);
-
-
+                break;
         }
-    }
 
-
-    @SuppressLint("SetTextI18n")
-    public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(projection[0]);
-        String filePath = cursor.getString(columnIndex);
-        ivCoverImage.setVisibility(View.VISIBLE);
-        ivCoverImage.setImageBitmap(BitmapFactory.decodeFile(filePath));
-        return cursor.getString(column_index);
 
     }
 

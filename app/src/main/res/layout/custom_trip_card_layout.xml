@@ -20,7 +20,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvImage"
             android:layout_width="300dp"
-            android:layout_height="300sp"
+            android:layout_height="260sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="@dimen/widget_margin_left_right"

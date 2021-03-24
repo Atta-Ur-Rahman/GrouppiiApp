@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
     APIClient context = this;
-    public static final String BASE_URL = "http://104.131.66.116:4000/api/v1/";
+    public static final String BASE_URL = "https://104.131.66.116:4000/api/v1/";
     public static final String HOTEL_BASE_URL = "http://affiliateapi7643.agoda.com/affiliateservice/";
     private static Retrofit retrofit = null;
     private static Retrofit retrofitHotel = null;

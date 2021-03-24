@@ -27,7 +27,7 @@ public class ApiClass {
 
                 if (response.isSuccessful()) {
                     Log.d("zma trip", "delete sho");
-                    TripFragment.aBooleanRefreshApi = true;
+                    TripFragment.aBooleanRefreshAllTripApi = true;
                     callback.onResponse(true);
 
 

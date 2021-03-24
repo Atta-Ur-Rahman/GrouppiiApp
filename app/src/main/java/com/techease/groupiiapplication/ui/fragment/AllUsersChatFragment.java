@@ -33,6 +33,8 @@ import butterknife.ButterKnife;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
+import static com.techease.groupiiapplication.ui.fragment.TripFragment.aBooleanRefreshAllTripApi;
+
 public class AllUsersChatFragment extends Fragment {
 
     @BindView(R.id.etChat)
@@ -51,6 +53,8 @@ public class AllUsersChatFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
 
+    public static boolean aBooleanRefreshSocket = true;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class AllUsersChatFragment extends Fragment {
 
         init();
         socketConnectivity();
-        GetAllUser();
+//        GetAllUser();
 
 
         return view;
@@ -69,7 +73,6 @@ public class AllUsersChatFragment extends Fragment {
     private void socketConnectivity() {
         ChatApplication app = new ChatApplication();
         mSocket = app.getSocket();
-
 
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
@@ -223,6 +226,10 @@ public class AllUsersChatFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (aBooleanRefreshSocket) {
+            GetAllUser();
+            aBooleanRefreshSocket = false;
+        }
 //        GetAllUser();
     }
 }

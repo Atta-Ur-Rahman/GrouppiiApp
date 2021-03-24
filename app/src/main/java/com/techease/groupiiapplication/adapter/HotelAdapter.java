@@ -45,8 +45,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Result data = hotelDataModels.get(position);
-//        Glide.with(context).load("http://pix6.agoda.net/hotelImages/4497893/-1/58f312df20dad50f928195abb4006081.jpg?s=800x600").into(holder.ivImage);
-        holder.ivImage.setImageURI(Uri.parse("http://pix6.agoda.net/hotelImages/4497893/-1/58f312df20dad50f928195abb4006081.jpg?s=800x600"));
+        Glide.with(context).load(data.getImageURL()).into(holder.ivImage);
         holder.tvTitle.setText(data.getHotelName());
         holder.tvRoom.setText(data.getDailyRate() + "");
         holder.tvHotelPrice.setText(data.getDailyRate() + " " + data.getCurrency());

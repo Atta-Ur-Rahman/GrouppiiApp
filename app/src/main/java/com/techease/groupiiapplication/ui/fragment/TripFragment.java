@@ -60,7 +60,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    public static boolean aBooleanRefreshApi = true;
+    public static boolean aBooleanRefreshAllTripApi = true;
     public static ViewPager viewPagerTrip;
     public static List<Active> activeList = new ArrayList<>();
     public static List<Past> pastList = new ArrayList<>();
@@ -74,7 +74,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, view);
         viewPagerTrip = viewPager;
 
-        aBooleanRefreshApi = true;
+        aBooleanRefreshAllTripApi = true;
 
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search a trip...");
@@ -120,9 +120,9 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         setProfileImageAndName();
-        if (aBooleanRefreshApi) {
+        if (aBooleanRefreshAllTripApi) {
             apiCallGetTripDetail();
-            aBooleanRefreshApi = false;
+            aBooleanRefreshAllTripApi = false;
         }
     }
 

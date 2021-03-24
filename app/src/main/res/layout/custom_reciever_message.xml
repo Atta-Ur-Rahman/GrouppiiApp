@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:paddingVertical="10dp"
+    android:paddingVertical="2dp"
     android:paddingLeft="15dp"
     android:paddingRight="60dp">
 
@@ -35,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="4dp"
         android:text="Rose"
         android:textSize="10sp"
         android:visibility="visible" />
@@ -47,7 +46,6 @@
         android:layout_below="@+id/tvMessageBody"
         android:layout_alignRight="@id/tvMessageBody"
         android:paddingLeft="15dp"
-        android:layout_marginTop="4dp"
         android:paddingRight="5dp"
         android:text="15m"
         android:textSize="10sp"

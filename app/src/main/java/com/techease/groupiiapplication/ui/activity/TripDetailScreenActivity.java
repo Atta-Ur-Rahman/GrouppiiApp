@@ -4,6 +4,7 @@ package com.techease.groupiiapplication.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -35,6 +36,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -56,7 +59,9 @@ import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.utils.FileUtils;
 import com.techease.groupiiapplication.utils.GeneralUtills;
+import com.techease.groupiiapplication.utils.StringHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,6 +135,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     ArrayList<String> stringArrayList = new ArrayList<>();
 
 
+    private static final int REQUEST_CODE_SELECT_PICTURE = 3;
+
+
     TextInputLayout tillActivityTitle, tillDate, tillTime, tillActivityNote;
     EditText etActivityTitle, etActivityDate, etActivityTime, etActivityNote;
     ImageView ivAddActivity, ivAddActivityBack;
@@ -138,10 +146,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
     int anIntViewPagerPosition = 0;
-
-
-    final int CAMERA_CAPTURE = 1;
-    final int RESULT_LOAD_IMAGE = 2;
     File sourceFile;
 
 
@@ -312,9 +316,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //        registerReceiver(broadcastReceiver,intentFilter);
 
 
-
-
-
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText(R.string.days_plan);
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.days_plan_selected, 0, 0);
@@ -478,7 +479,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
-                cameraBuilder();
+                chooseAction();
             }
 
             @Override
@@ -489,39 +490,46 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         }).check();
     }
 
-    public void cameraIntent() {
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+
+    void chooseAction() {
+        File dir = FileUtils.getDiskCacheDir(this, "temp");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String name = StringHelper.getDateRandomString() + ".png";
+        sourceFile = new File(dir, name);
+        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
+
+        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.profile_photo));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
     }
 
-    public void galleryIntent() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RESULT_LOAD_IMAGE);
+    boolean checkActionType(Intent data) {
+        boolean isCamera = true;
+        if (data != null) {
+            String action = data.getAction();
+            if ((data.getData() == null) && (data.getClipData() == null)) {
+                isCamera = true;
+            } else {
+                isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+            }
+        }
+        return isCamera;
     }
 
-    //open camera view
-    public void cameraBuilder() {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Open");
-        String[] pictureDialogItems = {
-                "\tGallery",
-                "\tCamera"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                galleryIntent();
-
-                                break;
-                            case 1:
-                                cameraIntent();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
+    public Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera ? Uri.fromFile(sourceFile) : data.getData();
     }
 
 
@@ -530,56 +538,31 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && null != data) {
-            Uri selectedImageUri = data.getData();
-            String imagepath = getPath(selectedImageUri);
-            sourceFile = new File(imagepath);
-            ApiCallForAddPhotoToGallery();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
 
-        } else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE && data != null) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                case REQUEST_CODE_SELECT_PICTURE:
+                    if (checkActionType(data)) { // Camera
+                        Uri imageUri = getPickImageResultUri(data);
+                        File originFile = new File(imageUri.getPath());
+                        sourceFile = FileUtils.compressImage(this, originFile);
+                        ApiCallForAddPhotoToGallery();
+                    } else {  // Gallery
+                        if (data.getData() != null) {
+                            Uri uri = data.getData();
+                            sourceFile = FileUtils.getFile(this, uri);
+//                            sourceFile = FileUtils.compressImage(this, originFile);
+                            ApiCallForAddPhotoToGallery();
 
 
-            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                        }
+                    }
 
+                    Log.d("zma image file", "" + sourceFile);
 
-            sourceFile = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-            sourceFile = new File(sourceFile,
-                    System.currentTimeMillis() + ".jpg");
-
-            FileOutputStream fo;
-            try {
-                sourceFile.createNewFile();
-                fo = new FileOutputStream(sourceFile);
-                fo.write(bytes.toByteArray());
-                fo.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    break;
             }
-
-
-            sourceFile.getAbsoluteFile();
-
-            ApiCallForAddPhotoToGallery();
-
         }
-    }
-
-
-    @SuppressLint("SetTextI18n")
-    public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(projection[0]);
-        String filePath = cursor.getString(columnIndex);
-        return cursor.getString(column_index);
-
     }
 
 
@@ -587,22 +570,24 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         dialog.show();
 
-        Log.d("zma",AppRepository.mTripId(this));
+        Log.d("zma", AppRepository.mTripId(this));
 
 
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
-        final MultipartBody.Part picture = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
+        final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
-        RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
-        RequestBody BodyTitle = RequestBody.create("Image title", MediaType.parse("multipart/form-data"));
+        RequestBody BodyTripId = RequestBody.create("80", MediaType.parse("multipart/form-data"));
+        RequestBody BodyTitle = RequestBody.create(sourceFile.getAbsoluteFile().getName(), MediaType.parse("multipart/form-data"));
         RequestBody BodyTime = RequestBody.create("12:00 pm", MediaType.parse("multipart/form-data"));
         RequestBody BodyDate = RequestBody.create("14:march", MediaType.parse("multipart/form-data"));
 
 
-        Call<AddPhotoToGalleryResponse> addPhotoToGalleryResponseCall = BaseNetworking.ApiInterface().addPhotoToGallery(BodyTripId, BodyTitle, BodyTime, BodyDate, picture, BodyName);
+        Call<AddPhotoToGalleryResponse> addPhotoToGalleryResponseCall = BaseNetworking.ApiInterface().addPhotoToGallery(BodyTripId, BodyTitle, BodyTime, BodyDate, CoverImage, BodyName);
         addPhotoToGalleryResponseCall.enqueue(new Callback<AddPhotoToGalleryResponse>() {
             @Override
             public void onResponse(Call<AddPhotoToGalleryResponse> call, Response<AddPhotoToGalleryResponse> response) {
+
+                Log.d("zma response", String.valueOf(response));
                 if (response.isSuccessful()) {
 
 

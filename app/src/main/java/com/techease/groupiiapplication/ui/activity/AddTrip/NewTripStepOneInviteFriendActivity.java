@@ -258,10 +258,14 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
                 break;
             case R.id.btnNext:
-                TripFragment.aBooleanRefreshApi = false;
-                startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
-                this.finish();
 
+                if (addTripDataModels.size()!=0) {
+                    TripFragment.aBooleanRefreshAllTripApi = false;
+                    startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
+                    this.finish();
+                }else {
+                    Toast.makeText(this, "Please Add Trip Participants", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.etPhone:

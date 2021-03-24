@@ -138,6 +138,8 @@ public interface ApiInterface {
             @Field("tripid") String tripId,
             @Field("userid") int userId);
 
+
+
     @Multipart
     @POST("trips/photo")
     Call<AddPhotoToGalleryResponse> addPhotoToGallery(

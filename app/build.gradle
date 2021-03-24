@@ -16,9 +16,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        dataBinding {
-            enabled = true
-        }
     }
 
     buildTypes {
@@ -59,6 +56,10 @@ dependencies {
     implementation('io.socket:socket.io-client:1.0.0') {
         exclude group: 'org.json', module: 'json'
     }
+
+
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.4'
+    implementation 'id.zelory:compressor:2.1.0'
 
 
 

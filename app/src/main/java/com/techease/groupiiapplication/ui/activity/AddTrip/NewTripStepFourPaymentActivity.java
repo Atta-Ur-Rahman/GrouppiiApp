@@ -36,7 +36,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TripFragment.aBooleanRefreshApi = true;
+                TripFragment.aBooleanRefreshAllTripApi = true;
                 finish();
 
             }
