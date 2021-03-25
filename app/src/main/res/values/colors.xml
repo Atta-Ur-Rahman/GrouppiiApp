@@ -18,6 +18,8 @@
 
     <color name="bubble_back_color">#F5F5F5</color>
 
+    <color name="gry_chat">#5CAAAAAA</color>
+
 
     <color name="colorPrimary">#125688</color>
     <color name="colorPrimaryDark">#125688</color>

@@ -63,7 +63,9 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        initRecylerView(false);
+
+        aBooleanIsGridView = AppRepository.isGridView(getActivity());
+        initRecylerView(aBooleanIsGridView);
 
 
         return view;
@@ -123,12 +125,15 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
 
                 if (aBooleanIsGridView) {
                     ivGalleryPhotoGridView.setBackgroundResource(R.drawable.ic_baseline_view_module_24);
-                    initRecylerView(true);
+                    initRecylerView(false);
                     aBooleanIsGridView = false;
+                    AppRepository.mPutValue(getActivity()).putBoolean("aBooleanIsGridView", false).commit();
                 } else {
                     ivGalleryPhotoGridView.setBackgroundResource(R.drawable.ic_baseline_view_agenda_24);
-                    initRecylerView(false);
+                    initRecylerView(true);
                     aBooleanIsGridView = true;
+                    AppRepository.mPutValue(getActivity()).putBoolean("aBooleanIsGridView", true).commit();
+
                 }
 
                 break;

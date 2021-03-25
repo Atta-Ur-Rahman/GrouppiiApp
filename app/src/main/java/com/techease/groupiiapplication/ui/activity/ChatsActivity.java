@@ -65,6 +65,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.typing_layout)
     RelativeLayout layoutTyping;
 
+    ArrayList<String> arrayListDateExist = new ArrayList<>();
+
 
     boolean isConnected;
 
@@ -185,7 +187,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
         ButterKnife.bind(this);
-        checkDate="null";
+        checkDate = "null";
 
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Bundle bundle = getIntent().getExtras();
@@ -207,6 +209,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     private void GetAllMessages() {
 
+
+        arrayListDateExist.clear();
         JSONObject objectGetAllMessages = new JSONObject();
         try {
 
@@ -219,8 +223,10 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
 
+
         mSocket.emit("getAllMessages", objectGetAllMessages);
         mSocket.on("AllMessages", onChatHistory);
+
 
     }
 
@@ -255,15 +261,16 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             type = data.getString("type");
 
 
-                                            if (checkDate.equals(date)) {
-                                                checkDate = data.getString("created_at");
-                                                Log.d("zma date","equal");
-                                            }else {
-                                                checkDate = data.getString("created_at");
-                                            }
-
                                             if (strToUserId.equals(reciever) || strToUserId.equals(sender)) {
-                                                addMessage(sender, reciever, fromUserName, message, date, senderImage, type);
+
+//                                                if (arrayListDateExist.contains(fromUserName)) {
+//                                                    addMessage(sender, reciever, "", message, date, senderImage, type);
+//                                                } else {
+                                                    addMessage(sender, reciever, fromUserName, message, date, senderImage, type);
+
+//                                                }
+//                                                arrayListDateExist.add(fromUserName);
+
 
                                             }
 

@@ -2,6 +2,7 @@ package com.techease.groupiiapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GalleryPhotoDataModel;
+import com.techease.groupiiapplication.ui.activity.ImagePreviewActivity;
 
 import java.util.List;
 
@@ -48,6 +50,16 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         Glide.with(context).load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
         holder.tvTitle.setText(data.getTitle());
         holder.tvHotelPrice.setText(data.getTime() + "," + data.getDate());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, ImagePreviewActivity.class);
+                intent.putExtra("file", data.getFile());
+               context. startActivity(intent);
+            }
+        });
 
 
     }

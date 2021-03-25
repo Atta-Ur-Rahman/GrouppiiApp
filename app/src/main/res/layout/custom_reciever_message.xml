@@ -1,4 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="16dp">
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/text_gchat_date_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="June 10"
+        android:textColor="#C0C0C0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_gchat_profile_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:contentDescription="User Icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="John Grady Cole"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+
+    <RelativeLayout
+        android:id="@+id/card_gchat_message_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/their_message"
+        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/tvName">
+
+        <LinearLayout
+            android:id="@+id/layout_gchat_container_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMessageBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:maxWidth="260dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:paddingRight="12dp"
+                android:text="Message"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8:00"
+        android:textColor="#C0C0C0"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_gchat_message_other"
+        app:layout_constraintStart_toEndOf="@+id/card_gchat_message_other" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,7 +110,6 @@
         android:id="@+id/tvMessageBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvName"
         android:background="@drawable/their_message"
         android:elevation="2dp"
         android:paddingHorizontal="16dp"
@@ -34,17 +122,18 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvMessageBody"
         android:layout_marginLeft="15dp"
         android:text="Rose"
-        android:textSize="10sp"
-        android:visibility="visible" />
+        android:textColor="@color/black"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMessageBody"
-        android:layout_alignRight="@id/tvMessageBody"
+        android:layout_alignParentRight="true"
         android:paddingLeft="15dp"
         android:paddingRight="5dp"
         android:text="15m"
@@ -52,4 +141,4 @@
         android:visibility="visible" />
 
 
-</RelativeLayout>
+</RelativeLayout>-->

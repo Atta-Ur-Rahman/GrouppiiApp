@@ -71,21 +71,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
         if (message.getFromuserName() != null) {
             viewHolder.tvName.setText(message.getFromuserName());
-
         }
-
-
-//        if (message.getFromuserName() != null) {
-//
-//            if (anIntFromUser == message.getRecieverID()) {
-//                viewHolder.tvName.setVisibility(View.GONE);
-//                anIntFromUser = message.getRecieverID();
-//            } else {
-//                viewHolder.tvName.setVisibility(View.VISIBLE);
-//                anIntFromUser = message.getRecieverID();
-//
-//            }
-//        }
 
 
 //        Log.d("zma message", message.getMessages());

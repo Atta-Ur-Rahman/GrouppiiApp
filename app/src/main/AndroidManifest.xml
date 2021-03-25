@@ -23,7 +23,8 @@
         android:theme="@style/Theme.GroupiiApplication"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.activity.ChatsActivity"></activity>
+        <activity android:name=".ui.activity.ImagePreviewActivity"></activity>
+        <activity android:name=".ui.activity.ChatsActivity" />
         <activity android:name=".ui.activity.BottomSheetViewFragmentActivity" />
         <activity android:name=".ui.activity.profile.ProfileActivity" />
         <activity android:name=".ui.activity.TripDetailScreenActivity" />

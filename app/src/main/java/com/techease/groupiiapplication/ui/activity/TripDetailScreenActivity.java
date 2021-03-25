@@ -118,6 +118,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.llPayment)
     LinearLayout llPayments;
 
+    @BindView(R.id.cvMenu)
+    LinearLayout cvMenu;
+
     boolean valid = true;
 
     @BindView(R.id.llBottomSheetBehaviorId)
@@ -204,7 +207,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment})
+    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu})
 
     @Override
     public void onClick(View view) {
@@ -217,6 +220,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 break;
             case R.id.ivMore:
             case R.id.tvMore:
+            case R.id.cvMenu:
+
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
                 break;
@@ -244,7 +249,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 DatePickerClass.GetTimeDialog(etActivityTime, this);
                 break;
             case R.id.llDayPlan:
-                startActivity(new Intent(this, BottomSheetViewFragmentActivity.class));
+//                startActivity(new Intent(this, BottomSheetViewFragmentActivity.class));
                 break;
             case R.id.llPayment:
 
@@ -349,7 +354,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallForAddDayActivity() {
         dialog.show();
-        Call<AddTripDayResponse> addTripDayResponseCall = BaseNetworking.ApiInterface().addTripDay(strActivityTitle, strActivityNote, strActivityDate, strActivityTime, "21", AppRepository.mUserID(this));
+        Call<AddTripDayResponse> addTripDayResponseCall = BaseNetworking.ApiInterface().addTripDay(strActivityTitle, strActivityNote, strActivityDate, strActivityTime, AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripDayResponseCall.enqueue(new Callback<AddTripDayResponse>() {
             @Override
             public void onResponse(Call<AddTripDayResponse> call, Response<AddTripDayResponse> response) {
@@ -504,7 +509,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
         pickIntent.setType("image/*");
 
-        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.profile_photo));
+        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.choose_photo));
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
 
         startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
@@ -570,16 +575,13 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         dialog.show();
 
-        Log.d("zma", AppRepository.mTripId(this));
-
-
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
-        RequestBody BodyTripId = RequestBody.create("80", MediaType.parse("multipart/form-data"));
+        RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
         RequestBody BodyTitle = RequestBody.create(sourceFile.getAbsoluteFile().getName(), MediaType.parse("multipart/form-data"));
-        RequestBody BodyTime = RequestBody.create("12:00 pm", MediaType.parse("multipart/form-data"));
-        RequestBody BodyDate = RequestBody.create("14:march", MediaType.parse("multipart/form-data"));
+        RequestBody BodyTime = RequestBody.create(DatePickerClass.getCurrentDate("hh:mm"), MediaType.parse("multipart/form-data"));
+        RequestBody BodyDate = RequestBody.create(DatePickerClass.getCurrentDate("yyyy-MM-dd"), MediaType.parse("multipart/form-data"));
 
 
         Call<AddPhotoToGalleryResponse> addPhotoToGalleryResponseCall = BaseNetworking.ApiInterface().addPhotoToGallery(BodyTripId, BodyTitle, BodyTime, BodyDate, CoverImage, BodyName);

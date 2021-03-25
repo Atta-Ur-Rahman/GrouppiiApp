@@ -117,9 +117,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     alertDialog.dismiss();
                     finishAffinity();
                     Toast.makeText(SignUpActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
-                    AppRepository.mPutValue(SignUpActivity.this).putString("userID", String.valueOf(response.body().getData().getId())).commit();
-                    AppRepository.mPutValue(SignUpActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
+                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+
+//                    AppRepository.mPutValue(SignUpActivity.this).putInt("userID",response.body().getData().getId());
+//                    AppRepository.mPutValue(SignUpActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
 //                    AppRepository.mPutValue(SignUpActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().ge())).commit();
 
 

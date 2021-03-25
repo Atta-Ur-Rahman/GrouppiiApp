@@ -81,6 +81,11 @@ public class AppRepository {
 
     }
 
+    public static boolean isGridView(Context context) {
+        return mGetValue(context).getBoolean("aBooleanIsGridView", false);
+
+    }
+
     public static boolean mOneTimeStartTimer(Context context) {
         return mGetValue(context).getBoolean("one_time_start_timer", true);
 

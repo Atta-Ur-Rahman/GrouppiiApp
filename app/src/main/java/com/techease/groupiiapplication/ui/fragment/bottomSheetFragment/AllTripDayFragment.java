@@ -17,6 +17,7 @@ import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayDataMod
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.DatePickerClass;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
@@ -73,7 +74,12 @@ public class AllTripDayFragment extends Fragment {
 
     private void CustomDatePicker() {
 // Set a Start date (Default, 1 Jan 1970)
-        datePickerTimeline.setInitialDate(2021, 1, 1);
+
+        String year = DatePickerClass.getCurrentDate("yyyy");
+        String month = DatePickerClass.getCurrentDate("MM");
+        String day = DatePickerClass.getCurrentDate("dd");
+
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
 // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
@@ -81,7 +87,7 @@ public class AllTripDayFragment extends Fragment {
                 // Do Something
 
                 strDate = year + "-" + month + "-" + day;
-                ApiCallAllTirpGetByDate("");
+                ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
             }
 
             @Override
@@ -127,7 +133,7 @@ public class AllTripDayFragment extends Fragment {
     public void ApiCallAllTirpGetByDate(String userId) {
 
         addTripDataModels.clear();
-        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strDate, "21");
+        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strDate, userId);
         allTripDayResponseCall.enqueue(new Callback<AllTripDayResponse>() {
             @Override
             public void onResponse(Call<AllTripDayResponse> call, Response<AllTripDayResponse> response) {

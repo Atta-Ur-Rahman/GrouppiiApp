@@ -56,8 +56,8 @@ public class DatePickerClass {
     }
 
 
-    public static String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+    public static String getCurrentDate(String DATE_FORMAT) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
@@ -107,4 +107,11 @@ public class DatePickerClass {
         return str;
     }
 
+
+    public static String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date today = Calendar.getInstance().getTime();
+        return dateFormat.format(today);
+    }
 }

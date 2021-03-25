@@ -32,5 +32,6 @@
     <string name="error_connect">Failed to connect</string>
     <string name="user_action_typing">is typing...</string>
     <string name="profile_photo">Profile Photo</string>
+    <string name="choose_photo">Choose Photo</string>
 
 </resources>
