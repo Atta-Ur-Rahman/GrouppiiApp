@@ -75,8 +75,11 @@
                 android:id="@+id/tilTripTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
-                android:hint="Trip title">
+                android:background="@drawable/rounded_edittext"
+                android:hint="Trip title"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <EditText
                     android:id="@+id/etTripTitle"
@@ -106,9 +109,13 @@
                 android:id="@+id/tilTripDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
+                android:background="@drawable/rounded_edittext"
                 android:gravity="top"
                 android:hint="Trip description"
+                android:padding="@dimen/edittext_padding"
+                android:nextFocusDown="@id/etLocation"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="100"
                 app:counterTextAppearance="@style/CounterText">
@@ -145,8 +152,11 @@
                 android:id="@+id/tillLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
-                android:hint="Location">
+                android:background="@drawable/rounded_edittext"
+                android:hint="Location"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <EditText
                     android:id="@+id/etLocation"
@@ -179,8 +189,11 @@
                 android:id="@+id/tillStartDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
-                android:hint="Start date">
+                android:background="@drawable/rounded_edittext"
+                android:hint="Start date"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <EditText
                     android:id="@+id/etTripStartDate"
@@ -215,11 +228,14 @@
                 android:id="@+id/tillEndDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/light_gry"
+                android:background="@drawable/rounded_edittext"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="End date">
+                android:hint="End date"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <EditText
                     android:id="@+id/etTripEndtDate"
@@ -253,8 +269,11 @@
                 android:id="@+id/tillPayByDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gry"
-                android:hint="Pay By Date">
+                android:background="@drawable/rounded_edittext"
+                android:hint="Pay By Date"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <EditText
                     android:id="@+id/etTripPayByDate"

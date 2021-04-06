@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rlRootLayout"
     tools:context=".ui.activity.ChatsActivity">
 
 
@@ -16,12 +17,11 @@
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="@dimen/fourty_dp"
-            android:layout_height="@dimen/fourty_dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginLeft="@dimen/medium_margin"
             android:layout_marginTop="@dimen/medium_margin"
-            android:background="@drawable/round_card_transparent_bg"
-            android:src="@mipmap/back"
+            android:src="@mipmap/backicon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,8 +51,8 @@
 
         <ImageView
             android:id="@+id/ivMenu"
-            android:layout_width="@dimen/fourty_dp"
-            android:layout_height="@dimen/fourty_dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginEnd="@dimen/medium_margin"
             android:background="@drawable/round_card_transparent_bg"
@@ -147,6 +147,7 @@
             android:paddingBottom="@dimen/medium_margin"
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_color" />
+
 
 
         <TextView

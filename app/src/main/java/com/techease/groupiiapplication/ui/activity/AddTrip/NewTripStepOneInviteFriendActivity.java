@@ -49,6 +49,7 @@ import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
+import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
@@ -130,6 +131,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.rvMyContact)
     RecyclerView rvMyContact;
 
+
+    boolean aBooleanLayvissible = true;
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -231,7 +234,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             case R.id.ivBack:
 
                 if (tilEmail.getVisibility() == View.VISIBLE) {
-
                     if (clInviteFriend.getVisibility() == View.VISIBLE) {
                         clAddInvite.setVisibility(View.VISIBLE);
                         clInviteFriend.setVisibility(View.GONE);
@@ -259,18 +261,27 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 break;
             case R.id.btnNext:
 
-                if (addTripDataModels.size()!=0) {
+                if (addTripDataModels.size() != 0) {
                     TripFragment.aBooleanRefreshAllTripApi = false;
                     startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
                     this.finish();
-                }else {
+                } else {
                     Toast.makeText(this, "Please Add Trip Participants", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case R.id.etPhone:
 
-                ContactLayoutVisible();
+                if (aBooleanLayvissible) {
+                    ContactLayoutVisible();
+                    aBooleanLayvissible = false;
+
+                } else {
+                    ContactLayoutGone();
+                    KeyBoardUtils.closeKeyboard(this);
+                    KeyBoardUtils.hideKeyboard(this);
+
+                }
 
 
         }
@@ -283,6 +294,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         tvInviteFriend.setVisibility(View.GONE);
         btnNext.setVisibility(View.GONE);
         rvMyContact.setVisibility(View.VISIBLE);
+
     }
 
     private void ApiCallForAddInviteFriend() {
@@ -300,10 +312,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                     if (response.message().equals("OK")) {
                         clAddInvite.setVisibility(View.VISIBLE);
                         clInviteFriend.setVisibility(View.GONE);
+                        btnNext.setVisibility(View.VISIBLE);
                         etEmail.setText("");
                         etPhone.setText("");
                         cbShareCost.setChecked(false);
                         addTripDataModels.addAll(response.body().getData());
+                        btnNext.setVisibility(View.VISIBLE);
                         initAdapter();
                     }
 
@@ -381,6 +395,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         tvInviteFriend.setVisibility(View.VISIBLE);
         btnNext.setVisibility(View.VISIBLE);
         rvMyContact.setVisibility(View.GONE);
+
     }
 
     private void apiCallForTripDelete() {

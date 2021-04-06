@@ -1,5 +1,3 @@
-
-
 package com.techease.groupiiapplication.ui.activity;
 
 import android.Manifest;
@@ -133,6 +131,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+    boolean aBooleanAddImage = true;
+
     BottomNavigationView bottomNavigationView;
 
     ArrayList<String> stringArrayList = new ArrayList<>();
@@ -229,7 +229,11 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 if (anIntViewPagerPosition == 0) {
                     addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else if (anIntViewPagerPosition == 3) {
-                    checkImagePermission();
+
+                    if (aBooleanAddImage) {
+                        checkImagePermission();
+                        aBooleanAddImage = false;
+                    }
                 }
                 break;
             case R.id.tvActivityAdd:
@@ -259,7 +263,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     private void initializeBottomSheet() {
         llBottomSheetAddDayActivity = llActivityMoreBottomSheet.findViewById(R.id.bottom_sheet_add_activity);
 
@@ -320,26 +324,62 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //        };
 //        registerReceiver(broadcastReceiver,intentFilter);
 
+//
+//        TabLayout.Tab firstTab = tabLayout.newTab();
+//        firstTab.setText("First"); // set the Text for the first Tab
+//        firstTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
+//        // first tab
+//        tabLayout.addTab(firstTab); // add  the tab at in the TabLayout
+//
+//
+//
+//        TabLayout.Tab secondTab = tabLayout.newTab();
+//        secondTab.setText("First"); // set the Text for the first Tab
+//        secondTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
+//        // first tab
+//        tabLayout.addTab(secondTab); // add  the tab at in the TabLayout
+//
+//
+//
+//        TabLayout.Tab thirdTab = tabLayout.newTab();
+//        thirdTab.setText("First"); // set the Text for the first Tab
+//        thirdTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
+//        // first tab
+//        tabLayout.addTab(thirdTab); // add  the tab at in the TabLayout
+//
+//
+//        TabLayout.Tab fouthyTab = tabLayout.newTab();
+//        fouthyTab.setText("First"); // set the Text for the first Tab
+//        fouthyTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
+//        // first tab
+//        tabLayout.addTab(fouthyTab); // add  the tab at in the TabLayout
+
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText(R.string.days_plan);
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.days_plan_selected, 0, 0);
+        tabOne.setTextSize(13);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabTwo.setText(R.string.reserves);
+        tabTwo.setTextSize(13);
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.reserv_selected, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabThree.setText(R.string.payments);
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.payment_selected, 0, 0);
+        tabThree.setTextSize(13);
         tabLayout.getTabAt(2).setCustomView(tabThree);
 
         TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFour.setText(R.string.photos);
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.photos_selected, 0, 0);
+        tabFour.setTextSize(13);
         tabLayout.getTabAt(3).setCustomView(tabFour);
+
+
 
 
         ivAddActivityBack.setOnClickListener(this);
@@ -491,6 +531,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken
                     token) {
 
+                aBooleanAddImage = true;
+
             }
         }).check();
     }
@@ -543,8 +585,14 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+        aBooleanAddImage = true;
+
         if (resultCode == RESULT_OK) {
+
+
             switch (requestCode) {
+
 
                 case REQUEST_CODE_SELECT_PICTURE:
                     if (checkActionType(data)) { // Camera
@@ -564,6 +612,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     }
 
                     Log.d("zma image file", "" + sourceFile);
+
 
                     break;
             }
@@ -621,3 +670,4 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
 }
+

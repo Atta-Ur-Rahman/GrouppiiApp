@@ -8,24 +8,23 @@
 
     <ImageView
         android:id="@+id/ivBack"
-        android:layout_width="@dimen/fourty_dp"
-        android:layout_height="@dimen/fourty_dp"
-        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
+        android:src="@mipmap/backicon"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@mipmap/back"
-        android:background="@drawable/round_card_transparent_bg"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

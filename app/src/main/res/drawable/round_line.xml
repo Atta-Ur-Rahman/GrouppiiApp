@@ -8,6 +8,6 @@
         android:startColor="@android:color/transparent" />
     <corners android:radius="8dp" />
     <stroke
-        android:width="7px"
+        android:width="4px"
         android:color="#D7F7F7" />
 </shape>

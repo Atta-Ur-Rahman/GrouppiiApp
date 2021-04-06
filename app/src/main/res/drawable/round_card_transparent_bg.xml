@@ -10,8 +10,21 @@
                 android:right="1dp"
                 android:top="1dp" />
 
-            <solid android:color="#00CCCCCC" />
-
+            <stroke
+                android:width="2px"
+                android:color="@color/grey" />
+            <solid android:color="#1A000000" />
+            <corners android:radius="@dimen/round_corner" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+            <solid android:color="@android:color/transparent" />
             <corners android:radius="@dimen/round_corner" />
         </shape>
     </item>
@@ -23,8 +36,18 @@
                 android:right="1dp"
                 android:top="1dp" />
 
-            <solid android:color="#10CCCCCC" />
-
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="@dimen/round_corner" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+            <solid android:color="@android:color/transparent" />
             <corners android:radius="@dimen/round_corner" />
         </shape>
     </item>
@@ -36,33 +59,7 @@
                 android:right="1dp"
                 android:top="1dp" />
 
-            <solid android:color="#20CCCCCC" />
-
-            <corners android:radius="@dimen/round_corner" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#30CCCCCC" />
-
-            <corners android:radius="@dimen/round_corner" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#50CCCCCC" />
+            <solid android:color="@android:color/transparent" />
 
             <corners android:radius="@dimen/round_corner" />
         </shape>

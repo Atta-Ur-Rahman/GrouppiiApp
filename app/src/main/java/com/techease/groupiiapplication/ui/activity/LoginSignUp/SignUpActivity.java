@@ -1,6 +1,8 @@
 package com.techease.groupiiapplication.ui.activity.LoginSignUp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -92,14 +94,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.btnSignUp:
                 if (isValid()) {
-
                     alertDialog.show();
                     ApiCallForSignUp();
                 }
                 break;
             case R.id.tvSignIn:
-                finish();
                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                finish();
                 break;
         }
     }
@@ -117,7 +118,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     alertDialog.dismiss();
                     finishAffinity();
                     Toast.makeText(SignUpActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) SignUpActivity.this).toBundle());
 
 //                    AppRepository.mPutValue(SignUpActivity.this).putInt("userID",response.body().getData().getId());
 //                    AppRepository.mPutValue(SignUpActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();

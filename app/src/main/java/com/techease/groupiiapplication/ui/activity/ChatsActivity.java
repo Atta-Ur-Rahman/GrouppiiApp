@@ -1,19 +1,21 @@
 package com.techease.groupiiapplication.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,6 +27,8 @@ import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.dataModel.chat.ChatModel;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.EmojiEncoder;
+import com.techease.groupiiapplication.utils.MyMessageStatusFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +45,16 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class ChatsActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+    private boolean keyboardListenersAttached = false;
+    private ViewGroup rootLayout;
+
+    protected void onShowKeyboard(int keyboardHeight) {
+    }
+
+    protected void onHideKeyboard() {
+    }
 
 
     @BindView(R.id.tvUserName)
@@ -65,14 +79,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.typing_layout)
     RelativeLayout layoutTyping;
 
-    ArrayList<String> arrayListDateExist = new ArrayList<>();
-
-
+    @BindView(R.id.rlRootLayout)
+    RelativeLayout rlRootLayout;
     boolean isConnected;
 
     private String strTripId, strToUserId, strUsername, strMessageType = "1";
-    private String message, sender, reciever, fromUserName, checkDate, date, senderImage, type;
+    private String message, toUser, fromUser, fromUserName, tripId, isSent, date, senderImage, type;
     int userID;
+
+    boolean aBooleanShowKeyboardListener = true;
 
 
     private List<ChatModel> mMessages = new ArrayList();
@@ -83,6 +98,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     private boolean mTyping = false;
     private Handler mTypingHandler = new Handler();
 
+    private static int firstVisibleInListview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,104 +109,41 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         init();
         socketConnectivity();
         GetAllMessages();
+        KeyBoardListener();
 
 
-//        etMessageView.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (null == strUsername) return;
-//                if (!mSocket.connected()) return;
-//
-//                if (!mTyping) {
-//                    mTyping = true;
-//                    JSONObject typingObject = new JSONObject();
-//                    try {
-//                        typingObject.put("username", strUsername);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    mSocket.emit("typing", typingObject);
-//                }
-//
-//                mTypingHandler.removeCallbacks(onTypingTimeout);
-//                mTypingHandler.postDelayed(onTypingTimeout, 600);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                removeTyping();
-//            }
-//        });
     }
 
+    private void KeyBoardListener() {
 
-//    private Emitter.Listener onTyping = new Emitter.Listener() {
-//        @Override
-//        public void call(final Object... args) {
-//
-//
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    JSONObject data = (JSONObject) args[0];
-//                    String username;
-//                    try {
-//                        username = data.getString("username");
-//                    } catch (JSONException e) {
-//                        Log.d("TAG", e.getMessage());
-//                        return;
-//                    }
-//
-//                    if (username == null || username.equals("")) {
-//                        removeTyping();
-//                    } else {
-//                        addTyping(username);
-//                    }
-//
-//
-//                }
-//            });
-//
-//        }
-//    };
+//        etMessageView.requestFocus();
+        rlRootLayout = findViewById(R.id.rlRootLayout);
+        rlRootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rlRootLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rlRootLayout.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+                if (keypadHeight > screenHeight * 0.15) {
+                    if (aBooleanShowKeyboardListener) {
+                        aBooleanShowKeyboardListener = false;
+                        scrollToBottom();
+                    }
+                } else {
 
-//
-//    private void addTyping(String username) {
-//        if (username.equals(strUsername)) {
-//            removeTyping();
-//        } else {
-//            layoutTyping.setVisibility(View.VISIBLE);
-//            tvSenderName.setText(username);
-//            scrollToBottom();
-//        }
-//
-//    }
-//
-//
-//    private void removeTyping() {
-//        layoutTyping.setVisibility(View.GONE);
-//    }
-//
-//    private Runnable onTypingTimeout = new Runnable() {
-//        @Override
-//        public void run() {
-//            if (!mTyping) return;
-//            mTyping = false;
-//            mSocket.emit("stop typing");
-//        }
-//    };
+                    aBooleanShowKeyboardListener = true;
+                }
+            }
+        });
+
+
+    }
 
 
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
         ButterKnife.bind(this);
-        checkDate = "null";
-
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Bundle bundle = getIntent().getExtras();
         tvUserName.setText(bundle.getString("title_name"));
 
@@ -204,94 +158,24 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         chatAdapter = new ChatAdapter(this, mMessages);
         rvMessage.setAdapter(chatAdapter);
 
-    }
+//        rvMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                if (dy > 0) {
+//                    // Scrolling up
+//                    aBooleanShowKeyboardListener = false;
+//                } else {
+//                    // Scrolling down
+//                    aBooleanShowKeyboardListener = false;
+//
+//                }
+//            }
 
-
-    private void GetAllMessages() {
-
-
-        arrayListDateExist.clear();
-        JSONObject objectGetAllMessages = new JSONObject();
-        try {
-
-            objectGetAllMessages.put("userid", userID);
-            objectGetAllMessages.put("touser", null);
-            objectGetAllMessages.put("tripid", strTripId);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        mSocket.emit("getAllMessages", objectGetAllMessages);
-        mSocket.on("AllMessages", onChatHistory);
-
+//        });
 
     }
-
-
-    //getting chat history
-    private Emitter.Listener onChatHistory = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-
-
-            if (aBooleanOneTimeHistoryLoad) {
-                aBooleanOneTimeHistoryLoad = false;
-                if (mSocket.connected()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    JSONArray jsonArray = (JSONArray) args[0];
-                                    Log.d("zma all messages", "" + jsonArray);
-
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        try {
-                                            JSONObject data = jsonArray.getJSONObject(i);
-                                            sender = data.getString("touser");
-                                            reciever = data.getString("fromuser");
-                                            fromUserName = data.getString("fromusername");
-                                            message = data.getString("message");
-                                            date = data.getString("created_at");
-                                            senderImage = data.getString("picture");
-                                            type = data.getString("type");
-
-
-                                            if (strToUserId.equals(reciever) || strToUserId.equals(sender)) {
-
-//                                                if (arrayListDateExist.contains(fromUserName)) {
-//                                                    addMessage(sender, reciever, "", message, date, senderImage, type);
-//                                                } else {
-                                                    addMessage(sender, reciever, fromUserName, message, date, senderImage, type);
-
-//                                                }
-//                                                arrayListDateExist.add(fromUserName);
-
-
-                                            }
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        Log.d("type", "this is type " + sender);
-                                    }
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Log.d("zma socket", "not connected");
-                }
-            }
-        }
-    };
-
 
     @SuppressLint("NonConstantResourceId")
     @OnClick({R.id.ivBack, R.id.iv_send_file, R.id.tvSend})
@@ -308,7 +192,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         object.put("userid", userID);
                         object.put("touser", strToUserId);
                         object.put("tripid", strTripId);
-                        object.put("message", etMessageView.getText().toString().trim());
+                        object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -316,6 +200,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                     tvSend.setEnabled(false);
                     mSocket.emit("sendmessage", object);
+//                    addMessage(String.valueOf(userID), fromUser, fromUserName, message, date, senderImage, type, isSent);
                 }
                 break;
             case R.id.iv_send_file:
@@ -325,6 +210,71 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    private void GetAllMessages() {
+        JSONObject objectGetAllMessages = new JSONObject();
+        try {
+            objectGetAllMessages.put("userid", userID);
+            objectGetAllMessages.put("touser", null);
+            objectGetAllMessages.put("tripid", strTripId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mSocket.emit("getAllMessages", objectGetAllMessages);
+        mSocket.on("AllMessages", onChatHistory);
+
+    }
+
+
+    //getting chat history
+    private Emitter.Listener onChatHistory = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+
+            if (aBooleanOneTimeHistoryLoad) {
+                aBooleanOneTimeHistoryLoad = false;
+                if (mSocket.connected()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONArray jsonArray = (JSONArray) args[0];
+                                    Log.d("zma all messages", "" + jsonArray);
+
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        try {
+                                            JSONObject data = jsonArray.getJSONObject(i);
+                                            toUser = data.getString("touser");
+                                            fromUser = data.getString("fromuser");
+                                            fromUserName = data.getString("fromusername");
+                                            message = data.getString("message");
+                                            date = data.getString("created_at");
+                                            senderImage = data.getString("picture");
+                                            type = data.getString("type");
+                                            isSent = data.getString("is_sent");
+
+                                            Log.d("zma sender", "this is type " + toUser);
+                                            if (strToUserId.equals(fromUser) || strToUserId.equals(toUser)) {
+                                                addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent);
+
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Log.d("zma socket", "not connected");
+                }
+            }
+        }
+    };
     protected Emitter.Listener sendMessages = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -339,21 +289,19 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                             JSONObject jsonObject = (JSONObject) args[0];
                             try {
                                 if (jsonObject != null) {
-                                    String sender = jsonObject.getString("touser");
-                                    String fromuser = jsonObject.getString("fromuser");
-//                                    String fromuserName = jsonObject.getString("fromusername");
-                                    String message = jsonObject.getString("message");
-                                    String date = jsonObject.getString("created_at");
-                                    String tripId = jsonObject.getString("tripid");
-//                            senderImage = jsonObject.getString("picture");
-                                    String type = jsonObject.getString("type");
+                                    toUser = jsonObject.getString("touser");
+                                    fromUser = jsonObject.getString("fromuser");
+//                                    fromUserName = jsonObject.getString("fromusername");
+                                    message = jsonObject.getString("message");
+                                    date = jsonObject.getString("created_at");
+                                    tripId = jsonObject.getString("tripid");
+                                    isSent = jsonObject.getString("is_sent");
+                                    type = jsonObject.getString("type");
 
                                     Log.d("zma message send sho", "" + jsonObject);
 
-
                                     if (strTripId.equals(tripId)) {
-                                        addMessage(sender, fromuser, "", message, date, "senderImage", type);
-
+                                        addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent);
                                     }
                                 }
                             } catch (JSONException e) {
@@ -369,8 +317,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     };
 
 
-    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type) {
-        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type));
+    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type, String isSent) {
+        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type, isSent));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
     }
@@ -427,14 +375,59 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+
+        mSocket.connected();
         aBooleanOneTimeHistoryLoad = true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSocket.disconnect();
+
+        if (keyboardListenersAttached) {
+            rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
+        }
+
     }
+
+
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            int heightDiff = rootLayout.getRootView().getHeight() - rootLayout.getHeight();
+            int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+
+            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(ChatsActivity.this);
+
+            if (heightDiff <= contentViewTop) {
+                onHideKeyboard();
+
+                Intent intent = new Intent("KeyboardWillHide");
+                broadcastManager.sendBroadcast(intent);
+            } else {
+                int keyboardHeight = heightDiff - contentViewTop;
+                onShowKeyboard(keyboardHeight);
+
+                Intent intent = new Intent("KeyboardWillShow");
+                intent.putExtra("KeyboardHeight", keyboardHeight);
+                broadcastManager.sendBroadcast(intent);
+            }
+        }
+    };
+
+
+    protected void attachKeyboardListeners() {
+        if (keyboardListenersAttached) {
+            return;
+        }
+
+        rootLayout = (ViewGroup) findViewById(R.id.rlRootLayout);
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+
+        keyboardListenersAttached = true;
+    }
+
+
 }
 
 
@@ -519,5 +512,94 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     };
 */
+
+
+//        etMessageView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (null == strUsername) return;
+//                if (!mSocket.connected()) return;
+//
+//                if (!mTyping) {
+//                    mTyping = true;
+//                    JSONObject typingObject = new JSONObject();
+//                    try {
+//                        typingObject.put("username", strUsername);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    mSocket.emit("typing", typingObject);
+//                }
+//
+//                mTypingHandler.removeCallbacks(onTypingTimeout);
+//                mTypingHandler.postDelayed(onTypingTimeout, 600);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                removeTyping();
+//            }
+//        });
+
+
+//    private Emitter.Listener onTyping = new Emitter.Listener() {
+//        @Override
+//        public void call(final Object... args) {
+//
+//
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    JSONObject data = (JSONObject) args[0];
+//                    String username;
+//                    try {
+//                        username = data.getString("username");
+//                    } catch (JSONException e) {
+//                        Log.d("TAG", e.getMessage());
+//                        return;
+//                    }
+//
+//                    if (username == null || username.equals("")) {
+//                        removeTyping();
+//                    } else {
+//                        addTyping(username);
+//                    }
+//
+//
+//                }
+//            });
+//
+//        }
+//    };
+
+//
+//    private void addTyping(String username) {
+//        if (username.equals(strUsername)) {
+//            removeTyping();
+//        } else {
+//            layoutTyping.setVisibility(View.VISIBLE);
+//            tvSenderName.setText(username);
+//            scrollToBottom();
+//        }
+//
+//    }
+//
+//
+//    private void removeTyping() {
+//        layoutTyping.setVisibility(View.GONE);
+//    }
+//
+//    private Runnable onTypingTimeout = new Runnable() {
+//        @Override
+//        public void run() {
+//            if (!mTyping) return;
+//            mTyping = false;
+//            mSocket.emit("stop typing");
+//        }
+//    };
 
 

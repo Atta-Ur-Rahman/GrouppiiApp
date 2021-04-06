@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SettingsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/light_gry">
+        android:layout_height="wrap_content"
+        android:background="@color/light_gry"
+        android:paddingBottom="@dimen/widget_margin_left_right">
 
 
-        <ImageView
-            android:id="@+id/ivBack"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginLeft="@dimen/widget_margin"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            app:cardCornerRadius="@dimen/round_radius"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/round_bg" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="@dimen/fifty_dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_bg"
+                android:scaleType="fitXY"
+                android:src="@drawable/user" />
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <TextView
             android:id="@+id/tvSettings"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginRight="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:text="Settings"
             android:textColor="@android:color/black"
-            android:text="Settings" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginTop="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toBottomOf="@id/tvSettings"
-            app:layout_constraintStart_toStartOf="parent"
+            android:src="@mipmap/my_trips_selected"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@mipmap/my_trips_selected" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSettings" />
 
 
         <TextView
             android:id="@+id/tvGrouppi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:gravity="right"
+            android:text="grouppii "
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/tvGrouppiVersion"
-            android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintTop_toBottomOf="@id/ivLogo"
-            app:layout_constraintHorizontal_weight="5"
-            android:gravity="right"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/main_heading_text_size"
-            android:text="grouppii " />
+            app:layout_constraintTop_toBottomOf="@id/ivLogo" />
 
         <TextView
             android:id="@+id/tvGrouppiVersion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:text="V 1.0"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="5"
             app:layout_constraintLeft_toRightOf="@+id/tvGrouppi"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintTop_toBottomOf="@id/ivLogo"
-            app:layout_constraintHorizontal_weight="5"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle="bold"
-            android:textSize="@dimen/main_heading_text_size"
-            android:text="V 1.0" />
+            app:layout_constraintTop_toBottomOf="@id/ivLogo" />
 
 
         <TextView
@@ -85,69 +96,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintTop_toBottomOf="@id/tvGrouppi"
+            android:gravity="center"
+            android:text="Input your email and we will send you\n reset link"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Input your email and we will send you\n reset link" />
+            app:layout_constraintTop_toBottomOf="@id/tvGrouppi" />
 
 
         <LinearLayout
             android:id="@+id/llSocial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvGrouppiDetail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/widget_margin"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvGrouppiDetail">
 
 
             <ImageView
                 android:id="@+id/ivBrowser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/web"
-                android:layout_marginLeft="@dimen/widget_margin"
-                android:layout_marginRight="@dimen/widget_margin" />
+                android:layout_marginRight="@dimen/widget_margin"
+                android:src="@mipmap/web" />
 
 
             <ImageView
                 android:id="@+id/ivFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/facebook"
                 android:layout_marginLeft="@dimen/widget_margin"
-                android:layout_marginRight="@dimen/widget_margin" />
+                android:layout_marginRight="@dimen/widget_margin"
+                android:src="@mipmap/facebook" />
 
             <ImageView
                 android:id="@+id/ivTwitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/twitter"
                 android:layout_marginLeft="@dimen/widget_margin"
-                android:layout_marginRight="@dimen/widget_margin" />
+                android:layout_marginRight="@dimen/widget_margin"
+                android:src="@mipmap/twitter" />
 
             <ImageView
                 android:id="@+id/ivinstagram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/instagram"
                 android:layout_marginLeft="@dimen/widget_margin"
-                android:layout_marginRight="@dimen/widget_margin" />
+                android:src="@mipmap/instagram" />
 
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_gry"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llSocial"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/main_heading_text_size"
-            android:orientation="vertical">
+            android:background="@color/light_gry"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llSocial">
 
             <View
                 android:layout_width="match_parent"
@@ -158,30 +168,30 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/notifications"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/notifications" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivNotification"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="Notifications"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="Notifications" />
+                    android:textStyle="bold" />
 
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -209,40 +219,40 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivContactUs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/contact_us"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/contact_us" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivContactUs"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="Contact Us"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="Contact Us" />
+                    android:textStyle="bold" />
 
 
                 <ImageView
                     android:id="@+id/ivContactUsForword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="@dimen/widget_margin_left_right"
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
-                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </RelativeLayout>
@@ -259,40 +269,40 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/password"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/password" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivPassword"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="Password"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="Password" />
+                    android:textStyle="bold" />
 
 
                 <ImageView
                     android:id="@+id/ivPasswordForword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="@dimen/widget_margin_left_right"
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
-                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </RelativeLayout>
@@ -309,40 +319,40 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivInvite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/share"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/share" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivInvite"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="Invite"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="Invite" />
+                    android:textStyle="bold" />
 
 
                 <ImageView
                     android:id="@+id/ivInviteForword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="@dimen/widget_margin_left_right"
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
-                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </RelativeLayout>
@@ -358,40 +368,40 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivPrivacyPolicy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/privacy_policy"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/privacy_policy" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivPrivacyPolicy"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="Privacy Policy"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="Privacy Policy" />
+                    android:textStyle="bold" />
 
 
                 <ImageView
                     android:id="@+id/ivPrivacyPolicyForword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="@dimen/widget_margin_left_right"
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
-                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </RelativeLayout>
@@ -409,40 +419,40 @@
                 android:id="@+id/rlSignOut"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
-                android:paddingLeft="@dimen/widget_margin_left_right"
-                android:paddingRight="@dimen/widget_margin_left_right"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right">
 
                 <ImageView
                     android:id="@+id/ivSignOut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/sign_out"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/sign_out" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivSignOut"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:gravity="center_vertical"
+                    android:text="SignOut"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/middle_text_size"
-                    android:text="SignOut" />
+                    android:textStyle="bold" />
 
 
                 <ImageView
                     android:id="@+id/ivSignOutForword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="@dimen/widget_margin_left_right"
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
-                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </RelativeLayout>

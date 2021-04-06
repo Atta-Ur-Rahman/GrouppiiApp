@@ -1,92 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="10dp"
-    app:cardCornerRadius="10dp"
     android:layout_margin="@dimen/widget_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/widget_margin">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dubai" />
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tvTitleName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/widget_margin">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/widget_margin_left_right"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dubai" />
-            </androidx.cardview.widget.CardView>
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:text="Babby Farell"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/cvImage"
+            app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tvTitleName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Babby Farell"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/widget_margin_left_right"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cvImage"
-                android:textColor="@color/black"
-                android:textSize="@dimen/main_heading_text_size" />
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:gravity="center_vertical"
+            android:text="babbyfarell@gmail.com"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
 
 
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="babbyfarell@gmail.com"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:layout_marginRight="@dimen/widget_margin_left_right"
-                app:layout_constraintLeft_toRightOf="@+id/cvImage"
-                android:layout_marginLeft="@dimen/widget_margin_left_right"
-                app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
+        <ImageView
+            android:id="@+id/ivTick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:src="@drawable/ic_baseline_done_24"
+            app:layout_constraintLeft_toRightOf="@+id/cvImage"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:text="Shares trip cost"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/ivTick"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
 
-            <ImageView
-                android:id="@+id/ivTick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/widget_margin"
-                android:layout_marginRight="@dimen/widget_margin_left_right"
-                app:layout_constraintLeft_toRightOf="@+id/cvImage"
-                android:layout_marginLeft="@dimen/widget_margin_left_right"
-                app:layout_constraintTop_toBottomOf="@id/tvEmail"
-                android:src="@drawable/ic_baseline_done_24" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:src="@drawable/dots"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shares trip cost"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/widget_margin"
-                app:layout_constraintLeft_toRightOf="@+id/ivTick"
-                app:layout_constraintTop_toBottomOf="@id/tvEmail" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:src="@drawable/dots"
-                android:layout_marginTop="@dimen/widget_margin"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

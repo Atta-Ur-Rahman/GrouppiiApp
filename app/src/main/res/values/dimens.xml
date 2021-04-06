@@ -11,6 +11,7 @@
     <dimen name="cv_widget_corner_radius">10dp</dimen>
     <dimen name="cv_margin_top">1dp</dimen>
     <dimen name="middle_text_size">16sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
     <dimen name="fifty_dp">50dp</dimen>
     <dimen name="fourty_dp">40dp</dimen>
     <dimen name="top_corner_radius">20dp</dimen>
@@ -23,6 +24,11 @@
     <dimen name="spacing">8dp</dimen>
     <dimen name="medium_margin">10dp</dimen>
     <dimen name="small_margin">4dp</dimen>
+    <dimen name="edit_text_round_corner">9dp</dimen>
+    <dimen name="edittext_padding">2dp</dimen>
+    <dimen name="icon_size">45dp</dimen>
+    <dimen name="fab_size">55dp</dimen>
+    <dimen name="text_size14sp">14sp</dimen>
 
 
 </resources>

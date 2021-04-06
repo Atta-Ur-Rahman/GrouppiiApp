@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +24,7 @@ import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chat.ChatModel;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.EmojiEncoder;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +35,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private List<ChatModel> mMessages;
     private Context context;
-    int anIntFromUser = 0;
+    private Drawable mDeliveredIcon;
+    private Drawable mSeenIcon;
 
     public ChatAdapter(Context context, List<ChatModel> messages) {
         this.context = context;
@@ -60,10 +64,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         ChatModel message = mMessages.get(position);
         viewHolder.setDate(String.valueOf(message.getDate()));
-//        viewHolder.setImage(message.getSenderImage());
-
-
-        viewHolder.setMessage(message.messages, "0");
+        viewHolder.setMessage(EmojiEncoder.decodeEmoji(message.messages), "0");
         viewHolder.tvDate.setText(message.getDate());
 
         if (message.getDate() != null) {
@@ -74,11 +75,38 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
-//        Log.d("zma message", message.getMessages());
-//        viewHolder.ivMessage.setOnClickListener(v -> {
+        mDeliveredIcon = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_24));
+        mSeenIcon = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_all_24));
+
+        Glide.with(context).load(R.drawable.ic_baseline_done_all_blue).into(viewHolder.ivSeenMessage);
+        Log.d("zma message sent", message.getIsSent());
+
 //
-//        });
+//        if (AppRepository.mUserID(context) == message.getSenderID()) {
+//
+//            if (message.getIsSent().equals("0")) {
+////                Log.d("zma message", "un seen" + message.getSenderID());
+////                viewHolder.ivMesSeen.setImageDrawable( DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_24)));
+//
+//            } else if (message.getIsSent().equals("1")) {
+//                    Glide.with(context).load(R.drawable.ic_baseline_done_24).into(viewHolder.ivSeenMessage);
+//                        Log.d("zma message sent", message.getIsSent());
+//
+//
+//            } else if (message.getIsSent().equals("2")) {
+////                Log.d("zma message", "seen" + message.getSenderID());
+////                viewHolder.ivMesSeen.setImageDrawable( DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_all_blue)));
+//
+//            }
+//        }
+////
+////        Log.d("zma reciver id", "" + message.getRecieverID());
+////
+////
+////        Log.d("zma sender id", "" + message.getSenderID());
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -100,7 +128,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessageView, tvDate, tvName;
-        private ImageView ivSender, ivMessage;
+        private ImageView ivSender, ivSeenMessage, ivMesSeen;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
@@ -109,6 +137,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvDate = itemView.findViewById(R.id.tvDate);
             tvMessageView = itemView.findViewById(R.id.tvMessageBody);
             tvName = itemView.findViewById(R.id.tvName);
+            ivSeenMessage = itemView.findViewById(R.id.ivSeenMessage);
+
 
 //            ivSender = itemView.findViewById(R.id.iv_sender);
 //            ivMessage = itemView.findViewById(R.id.message_image);
@@ -150,7 +180,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                     return false;
                                 }
                             })
-                            .into(ivMessage);
+                            .into(ivSeenMessage);
                 } else {
 //                    mMessageView.setVisibility(View.VISIBLE);
 //                    messageLayout.setVisibility(View.GONE);

@@ -44,6 +44,8 @@ public class AllTripDayFragment extends Fragment {
     @BindView(R.id.datePickerTimeline)
     DatePickerTimeline datePickerTimeline;
 
+    public static TextView tvTripNotFound;
+
 
     //    Dialog dialog;
     String strDate;
@@ -62,6 +64,7 @@ public class AllTripDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_trip_day, container, false);
         ButterKnife.bind(this, view);
+        tvTripNotFound = tvTripDayNotFound;
 //        dialog = AlertUtils.createProgressDialog(getActivity());
 
         ApiCallAllTirp(AppRepository.mTripId(getActivity()));
@@ -114,6 +117,12 @@ public class AllTripDayFragment extends Fragment {
                     addTripDataModels.addAll(response.body().getData());
                     Collections.reverse(addTripDataModels);
                     allTripDayAdapter.notifyDataSetChanged();
+
+                    if (addTripDataModels.size() == 0) {
+                        tvTripNotFound.setVisibility(View.VISIBLE);
+                    } else {
+                        tvTripNotFound.setVisibility(View.GONE);
+                    }
 
                 }
                 Log.d("zma trip day", String.valueOf(response));
@@ -177,4 +186,6 @@ public class AllTripDayFragment extends Fragment {
 
 
     }
+
+
 }

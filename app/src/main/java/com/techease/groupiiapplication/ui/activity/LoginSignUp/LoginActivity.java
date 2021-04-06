@@ -1,6 +1,8 @@
 package com.techease.groupiiapplication.ui.activity.LoginSignUp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -116,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.tvForgotPassword:
 
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
 
                 break;
 

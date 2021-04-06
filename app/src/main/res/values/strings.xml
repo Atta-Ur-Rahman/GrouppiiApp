@@ -34,4 +34,10 @@
     <string name="profile_photo">Profile Photo</string>
     <string name="choose_photo">Choose Photo</string>
 
+    <!--  Delivery status  -->
+    <string name="sending">Sending</string>
+    <string name="sent">Sent</string>
+    <string name="seen">Seen</string>
+    <string name="error">Error</string>
+
 </resources>

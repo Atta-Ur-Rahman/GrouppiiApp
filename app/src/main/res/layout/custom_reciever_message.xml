@@ -72,6 +72,15 @@
     </RelativeLayout>
 
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/ivSeenMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/card_gchat_message_other"
+        app:layout_constraintEnd_toStartOf="@+id/card_gchat_message_other"/>
+
+
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"

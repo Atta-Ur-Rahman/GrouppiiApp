@@ -59,6 +59,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.ivProfilePicture)
     ImageView ivProfilePicture;
 
+    @BindView(R.id.ivAddProfilePicture)
+    ImageView ivAddProfilePicture;
+
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
     @BindView(R.id.tvProfileEmail)
@@ -99,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    @OnClick({R.id.ivBack, R.id.ivProfilePicture})
+    @OnClick({R.id.ivBack, R.id.ivProfilePicture,R.id.ivAddProfilePicture})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -109,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ivEdit:
 
                 break;
-            case R.id.ivProfilePicture:
+            case R.id.ivAddProfilePicture:
                 checkImagePermission();
                 break;
         }

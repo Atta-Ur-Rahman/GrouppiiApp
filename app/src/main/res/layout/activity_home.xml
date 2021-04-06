@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:scaleType="center"
             android:src="@drawable/ic_baseline_add_24"
-            app:fabCustomSize="70dp"
+            app:fabCustomSize="@dimen/fab_size"
             app:tint="@color/white"
             app:layout_anchor="@id/bottomAppBar"
             app:rippleColor="@color/white" />
@@ -72,7 +72,7 @@
                 android:id="@+id/tvTrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My Trip" />
+                android:text="My Trips" />
 
         </LinearLayout>
 

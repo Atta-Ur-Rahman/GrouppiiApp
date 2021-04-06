@@ -63,7 +63,7 @@ public class AllUsersChatFragment extends Fragment {
 
         init();
         socketConnectivity();
-//        GetAllUser();
+        GetAllUser();
 
 
         return view;
@@ -227,7 +227,7 @@ public class AllUsersChatFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (aBooleanRefreshSocket) {
-            GetAllUser();
+//            GetAllUser();
             aBooleanRefreshSocket = false;
         }
 //        GetAllUser();

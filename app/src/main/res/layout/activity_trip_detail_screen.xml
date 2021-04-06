@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backColor"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.TripDetailScreenActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/image_thumbnail"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivTripImage"
@@ -25,140 +25,139 @@
         android:id="@+id/ivBack"
         android:layout_width="@dimen/fourty_dp"
         android:layout_height="@dimen/fourty_dp"
-        android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/widget_margin_left_right"
         android:src="@mipmap/back"
-        android:background="@drawable/round_card_transparent_bg"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/tvTripTypeName"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/fifty_dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Active Trip"
-        android:textColor="@android:color/white"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:gravity="center_vertical"
+        android:text="Active Trip"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/main_heading_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
         android:id="@+id/ivChat"
         android:layout_width="@dimen/fourty_dp"
         android:layout_height="@dimen/fourty_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/ivMenu"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginRight="@dimen/widget_margin"
+        android:background="@drawable/round_card_transparent_bg"
         android:src="@mipmap/chat_white"
-        android:background="@drawable/round_card_transparent_bg"/>
+        app:layout_constraintRight_toLeftOf="@id/ivMenu"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivMenu"
         android:layout_width="@dimen/fourty_dp"
         android:layout_height="@dimen/fourty_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/widget_margin_left_right"
-        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:layout_marginEnd="@dimen/widget_margin_left_right"
+        android:background="@drawable/round_card_transparent_bg"
         android:src="@mipmap/menu"
-        android:background="@drawable/round_card_transparent_bg"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@mipmap/shadow"
         android:paddingTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@mipmap/shadow">
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
         <TextView
             android:id="@+id/tvTripTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Best Dubai Adventure Holiday Trip 15 days."
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvDescription"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginRight="@dimen/fifty_dp"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:text="Best Dubai Adventure Holiday Trip 15 days."
             android:textColor="@android:color/white"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvDescription"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvLocation"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvLocation"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dubai United Arab Emirates"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvDate"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
-            android:textColor="@android:color/white"
             android:drawableLeft="@mipmap/my_trip_unselected"
             android:drawablePadding="@dimen/widget_margin"
-            android:textStyle="bold" />
+            android:text="Dubai United Arab Emirates"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 day left"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cvMenu"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin"
-            android:textColor="@android:color/white"
             android:drawableLeft="@mipmap/payment"
             android:drawablePadding="@dimen/widget_margin"
-            android:textStyle="bold" />
+            android:text="10 day left"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/cvMenu"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <TextView
             android:id="@+id/tvGroupView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/group_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvDate"
             android:layout_marginRight="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:text="@string/group_view"
             android:textColor="@color/purple_500"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvImages"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cvMenu"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            android:layout_marginTop="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toBottomOf="@id/tvGroupView"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginBottom="@dimen/widget_margin_left_right" />
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            app:layout_constraintBottom_toTopOf="@id/cvMenu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvGroupView" />
 
 
         <!--
@@ -180,113 +179,115 @@
             android:id="@+id/cvMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/round_card_transparent_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/fifty_dp"
+            android:background="@drawable/round_card_transparent_bg"
             android:elevation="@dimen/widget_margin"
-            android:outlineProvider="background">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:padding="@dimen/widget_margin"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:outlineProvider="background"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
-                android:id="@+id/llDayPlan"
-                android:layout_width="0sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/widget_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <ImageView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/llDayPlan"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/days_plan_white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Days Plan"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/days_plan_white" />
 
-                <ImageView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Days Plan"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/reservs_white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Reservs"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@android:color/transparent" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/llPayment"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reservs_white" />
 
-                <ImageView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Reservs"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPayment"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/payment_white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Payments"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@android:color/transparent" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/payment_white" />
 
-                <ImageView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Payments"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/photos_white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Photos"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@android:color/transparent" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/photos_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Photos"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
         <!--        </androidx.cardview.widget.CardView>-->
 
@@ -296,20 +297,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_expand_less_24"
-            app:layout_constraintTop_toBottomOf="@id/cvMenu"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cvMenu" />
 
         <TextView
             android:id="@+id/tvMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_expand_less_24"
-            app:layout_constraintTop_toBottomOf="@id/ivMore"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="More Details"
             android:textColor="@android:color/white"
-            android:text="More Details" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMore" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
