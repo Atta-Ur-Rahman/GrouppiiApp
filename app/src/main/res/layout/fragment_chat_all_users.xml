@@ -27,12 +27,14 @@
 
     <ImageView
         android:id="@+id/ivEdit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
         android:layout_alignParentEnd="true"
         android:src="@mipmap/chats"
+        android:padding="10dp"
+        android:background="@drawable/round_card_transparent_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
