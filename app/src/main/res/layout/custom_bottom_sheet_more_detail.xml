@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="700dp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
     app:behavior_hideable="false"
     app:behavior_peekHeight="40dp"
-    android:background="@android:color/transparent"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
@@ -18,17 +18,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/top_side_round_conner">
+        android:background="@drawable/top_side_round_conner"
+        android:orientation="vertical">
 
         <View
             android:id="@+id/ivMinusIcon"
             android:layout_width="@dimen/top_minus_width"
             android:layout_height="4dp"
-            android:background="@drawable/round_line_back"
             android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/round_line_back"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -36,66 +36,185 @@
             android:id="@+id/llTabs"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:paddingTop="@dimen/card_view_padding"
             android:layout_margin="@dimen/widget_margin_left_right"
             android:background="@drawable/round_card_bg"
-            android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
             android:gravity="center"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:tabTextColor="#2A2A2A"
+                android:visibility="gone"
+                app:tabGravity="fill"
                 app:tabMode="fixed"
-                app:tabGravity="fill" />
+                app:tabTextColor="#2A2A2A" />
+
+
+            <LinearLayout
+                android:id="@+id/cvMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/widget_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/llBottomSheeDayPlan"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivBottomSheeDayPlan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/days_plan_selected" />
+
+                        <TextView
+                            android:id="@+id/tvBottomSheeDayPlan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Days Plan"
+                            android:textColor="@color/purple_500"
+                            android:textSize="@dimen/text_size14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llBottomSheeReservs"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivBottomSheeReservs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/reservs" />
+
+                        <TextView
+                            android:id="@+id/tvBottomSheeReservs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Reservs"
+                            android:textColor="@color/gry"
+                            android:textSize="@dimen/text_size14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llBottomSheePayment"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivBottomSheePayment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/payment" />
+
+                        <TextView
+                            android:id="@+id/tvBottomSheePayment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Payments"
+                            android:textColor="@color/gry"
+                            android:textSize="@dimen/text_size14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llBottomSheePhotos"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivBottomSheePhotos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/photos" />
+
+                        <TextView
+                            android:id="@+id/tvBottomSheePhotos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Photos"
+                            android:textColor="@color/gry"
+                            android:textSize="@dimen/text_size14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:visibility="gone"
             android:id="@+id/navigation"
             android:layout_width="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
             android:layout_height="70dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="@dimen/card_view_padding"
-            android:paddingRight="@dimen/card_view_padding"
-            android:paddingLeft="@dimen/card_view_padding"
+            android:layout_gravity="bottom"
             android:layout_margin="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
             android:background="?android:attr/windowBackground"
             android:fitsSystemWindows="true"
+            android:paddingLeft="@dimen/card_view_padding"
+            android:paddingTop="@dimen/card_view_padding"
+            android:paddingRight="@dimen/card_view_padding"
+            android:paddingBottom="4dp"
+            android:visibility="gone"
             app:itemIconTint="@drawable/tab_color"
             app:itemTextColor="@drawable/tab_color"
             app:labelVisibilityMode="labeled"
             app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-            app:menu="@menu/navigation"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:menu="@menu/navigation" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/llTabs"
             android:layout_marginStart="@dimen/widget_margin"
             android:layout_marginEnd="@dimen/widget_margin"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@id/llTabs" />
 
         <ImageView
             android:id="@+id/ivAddActivity"
             android:layout_width="@dimen/fifty_dp"
             android:layout_height="@dimen/fifty_dp"
             android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@mipmap/add"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@mipmap/add" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"

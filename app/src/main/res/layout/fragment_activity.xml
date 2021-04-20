@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backColor"
+    tools:context=".ui.fragment.ActivityFragment">
+
+    <TextView
+        android:id="@+id/tvNotificationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:gravity="center"
+        android:text="Notifications"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/ivEdit"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginEnd="@dimen/widget_margin_left_right"
+        android:src="@mipmap/icon_more" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNotificationList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNotificationTitle"
+        android:paddingStart="@dimen/widget_margin_left_right"
+        android:paddingEnd="@dimen/widget_margin_left_right"
+        android:layout_marginBottom="@dimen/widget_margin_left_right"
+        android:clipToPadding="false"
+        tools:showIn="@layout/custom_notification_layout"
+        tools:listitem="@layout/custom_notification_layout"
+        android:scrollbars="vertical" />
+
+
+</RelativeLayout>

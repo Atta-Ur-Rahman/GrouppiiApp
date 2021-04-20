@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/widget_margin"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/widget_margin"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dubai" />
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tvTitleName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:text="Ready for london"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize16sp"
+            android:textStyle="bold"
+            android:paddingEnd="5dp"
+            app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintEnd_toStartOf="@id/tvDetail"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginRight="62dp"
+            android:gravity="center_vertical"
+            android:text="Here are some trips whats to do  in London"
+            android:textSize="@dimen/text_size14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
+
+
+        <TextView
+            android:id="@+id/tvDetail"
+            android:layout_width="62dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/round_button_conner"
+            android:gravity="center"
+            android:text="Details"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.8dp"
+            android:background="@color/gry"
+            android:layout_marginTop="@dimen/tendp"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
+            app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintLeft_toRightOf="@id/cvImage"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

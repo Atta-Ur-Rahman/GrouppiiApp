@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/widget_margin_left_right"
             android:paddingRight="@dimen/widget_margin_left_right"
-            android:text="What would you \nlike to do"
+            android:text="What would you \nlike to do?"
             android:textColor="@android:color/black"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -81,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                app:searchIcon="@drawable/search"
                 app:layout_constraintTop_toTopOf="parent"
                 app:queryBackground="@android:color/transparent" />
         </com.google.android.material.card.MaterialCardView>
@@ -99,6 +100,7 @@
 
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/ivPause"
             android:layout_width="30dp"
             android:layout_height="30dp"

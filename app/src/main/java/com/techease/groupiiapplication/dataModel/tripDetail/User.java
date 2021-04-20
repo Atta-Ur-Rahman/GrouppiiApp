@@ -13,7 +13,7 @@ public class User {
     @SerializedName("modified_at")
     private Object mModifiedAt;
     @SerializedName("picture")
-    private Object mPicture;
+    private String mPicture;
     @SerializedName("shared_cost")
     private Long mSharedCost;
     @SerializedName("tripid")
@@ -53,11 +53,11 @@ public class User {
         mModifiedAt = modifiedAt;
     }
 
-    public Object getPicture() {
+    public String getPicture() {
         return mPicture;
     }
 
-    public void setPicture(Object picture) {
+    public void setPicture(String picture) {
         mPicture = picture;
     }
 

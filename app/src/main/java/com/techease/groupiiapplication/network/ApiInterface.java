@@ -98,6 +98,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("trips/tripusers")
     Call<AddTripResponse> addTrip(
+            @Field("name") String name,
             @Field("email") String email,
             @Field("phone") String phone,
             @Field("share_cost") String shareCost,

@@ -84,7 +84,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     boolean isConnected;
 
     private String strTripId, strToUserId, strUsername, strMessageType = "1";
-    private String message, toUser, fromUser, fromUserName, tripId, isSent, date, senderImage, type;
+    private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
 
     boolean aBooleanShowKeyboardListener = true;
@@ -151,11 +151,13 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         userID = AppRepository.mUserID(this);
         strToUserId = bundle.getString("toUserId");
 
+
+
 //        Log.d("zma trip id", strTripId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rvMessage.setLayoutManager(mLayoutManager);
         rvMessage.setItemAnimator(new DefaultItemAnimator());
-        chatAdapter = new ChatAdapter(this, mMessages);
+        chatAdapter = new ChatAdapter(this, mMessages,strTripId);
         rvMessage.setAdapter(chatAdapter);
 
 //        rvMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -251,13 +253,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             fromUserName = data.getString("fromusername");
                                             message = data.getString("message");
                                             date = data.getString("created_at");
-                                            senderImage = data.getString("picture");
+//                                            senderImage = data.getString("picture");
                                             type = data.getString("type");
                                             isSent = data.getString("is_sent");
+                                            isRead = data.getString("is_read");
+
 
                                             Log.d("zma sender", "this is type " + toUser);
                                             if (strToUserId.equals(fromUser) || strToUserId.equals(toUser)) {
-                                                addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent);
+                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
 
                                             }
                                         } catch (JSONException e) {
@@ -297,11 +301,13 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     tripId = jsonObject.getString("tripid");
                                     isSent = jsonObject.getString("is_sent");
                                     type = jsonObject.getString("type");
+                                    isRead = jsonObject.getString("is_read");
+
 
                                     Log.d("zma message send sho", "" + jsonObject);
 
                                     if (strTripId.equals(tripId)) {
-                                        addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent);
+                                        addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
                                     }
                                 }
                             } catch (JSONException e) {
@@ -317,8 +323,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     };
 
 
-    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type, String isSent) {
-        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type, isSent));
+    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type, String isSent, String isRead) {
+        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type, isSent, isRead));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
     }

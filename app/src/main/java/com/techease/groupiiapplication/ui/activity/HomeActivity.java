@@ -18,17 +18,19 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
+import com.techease.groupiiapplication.ui.fragment.ActivityFragment;
 import com.techease.groupiiapplication.ui.fragment.SettingsFragment;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.ui.fragment.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-
 
 
     @BindView(R.id.llTrip)
@@ -61,8 +63,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvSettings;
 
 
-
-
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
@@ -71,6 +71,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     final Fragment fragmentTrip = new TripFragment();
     final Fragment fragmentChatActivity = new AllUsersChatFragment();
+    final Fragment fragmentActivity = new ActivityFragment();
+
 
     final Fragment fragmentSettings = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
@@ -81,21 +83,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
-        fm.beginTransaction().add(R.id.container, fragmentChatActivity, "3").hide(fragmentChatActivity).commit();
+        fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
+        fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();
         fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
         fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
-
 
 
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @OnClick({R.id.llTrip,R.id.llChat,R.id.llActivity, R.id.llSettings, R.id.fab})
+    @OnClick({R.id.llTrip, R.id.llChat, R.id.llActivity, R.id.llSettings, R.id.fab})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -152,9 +154,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ivActivity.setImageResource(R.mipmap.activity_selected);
                 ivSettings.setImageResource(R.mipmap.settings);
 
+
+                fm.beginTransaction().hide(active).show(fragmentActivity).commit();
+                active = fragmentActivity;
+
                 break;
             case R.id.llSettings:
-
 
 
                 tvTrip.setTextColor(getColor(R.color.gry));

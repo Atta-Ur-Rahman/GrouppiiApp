@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,8 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
 
     private Context context;
     private List<Active> activeList;
-    public static List<User> userList=new ArrayList<>();
-    private List<String> stringArrayList=new ArrayList<>();
+    public static List<User> userList = new ArrayList<>();
+    private List<String> stringArrayList = new ArrayList<>();
 
 
     public ActiveTripAdapter(Context context, List<Active> actives) {
@@ -58,29 +59,35 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
+//        holder.tvDaysLeft.setText(data.);
 
-        userList.addAll(data.getUsers());
+
+        if (data.getUsers() != null) {
+            userList.addAll(data.getUsers());
+        }
+
+//                    Log.d("userpic", data.getUsers().toString());
 
 
 
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context,userList ));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("image", data.getCoverimage());
-                bundle.putString("title",data.getTitle());
-                bundle.putString("trip_type","Active Trip");
-                bundle.putString("description",data.getDescription());
-                bundle.putString("location",data.getLocation());
+                bundle.putString("title", data.getTitle());
+                bundle.putString("trip_type", "Active Trip");
+                bundle.putString("description", data.getDescription());
+                bundle.putString("location", data.getLocation());
                 bundle.putStringArrayList("user", (ArrayList<String>) stringArrayList);
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
@@ -88,9 +95,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         });
 
 
-
     }
-
 
 
     @Override
@@ -101,7 +106,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate, tvLocation;
+        TextView tvTitle, tvStartEndDate, tvLocation, tvDaysLeft;
         ImageView ivImage;
         RecyclerView rvUsers;
 
@@ -111,6 +116,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
             tvTitle = view.findViewById(R.id.tvTripTitle);
             tvStartEndDate = view.findViewById(R.id.tvStartEndDate);
             tvLocation = view.findViewById(R.id.tvLocation);
+            tvDaysLeft = view.findViewById(R.id.tvDaysLeft);
             rvUsers = view.findViewById(R.id.rvUsers);
 
         }

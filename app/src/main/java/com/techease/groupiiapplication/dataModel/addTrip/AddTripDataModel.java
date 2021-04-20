@@ -16,6 +16,8 @@ public class AddTripDataModel {
     private Long mTripid;
     @SerializedName("userid")
     private Long mUserid;
+    @SerializedName("name")
+    private String  mName;
 
     public String getEmail() {
         return mEmail;
@@ -64,5 +66,15 @@ public class AddTripDataModel {
     public void setUserid(Long userid) {
         mUserid = userid;
     }
+
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
 
 }

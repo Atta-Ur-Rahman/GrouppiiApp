@@ -1,133 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/widget_margin"
     android:layout_marginRight="@dimen/widget_margin"
-    android:background="@android:color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="@dimen/widget_margin"
+    android:background="@android:color/white"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
-
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvImage"
-            android:layout_width="280dp"
-            android:layout_height="230sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="240dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_margin="@dimen/widget_margin_left_right"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivTripDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/dubai"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
-
-        <TextView
-            android:id="@+id/tvStartEndDate"
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:text="Sep 10 - Sep 27"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:paddingRight="@dimen/widget_margin_left_right"
-            android:paddingLeft="@dimen/widget_margin_left_right"
-            android:textSize="18sp"
-            app:layout_constraintRight_toLeftOf="@id/tvLocation"
-            android:textColor="@color/purple_500"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvImage"
-            android:background="@drawable/one_side_round_conner"
-            android:ellipsize="end"
-            android:maxLines="1"/>
-
-
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:drawableLeft="@mipmap/my_trips_selected"
-            android:drawablePadding="@dimen/widget_margin"
-            android:text="Dubai UAE"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toBottomOf="@id/cvImage"
-            android:ellipsize="end"
-            android:maxLines="1"/>
-
-
-        <TextView
-            android:id="@+id/tvTripTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Best Dubai Adventure Holiday Trip 15 days."
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingRight="100dp"
-            app:layout_constraintTop_toBottomOf="@id/tvStartEndDate"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
-
-
-        <View
-            android:id="@+id/viewLine"
-            android:layout_width="match_parent"
-            android:layout_height="0.4dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTripTitle"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="@dimen/widget_margin" />
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            app:layout_constraintTop_toBottomOf="@id/viewLine"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvUsers"
-                android:layout_width="200dp"
-                android:layout_marginLeft="@dimen/widget_margin_left_right"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white">
 
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="10 days left"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
+                android:id="@+id/tvStartEndDate"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="@dimen/widget_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/one_side_round_conner"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/widget_margin_left_right"
+                android:paddingRight="@dimen/widget_margin_left_right"
+                android:text="Sep 10 - Sep 27"
+                android:textColor="@color/purple_500"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintRight_toLeftOf="@id/tvLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/widget_margin"
                 android:layout_marginRight="@dimen/widget_margin_left_right"
-                android:drawableLeft="@mipmap/manage_bookings" />
+                android:drawableLeft="@mipmap/my_trips_selected"
+                android:drawablePadding="@dimen/widget_margin"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="Dubai UAE"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvTripTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:gravity="center_vertical"
+                android:paddingRight="100dp"
+                android:text="Best Dubai Adventure Holiday Trip 15 days."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStartEndDate" />
+
+
+            <View
+                android:id="@+id/viewLine"
+                android:layout_width="match_parent"
+                android:layout_height="0.4dp"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/tvTripTitle" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewLine">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUsers"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/widget_margin_left_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tvDaysLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/widget_margin"
+                    android:layout_marginRight="@dimen/widget_margin_left_right"
+                    android:drawableLeft="@mipmap/manage_bookings"
+                    android:gravity="center_vertical"
+                    android:text="10 days left"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

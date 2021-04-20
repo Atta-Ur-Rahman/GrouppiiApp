@@ -124,7 +124,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
             case R.id.ivGalleryPhotoGridView:
 
                 if (aBooleanIsGridView) {
-                    ivGalleryPhotoGridView.setBackgroundResource(R.drawable.ic_baseline_view_module_24);
+                    ivGalleryPhotoGridView.setBackgroundResource(R.drawable.grid_view);
                     initRecylerView(false);
                     aBooleanIsGridView = false;
                     AppRepository.mPutValue(getActivity()).putBoolean("aBooleanIsGridView", false).commit();

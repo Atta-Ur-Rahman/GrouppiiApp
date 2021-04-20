@@ -2,28 +2,26 @@ package com.techease.groupiiapplication.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,8 +32,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -64,10 +60,7 @@ import com.techease.groupiiapplication.utils.StringHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +112,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.cvMenu)
     LinearLayout cvMenu;
 
+
+    LinearLayout llBottomSheetDayPlan, llBottomSheetReservs, llBottomSheetPayments, llBottomSheetPhotos;
+    ImageView ivBottomSheetDayPlan, ivBottomSheetReservs, ivBottomSheetPayments, ivBottomSheetPhotos;
+    TextView tvBottomSheetDayPlan, tvBottomSheetReservs, tvBottomSheetPayments, tvBottomSheetPhotos;
+
+
     boolean valid = true;
 
     @BindView(R.id.llBottomSheetBehaviorId)
@@ -152,9 +151,16 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     File sourceFile;
 
 
-    String strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strActivityGroup;
+    Dialog addPhotoDialog;
+
+    String strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strActivityGroup, strPhotoName;
 
     Dialog dialog;
+
+    String photoName;
+    EditText etPhotoName;
+    ImageView ivGalleryPhoto;
+    Button btnAddPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,9 +209,19 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
         mBottomSheetDialog.show();
 
+        TextView tvCancel=mBottomSheetDialog.findViewById(R.id.tvCancel);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.dismiss();
+            }
+        });
+
+
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("NonConstantResourceId")
     @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu})
 
@@ -231,7 +247,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 } else if (anIntViewPagerPosition == 3) {
 
                     if (aBooleanAddImage) {
-                        checkImagePermission();
+                        addPhotoDialog();
                         aBooleanAddImage = false;
                     }
                 }
@@ -240,6 +256,22 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 if (isValid()) {
                     ApiCallForAddDayActivity();
                 }
+                break;
+
+            case R.id.btnAddPhoto:
+
+                if (etPhotoName.getText().toString().length() < 2) {
+                    etPhotoName.setError("enter photo name");
+
+                } else if (sourceFile == null) {
+                    Toast.makeText(this, "select photo", Toast.LENGTH_SHORT).show();
+                } else {
+                    ApiCallForAddPhotoToGallery();
+
+                }
+                break;
+            case R.id.ivPhoto:
+                checkImagePermission();
                 break;
             case R.id.ivAddActivityBack:
                 addActivityBottomSheetBehavior.setHideable(true);
@@ -259,7 +291,47 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 break;
 
+            case R.id.llBottomSheeDayPlan:
+                changeTextColdrTab(R.color.purple_500, R.color.gry, R.color.gry, R.color.gry);
+                changeImageColdrTab(R.mipmap.my_trips_selected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos);
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.llBottomSheeReservs:
+                changeTextColdrTab(R.color.gry, R.color.purple_500, R.color.gry, R.color.gry);
+                changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reserv_selected, R.mipmap.payment, R.mipmap.photos);
+                viewPager.setCurrentItem(1);
+
+                break;
+            case R.id.llBottomSheePayment:
+                changeTextColdrTab(R.color.gry, R.color.gry, R.color.purple_500, R.color.gry);
+                changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reservs, R.mipmap.payment_selected, R.mipmap.photos);
+                viewPager.setCurrentItem(2);
+
+                break;
+            case R.id.llBottomSheePhotos:
+                changeTextColdrTab(R.color.gry, R.color.gry, R.color.gry, R.color.purple_500);
+                changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos_selected);
+                viewPager.setCurrentItem(3);
+
+                break;
+
+
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void changeTextColdrTab(int dayPlan, int reservs, int payment, int photos) {
+        tvBottomSheetDayPlan.setTextColor(getColor(dayPlan));
+        tvBottomSheetReservs.setTextColor(getColor(reservs));
+        tvBottomSheetPayments.setTextColor(getColor(payment));
+        tvBottomSheetPhotos.setTextColor(getColor(photos));
+    }
+
+    private void changeImageColdrTab(int my_trip_unselected, int reservs, int payment, int photos) {
+        ivBottomSheetDayPlan.setImageResource(my_trip_unselected);
+        ivBottomSheetReservs.setImageResource(reservs);
+        ivBottomSheetPayments.setImageResource(payment);
+        ivBottomSheetPhotos.setImageResource(photos);
     }
 
 
@@ -307,9 +379,29 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvAddActivity = llBottomSheetAddDayActivity.findViewById(R.id.tvActivityAdd);
         switchCompatGroupActivity = llBottomSheetAddDayActivity.findViewById(R.id.swAddGroupActivity);
 
+        llBottomSheetDayPlan = llActivityMoreBottomSheet.findViewById(R.id.llBottomSheeDayPlan);
+        llBottomSheetReservs = llActivityMoreBottomSheet.findViewById(R.id.llBottomSheeReservs);
+        llBottomSheetPayments = llActivityMoreBottomSheet.findViewById(R.id.llBottomSheePayment);
+        llBottomSheetPhotos = llActivityMoreBottomSheet.findViewById(R.id.llBottomSheePhotos);
 
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
+        ivBottomSheetDayPlan = llActivityMoreBottomSheet.findViewById(R.id.ivBottomSheeDayPlan);
+        ivBottomSheetReservs = llActivityMoreBottomSheet.findViewById(R.id.ivBottomSheeReservs);
+        ivBottomSheetPayments = llActivityMoreBottomSheet.findViewById(R.id.ivBottomSheePayment);
+        ivBottomSheetPhotos = llActivityMoreBottomSheet.findViewById(R.id.ivBottomSheePhotos);
+
+        tvBottomSheetDayPlan = llActivityMoreBottomSheet.findViewById(R.id.tvBottomSheeDayPlan);
+        tvBottomSheetReservs = llActivityMoreBottomSheet.findViewById(R.id.tvBottomSheeReservs);
+        tvBottomSheetPayments = llActivityMoreBottomSheet.findViewById(R.id.tvBottomSheePayment);
+        tvBottomSheetPhotos = llActivityMoreBottomSheet.findViewById(R.id.tvBottomSheePhotos);
+
+
+        llBottomSheetDayPlan.setOnClickListener(this);
+        llBottomSheetReservs.setOnClickListener(this);
+        llBottomSheetPayments.setOnClickListener(this);
+        llBottomSheetPhotos.setOnClickListener(this);
+
+
+        setupViewPagerForTabs(viewPager);
 
 
 //        BroadcastReceiver broadcastReceiver;
@@ -323,63 +415,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //            }
 //        };
 //        registerReceiver(broadcastReceiver,intentFilter);
-
-//
-//        TabLayout.Tab firstTab = tabLayout.newTab();
-//        firstTab.setText("First"); // set the Text for the first Tab
-//        firstTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
-//        // first tab
-//        tabLayout.addTab(firstTab); // add  the tab at in the TabLayout
-//
-//
-//
-//        TabLayout.Tab secondTab = tabLayout.newTab();
-//        secondTab.setText("First"); // set the Text for the first Tab
-//        secondTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
-//        // first tab
-//        tabLayout.addTab(secondTab); // add  the tab at in the TabLayout
-//
-//
-//
-//        TabLayout.Tab thirdTab = tabLayout.newTab();
-//        thirdTab.setText("First"); // set the Text for the first Tab
-//        thirdTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
-//        // first tab
-//        tabLayout.addTab(thirdTab); // add  the tab at in the TabLayout
-//
-//
-//        TabLayout.Tab fouthyTab = tabLayout.newTab();
-//        fouthyTab.setText("First"); // set the Text for the first Tab
-//        fouthyTab.setIcon(R.mipmap.days_plan_selected); // set an icon for the
-//        // first tab
-//        tabLayout.addTab(fouthyTab); // add  the tab at in the TabLayout
-
-
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText(R.string.days_plan);
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.days_plan_selected, 0, 0);
-        tabOne.setTextSize(13);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
-
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText(R.string.reserves);
-        tabTwo.setTextSize(13);
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.reserv_selected, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
-
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText(R.string.payments);
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.payment_selected, 0, 0);
-        tabThree.setTextSize(13);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
-
-        TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabFour.setText(R.string.photos);
-        tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.photos_selected, 0, 0);
-        tabFour.setTextSize(13);
-        tabLayout.getTabAt(3).setCustomView(tabFour);
-
-
 
 
         ivAddActivityBack.setOnClickListener(this);
@@ -487,7 +522,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPagerForTabs(ViewPager viewPager) {
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AllTripDayFragment(), "Days Plan");
         adapter.addFragment(new ReservesFragment(), "Reserves");
@@ -497,8 +532,26 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                if (position == 0) {
+                    changeTextColdrTab(R.color.purple_500, R.color.gry, R.color.gry, R.color.gry);
+                    changeImageColdrTab(R.mipmap.my_trips_selected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos);
+                }
+                if (position == 1) {
+                    changeTextColdrTab(R.color.gry, R.color.purple_500, R.color.gry, R.color.gry);
+                    changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reserv_selected, R.mipmap.payment, R.mipmap.photos);
+                }
+                if (position == 2) {
+                    changeTextColdrTab(R.color.gry, R.color.gry, R.color.purple_500, R.color.gry);
+                    changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reservs, R.mipmap.payment_selected, R.mipmap.photos);
+                }
+                if (position == 3) {
+                    changeTextColdrTab(R.color.gry, R.color.gry, R.color.gry, R.color.purple_500);
+                    changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos_selected);
+                }
 
             }
 
@@ -524,6 +577,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
+
                 chooseAction();
             }
 
@@ -537,6 +591,32 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         }).check();
     }
 
+
+    void addPhotoDialog() {
+        addPhotoDialog = new Dialog(this);
+        addPhotoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        addPhotoDialog.setCancelable(true);
+        addPhotoDialog.setContentView(R.layout.custom_add_photo_layout);
+        ivGalleryPhoto = addPhotoDialog.findViewById(R.id.ivPhoto);
+        etPhotoName = addPhotoDialog.findViewById(R.id.etPhotoName);
+        btnAddPhoto = addPhotoDialog.findViewById(R.id.btnAddPhoto);
+        ivGalleryPhoto.setOnClickListener(this);
+        btnAddPhoto.setOnClickListener(this);
+
+        addPhotoDialog.show();
+        AlertUtils.doKeepDialog(addPhotoDialog);
+        addPhotoDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+
+
+
+        addPhotoDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                aBooleanAddImage = true;
+            }
+        });
+
+    }
 
     void chooseAction() {
         File dir = FileUtils.getDiskCacheDir(this, "temp");
@@ -599,17 +679,17 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                         Uri imageUri = getPickImageResultUri(data);
                         File originFile = new File(imageUri.getPath());
                         sourceFile = FileUtils.compressImage(this, originFile);
-                        ApiCallForAddPhotoToGallery();
+
                     } else {  // Gallery
                         if (data.getData() != null) {
                             Uri uri = data.getData();
                             sourceFile = FileUtils.getFile(this, uri);
 //                            sourceFile = FileUtils.compressImage(this, originFile);
-                            ApiCallForAddPhotoToGallery();
-
 
                         }
                     }
+
+                    ivGalleryPhoto.setImageURI(Uri.fromFile(sourceFile));
 
                     Log.d("zma image file", "" + sourceFile);
 
@@ -628,7 +708,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
         RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
-        RequestBody BodyTitle = RequestBody.create(sourceFile.getAbsoluteFile().getName(), MediaType.parse("multipart/form-data"));
+        RequestBody BodyTitle = RequestBody.create(etPhotoName.getText().toString(), MediaType.parse("multipart/form-data"));
         RequestBody BodyTime = RequestBody.create(DatePickerClass.getCurrentDate("hh:mm"), MediaType.parse("multipart/form-data"));
         RequestBody BodyDate = RequestBody.create(DatePickerClass.getCurrentDate("yyyy-MM-dd"), MediaType.parse("multipart/form-data"));
 
@@ -641,7 +721,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 Log.d("zma response", String.valueOf(response));
                 if (response.isSuccessful()) {
 
-
+                    addPhotoDialog.dismiss();
+                    sourceFile = null;
                     Connect.setMyBoolean(true);
                     dialog.dismiss();
                     Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();

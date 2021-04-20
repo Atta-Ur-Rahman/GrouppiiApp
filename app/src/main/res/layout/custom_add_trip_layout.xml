@@ -15,8 +15,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_margin="@dimen/widget_margin_left_right"
             app:cardCornerRadius="10dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +35,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:text="Babby Farell"
             android:textColor="@color/black"
-            android:textSize="@dimen/main_heading_text_size"
+            android:textSize="@dimen/textsize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/cvImage"
@@ -56,6 +56,7 @@
             android:gravity="center_vertical"
             android:text="babbyfarell@gmail.com"
             android:textStyle="bold"
+            android:textSize="@dimen/text_size14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cvImage"
             app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
@@ -64,7 +65,7 @@
         <ImageView
             android:id="@+id/ivTick"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginRight="@dimen/widget_margin_left_right"
@@ -79,6 +80,7 @@
             android:gravity="center_vertical"
             android:text="Shares trip cost"
             android:textStyle="bold"
+            android:textSize="@dimen/text_size14sp"
             app:layout_constraintLeft_toRightOf="@+id/ivTick"
             app:layout_constraintTop_toBottomOf="@id/tvEmail" />
 

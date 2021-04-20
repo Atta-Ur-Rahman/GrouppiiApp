@@ -79,7 +79,7 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
         CriteriaDataObject criteriaDataObject = new CriteriaDataObject();
 
         areaDataObject.setId(26023);
-        areaDataObject.setCityId(9395);
+        areaDataObject.setCityId(229);
 
         criteriaDataObject.setAreaDataObject(areaDataObject);
         criteriaDataObject.setCheckInDate("2021-10-14");

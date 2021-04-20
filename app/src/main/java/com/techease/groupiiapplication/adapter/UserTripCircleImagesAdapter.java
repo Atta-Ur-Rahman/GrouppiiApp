@@ -1,6 +1,8 @@
 package com.techease.groupiiapplication.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 
@@ -21,7 +24,8 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     private Context context;
     private List<User> arrayList;
-    int anIntImage;
+    int anIntImage=1;
+
 
     public UserTripCircleImagesAdapter(Context context, List<User> imagesArray) {
         this.context = context;
@@ -39,21 +43,49 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 //        User user=arrayList.get(position);
-//        Picasso.get().load((Uri) user.getPicture()).placeholder(R.drawable.image_thumbnail).into(holder.imageView);
 
 
-//
-        if (position == 3) {
-            holder.relativeLayout.setVisibility(View.VISIBLE);
-            holder.tvCount.setText(String.valueOf(arrayList.size()+4)+"+");
-        }else {
-            holder.relativeLayout.setVisibility(View.GONE);
+//        if (arrayList.get(position)!=null) {
+//            Log.d("userpic", arrayList.get(position).getPicture().toString());
+//        }
+//        Picasso.get().load(arrayList.get(position).getPicture()).placeholder(R.drawable.image_thumbnail).into(holder.imageView);
+
+        if (arrayList.size() == 1) {
+            anIntImage = 2;
+
+            if (position == 1) {
+                holder.relativeLayout.setVisibility(View.VISIBLE);
+                holder.tvCount.setText(String.valueOf(arrayList.size() + 2) + "+");
+            } else {
+                holder.relativeLayout.setVisibility(View.GONE);
+            }
         }
+        if (arrayList.size() == 2) {
+            anIntImage = 3;
+
+            if (position == 2) {
+                holder.relativeLayout.setVisibility(View.VISIBLE);
+                holder.tvCount.setText(String.valueOf(arrayList.size() + 3) + "+");
+            } else {
+                holder.relativeLayout.setVisibility(View.GONE);
+            }
+        }
+        if (arrayList.size() >= 3) {
+            anIntImage = 4;
+            if (position == 3) {
+                holder.relativeLayout.setVisibility(View.VISIBLE);
+                holder.tvCount.setText(String.valueOf(arrayList.size() + 4) + "+");
+            } else {
+                holder.relativeLayout.setVisibility(View.GONE);
+            }
+        }
+//
+
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return anIntImage;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

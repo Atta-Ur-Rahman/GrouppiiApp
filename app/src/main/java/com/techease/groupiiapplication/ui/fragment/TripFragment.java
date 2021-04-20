@@ -29,6 +29,7 @@ import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.ui.fragment.trip.ActiveFragment;
 import com.techease.groupiiapplication.ui.fragment.trip.PastFragment;
+import com.techease.groupiiapplication.ui.fragment.trip.UnPublishFragment;
 import com.techease.groupiiapplication.ui.fragment.trip.UpcomingFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -102,6 +103,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         adapter.addFragment(new ActiveFragment(), "Active");
         adapter.addFragment(new UpcomingFragment(), "Upcoming");
         adapter.addFragment(new PastFragment(), "Past");
+        adapter.addFragment(new UnPublishFragment(), "UnPublish");
         viewPager.setAdapter(adapter);
 
     }

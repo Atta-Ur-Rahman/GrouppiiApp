@@ -44,14 +44,18 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     @BindView(R.id.btnResetPassword)
     Button btnReset;
 
+    @BindView(R.id.etCurrentPassword)
+    EditText etCurrentPassword;
 
+    @BindView(R.id.tilCurrentPassword)
+    TextInputLayout tilCurrentPassword;
     @BindView(R.id.tilNewPassword)
     TextInputLayout tilNewPassword;
     @BindView(R.id.tilAgainPassword)
     TextInputLayout tilAgainPassword;
 
 
-    private String strNewPassword, strAgainPassword;
+    private String strCurrentPassword, strNewPassword, strAgainPassword;
     Dialog alertDialog;
 
     boolean valid;
@@ -121,6 +125,18 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
         strNewPassword = etNewPassword.getText().toString();
         strAgainPassword = etAgainPassword.getText().toString();
+        strCurrentPassword = etCurrentPassword.getText().toString();
+
+        if (!GeneralUtills.isValidPassword(strCurrentPassword)) {
+            tilCurrentPassword.setErrorEnabled(true);
+            tilCurrentPassword.setError(getString(R.string.password_should_be_six));
+            valid = false;
+
+        } else {
+            tilCurrentPassword.setError(null);
+            tilCurrentPassword.setErrorEnabled(false);
+
+        }
 
 
         if (!GeneralUtills.isValidPassword(strNewPassword)) {

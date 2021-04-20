@@ -2,11 +2,11 @@ package com.techease.groupiiapplication.dataModel.chat;
 
 public class ChatModel {
 
-    public String fromuserName, messages, date, senderImage, messageType, isSent;
+    public String fromuserName, messages, date, senderImage, messageType, isSent, isRead;
     public int senderID, recieverID;
 
 
-    public ChatModel(int senderID, int recieverID, String fromuserName, String messages, String date, String senderImage, String messageType, String isSent) {
+    public ChatModel(int senderID, int recieverID, String fromuserName, String messages, String date, String senderImage, String messageType, String isSent, String isRead) {
         this.fromuserName = fromuserName;
         this.messages = messages;
         this.date = date;
@@ -15,11 +15,20 @@ public class ChatModel {
         this.senderID = senderID;
         this.recieverID = recieverID;
         this.isSent = isSent;
+        this.isRead = isRead;
+
     }
 
     public ChatModel() {
     }
 
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
 
     public String getIsSent() {
         return isSent;

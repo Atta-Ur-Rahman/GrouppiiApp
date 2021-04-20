@@ -150,10 +150,12 @@ public class AllUsersChatFragment extends Fragment {
                     @Override
                     public void run() {
                         JSONObject jsonObject = (JSONObject) args[0];
+                        Log.d("zma all user", jsonObject + "");
+
                         try {
                             JSONArray jsonArray = jsonObject.getJSONArray("groups");
 
-                            Log.d("zma all user", jsonObject + "");
+                            Log.d("zma all user", jsonArray + "");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
                                 String title = c.getString("group_title");
@@ -171,9 +173,9 @@ public class AllUsersChatFragment extends Fragment {
 
 
                                 //check condition if user id and user
-//                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
                                     addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa");
-//                                }
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

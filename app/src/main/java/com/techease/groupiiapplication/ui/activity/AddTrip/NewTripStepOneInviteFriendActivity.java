@@ -78,7 +78,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     RecyclerView rvInviteFriend;
 
     boolean valid;
-    String strEmail, strPhoneNumber, strShareCost = "0";
+    String strName, strEmail, strPhoneNumber, strShareCost = "0";
+
+    @BindView(R.id.tilName)
+    TextInputLayout tilName;
+    @BindView(R.id.etName)
+    EditText etName;
 
     @BindView(R.id.tilEmail)
     TextInputLayout tilEmail;
@@ -102,6 +107,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     CheckBox cbShareCost;
 
     List<AddTripDataModel> addTripDataModels = new ArrayList<>();
+
+    boolean contectBoolean = true;
 
     Dialog dialog;
 
@@ -300,7 +307,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriend() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strEmail, strPhoneNumber, strShareCost,
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName,strEmail, strPhoneNumber, strShareCost,
                 AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
@@ -339,10 +346,20 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
-
+        strName = etName.getText().toString();
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
 
+
+        if (strName.isEmpty()) {
+            valid = false;
+            tilName.setErrorEnabled(true);
+            tilName.setError(getString(R.string.plesase_write_participant_name));
+
+        } else {
+            tilName.setError(null);
+            tilName.setErrorEnabled(false);
+        }
         if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
             tilEmail.setErrorEnabled(true);
             tilEmail.setError(getString(R.string.valid_email));
@@ -440,10 +457,14 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         rvMyContact.setLayoutManager(new LinearLayoutManager(this));
         rvMyContact.setHasFixedSize(true);
 
+
         listener = (view, position) -> {
+
 
             etPhone.setText(contactDataModelList.get(position).getNumContact());
             ContactLayoutGone();
+
+
         };
 
         contactsAdapter = new MyContactsAdapter(this, contactDataModelList, this);
@@ -516,5 +537,9 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     public void onContactSelected(ContactDataModel contact) {
         etPhone.setText(contact.getNumContact());
         etPhone.setSelection(etPhone.getText().length());
+        ContactLayoutGone();
+        KeyBoardUtils.closeKeyboard(this);
+        KeyBoardUtils.hideKeyboard(this);
+
     }
 }

@@ -43,7 +43,7 @@ public class AddTripAdapter extends RecyclerView.Adapter<AddTripAdapter.MyViewHo
 
         AddTripDataModel addTripDataModel = addTripDataModels.get(position);
 
-        holder.tvTitle.setText(String.valueOf(addTripDataModel.getPhone()));
+        holder.tvTitle.setText(String.valueOf(addTripDataModel.getName()));
         holder.tvStartEndDate.setText(String.valueOf(addTripDataModel.getEmail()));
 
 

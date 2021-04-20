@@ -34,7 +34,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     private Context context;
     private List<Past> pastList;
     private List<User> userList = new ArrayList<>();
-    private ArrayList<String> stringArrayList=new ArrayList<>();
+    private ArrayList<String> stringArrayList = new ArrayList<>();
 
 
     public PastTripAdapter(Context context, List<Past> pasts) {
@@ -55,7 +55,10 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Past data = pastList.get(position);
-        Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+
+//        if (data.getCoverimage() != null) {
+//            Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+//        }
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
@@ -81,13 +84,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     if (GeneralUtills.PopupMenuDelete(new ApiCallback() {
                         @Override
                         public boolean onResponse(boolean success) {
-                            if (success){
+                            if (success) {
                                 removeAt(position);
 
                             }
                             return true;
                         }
-                    },context, holder.ivImage, strTripId)) {
+                    }, context, holder.ivImage, strTripId)) {
 
 
                     }
@@ -102,7 +105,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             @Override
             public void onClick(View view) {
 
-                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
                     Log.d("zma tripid", String.valueOf(data.getId()));
@@ -110,7 +113,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                 } else {
 
                     stringArrayList.clear();
-                    for (int i=0;i<userList.size();i++){
+                    for (int i = 0; i < userList.size(); i++) {
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
                     Intent intent = new Intent(context, TripDetailScreenActivity.class);
@@ -120,7 +123,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     bundle.putString("trip_type", "Past Trip");
                     bundle.putString("description", data.getDescription());
                     bundle.putString("location", data.getLocation());
-                    bundle.putStringArrayList("users",stringArrayList);
+                    bundle.putStringArrayList("users", stringArrayList);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
 
@@ -138,7 +141,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     public int getItemViewType(int position) {
         return position;
     }
-
 
 
     @Override

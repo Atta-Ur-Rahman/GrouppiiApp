@@ -53,7 +53,6 @@
         android:layout_height="@dimen/fourty_dp"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginRight="@dimen/widget_margin"
-        android:background="@drawable/round_card_transparent_bg"
         android:src="@mipmap/chat_white"
         app:layout_constraintRight_toLeftOf="@id/ivMenu"
         app:layout_constraintTop_toTopOf="parent" />
@@ -64,8 +63,7 @@
         android:layout_height="@dimen/fourty_dp"
         android:layout_marginTop="@dimen/widget_margin_left_right"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
-        android:background="@drawable/round_card_transparent_bg"
-        android:src="@mipmap/menu"
+        android:src="@mipmap/info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

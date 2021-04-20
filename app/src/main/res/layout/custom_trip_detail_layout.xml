@@ -35,7 +35,7 @@
                 <ImageView
                     android:id="@+id/ivHotelImages"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     android:scaleType="centerCrop" />
 
             </RelativeLayout>
@@ -55,7 +55,7 @@
             android:paddingRight="100dp"
             app:layout_constraintTop_toBottomOf="@id/cvImage"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
 
         <LinearLayout
@@ -85,6 +85,7 @@
                 android:layout_marginTop="@dimen/widget_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginRight="@dimen/widget_margin_left_right"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/viewLine" />
 
 
@@ -101,14 +102,15 @@
 
         <TextView
             android:id="@+id/tvRoom"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Senior Room"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
             android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintEnd_toStartOf="@id/tvHotelPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewLine" />
 
@@ -121,6 +123,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/tvHotelPrice"
             android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tvRoom" />
 
 
@@ -134,7 +137,7 @@
             android:layout_marginTop="@dimen/widget_margin"
             android:paddingRight="@dimen/widget_margin"
             android:paddingLeft="@dimen/widget_margin"
-            android:textSize="18sp"
+            android:textSize="10sp"
             android:textColor="@color/purple_500"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

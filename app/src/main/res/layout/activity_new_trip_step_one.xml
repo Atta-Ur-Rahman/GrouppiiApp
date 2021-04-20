@@ -21,8 +21,8 @@
             android:layout_height="50dp"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/widget_margin"
-            android:background="@drawable/round_bg"
-            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            android:src="@mipmap/backicon"
+            android:padding="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,7 +93,7 @@
                 android:paddingRight="@dimen/widget_margin_left_right"
                 android:text="Trip Participants"
                 android:textColor="@color/black"
-                android:textSize="@dimen/main_heading_text_size"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -120,6 +120,7 @@
                 android:gravity="left"
                 android:text="Invite friends on the trip press the + button to \nsend invitations"
                 android:textStyle="bold"
+                android:textSize="@dimen/text_size14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTripParticipants" />
 
@@ -176,7 +177,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvEmail"
+                android:id="@+id/cvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/widget_margin_left_right"
@@ -184,6 +185,38 @@
                 android:layout_marginRight="@dimen/widget_margin_left_right"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintTop_toBottomOf="@id/tvInviteFriend">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="Name"
+                    android:padding="@dimen/edittext_padding"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="#D7F7F7"
+                        android:inputType="textEmailAddress" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintTop_toBottomOf="@id/cvName">
 
 
                 <com.google.android.material.textfield.TextInputLayout

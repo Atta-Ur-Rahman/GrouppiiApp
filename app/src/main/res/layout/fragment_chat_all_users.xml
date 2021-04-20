@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="30dp"
+    android:paddingBottom="30dp"
     android:background="@color/backColor"
     tools:context=".ui.fragment.AllUsersChatFragment">
 
@@ -32,9 +32,7 @@
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
         android:layout_alignParentEnd="true"
-        android:src="@mipmap/chats"
-        android:padding="10dp"
-        android:background="@drawable/round_card_transparent_bg"
+        android:src="@mipmap/chat_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            app:searchIcon="@drawable/search"
             app:queryBackground="@android:color/transparent" />
     </com.google.android.material.card.MaterialCardView>
 

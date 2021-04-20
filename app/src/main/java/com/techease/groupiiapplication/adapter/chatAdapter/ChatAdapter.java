@@ -12,8 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -37,10 +35,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private Context context;
     private Drawable mDeliveredIcon;
     private Drawable mSeenIcon;
+    private String strTripId;
 
-    public ChatAdapter(Context context, List<ChatModel> messages) {
+    public ChatAdapter(Context context, List<ChatModel> messages, String strTripId) {
         this.context = context;
         mMessages = messages;
+        this.strTripId = strTripId;
     }
 
     @Override
@@ -75,35 +75,40 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
-        mDeliveredIcon = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_24));
-        mSeenIcon = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_all_24));
-
-        Glide.with(context).load(R.drawable.ic_baseline_done_all_blue).into(viewHolder.ivSeenMessage);
         Log.d("zma message sent", message.getIsSent());
+        Log.d("zma message read", message.getIsRead());
+        Log.d("zma message rec", "" + message.getRecieverID());
+        Log.d("zma message user", "" + AppRepository.mUserID(context));
 
-//
-//        if (AppRepository.mUserID(context) == message.getSenderID()) {
-//
-//            if (message.getIsSent().equals("0")) {
-////                Log.d("zma message", "un seen" + message.getSenderID());
-////                viewHolder.ivMesSeen.setImageDrawable( DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_24)));
-//
-//            } else if (message.getIsSent().equals("1")) {
-//                    Glide.with(context).load(R.drawable.ic_baseline_done_24).into(viewHolder.ivSeenMessage);
-//                        Log.d("zma message sent", message.getIsSent());
-//
-//
-//            } else if (message.getIsSent().equals("2")) {
-////                Log.d("zma message", "seen" + message.getSenderID());
-////                viewHolder.ivMesSeen.setImageDrawable( DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_baseline_done_all_blue)));
-//
-//            }
-//        }
-////
-////        Log.d("zma reciver id", "" + message.getRecieverID());
-////
-////
-////        Log.d("zma sender id", "" + message.getSenderID());
+        if (AppRepository.mUserID(context) == message.recieverID) {
+
+            viewHolder.ivSentMessage.setVisibility(View.VISIBLE);
+            if (message.isRead.equals("1")) {
+                viewHolder.ivSeenMessage.setVisibility(View.VISIBLE);
+                viewHolder.ivSentAndReceiveMessage.setVisibility(View.GONE);
+                viewHolder.ivSentMessage.setVisibility(View.GONE);
+
+
+            } else if (message.isSent.equals("1")) {
+                viewHolder.ivSeenMessage.setVisibility(View.GONE);
+                viewHolder.ivSentAndReceiveMessage.setVisibility(View.VISIBLE);
+                viewHolder.ivSentMessage.setVisibility(View.GONE);
+
+            } else {
+                viewHolder.ivSeenMessage.setVisibility(View.GONE);
+                viewHolder.ivSentAndReceiveMessage.setVisibility(View.GONE);
+                viewHolder.ivSentMessage.setVisibility(View.GONE);
+
+
+
+            }
+
+
+            Log.d("zma message", "read sho");
+
+
+        }
+
 
     }
 
@@ -128,7 +133,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessageView, tvDate, tvName;
-        private ImageView ivSender, ivSeenMessage, ivMesSeen;
+        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
@@ -138,6 +143,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvMessageView = itemView.findViewById(R.id.tvMessageBody);
             tvName = itemView.findViewById(R.id.tvName);
             ivSeenMessage = itemView.findViewById(R.id.ivSeenMessage);
+            ivSentMessage = itemView.findViewById(R.id.ivSentMessages);
+            ivSentAndReceiveMessage = itemView.findViewById(R.id.ivSentAndReceiveMessage);
 
 
 //            ivSender = itemView.findViewById(R.id.iv_sender);
@@ -193,11 +200,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
         public void setImage(String image) {
-            if (null == ivSender) return;
-            Glide.with(context)
-                    .load(image)
-                    .placeholder(R.color.grey)
-                    .into(ivSender);
+//            if (null == ivSender) return;
+//            Glide.with(context)
+//                    .load(image)
+//                    .placeholder(R.color.grey)
+//                    .into(ivSender);
         }
 
     }

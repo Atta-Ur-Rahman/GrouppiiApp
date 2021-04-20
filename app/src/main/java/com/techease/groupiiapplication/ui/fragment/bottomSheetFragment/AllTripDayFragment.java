@@ -21,6 +21,7 @@ import com.techease.groupiiapplication.utils.DatePickerClass;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -46,6 +47,11 @@ public class AllTripDayFragment extends Fragment {
 
     public static TextView tvTripNotFound;
 
+
+    private TextView dateTimeDisplay;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date;
 
     //    Dialog dialog;
     String strDate;
@@ -82,7 +88,8 @@ public class AllTripDayFragment extends Fragment {
         String month = DatePickerClass.getCurrentDate("MM");
         String day = DatePickerClass.getCurrentDate("dd");
 
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt("1"));
 // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override

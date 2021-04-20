@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.trip.UnPublishFragment">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTripDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginBottom="170dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tvNoUnPublishTripFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:paddingLeft="20sp"
+        android:text="No unpublish trip found"
+        android:layout_marginTop="@dimen/fifty_dp"
+        android:textSize="@dimen/main_heading_text_size" />
+
+</FrameLayout>

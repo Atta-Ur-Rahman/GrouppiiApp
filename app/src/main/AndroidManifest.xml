@@ -23,7 +23,8 @@
         android:theme="@style/Theme.GroupiiApplication"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.activity.ImagePreviewActivity"></activity>
+        <activity android:name=".ui.activity.ContactUsActivity"></activity>
+        <activity android:name=".ui.activity.ImagePreviewActivity" />
         <activity android:name=".ui.activity.ChatsActivity" />
         <activity android:name=".ui.activity.BottomSheetViewFragmentActivity" />
         <activity android:name=".ui.activity.profile.ProfileActivity" />
@@ -33,6 +34,13 @@
         <activity android:name=".ui.activity.AddTrip.AddInviteFriendActivity" />
         <activity android:name=".ui.activity.AddTrip.NewTripStepOneInviteFriendActivity" />
         <activity android:name=".ui.activity.AddTrip.NewTripStepTwoAddDetailActivity" />
+
+        <activity
+            android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@style/FinestWebViewTheme.Light" />
+
         <activity
             android:name=".ui.activity.LoginSignUp.ChangePasswordActivity"
             android:screenOrientation="portrait" />
