@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    app:cardElevation="10dp"
-    app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="@android:color/white"
+    android:layout_height="250dp"
     android:layout_margin="@dimen/widget_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,9 +21,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/transparent_color"
+            android:background="@mipmap/shadow"
+            android:gravity="bottom"
             android:orientation="vertical">
 
             <TextView
@@ -31,38 +32,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/widget_margin_left_right"
-                android:text="Pauline Hale"
-                android:textStyle="bold"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/widget_margin"
                 android:paddingRight="@dimen/widget_margin_left_right"
+                android:text="Pauline Hale"
                 android:textColor="@color/white"
-                android:textSize="@dimen/main_heading_text_size" />
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvGalleryPhotoDateAndTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Oct 24,2020 08:00 am"
                 android:layout_below="@id/tvGalleryPhotoTitle"
                 android:layout_marginBottom="@dimen/widget_margin"
-                android:paddingBottom="@dimen/widget_margin"
-                android:paddingRight="@dimen/widget_margin"
                 android:paddingLeft="@dimen/widget_margin"
-                android:textSize="@dimen/main_heading_text_size"
-                android:textColor="@color/white"/>
+                android:paddingRight="@dimen/widget_margin"
+                android:paddingBottom="@dimen/widget_margin"
+                android:text="Oct 24,2020 08:00 am"
+                android:textColor="@color/white"
+                android:textSize="@dimen/main_heading_text_size" />
 
 
             <ImageView
+                android:id="@+id/ivShareGalleryPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_baseline_share_24"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/widget_margin"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/widget_margin"
+                android:padding="5dp"
+                android:src="@drawable/ic_baseline_share_24" />
 
         </RelativeLayout>
-
 
 
     </RelativeLayout>

@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.ActiveTripAdapter;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import java.util.Collections;
 
@@ -43,6 +45,8 @@ public class ActiveFragment extends Fragment {
 
 
     private void initAdapter() {
+
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         activeTripDetailAdapter = new ActiveTripAdapter(getActivity(), activeList);
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
@@ -50,6 +54,22 @@ public class ActiveFragment extends Fragment {
         rvTripDetail.setNestedScrollingEnabled(true);
         Collections.reverse(activeList);
         activeTripDetailAdapter.notifyDataSetChanged();
+
+
+        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                activeTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                activeTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+        });
+
 
         if (activeList.size()==0){
             tvNoActiveTripFound.setVisibility(View.VISIBLE);

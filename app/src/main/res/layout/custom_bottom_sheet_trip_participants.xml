@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="600dp"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="40dp"
+    app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,12 +21,45 @@
             android:id="@+id/viewMinusIcon"
             android:layout_width="@dimen/top_minus_width"
             android:layout_height="4dp"
-            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
             android:background="@drawable/round_line_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="Trip Participants"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/widget_margin"/>
+
+
+
+        <ImageView
+            android:id="@+id/ivCloseParticipants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            android:src="@drawable/ic_baseline_close_24" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTripParticipants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tendp"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

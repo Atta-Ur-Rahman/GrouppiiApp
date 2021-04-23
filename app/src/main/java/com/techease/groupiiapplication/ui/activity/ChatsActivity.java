@@ -26,6 +26,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.dataModel.chat.ChatModel;
 import com.techease.groupiiapplication.socket.ChatApplication;
+import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
 import com.techease.groupiiapplication.utils.MyMessageStatusFormatter;
@@ -151,13 +152,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         userID = AppRepository.mUserID(this);
         strToUserId = bundle.getString("toUserId");
 
+        Log.d("zma trip id", strTripId);
 
 
-//        Log.d("zma trip id", strTripId);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rvMessage.setLayoutManager(mLayoutManager);
         rvMessage.setItemAnimator(new DefaultItemAnimator());
-        chatAdapter = new ChatAdapter(this, mMessages,strTripId);
+        chatAdapter = new ChatAdapter(this, mMessages, strTripId);
         rvMessage.setAdapter(chatAdapter);
 
 //        rvMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -261,7 +263,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                             Log.d("zma sender", "this is type " + toUser);
                                             if (strToUserId.equals(fromUser) || strToUserId.equals(toUser)) {
-                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
+                                                addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
 
                                             }
                                         } catch (JSONException e) {

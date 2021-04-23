@@ -36,7 +36,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.AddTripAdapter;
+import com.techease.groupiiapplication.adapter.AddTripParticipaintsAdapter;
 import com.techease.groupiiapplication.adapter.MyContactsAdapter;
 import com.techease.groupiiapplication.adapter.RecyclerViewClickListener;
 import com.techease.groupiiapplication.dataModel.ContactDataModel;
@@ -117,7 +117,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
 
     LinearLayoutManager linearLayoutManager;
-    AddTripAdapter addTripAdapter;
+    AddTripParticipaintsAdapter addTripAdapter;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -269,7 +269,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             case R.id.btnNext:
 
                 if (addTripDataModels.size() != 0) {
-                    TripFragment.aBooleanRefreshAllTripApi = false;
+                    TripFragment.aBooleanRefreshAllTripApi = true;
                     startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
                     this.finish();
                 } else {
@@ -440,7 +440,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
         linearLayoutManager = new LinearLayoutManager(this);
         dialog = AlertUtils.createProgressDialog(this);
-        addTripAdapter = new AddTripAdapter((this), addTripDataModels);
+        addTripAdapter = new AddTripParticipaintsAdapter((this), addTripDataModels);
         rvInviteFriend.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvInviteFriend.setAdapter(addTripAdapter);
         rvInviteFriend.setNestedScrollingEnabled(true);

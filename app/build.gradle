@@ -111,6 +111,10 @@ dependencies {
 //    implementation 'dev.dworks.libs:volleyplus:0.1.4'
 
 
+    //map
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+
 
     implementation 'com.vivekkaushik.datepicker:datePickerTimeline:0.0.4'
 

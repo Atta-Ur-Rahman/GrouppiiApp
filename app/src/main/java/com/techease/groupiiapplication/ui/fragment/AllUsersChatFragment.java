@@ -64,9 +64,27 @@ public class AllUsersChatFragment extends Fragment {
         init();
         socketConnectivity();
         GetAllUser();
+        userSearch();
 
 
         return view;
+    }
+
+    private void userSearch() {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                allUserChatAdapter.getFilter().filter(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                allUserChatAdapter.getFilter().filter(queryString);
+                return false;
+            }
+        });
     }
 
 
@@ -173,9 +191,9 @@ public class AllUsersChatFragment extends Fragment {
 
 
                                 //check condition if user id and user
-                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+//                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
                                     addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa");
-                                }
+//                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

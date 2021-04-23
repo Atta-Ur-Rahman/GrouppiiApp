@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
-
         strEmail = etEmail.getText().toString();
         strPassword = etPassword.getText().toString();
 
@@ -108,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     dialog.show();
                     ApiCallForSignIn();
 //                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-
                 }
                 break;
             case R.id.tvSignUp:
@@ -136,6 +134,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     dialog.dismiss();
                     Log.d("zma login", String.valueOf(response.message()));
                     if (response.body().getSuccess()) {
+
+                        AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
                         AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId().toString())).commit();
                         AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
                         AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(LoginActivity.this, String.valueOf(response.message()), Toast.LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "incorrect email or password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password_email), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     try {

@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.PastTripAdapter;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +54,20 @@ public class PastFragment extends Fragment {
         rvTripDetail.setAdapter(pastTripDetailAdapter);
         pastTripDetailAdapter.notifyDataSetChanged();
         rvTripDetail.setItemViewCacheSize(pastList.size());
+
+        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                pastTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                pastTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+        });
 
         if (pastList.size()==0){
             tvNoPastTripFound.setVisibility(View.VISIBLE);

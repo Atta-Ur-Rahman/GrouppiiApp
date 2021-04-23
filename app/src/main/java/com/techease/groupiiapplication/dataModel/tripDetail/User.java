@@ -1,5 +1,6 @@
 
 package com.techease.groupiiapplication.dataModel.tripDetail;
+
 import com.google.gson.annotations.SerializedName;
 
 public class User {
@@ -20,6 +21,9 @@ public class User {
     private Long mTripid;
     @SerializedName("userid")
     private Long mUserid;
+
+    @SerializedName("name")
+    private String mname;
 
     public String getCreatedAt() {
         return mCreatedAt;
@@ -83,6 +87,14 @@ public class User {
 
     public void setUserid(Long userid) {
         mUserid = userid;
+    }
+
+    public String getName() {
+        return mname;
+    }
+
+    public void setName(String name) {
+        mname = name;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.techease.groupiiapplication.adapter;
+package com.techease.groupiiapplication.adapter.chatAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,19 +12,20 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.tripDetail.User;
 
 import java.util.List;
 
-public class AddTripAdapter extends RecyclerView.Adapter<AddTripAdapter.MyViewHolder> {
+public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipantsAdapter.MyViewHolder> {
 
     private Context context;
-    private List<AddTripDataModel> addTripDataModels;
+    private List<User> userList;
 
 
-    public AddTripAdapter(Context context, List<AddTripDataModel> addTripDataModel) {
-        this.addTripDataModels = addTripDataModel;
+    public TripParticipantsAdapter(Context context, List<User> userList) {
+        this.userList = userList;
         this.context = context;
 
     }
@@ -41,30 +42,31 @@ public class AddTripAdapter extends RecyclerView.Adapter<AddTripAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        AddTripDataModel addTripDataModel = addTripDataModels.get(position);
+        User user = userList.get(position);
 
-        holder.tvTitle.setText(String.valueOf(addTripDataModel.getName()));
-        holder.tvStartEndDate.setText(String.valueOf(addTripDataModel.getEmail()));
-
+        holder.tvTitle.setText(String.valueOf(user.getName()));
+        holder.tvStartEndDate.setText(String.valueOf(user.getCreatedAt()));
+        Glide.with(context).load(user.getPicture()).into(holder.ivUser);
 
     }
 
     @Override
     public int getItemCount() {
-        return addTripDataModels.size();
+        return userList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView tvTitle, tvStartEndDate;
-        ImageView ivAddTripTick;
+        ImageView ivAddTripTick, ivUser;
 
         MyViewHolder(View view) {
             super(view);
             tvTitle = view.findViewById(R.id.tvTitleName);
             tvStartEndDate = view.findViewById(R.id.tvEmail);
             ivAddTripTick = view.findViewById(R.id.ivTick);
+            ivUser = view.findViewById(R.id.ivUser);
 
         }
     }

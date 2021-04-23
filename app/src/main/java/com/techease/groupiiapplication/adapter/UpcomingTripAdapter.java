@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,27 +20,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.tripDetail.Past;
 import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapter.MyViewHolder> {
+public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapter.MyViewHolder> implements Filterable {
 
     private Context context;
     private List<Upcoming> upcomingList;
+    private List<Upcoming> upcomingListFilter;
     private List<User> userList = new ArrayList<>();
+    private List<String> stringArrayList = new ArrayList<>();
 
 
     public UpcomingTripAdapter(Context context, List<Upcoming> upcomings) {
         this.upcomingList = upcomings;
+        this.upcomingListFilter = upcomings;
         this.context = context;
-
     }
 
     @Override
@@ -52,7 +58,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Upcoming data = upcomingList.get(position);
+        Upcoming data = upcomingListFilter.get(position);
         Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
@@ -71,7 +77,9 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
             @Override
             public void onClick(View view) {
 
-                AppRepository.mPutValue(context).putString( "tripID",String.valueOf(data.getId())).commit();
+                TripFragment.userList = data.getUsers();
+
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
                     Log.d("zma tripid", String.valueOf(data.getId()));
@@ -84,6 +92,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
                     bundle.putString("trip_type", "Upcoming Trip");
                     bundle.putString("description", data.getDescription());
                     bundle.putString("location", data.getLocation());
+                    bundle.putStringArrayList("user", (ArrayList<String>) stringArrayList);
 
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -96,7 +105,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
     @Override
     public int getItemCount() {
-        return upcomingList.size();
+        return upcomingListFilter.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -117,4 +126,40 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    upcomingListFilter = upcomingList;
+                } else {
+                    List<Upcoming> filteredList = new ArrayList<>();
+                    for (Upcoming row : upcomingList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getTitle().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    upcomingListFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = upcomingListFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                upcomingListFilter = (ArrayList<Upcoming>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
 }

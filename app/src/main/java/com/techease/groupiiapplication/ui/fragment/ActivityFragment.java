@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.AddTripAdapter;
 import com.techease.groupiiapplication.adapter.NotificationAdapter;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.utils.AlertUtils;

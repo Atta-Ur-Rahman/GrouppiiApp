@@ -42,5 +42,8 @@
     <string name="seen">Seen</string>
     <string name="error">Error</string>
     <string name="choose">Choose one</string>
+    <string name="incorrect_password_email">incorrect email or password</string>
+
+    <string name="incorrect_current_password">incorrect current password</string>
 
 </resources>

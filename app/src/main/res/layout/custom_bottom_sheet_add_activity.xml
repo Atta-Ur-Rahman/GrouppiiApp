@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="700dp"
     android:background="@android:color/transparent"
@@ -18,13 +16,13 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/widget_margin_left_right">
 
-        <ImageView
+        <View
             android:id="@+id/ivMinusIcon"
-            android:layout_width="@dimen/top_minus_width"
-            android:layout_height="@dimen/top_minus_height"
+            android:layout_width="30dp"
+            android:layout_height="5dp"
             android:layout_marginTop="@dimen/widget_margin"
             android:scaleType="fitXY"
-            android:src="@drawable/minus"
+            android:background="@drawable/round_line_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -265,8 +263,8 @@
 
         <View
             android:id="@+id/ivBottomMinusIcon"
-            android:layout_width="170sp"
-            android:layout_height="4dp"
+            android:layout_width="134dp"
+            android:layout_height="5dp"
             android:layout_marginTop="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
             android:background="@drawable/round_line_back"

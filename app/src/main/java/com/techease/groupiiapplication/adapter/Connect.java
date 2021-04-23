@@ -17,7 +17,7 @@ public class Connect {
         }
     }
 
-    public static void addMyBooleanListener(ConnectionBooleanChangedListener l) {
+    public static void addGalleryPhotoListener(ConnectionBooleanChangedListener l) {
         listeners.add(l);
     }
 }

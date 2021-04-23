@@ -42,6 +42,7 @@ public class AppRepository {
         return mGetValue(context).getString("lat", "");
     }
 
+
     public static String mLng(Context context) {
         return mGetValue(context).getString("lng", "");
     }
@@ -52,6 +53,10 @@ public class AppRepository {
 
     public static String mUserProfileImage(Context context) {
         return String.valueOf(mGetValue(context).getString("mProfilePicture", null));
+    }
+
+    public static String mUserPassword(Context context) {
+        return mGetValue(context).getString("mUserPassword", "");
     }
 
 

@@ -2,7 +2,6 @@ package com.techease.groupiiapplication.ui.fragment.bottomSheetFragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,6 @@ import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GetRecylerViewCountColum;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +53,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
         dialog = AlertUtils.createProgressDialog(getActivity());
 
 
-        Connect.addMyBooleanListener(new ConnectionBooleanChangedListener() {
+        Connect.addGalleryPhotoListener(new ConnectionBooleanChangedListener() {
             @Override
             public void OnMyBooleanChanged() {
                 ApiCallGetAllGalleryPhoto();
@@ -100,7 +97,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<GetGalleryPhotoResponse> call, Response<GetGalleryPhotoResponse> response) {
 
-                Log.d("zma image response", String.valueOf(response));
+//                Log.d("zma image response", String.valueOf(response));
                 if (response.isSuccessful()) {
                     galleryPhotoDataModels.addAll(response.body().getData());
                     Collections.reverse(galleryPhotoDataModels);

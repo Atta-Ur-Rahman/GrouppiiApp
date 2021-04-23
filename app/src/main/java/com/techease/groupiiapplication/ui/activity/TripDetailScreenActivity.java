@@ -40,11 +40,16 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.Connect;
+import com.techease.groupiiapplication.adapter.NotificationAdapter;
+import com.techease.groupiiapplication.adapter.PastTripAdapter;
 import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.UserTripCircleImagesAdapter;
+import com.techease.groupiiapplication.adapter.chatAdapter.TripParticipantsAdapter;
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.Map.MapViewActivity;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.AllTripDayFragment;
 import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.PaymentsFragment;
 import com.techease.groupiiapplication.ui.fragment.bottomSheetFragment.PhotosFragment;
@@ -122,13 +127,21 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @BindView(R.id.llBottomSheetBehaviorId)
     LinearLayout llActivityMoreBottomSheet;
-    LinearLayout llBottomSheetAddDayActivity;
-    BottomSheetBehavior bottomSheetBehavior, addActivityBottomSheetBehavior;
 
+    @BindView(R.id.llParticipantsBottomSheetBehaviorId)
+    LinearLayout llParticipantsBottomSheetBehaviorId;
+
+    LinearLayout llBottomSheetAddDayActivity;
+    BottomSheetBehavior bottomSheetBehavior, addActivityBottomSheetBehavior, participantsBottomSheet;
+
+    TripParticipantsAdapter tripParticipantsAdapter;
+    RecyclerView rvTripParticipants;
+    LinearLayoutManager linearLayoutManager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewPager;
+
 
     boolean aBooleanAddImage = true;
 
@@ -159,7 +172,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     String photoName;
     EditText etPhotoName;
-    ImageView ivGalleryPhoto;
+    ImageView ivGalleryPhoto,ivCloseParticipant;
     Button btnAddPhoto;
 
     @Override
@@ -191,7 +204,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         rvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvImages.addItemDecoration(new GeneralUtills.OverlapDecoration());
         rvImages.setHasFixedSize(true);
-        rvImages.setAdapter(new UserTripCircleImagesAdapter(this, userList));
+        rvImages.setAdapter(new UserTripCircleImagesAdapter(this, TripFragment.userList));
 
 
         initializeBottomSheet();
@@ -209,7 +222,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
         mBottomSheetDialog.show();
 
-        TextView tvCancel=mBottomSheetDialog.findViewById(R.id.tvCancel);
+        TextView tvCancel = mBottomSheetDialog.findViewById(R.id.tvCancel);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,12 +231,28 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         });
 
 
+        TextView tvParticipants = mBottomSheetDialog.findViewById(R.id.tvManageParticipants);
+        tvParticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.dismiss();
+                participantsBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                Log.d("zma user",String.valueOf(TripFragment.userList));
+                linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), TripFragment.userList);
+                rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
+                rvTripParticipants.setAdapter(tripParticipantsAdapter);
+
+            }
+        });
+
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu})
+    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvLocation, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu})
 
     @Override
     public void onClick(View view) {
@@ -233,6 +262,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 break;
             case R.id.ivMenu:
                 actionMenu();
+                break;
+
+            case R.id.tvLocation:
+                startActivity(new Intent(this, MapViewActivity.class));
                 break;
             case R.id.ivMore:
             case R.id.tvMore:
@@ -312,7 +345,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 changeTextColdrTab(R.color.gry, R.color.gry, R.color.gry, R.color.purple_500);
                 changeImageColdrTab(R.mipmap.my_trip_unselected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos_selected);
                 viewPager.setCurrentItem(3);
-
+                break;
+            case R.id.ivCloseParticipants:
+                participantsBottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+                actionMenu();
                 break;
 
 
@@ -340,15 +376,38 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         llBottomSheetAddDayActivity = llActivityMoreBottomSheet.findViewById(R.id.bottom_sheet_add_activity);
 
         bottomSheetBehavior = BottomSheetBehavior.from(llActivityMoreBottomSheet);
-        addActivityBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddDayActivity);
+        participantsBottomSheet = BottomSheetBehavior.from(llParticipantsBottomSheetBehaviorId);
 
-        bottomNavigationView = llActivityMoreBottomSheet.findViewById(R.id.navigation);
+        addActivityBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddDayActivity);
 
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(View view, int i) {
                 // do something when state changes
+
+                String strNewState = "";
+
+                switch (i) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        strNewState = "STATE_COLLAPSED";
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        strNewState = "STATE_EXPANDED";
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        strNewState = "STATE_HIDDEN";
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        strNewState = "STATE_DRAGGING";
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        strNewState = "STATE_SETTLING";
+                        break;
+                }
+
+                Log.i("BottomSheets", "New state: " + strNewState);
+
             }
 
             @Override
@@ -358,6 +417,17 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         });
         // set the bottom sheet callback state to hidden when you just start your app
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        participantsBottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+        participantsBottomSheet.setHideable(true);
+
+
+        rvTripParticipants = llParticipantsBottomSheetBehaviorId.findViewById(R.id.rvTripParticipants);
+        ivCloseParticipant=llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivCloseParticipants);
+        ivCloseParticipant.setOnClickListener(this);
+
+
+
+
 
         tabLayout = llActivityMoreBottomSheet.findViewById(R.id.tabs);
         viewPager = llActivityMoreBottomSheet.findViewById(R.id.viewpager);
@@ -536,6 +606,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
+                if (position == 0 || position == 3) {
+                    ivAddActivity.setVisibility(View.VISIBLE);
+                } else {
+                    ivAddActivity.setVisibility(View.GONE);
+                }
                 if (position == 0) {
                     changeTextColdrTab(R.color.purple_500, R.color.gry, R.color.gry, R.color.gry);
                     changeImageColdrTab(R.mipmap.my_trips_selected, R.mipmap.reservs, R.mipmap.payment, R.mipmap.photos);
@@ -608,7 +684,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         addPhotoDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
 
 
-
         addPhotoDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -663,14 +738,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-
         aBooleanAddImage = true;
-
         if (resultCode == RESULT_OK) {
-
-
             switch (requestCode) {
 
 

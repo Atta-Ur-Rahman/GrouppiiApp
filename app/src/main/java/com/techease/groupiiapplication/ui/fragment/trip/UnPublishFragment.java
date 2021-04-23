@@ -2,6 +2,7 @@ package com.techease.groupiiapplication.ui.fragment.trip;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.ActiveTripAdapter;
 import com.techease.groupiiapplication.adapter.UnPublishTripAdapter;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import java.util.Collections;
 
@@ -45,26 +47,42 @@ public class UnPublishFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_un_publish, container, false);
         ButterKnife.bind(this, view);
-
+        initAdapter();
 
         return view;
     }
 
 
-//    private void initAdapter() {
-//        linearLayoutManager = new LinearLayoutManager(getActivity());
-//        activeTripDetailAdapter = new ActiveTripAdapter(getActivity(), activeList);
-//        rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-//        rvTripDetail.setAdapter(activeTripDetailAdapter);
-//        rvTripDetail.setNestedScrollingEnabled(true);
-//        Collections.reverse(activeList);
-//        activeTripDetailAdapter.notifyDataSetChanged();
-//
-//        if (activeList.size()==0){
-//            tvNoActiveTripFound.setVisibility(View.VISIBLE);
-//        }else {
-//            tvNoActiveTripFound.setVisibility(View.GONE);
-//        }
-//    }
+    private void initAdapter() {
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        unPublishTripAdapter = new UnPublishTripAdapter(getActivity(), TripFragment.unpublishList);
+        rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        rvTripDetail.setAdapter(unPublishTripAdapter);
+        rvTripDetail.setNestedScrollingEnabled(true);
+        Collections.reverse(TripFragment.unpublishList);
+        unPublishTripAdapter.notifyDataSetChanged();
+
+
+        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                unPublishTripAdapter.getFilter().filter(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                unPublishTripAdapter.getFilter().filter(queryString);
+                return false;
+            }
+        });
+
+
+        if (TripFragment.unpublishList.size()==0){
+            tvNoUnPublishTripFound.setVisibility(View.VISIBLE);
+        }else {
+            tvNoUnPublishTripFound.setVisibility(View.GONE);
+        }
+    }
 
 }

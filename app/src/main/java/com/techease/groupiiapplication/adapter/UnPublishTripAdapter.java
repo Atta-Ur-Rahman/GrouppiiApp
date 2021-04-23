@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,25 +22,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
+import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdapter.MyViewHolder> {
+public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdapter.MyViewHolder> implements Filterable {
 
     private Context context;
-    private List<Active> activeList;
-    public static List<User> userList = new ArrayList<>();
+    private List<Unpublish> unpublishList;
+    private List<Unpublish> unpublishListFilter;
+    public static ArrayList<User> userList = new ArrayList<>();
     private List<String> stringArrayList = new ArrayList<>();
 
 
-    public UnPublishTripAdapter(Context context, List<Active> actives) {
-        this.activeList = actives;
+    public UnPublishTripAdapter(Context context, List<Unpublish> unpublishes) {
+        this.unpublishList = unpublishes;
         this.context = context;
 
     }
@@ -53,7 +61,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Active data = activeList.get(position);
+        Unpublish data = unpublishList.get(position);
         Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
@@ -68,38 +76,86 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
 //                    Log.d("userpic", data.getUsers().toString());
 
 
-
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
         holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
 
+
+        holder.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+                Log.d("zma tripid", String.valueOf(data.getId()));
+
+                String strTripId = String.valueOf(data.getId());
+
+                if (GeneralUtills.PopupMenuDelete(new ApiCallback() {
+                    @Override
+                    public boolean onResponse(boolean success) {
+                        if (success) {
+                            removeAt(position);
+
+                        }
+                        return true;
+                    }
+                }, context, holder.ivImage, strTripId)) {
+
+
+                }
+
+
+                return false;
+            }
+        });
+
+
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
-                Intent intent = new Intent(context, TripDetailScreenActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("image", data.getCoverimage());
-                bundle.putString("title", data.getTitle());
-                bundle.putString("trip_type", "Active Trip");
-                bundle.putString("description", data.getDescription());
-                bundle.putString("location", data.getLocation());
-                bundle.putStringArrayList("user", (ArrayList<String>) stringArrayList);
-                intent.putExtras(bundle);
-                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+                if (data.getTitle().equals("unpublished")) {
+                    Log.d("zma tripid", String.valueOf(data.getId()));
+                    context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
+                } else {
+
+                    TripFragment.userList = data.getUsers();
+                    Intent intent = new Intent(context, TripDetailScreenActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("image", data.getCoverimage());
+                    bundle.putString("title", data.getTitle());
+                    bundle.putString("trip_type", "Past Trip");
+                    bundle.putString("description", data.getDescription());
+                    bundle.putString("location", data.getLocation());
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+
+
+
+                    TripFragment.userList = data.getUsers();
+                    Log.d("zma tripid", String.valueOf(data.getId()));
+
+
+                }
             }
+
         });
 
 
     }
 
 
+    public void removeAt(int position) {
+        unpublishListFilter.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, unpublishListFilter.size());
+    }
+
     @Override
     public int getItemCount() {
-        return activeList.size();
+        return unpublishList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -119,5 +175,41 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
             rvUsers = view.findViewById(R.id.rvUsers);
 
         }
+    }
+
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    unpublishListFilter = unpublishList;
+                } else {
+                    List<Unpublish> filteredList = new ArrayList<>();
+                    for (Unpublish row : unpublishList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getTitle().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    unpublishListFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = unpublishListFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                unpublishListFilter = (ArrayList<Unpublish>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

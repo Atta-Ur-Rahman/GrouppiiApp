@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,26 +21,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.dataModel.ContactDataModel;
 import com.techease.groupiiapplication.dataModel.tripDetail.Past;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyViewHolder> {
+public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyViewHolder> implements Filterable {
 
     private Context context;
     private List<Past> pastList;
-    private List<User> userList = new ArrayList<>();
+    private List<Past> pastListFiltered;
+    public static List<User> userList = new ArrayList<>();
     private ArrayList<String> stringArrayList = new ArrayList<>();
 
 
     public PastTripAdapter(Context context, List<Past> pasts) {
         this.pastList = pasts;
+        this.pastListFiltered = pasts;
         this.context = context;
 
     }
@@ -54,11 +60,11 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Past data = pastList.get(position);
+        Past data = pastListFiltered.get(position);
 
-//        if (data.getCoverimage() != null) {
-//            Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
-//        }
+        if (data.getCoverimage() != null) {
+            Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+        }
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
@@ -116,6 +122,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     for (int i = 0; i < userList.size(); i++) {
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
+                    TripFragment.userList = data.getUsers();
                     Intent intent = new Intent(context, TripDetailScreenActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("image", data.getCoverimage());
@@ -127,6 +134,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     intent.putExtras(bundle);
                     context.startActivity(intent);
 
+
+
+                    TripFragment.userList = data.getUsers();
                     Log.d("zma tripid", String.valueOf(data.getId()));
 
 
@@ -145,7 +155,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return pastList.size();
+        return pastListFiltered.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -171,5 +181,40 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         pastList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, pastList.size());
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    pastListFiltered = pastList;
+                } else {
+                    List<Past> filteredList = new ArrayList<>();
+                    for (Past row : pastList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getTitle().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    pastListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = pastListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                pastListFiltered = (ArrayList<Past>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

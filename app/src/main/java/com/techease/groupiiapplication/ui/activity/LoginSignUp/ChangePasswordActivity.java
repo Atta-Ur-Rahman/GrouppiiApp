@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
+import com.techease.groupiiapplication.dataModel.genrelResetPassword.GeneralResetPassword;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -90,10 +91,10 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
     private void ApiCallForChangePassword() {
 
-        Call<ChangePasswordResponse> changePasswordResponseCall = BaseNetworking.ApiInterface().changePassword(strAgainPassword, AppRepository.mPasswordToken(this));
-        changePasswordResponseCall.enqueue(new Callback<ChangePasswordResponse>() {
+        Call<GeneralResetPassword> changePasswordResponseCall = BaseNetworking.ApiInterface().changePassword(strAgainPassword, AppRepository.mUserID(this));
+        changePasswordResponseCall.enqueue(new Callback<GeneralResetPassword>() {
             @Override
-            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+            public void onResponse(Call<GeneralResetPassword> call, Response<GeneralResetPassword> response) {
                 if (response.isSuccessful()) {
                     alertDialog.dismiss();
                     finishAffinity();
@@ -112,7 +113,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             }
 
             @Override
-            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+            public void onFailure(Call<GeneralResetPassword> call, Throwable t) {
                 alertDialog.dismiss();
             }
         });
@@ -130,6 +131,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         if (!GeneralUtills.isValidPassword(strCurrentPassword)) {
             tilCurrentPassword.setErrorEnabled(true);
             tilCurrentPassword.setError(getString(R.string.password_should_be_six));
+            valid = false;
+
+        } else if (AppRepository.mUserPassword(this).equals(strCurrentPassword)) {
+            tilCurrentPassword.setErrorEnabled(true);
+            tilCurrentPassword.setError(getString(R.string.incorrect_current_password));
             valid = false;
 
         } else {
@@ -168,9 +174,9 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
 
     private void initTextWatcher() {
-
         etNewPassword.addTextChangedListener(new GenericTextWatcher(etNewPassword));
         etAgainPassword.addTextChangedListener(new GenericTextWatcher(etAgainPassword));
+        etCurrentPassword.addTextChangedListener(new GenericTextWatcher(etCurrentPassword));
 
     }
 
@@ -197,6 +203,9 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                     break;
                 case R.id.etAgainPassword:
                     tilAgainPassword.setErrorEnabled(false);
+                    break;
+                case R.id.etCurrentPassword:
+                    tilCurrentPassword.setErrorEnabled(false);
                     break;
 
 

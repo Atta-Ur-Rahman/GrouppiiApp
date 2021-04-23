@@ -24,7 +24,9 @@ import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
 import com.techease.groupiiapplication.dataModel.tripDetail.Past;
 import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
+import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
 import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
+import com.techease.groupiiapplication.dataModel.tripDetail.User;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.ui.fragment.trip.ActiveFragment;
@@ -61,11 +63,16 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+    public static SearchView searchViewFilter;
+
     public static boolean aBooleanRefreshAllTripApi = true;
     public static ViewPager viewPagerTrip;
     public static List<Active> activeList = new ArrayList<>();
     public static List<Past> pastList = new ArrayList<>();
     public static List<Upcoming> upcomingList = new ArrayList<>();
+    public static List<Unpublish> unpublishList = new ArrayList<>();
+
+    public static List<User> userList = new ArrayList<>();
 
 
     @Override
@@ -74,12 +81,11 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         dialog = AlertUtils.createProgressDialog(getActivity());
         ButterKnife.bind(this, view);
         viewPagerTrip = viewPager;
+        searchViewFilter = searchView;
 
         aBooleanRefreshAllTripApi = true;
-
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search a trip...");
-
         setProfileImageAndName();
 
 //        apiCallGetTripDetail();
@@ -134,6 +140,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         activeList.clear();
         pastList.clear();
         upcomingList.clear();
+        unpublishList.clear();
         Call<TripDetailResponse> call = BaseNetworking.ApiInterface().getTripDetail(AppRepository.mUserID(getActivity()));
         call.enqueue(new Callback<TripDetailResponse>() {
             @Override
@@ -145,6 +152,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
                     activeList.addAll(response.body().getData().getActive());
                     upcomingList.addAll(response.body().getData().getUpcoming());
                     pastList.addAll(response.body().getData().getPast());
+                    unpublishList.addAll(response.body().getData().getUnpublish());
 //                    Collections.reverse(activeList);
 //                    Collections.reverse(upcomingList);
                     Collections.reverse(pastList);

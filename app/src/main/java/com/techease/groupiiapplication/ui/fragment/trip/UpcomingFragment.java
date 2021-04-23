@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.UpcomingTripAdapter;
+import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,14 +34,14 @@ public class UpcomingFragment extends Fragment {
     TextView tvNoUpComingTripFound;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_upcomming, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         initAdapter();
         return view;
     }
+
     private void initAdapter() {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         upcommingTripDetailAdapter = new UpcomingTripAdapter(getActivity(), upcomingList);
@@ -47,9 +49,24 @@ public class UpcomingFragment extends Fragment {
         rvTripDetail.setAdapter(upcommingTripDetailAdapter);
         upcommingTripDetailAdapter.notifyDataSetChanged();
 
-        if (upcomingList.size()==0){
+
+        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                upcommingTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                upcommingTripDetailAdapter.getFilter().filter(queryString);
+                return false;
+            }
+        });
+
+        if (upcomingList.size() == 0) {
             tvNoUpComingTripFound.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvNoUpComingTripFound.setVisibility(View.GONE);
         }
     }

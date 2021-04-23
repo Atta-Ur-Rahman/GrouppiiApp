@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
@@ -24,7 +25,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     private Context context;
     private List<User> arrayList;
-    int anIntImage=1;
+    int anIntImage = 1;
 
 
     public UserTripCircleImagesAdapter(Context context, List<User> imagesArray) {
@@ -42,20 +43,20 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        User user=arrayList.get(position);
-
-
+////        User user=arrayList.get(position);
 //        if (arrayList.get(position)!=null) {
-//            Log.d("userpic", arrayList.get(position).getPicture().toString());
-//        }
-//        Picasso.get().load(arrayList.get(position).getPicture()).placeholder(R.drawable.image_thumbnail).into(holder.imageView);
+////            Log.d("userpic", arrayList.get(position).getPicture().toString());
+////        }
+//        Glide.with(context).load(arrayList.get(position).getPicture()).placeholder(R.drawable.image_thumbnail).into(holder.imageView);
+
+
+//        Log.d("zma array",String.valueOf(arrayList.get(position).getTripid()));
 
         if (arrayList.size() == 1) {
             anIntImage = 2;
-
             if (position == 1) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
-                holder.tvCount.setText(String.valueOf(arrayList.size() + 2) + "+");
+                holder.tvCount.setText(arrayList.size() + "+");
             } else {
                 holder.relativeLayout.setVisibility(View.GONE);
             }
@@ -65,7 +66,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
             if (position == 2) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
-                holder.tvCount.setText(String.valueOf(arrayList.size() + 3) + "+");
+                holder.tvCount.setText(arrayList.size() + "+");
             } else {
                 holder.relativeLayout.setVisibility(View.GONE);
             }
@@ -74,7 +75,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
             anIntImage = 4;
             if (position == 3) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
-                holder.tvCount.setText(String.valueOf(arrayList.size() + 4) + "+");
+                holder.tvCount.setText(arrayList.size() + "+");
             } else {
                 holder.relativeLayout.setVisibility(View.GONE);
             }
@@ -98,10 +99,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
             super(itemView);
             relativeLayout = itemView.findViewById(R.id.relative);
             tvCount = itemView.findViewById(R.id.tvCount);
-            imageView = itemView
-                    .findViewById(R.id.profile_image);
-
-
+            imageView = itemView.findViewById(R.id.profile_image);
         }
     }
 }

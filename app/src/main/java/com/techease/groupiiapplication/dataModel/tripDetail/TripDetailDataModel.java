@@ -13,6 +13,9 @@ public class TripDetailDataModel {
     @SerializedName("upcoming")
     private List<Upcoming> mUpcoming;
 
+    @SerializedName("unpublish")
+    private List<Unpublish> mUnpublish;
+
     public List<Active> getActive() {
         return mActive;
     }
@@ -35,6 +38,13 @@ public class TripDetailDataModel {
 
     public void setUpcoming(List<Upcoming> upcoming) {
         mUpcoming = upcoming;
+    }
+
+    public List<Unpublish> getUnpublish() {
+        return mUnpublish;
+    }
+    public void setmUnpublish(List<Unpublish> unpublish) {
+        mUnpublish = unpublish;
     }
 
 }

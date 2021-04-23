@@ -8,6 +8,7 @@ import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResp
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
+import com.techease.groupiiapplication.dataModel.genrelResetPassword.GeneralResetPassword;
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
@@ -71,9 +72,15 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("users/resetpassword")
-    Call<ChangePasswordResponse> changePassword(
+    Call<ChangePasswordResponse> resetPassword(
             @Field("password") String userPassword,
             @Field("token") String userToken);
+
+    @FormUrlEncoded
+    @POST("users/passwordreset")
+    Call<GeneralResetPassword> changePassword(
+            @Field("password") String userPassword,
+            @Field("userid") Integer userID);
 
     @Multipart
     @POST("users/profilepicture")
