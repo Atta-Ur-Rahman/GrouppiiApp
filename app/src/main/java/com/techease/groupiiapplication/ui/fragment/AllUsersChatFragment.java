@@ -168,14 +168,15 @@ public class AllUsersChatFragment extends Fragment {
                     @Override
                     public void run() {
                         JSONObject jsonObject = (JSONObject) args[0];
-                        Log.d("zma all user", jsonObject + "");
+                        Log.d("zma all user jsonObject", jsonObject + "");
 
                         try {
                             JSONArray jsonArray = jsonObject.getJSONArray("groups");
 
-                            Log.d("zma all user", jsonArray + "");
+                            Log.d("zma all user jsonArray", jsonArray + "");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
+
                                 String title = c.getString("group_title");
                                 String message = c.getString("chat_type");
                                 String tripId = c.getString("tripid");
@@ -209,6 +210,7 @@ public class AllUsersChatFragment extends Fragment {
         chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt));
         allUserChatAdapter.notifyItemInserted(chatAllUserDataModels.size() - 1);
         allUserChatAdapter.notifyDataSetChanged();
+
 
 //        scrollToBottom();
     }

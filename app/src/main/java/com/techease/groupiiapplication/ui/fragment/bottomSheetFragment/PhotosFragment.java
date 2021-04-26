@@ -43,12 +43,15 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
     Dialog dialog;
     ArrayList<GalleryPhotoDataModel> galleryPhotoDataModels = new ArrayList<>();
     boolean aBooleanIsGridView = true;
+    String strTripId;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
         ButterKnife.bind(this, view);
+
+        strTripId = AppRepository.mTripId(getActivity());
         ApiCallGetAllGalleryPhoto();
         dialog = AlertUtils.createProgressDialog(getActivity());
 
@@ -92,7 +95,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
 
     private void ApiCallGetAllGalleryPhoto() {
         galleryPhotoDataModels.clear();
-        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/" + AppRepository.mTripId(getActivity()));
+        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/" +strTripId);
         getGalleryPhotoResponseCall.enqueue(new Callback<GetGalleryPhotoResponse>() {
             @Override
             public void onResponse(Call<GetGalleryPhotoResponse> call, Response<GetGalleryPhotoResponse> response) {
