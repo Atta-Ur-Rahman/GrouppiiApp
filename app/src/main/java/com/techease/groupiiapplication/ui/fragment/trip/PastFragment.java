@@ -10,15 +10,16 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.PastTripAdapter;
-import com.techease.groupiiapplication.ui.fragment.TripFragment;
+import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.techease.groupiiapplication.ui.fragment.TripFragment.pastList;
+
 
 
 public class PastFragment extends Fragment {
@@ -30,6 +31,7 @@ public class PastFragment extends Fragment {
     RecyclerView rvTripDetail;
     View view;
 
+    SearchView searchView;
     @BindView(R.id.tvNoPastTripFound)
     TextView tvNoPastTripFound;
 
@@ -43,6 +45,7 @@ public class PastFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_past, container, false);
         ButterKnife.bind(this, view);
         initAdapter();
+
         return view;
     }
 
@@ -54,27 +57,21 @@ public class PastFragment extends Fragment {
         rvTripDetail.setAdapter(pastTripDetailAdapter);
         pastTripDetailAdapter.notifyDataSetChanged();
         rvTripDetail.setItemViewCacheSize(pastList.size());
-
-        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ConnectSearch.addGalleryPhotoListener(new ConnectionSearchChangedListener() {
             @Override
-            public boolean onQueryTextSubmit(String queryString) {
-                pastTripDetailAdapter.getFilter().filter(queryString);
-                return false;
-            }
+            public void OnMySearching() {
+                pastTripDetailAdapter.getFilter().filter(ConnectSearch.getMySearch());
 
-            @Override
-            public boolean onQueryTextChange(String queryString) {
-                pastTripDetailAdapter.getFilter().filter(queryString);
-                return false;
             }
         });
 
-        if (pastList.size()==0){
+
+
+        if (pastList.size() == 0) {
             tvNoPastTripFound.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvNoPastTripFound.setVisibility(View.GONE);
         }
     }
-
 }
 

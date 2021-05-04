@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,17 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripData;
 
 import java.util.List;
 
 public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipantsAdapter.MyViewHolder> {
 
     private Context context;
-    private List<User> userList;
+    private List<GetUserTripData> userList;
 
 
-    public TripParticipantsAdapter(Context context, List<User> userList) {
+    public TripParticipantsAdapter(Context context, List<GetUserTripData> userList) {
         this.userList = userList;
         this.context = context;
 
@@ -42,10 +43,10 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        User user = userList.get(position);
+        GetUserTripData user = userList.get(position);
 
         holder.tvTitle.setText(String.valueOf(user.getName()));
-        holder.tvStartEndDate.setText(String.valueOf(user.getCreatedAt()));
+        holder.tvEmail.setText(String.valueOf(user.getEmail()));
         Glide.with(context).load(user.getPicture()).into(holder.ivUser);
 
     }
@@ -58,14 +59,15 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate;
+        TextView tvTitle, tvEmail;
         ImageView ivAddTripTick, ivUser;
+        CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
             super(view);
             tvTitle = view.findViewById(R.id.tvTitleName);
-            tvStartEndDate = view.findViewById(R.id.tvEmail);
-            ivAddTripTick = view.findViewById(R.id.ivTick);
+            tvEmail = view.findViewById(R.id.tvEmail);
+            cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
 
         }

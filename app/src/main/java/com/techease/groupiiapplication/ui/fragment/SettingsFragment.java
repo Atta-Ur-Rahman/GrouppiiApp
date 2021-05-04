@@ -57,7 +57,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void setProfileImage() {
 
         if (AppRepository.mUserProfileImage(getActivity()).length() > 0) {
-            Picasso.get().load(AppRepository.mUserProfileImage(getActivity())).into(ivProfilePicture);
+            Picasso.get().load(AppRepository.mUserProfileImage(getActivity())).placeholder(R.drawable.user).into(ivProfilePicture);
         }
     }
 

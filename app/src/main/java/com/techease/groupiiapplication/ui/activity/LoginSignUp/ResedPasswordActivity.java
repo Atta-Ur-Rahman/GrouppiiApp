@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
+import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -84,10 +84,10 @@ public class ResedPasswordActivity extends AppCompatActivity implements View.OnC
 
     private void ApiCallForChangePassword() {
 
-        Call<ChangePasswordResponse> changePasswordResponseCall = BaseNetworking.ApiInterface().resetPassword(strAgainPassword, AppRepository.mPasswordToken(this));
-        changePasswordResponseCall.enqueue(new Callback<ChangePasswordResponse>() {
+        Call<ForgotResponse> changePasswordResponseCall = BaseNetworking.ApiInterface().resetPassword(strAgainPassword, CodeVerificationActivity.strVerityCode);
+        changePasswordResponseCall.enqueue(new Callback<ForgotResponse>() {
             @Override
-            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+            public void onResponse(Call<ForgotResponse> call, Response<ForgotResponse> response) {
                 if (response.isSuccessful()) {
                     alertDialog.dismiss();
                     finishAffinity();
@@ -106,7 +106,7 @@ public class ResedPasswordActivity extends AppCompatActivity implements View.OnC
             }
 
             @Override
-            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+            public void onFailure(Call<ForgotResponse> call, Throwable t) {
                 alertDialog.dismiss();
             }
         });

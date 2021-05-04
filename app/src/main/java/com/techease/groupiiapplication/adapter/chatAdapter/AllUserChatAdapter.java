@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chat.ChatAllUserDataModel;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
@@ -35,7 +36,7 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitleName, tvChatTime, tvChatType, tvMessage;
-        ImageView ivChatImage;
+        ImageView ivGroupChatImage;
         RelativeLayout rlGroupChat;
 
 
@@ -47,6 +48,7 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
             tvChatType = view.findViewById(R.id.tvChatType);
             tvMessage = view.findViewById(R.id.tvMessage);
             rlGroupChat = view.findViewById(R.id.rlGroupChat);
+            ivGroupChatImage = view.findViewById(R.id.ivGroupChatImage);
 
 
         }
@@ -80,6 +82,7 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
+        Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
 //        Log.d("zma tilte",chatAllUserDataModel.getTitleName());
 
         holder.rlGroupChat.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +94,7 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
                 bundle.putString("title_name", chatAllUserDataModel.getTitleName());
                 bundle.putString("tripId", chatAllUserDataModel.getTripId());
                 bundle.putString("toUserId", chatAllUserDataModel.getToUser());
+                bundle.putString("type",chatAllUserDataModel.getMessage());
 
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());

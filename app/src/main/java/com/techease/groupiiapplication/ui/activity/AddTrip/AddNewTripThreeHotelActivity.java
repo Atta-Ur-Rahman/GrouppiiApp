@@ -1,5 +1,6 @@
 package com.techease.groupiiapplication.ui.activity.AddTrip;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -128,8 +129,10 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
                 onBackPressed();
                 break;
             case R.id.btnReverse:
-                finish();
-                startActivity(new Intent(this, NewTripStepFourPaymentActivity.class));
+//                finish();
+                startActivity(new Intent(AddNewTripThreeHotelActivity.this, NewTripStepFourPaymentActivity.class), ActivityOptions.makeSceneTransitionAnimation(AddNewTripThreeHotelActivity.this).toBundle());
+
+//                startActivity(new Intent(this, NewTripStepFourPaymentActivity.class));
                 break;
 
         }

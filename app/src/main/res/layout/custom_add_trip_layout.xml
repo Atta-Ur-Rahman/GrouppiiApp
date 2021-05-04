@@ -63,27 +63,23 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
 
 
-        <ImageView
-            android:id="@+id/ivTick"
+
+        <CheckBox
+            android:id="@+id/cbShareTripCost"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
             android:src="@drawable/ic_baseline_done_24"
             app:layout_constraintLeft_toRightOf="@+id/cvImage"
-            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
+            app:layout_constraintTop_toBottomOf="@id/tvEmail"
+            android:button="@drawable/checkbox_selector"
+            android:text="Share trip cost"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:clickable="false"
+            android:theme="@style/checkBox" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:gravity="center_vertical"
-            android:text="Shares trip cost"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size14sp"
-            app:layout_constraintLeft_toRightOf="@+id/ivTick"
-            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
 
         <ImageView
             android:layout_width="wrap_content"

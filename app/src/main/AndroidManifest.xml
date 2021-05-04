@@ -23,7 +23,9 @@
         android:theme="@style/Theme.GroupiiApplication"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.activity.Map.MapViewActivity"></activity>
+        <activity android:name=".ui.activity.LoginSignUp.CodeVerificationActivity"></activity>
+        <activity android:name=".ui.activity.LoginSignUp.CheckEmailActivity" />
+        <activity android:name=".ui.activity.Map.MapViewActivity" />
         <activity android:name=".ui.activity.LoginSignUp.ResedPasswordActivity" />
         <activity android:name=".ui.activity.ContactUsActivity" />
         <activity android:name=".ui.activity.ImagePreviewActivity" />

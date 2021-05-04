@@ -47,7 +47,7 @@ public class AllUsersChatFragment extends Fragment {
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String id, strMessage, strTitleName, toUserId;
+    String id, strMessage, strTitleName, strGroupChatPicture, toUserId;
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
@@ -91,7 +91,6 @@ public class AllUsersChatFragment extends Fragment {
     private void socketConnectivity() {
         ChatApplication app = new ChatApplication();
         mSocket = app.getSocket();
-
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
@@ -115,7 +114,7 @@ public class AllUsersChatFragment extends Fragment {
 
 
     private void GetAllUser() {
-
+        chatAllUserDataModels.clear();
         messageList.clear();
 
         jsonObjectGetAllUsers = new JSONObject();
@@ -162,7 +161,6 @@ public class AllUsersChatFragment extends Fragment {
     protected Emitter.Listener getAllUsers = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            chatAllUserDataModels.clear();
             if (mSocket.connected()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -180,21 +178,51 @@ public class AllUsersChatFragment extends Fragment {
                                 String title = c.getString("group_title");
                                 String message = c.getString("chat_type");
                                 String tripId = c.getString("tripid");
+                                toUserId = c.getString("touser");
+//
+////                                String fromUserId=c.getString("fromuser");
+//                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
+//                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
+//                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
+////                                    toUserId = groupUser.getString("touser");
+////                                    strGroupChatPicture = groupUser.getString("picture");
+//                                }
 
-                                Log.d("zma title name ", title + " " + AppRepository.mUserID(getActivity()));
-
-                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
-                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
-                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
-                                    toUserId = groupUser.getString("touser");
-                                    Log.d("zma touser id", toUserId);
-                                }
-
+                                Log.d("zma touser id", toUserId);
 
                                 //check condition if user id and user
-//                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa");
-//                                }
+                                 if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        try {
+                            JSONArray jsonArray = jsonObject.getJSONArray("single");
+                            Log.d("zma single json id", "" + jsonArray);
+
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.getJSONObject(i);
+                                String title = c.getString("name");
+                                String message = c.getString("group_type");
+                                String tripId = c.getString("tripid");
+                                String strId = c.getString("id");
+                                String toUserId = c.getString("touser");
+                                String userId = c.getString("userid");
+
+                                Log.d("zma touser single id", userId);
+
+
+                                String strGroupChatPicture = c.getString("picture");
+
+                                //check condition if user id and user
+                                if (userId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -206,8 +234,8 @@ public class AllUsersChatFragment extends Fragment {
     };
 
 
-    private void addUserToList(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt) {
-        chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt));
+    private void addUserToList(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt, String picture) {
+        chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture));
         allUserChatAdapter.notifyItemInserted(chatAllUserDataModels.size() - 1);
         allUserChatAdapter.notifyDataSetChanged();
 
@@ -226,8 +254,6 @@ public class AllUsersChatFragment extends Fragment {
                     public void run() {
 
                         JSONObject jsonObject = (JSONObject) args[0];
-
-
                         Log.d("zma single user", "" + jsonObject);
 
 

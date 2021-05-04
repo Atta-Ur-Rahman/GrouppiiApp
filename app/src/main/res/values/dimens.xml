@@ -34,6 +34,7 @@
     <dimen name="setting_icon_margin">5dp</dimen>
     <dimen name="tendp">10dp</dimen>
     <dimen name="screenPadding">16dp</dimen>
+    <dimen name="tenDP">10dp</dimen>
 
 
 </resources>

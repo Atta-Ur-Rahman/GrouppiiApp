@@ -1,6 +1,8 @@
 package com.techease.groupiiapplication.ui.activity.LoginSignUp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,10 +78,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<ForgotResponse> call, Response<ForgotResponse> response) {
                 if (response.isSuccessful()) {
                     dialogl.dismiss();
-                    Log.d("zma passwordtoken", String.valueOf(response.body().getData()));
                     finish();
-                    AppRepository.mPutValue(ForgotPasswordActivity.this).putString("password_token", String.valueOf(response.body().getData())).commit();
-                    startActivity(new Intent(ForgotPasswordActivity.this, ChangePasswordActivity.class));
+//                    AppRepository.mPutValue(ForgotPasswordActivity.this).putString("password_token", String.valueOf(response.body().getData())).commit();
+                    startActivity(new Intent(ForgotPasswordActivity.this, CheckEmailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) ForgotPasswordActivity.this).toBundle());
 
                 }
             }
@@ -141,7 +142,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         }
 
         public void afterTextChanged(Editable editable) {
-               switch (view.getId()) {
+            switch (view.getId()) {
                 case R.id.etEmail:
                     tilEmail.setErrorEnabled(false);
                     break;

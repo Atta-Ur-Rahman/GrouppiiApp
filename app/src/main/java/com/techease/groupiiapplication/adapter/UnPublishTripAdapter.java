@@ -26,6 +26,7 @@ import com.techease.groupiiapplication.api.ApiCallback;
 import com.techease.groupiiapplication.dataModel.tripDetail.Active;
 import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
@@ -46,6 +47,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
 
     public UnPublishTripAdapter(Context context, List<Unpublish> unpublishes) {
         this.unpublishList = unpublishes;
+        this.unpublishListFilter = unpublishes;
         this.context = context;
 
     }
@@ -61,7 +63,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Unpublish data = unpublishList.get(position);
+        Unpublish data = unpublishListFilter.get(position);
         Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
@@ -69,17 +71,10 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
 //        holder.tvDaysLeft.setText(data.);
 
 
-        if (data.getUsers() != null) {
-            userList.addAll(data.getUsers());
-        }
-
-//                    Log.d("userpic", data.getUsers().toString());
-
-
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, data.getUsers()));
 
 
         holder.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
@@ -121,31 +116,29 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
                 } else {
 
-                    TripFragment.userList = data.getUsers();
-                    Intent intent = new Intent(context, TripDetailScreenActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("image", data.getCoverimage());
-                    bundle.putString("title", data.getTitle());
-                    bundle.putString("trip_type", "Past Trip");
-                    bundle.putString("description", data.getDescription());
-                    bundle.putString("location", data.getLocation());
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+                    context.startActivity(new Intent(context, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
 
-
-                    TripFragment.userList = data.getUsers();
-                    Log.d("zma tripid", String.valueOf(data.getId()));
+//                    TripFragment.userList = data.getUsers();
+//                    Intent intent = new Intent(context, TripDetailScreenActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("image", data.getCoverimage());
+//                    bundle.putString("title", data.getTitle());
+//                    bundle.putString("trip_type", "Past Trip");
+//                    bundle.putString("description", data.getDescription());
+//                    bundle.putString("location", data.getLocation());
+//                    intent.putExtras(bundle);
+//                    context.startActivity(intent);
+//
+//                    TripFragment.userList = data.getUsers();
+//                    Log.d("zma tripid", String.valueOf(data.getId()));
 
 
                 }
             }
 
         });
-
-
     }
-
 
     public void removeAt(int position) {
         unpublishListFilter.remove(position);
@@ -155,7 +148,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
 
     @Override
     public int getItemCount() {
-        return unpublishList.size();
+        return unpublishListFilter.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

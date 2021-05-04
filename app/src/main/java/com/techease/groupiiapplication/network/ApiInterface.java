@@ -5,15 +5,18 @@ import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGal
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
+import com.techease.groupiiapplication.dataModel.contactUs.ContactUsData;
+import com.techease.groupiiapplication.dataModel.contactUs.ContactUsResponse;
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
-import com.techease.groupiiapplication.dataModel.forgot.ChangePasswordResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
 import com.techease.groupiiapplication.dataModel.genrelResetPassword.GeneralResetPassword;
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.dataModel.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.publishTrip.PublishTripResponse;
 import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
 import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
@@ -43,9 +46,6 @@ public interface ApiInterface {
 //            @Field("longitude") String longitude);
 
 
-
-
-
     @FormUrlEncoded
     @POST("users/signup")
     Call<SignUpResponse> signUp(
@@ -69,10 +69,9 @@ public interface ApiInterface {
     Call<ForgotResponse> forgotPassword(
             @Field("email") String userEmail);
 
-
     @FormUrlEncoded
     @POST("users/resetpassword")
-    Call<ChangePasswordResponse> resetPassword(
+    Call<ForgotResponse> resetPassword(
             @Field("password") String userPassword,
             @Field("token") String userToken);
 
@@ -148,7 +147,6 @@ public interface ApiInterface {
             @Field("userid") int userId);
 
 
-
     @Multipart
     @POST("trips/photo")
     Call<AddPhotoToGalleryResponse> addPhotoToGallery(
@@ -175,6 +173,21 @@ public interface ApiInterface {
     @GET
     Call<GetGalleryPhotoResponse> getAllGalleryPhoto(
             @Url String tripId);
+
+    @GET
+    Call<PublishTripResponse> publishTrip(
+            @Url String url);
+
+    @GET
+    Call<GetUserTripResponse> getUserTrip(
+            @Url String url);
+
+
+    @FormUrlEncoded
+    @POST("users/contactus")
+    Call<ContactUsResponse> contactUs(
+            @Field("contact") String message,
+            @Field("userid") int userId);
 
 
 //

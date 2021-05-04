@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
+import com.techease.groupiiapplication.utils.PhoneNumberValidator;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
@@ -73,6 +75,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.ivAddUserTrip)
     ImageView ivAddUserTrip;
 
+    @BindView(R.id.cvName)
+    CardView cvName;
 
     @BindView(R.id.rvInviteFriend)
     RecyclerView rvInviteFriend;
@@ -106,7 +110,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.cbShareTripCost)
     CheckBox cbShareCost;
 
-    List<AddTripDataModel> addTripDataModels = new ArrayList<>();
+    ArrayList<AddTripDataModel> addTripDataModels = new ArrayList<>();
 
     boolean contectBoolean = true;
 
@@ -271,7 +275,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 if (addTripDataModels.size() != 0) {
                     TripFragment.aBooleanRefreshAllTripApi = true;
                     startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
-                    this.finish();
+//                    this.finish();
                 } else {
                     Toast.makeText(this, "Please Add Trip Participants", Toast.LENGTH_SHORT).show();
                 }
@@ -296,6 +300,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
 
     private void ContactLayoutVisible() {
+
+        cvName.setVisibility(View.GONE);
         tilEmail.setVisibility(View.GONE);
         tvSendInviteFriend.setVisibility(View.GONE);
         tvInviteFriend.setVisibility(View.GONE);
@@ -307,7 +313,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriend() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName,strEmail, strPhoneNumber, strShareCost,
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName, strEmail, strPhoneNumber, strShareCost,
                 AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
@@ -322,10 +328,15 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                         btnNext.setVisibility(View.VISIBLE);
                         etEmail.setText("");
                         etPhone.setText("");
+                        etName.setText("");
                         cbShareCost.setChecked(false);
                         addTripDataModels.addAll(response.body().getData());
                         btnNext.setVisibility(View.VISIBLE);
-                        initAdapter();
+                        Collections.reverse(addTripDataModels);
+                        addTripAdapter.notifyDataSetChanged();
+                        tvInviteFriendNotFound.setVisibility(View.GONE);
+
+                        Log.d("zma user", "" + addTripDataModels);
                     }
 
                 } else {
@@ -350,6 +361,15 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
 
+        if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
+            valid = false;
+            tilPhone.setErrorEnabled(true);
+            tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
+
+        } else {
+            tilPhone.setError(null);
+            tilPhone.setErrorEnabled(false);
+        }
 
         if (strName.isEmpty()) {
             valid = false;
@@ -367,15 +387,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         } else {
             tilEmail.setError(null);
         }
-        if (strPhoneNumber.isEmpty()) {
-            valid = false;
-            tilPhone.setErrorEnabled(true);
-            tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
 
-        } else {
-            tilPhone.setError(null);
-            tilPhone.setErrorEnabled(false);
-        }
         if (!Connectivity.isConnected(this)) {
             valid = false;
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
@@ -406,7 +418,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     }
 
+
+
     private void ContactLayoutGone() {
+        cvName.setVisibility(View.VISIBLE);
         tilEmail.setVisibility(View.VISIBLE);
         tvSendInviteFriend.setVisibility(View.VISIBLE);
         tvInviteFriend.setVisibility(View.VISIBLE);
@@ -427,7 +442,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
             @Override
             public void onFailure(Call<DeleteTripResponse> call, Throwable t) {
-
                 Log.d("zma trip", "delete " + t.getMessage());
 
             }
@@ -444,9 +458,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         rvInviteFriend.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvInviteFriend.setAdapter(addTripAdapter);
         rvInviteFriend.setNestedScrollingEnabled(true);
-        Collections.reverse(addTripDataModels);
-        addTripAdapter.notifyDataSetChanged();
-        tvInviteFriendNotFound.setVisibility(View.GONE);
 
     }
 
@@ -456,11 +467,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         contactDataModelList.clear();
         rvMyContact.setLayoutManager(new LinearLayoutManager(this));
         rvMyContact.setHasFixedSize(true);
-
-
         listener = (view, position) -> {
-
-
             etPhone.setText(contactDataModelList.get(position).getNumContact());
             ContactLayoutGone();
 

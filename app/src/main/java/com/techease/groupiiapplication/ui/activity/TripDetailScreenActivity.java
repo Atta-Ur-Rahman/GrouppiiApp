@@ -2,6 +2,8 @@ package com.techease.groupiiapplication.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,13 +42,13 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.Connect;
-import com.techease.groupiiapplication.adapter.NotificationAdapter;
-import com.techease.groupiiapplication.adapter.PastTripAdapter;
 import com.techease.groupiiapplication.adapter.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.UserTripCircleImagesAdapter;
 import com.techease.groupiiapplication.adapter.chatAdapter.TripParticipantsAdapter;
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
+import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripData;
+import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.Map.MapViewActivity;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
@@ -80,8 +82,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.techease.groupiiapplication.adapter.ActiveTripAdapter.userList;
-
 public class TripDetailScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -105,6 +105,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @BindView(R.id.ivMore)
     ImageView ivMore;
+
+    @BindView(R.id.ivChat)
+    ImageView ivChat;
     @BindView(R.id.tvMore)
     TextView tvMore;
 
@@ -116,6 +119,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @BindView(R.id.cvMenu)
     LinearLayout cvMenu;
+
+
+    LinearLayout llTaxi;
+    LinearLayout llBus;
+    LinearLayout llReserv;
+    LinearLayout llFlight;
 
 
     LinearLayout llBottomSheetDayPlan, llBottomSheetReservs, llBottomSheetPayments, llBottomSheetPhotos;
@@ -135,6 +144,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     BottomSheetBehavior bottomSheetBehavior, addActivityBottomSheetBehavior, participantsBottomSheet;
 
     TripParticipantsAdapter tripParticipantsAdapter;
+    public ArrayList<GetUserTripData> userList = new ArrayList<com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripData>();
+
     RecyclerView rvTripParticipants;
     LinearLayoutManager linearLayoutManager;
     @BindView(R.id.tabs)
@@ -155,7 +166,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     TextInputLayout tillActivityTitle, tillDate, tillTime, tillActivityNote;
     EditText etActivityTitle, etActivityDate, etActivityTime, etActivityNote;
-    ImageView ivAddActivity, ivAddActivityBack;
+    ImageView ivAddActivity, ivAddActivityBack, ivActivityType;
     TextView tvAddActivity;
     SwitchCompat switchCompatGroupActivity;
 
@@ -164,15 +175,15 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     File sourceFile;
 
 
-    Dialog addPhotoDialog;
+    Dialog addPhotoDialog, addActivityTypeDialog;
 
     String strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strActivityGroup, strPhotoName;
 
     Dialog dialog;
 
-    String photoName;
+    String photoName, strActivityType;
     EditText etPhotoName;
-    ImageView ivGalleryPhoto,ivCloseParticipant;
+    ImageView ivGalleryPhoto, ivCloseParticipant;
     Button btnAddPhoto;
 
     @Override
@@ -208,6 +219,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         initializeBottomSheet();
+        ApiCallGetUserTrip();
 
 
     }
@@ -238,9 +250,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 mBottomSheetDialog.dismiss();
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                Log.d("zma user",String.valueOf(TripFragment.userList));
+                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
-                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), TripFragment.userList);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userList);
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
 
@@ -252,7 +264,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvLocation, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu})
+    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvLocation, R.id.tvMore, R.id.ivMore, R.id.llDayPlan, R.id.llPayment, R.id.cvMenu,R.id.ivChat})
 
     @Override
     public void onClick(View view) {
@@ -264,6 +276,17 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 actionMenu();
                 break;
 
+            case R.id.ivChat:
+                Intent intent = new Intent(this, ChatsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title_name", tvTripTitle.getText().toString());
+                bundle.putString("tripId", AppRepository.mTripId(this));
+                bundle.putString("toUserId", ""+AppRepository.mUserID(this));
+
+                intent.putExtras(bundle);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
+
+                break;
             case R.id.tvLocation:
                 startActivity(new Intent(this, MapViewActivity.class));
                 break;
@@ -350,6 +373,31 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
                 actionMenu();
                 break;
+            case R.id.ivActivityType:
+                activityTripTypeDialog();
+                break;
+            case R.id.llTaxi:
+                ivActivityType.setImageResource(R.mipmap.taxi_wheel);
+                strActivityType = "Taxi";
+                addActivityTypeDialog.dismiss();
+                break;
+            case R.id.llFlight:
+                ivActivityType.setImageResource(R.mipmap.flight);
+                strActivityType = "Flight";
+                addActivityTypeDialog.dismiss();
+                break;
+            case R.id.llBus:
+                ivActivityType.setImageResource(R.mipmap.transfer);
+                strActivityType = "Bus";
+                addActivityTypeDialog.dismiss();
+
+                break;
+            case R.id.llReserv:
+                ivActivityType.setImageResource(R.mipmap.reserv_selected);
+                strActivityType = "Reserv";
+                addActivityTypeDialog.dismiss();
+
+                break;
 
 
         }
@@ -422,11 +470,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         rvTripParticipants = llParticipantsBottomSheetBehaviorId.findViewById(R.id.rvTripParticipants);
-        ivCloseParticipant=llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivCloseParticipants);
+        ivCloseParticipant = llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivCloseParticipants);
         ivCloseParticipant.setOnClickListener(this);
-
-
-
 
 
         tabLayout = llActivityMoreBottomSheet.findViewById(R.id.tabs);
@@ -435,6 +480,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         ivAddActivityBack = llBottomSheetAddDayActivity.findViewById(R.id.ivAddActivityBack);
+        ivActivityType = llBottomSheetAddDayActivity.findViewById(R.id.ivActivityType);
+
 
         tillActivityTitle = llBottomSheetAddDayActivity.findViewById(R.id.tilActivityTitle);
         tillDate = llBottomSheetAddDayActivity.findViewById(R.id.tillAddActivityDate);
@@ -470,6 +517,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         llBottomSheetPayments.setOnClickListener(this);
         llBottomSheetPhotos.setOnClickListener(this);
 
+        ivActivityType.setOnClickListener(this);
 
         setupViewPagerForTabs(viewPager);
 
@@ -693,6 +741,36 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     }
 
+
+    void activityTripTypeDialog() {
+        addActivityTypeDialog = new Dialog(this);
+        addActivityTypeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        addActivityTypeDialog.setCancelable(true);
+        addActivityTypeDialog.setContentView(R.layout.custom_activity_type_layout);
+        llTaxi = addActivityTypeDialog.findViewById(R.id.llTaxi);
+        llBus = addActivityTypeDialog.findViewById(R.id.llBus);
+        llFlight = addActivityTypeDialog.findViewById(R.id.llFlight);
+        llReserv = addActivityTypeDialog.findViewById(R.id.llReserv);
+
+        llTaxi.setOnClickListener(this);
+        llBus.setOnClickListener(this);
+        llFlight.setOnClickListener(this);
+        llReserv.setOnClickListener(this);
+
+        addActivityTypeDialog.show();
+        AlertUtils.doKeepDialog(addActivityTypeDialog);
+        addActivityTypeDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+
+
+        addActivityTypeDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+
+    }
+
     void chooseAction() {
         File dir = FileUtils.getDiskCacheDir(this, "temp");
         if (!dir.exists()) {
@@ -819,6 +897,26 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     }
 
+    private void ApiCallGetUserTrip() {
+        dialog.show();
+        Call<GetUserTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mUserID(this));
+        getGalleryPhotoResponseCall.enqueue(new Callback<GetUserTripResponse>() {
+            @Override
+            public void onResponse(Call<GetUserTripResponse> call, Response<GetUserTripResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    userList.addAll(response.body().getData());
+//                    tripParticipantsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserTripResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(TripDetailScreenActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
 

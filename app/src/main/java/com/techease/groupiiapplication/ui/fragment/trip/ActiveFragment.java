@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.ActiveTripAdapter;
+import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import java.util.Collections;
@@ -55,20 +58,14 @@ public class ActiveFragment extends Fragment {
         Collections.reverse(activeList);
         activeTripDetailAdapter.notifyDataSetChanged();
 
-
-        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ConnectSearch.addGalleryPhotoListener(new ConnectionSearchChangedListener() {
             @Override
-            public boolean onQueryTextSubmit(String queryString) {
-                activeTripDetailAdapter.getFilter().filter(queryString);
-                return false;
-            }
+            public void OnMySearching() {
+                activeTripDetailAdapter.getFilter().filter(ConnectSearch.getMySearch());
 
-            @Override
-            public boolean onQueryTextChange(String queryString) {
-                activeTripDetailAdapter.getFilter().filter(queryString);
-                return false;
             }
         });
+
 
 
         if (activeList.size()==0){

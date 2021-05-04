@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.ActiveTripAdapter;
 import com.techease.groupiiapplication.adapter.UnPublishTripAdapter;
+import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import java.util.Collections;
@@ -62,25 +64,18 @@ public class UnPublishFragment extends Fragment {
         Collections.reverse(TripFragment.unpublishList);
         unPublishTripAdapter.notifyDataSetChanged();
 
-
-        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ConnectSearch.addGalleryPhotoListener(new ConnectionSearchChangedListener() {
             @Override
-            public boolean onQueryTextSubmit(String queryString) {
-                unPublishTripAdapter.getFilter().filter(queryString);
-                return false;
-            }
+            public void OnMySearching() {
+                unPublishTripAdapter.getFilter().filter(ConnectSearch.getMySearch());
 
-            @Override
-            public boolean onQueryTextChange(String queryString) {
-                unPublishTripAdapter.getFilter().filter(queryString);
-                return false;
             }
         });
 
 
-        if (TripFragment.unpublishList.size()==0){
+        if (TripFragment.unpublishList.size() == 0) {
             tvNoUnPublishTripFound.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvNoUnPublishTripFound.setVisibility(View.GONE);
         }
     }

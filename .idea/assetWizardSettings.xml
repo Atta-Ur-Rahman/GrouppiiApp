@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/close/baseline_close_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/access_time_filled/baseline_access_time_filled_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="979bb4" />
-                            <entry key="outputName" value="ic_baseline_close_24" />
+                            <entry key="outputName" value="ic_baseline_access_time_filled_24" />
                           </map>
                         </option>
                       </PersistentState>

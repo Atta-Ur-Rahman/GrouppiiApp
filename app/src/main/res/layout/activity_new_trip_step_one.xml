@@ -71,22 +71,24 @@
         android:id="@+id/clMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintTop_toBottomOf="@id/clHeader">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clAddInvite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:animateLayoutChanges="true"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
 
             <TextView
                 android:id="@+id/tvTripParticipants"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/widget_margin_left_right"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/widget_margin_left_right"
@@ -128,9 +130,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvInviteFriend"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constrainedHeight="true"
                 android:layout_margin="@dimen/widget_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvInviteFriendDetail" />
 
 
@@ -144,7 +147,7 @@
                 android:textSize="@dimen/main_heading_text_size"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvInviteFriendDetail" />
+                app:layout_constraintTop_toBottomOf="@id/rvInviteFriend" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

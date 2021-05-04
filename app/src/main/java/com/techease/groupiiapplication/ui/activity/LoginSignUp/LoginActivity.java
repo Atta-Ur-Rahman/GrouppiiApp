@@ -145,7 +145,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         finishAffinity();
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        Toast.makeText(LoginActivity.this, String.valueOf(response.message()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+
+
 
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password_email), Toast.LENGTH_SHORT).show();

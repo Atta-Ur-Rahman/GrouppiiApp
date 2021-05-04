@@ -27,6 +27,7 @@ import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
 import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
 import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
 import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.ui.fragment.trip.ActiveFragment;
@@ -63,8 +64,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    public static SearchView searchViewFilter;
-
     public static boolean aBooleanRefreshAllTripApi = true;
     public static ViewPager viewPagerTrip;
     public static List<Active> activeList = new ArrayList<>();
@@ -74,6 +73,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
 
     public static List<User> userList = new ArrayList<>();
 
+    private MyClassListener mListener = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,17 +81,42 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         dialog = AlertUtils.createProgressDialog(getActivity());
         ButterKnife.bind(this, view);
         viewPagerTrip = viewPager;
-        searchViewFilter = searchView;
+
 
         aBooleanRefreshAllTripApi = true;
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search a trip...");
         setProfileImageAndName();
 
-//        apiCallGetTripDetail();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryString) {
+                ConnectSearch.setMySearch(queryString);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String queryString) {
+                if (queryString != null) {
+                    ConnectSearch.setMySearch(queryString);
+                }
+                return false;
+            }
+        });
+
 
         return view;
     }
+
+    public interface MyClassListener {
+        public void onSomeEvent(String myString);
+    }
+
+    public void setMyClassListener(MyClassListener listener) {
+        this.mListener = listener;
+    }
+
 
     private void setProfileImageAndName() {
         if (AppRepository.mUserName(getActivity()).length() > 0) {
@@ -99,7 +124,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         }
 
         if (AppRepository.mUserProfileImage(getActivity()).length() > 0) {
-            Picasso.get().load(AppRepository.mUserProfileImage(getActivity())).placeholder(R.drawable.dubai).into(ivProfile);
+            Picasso.get().load(AppRepository.mUserProfileImage(getActivity())).placeholder(R.drawable.user).into(ivProfile);
         }
     }
 

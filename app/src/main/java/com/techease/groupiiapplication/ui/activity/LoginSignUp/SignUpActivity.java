@@ -114,10 +114,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 Log.d("zma signup response", String.valueOf(response));
 
+
+                if (response.code()==400){
+                    Toast.makeText(SignUpActivity.this, "The email has already been taken", Toast.LENGTH_SHORT).show();
+
+                }
+
                 if (response.isSuccessful()) {
                     alertDialog.dismiss();
                     finishAffinity();
-                    Toast.makeText(SignUpActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SignUpActivity.this, LoginActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) SignUpActivity.this).toBundle());
 
 //                    AppRepository.mPutValue(SignUpActivity.this).putInt("userID",response.body().getData().getId());
@@ -128,7 +134,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     try {
                         JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                        Toast.makeText(SignUpActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SignUpActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

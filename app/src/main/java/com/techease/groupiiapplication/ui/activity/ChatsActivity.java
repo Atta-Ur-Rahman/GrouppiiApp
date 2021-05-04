@@ -84,7 +84,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout rlRootLayout;
     boolean isConnected;
 
-    private String strTripId, strToUserId, strUsername, strMessageType = "1";
+    private String strTripId, strToUserId, strUsername, strMessageType = "1", strChatType;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
 
@@ -151,9 +151,10 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         strTripId = bundle.getString("tripId");
         userID = AppRepository.mUserID(this);
         strToUserId = bundle.getString("toUserId");
+        strChatType = bundle.getString("type");
+
 
         Log.d("zma trip id", strTripId);
-
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -161,24 +162,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         rvMessage.setItemAnimator(new DefaultItemAnimator());
         chatAdapter = new ChatAdapter(this, mMessages, strTripId);
         rvMessage.setAdapter(chatAdapter);
-
-//        rvMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (dy > 0) {
-//                    // Scrolling up
-//                    aBooleanShowKeyboardListener = false;
-//                } else {
-//                    // Scrolling down
-//                    aBooleanShowKeyboardListener = false;
-//
-//                }
-//            }
-
-//        });
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -196,6 +179,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         object.put("userid", userID);
                         object.put("touser", strToUserId);
                         object.put("tripid", strTripId);
+
                         object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
 
                     } catch (JSONException e) {
@@ -218,9 +202,16 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     private void GetAllMessages() {
         JSONObject objectGetAllMessages = new JSONObject();
         try {
-            objectGetAllMessages.put("userid", userID);
-            objectGetAllMessages.put("touser", null);
-            objectGetAllMessages.put("tripid", strTripId);
+            if (strChatType.equals("group")) {
+                objectGetAllMessages.put("userid", userID);
+                objectGetAllMessages.put("touser", null);
+                objectGetAllMessages.put("tripid", strTripId);
+            }
+            if (strChatType.equals("user")) {
+                objectGetAllMessages.put("userid", userID);
+                objectGetAllMessages.put("touser", strToUserId);
+                objectGetAllMessages.put("tripid", null);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -252,7 +243,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             JSONObject data = jsonArray.getJSONObject(i);
                                             toUser = data.getString("touser");
                                             fromUser = data.getString("fromuser");
-                                            fromUserName = data.getString("fromusername");
+                                            if (strChatType.equals("group")) {
+                                                fromUserName = data.getString("fromusername");
+                                            }
                                             message = data.getString("message");
                                             date = data.getString("created_at");
 //                                            senderImage = data.getString("picture");
@@ -262,10 +255,13 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
                                             Log.d("zma sender", "this is type " + toUser);
-                                            if (strToUserId.equals(fromUser) || strToUserId.equals(toUser)) {
-                                                addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
+//                                            strToUserId.equals(fromUser) ||
 
-                                            }
+
+//                                            if ( strToUserId.equals(toUser)) {
+                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
+
+//                                            }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                             Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -123,7 +123,6 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
             tvLocation = view.findViewById(R.id.tvLocation);
             rvUsers = view.findViewById(R.id.rvUsers);
 
-
         }
     }
 

@@ -3,15 +3,18 @@ package com.techease.groupiiapplication.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
 
@@ -46,6 +49,15 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
         holder.tvTitle.setText(String.valueOf(addTripDataModel.getName()));
         holder.tvStartEndDate.setText(String.valueOf(addTripDataModel.getEmail()));
 
+        Glide.with(context).load(addTripDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
+
+        Log.d("zma trip data", "" + addTripDataModel.getSharedCost());
+
+        if (addTripDataModel.getSharedCost() == 1) {
+            holder.cbShareTripCost.setChecked(true);
+        } else {
+            holder.cbShareTripCost.setChecked(false);
+        }
 
     }
 
@@ -58,13 +70,15 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
 
 
         TextView tvTitle, tvStartEndDate;
-        ImageView ivAddTripTick;
+        ImageView ivUser;
+        CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
             super(view);
             tvTitle = view.findViewById(R.id.tvTitleName);
             tvStartEndDate = view.findViewById(R.id.tvEmail);
-            ivAddTripTick = view.findViewById(R.id.ivTick);
+            cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
+            ivUser = view.findViewById(R.id.ivUser);
 
         }
     }

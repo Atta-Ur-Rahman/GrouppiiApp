@@ -376,7 +376,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
                 if (response.isSuccessful()) {
 
-                    finish();
+//                    finish();
                     startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
                     dialog.dismiss();
                     Log.d("zma uploddImage", String.valueOf(sourceFile));

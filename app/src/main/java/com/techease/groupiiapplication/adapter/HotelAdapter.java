@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
+import com.thefinestartist.finestwebview.FinestWebView;
+import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
 import java.util.List;
 
@@ -53,7 +55,26 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
         holder.tvRecommended.setText("Recommended for " + data.getDiscountPercentage() + " of guests");
 
 
-            Log.d("zma hotel pic", data.getImageURL());
+        holder.ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new FinestWebView.Builder(context)
+                        .titleDefault("Groupii App")
+                        .theme(R.style.FinestWebViewTheme)
+                        .showUrl(false)
+                        .addWebViewListener(new WebViewListener() {
+                            @Override
+                            public void onPageFinished(String url) {
+                                super.onPageFinished(url);
+
+                            }
+                        })
+                        .show(data.getLandingURL());
+            }
+        });
+
+//            Log.d("zma hotel pic", data.getImageURL());
 
 //
 //        Geocoder geocoder = new Geocoder(context, Locale.getDefault());

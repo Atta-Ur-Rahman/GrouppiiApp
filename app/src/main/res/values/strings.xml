@@ -8,7 +8,7 @@
     <string name="plesase_write_your_name">Please write your name</string>
     <string name="plesase_write_participant_name">Please write participant name</string>
 
-    <string name="plesase_write_your_phone_number">Please write your phone number</string>
+    <string name="plesase_write_your_phone_number">Please write valid phone number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -45,5 +45,9 @@
     <string name="incorrect_password_email">incorrect email or password</string>
 
     <string name="incorrect_current_password">incorrect current password</string>
+
+    <string name="pin">******</string>
+    <string name="correct_number">Is this your correct Number?</string>
+
 
 </resources>

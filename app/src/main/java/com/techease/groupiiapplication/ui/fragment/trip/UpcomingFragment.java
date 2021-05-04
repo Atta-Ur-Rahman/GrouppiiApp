@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.UpcomingTripAdapter;
+import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
 import com.techease.groupiiapplication.ui.fragment.TripFragment;
 
 import butterknife.BindView;
@@ -50,19 +53,14 @@ public class UpcomingFragment extends Fragment {
         upcommingTripDetailAdapter.notifyDataSetChanged();
 
 
-        TripFragment.searchViewFilter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ConnectSearch.addGalleryPhotoListener(new ConnectionSearchChangedListener() {
             @Override
-            public boolean onQueryTextSubmit(String queryString) {
-                upcommingTripDetailAdapter.getFilter().filter(queryString);
-                return false;
-            }
+            public void OnMySearching() {
+                upcommingTripDetailAdapter.getFilter().filter(ConnectSearch.getMySearch());
 
-            @Override
-            public boolean onQueryTextChange(String queryString) {
-                upcommingTripDetailAdapter.getFilter().filter(queryString);
-                return false;
             }
         });
+
 
         if (upcomingList.size() == 0) {
             tvNoUpComingTripFound.setVisibility(View.VISIBLE);
@@ -70,5 +68,6 @@ public class UpcomingFragment extends Fragment {
             tvNoUpComingTripFound.setVisibility(View.GONE);
         }
     }
+
 
 }
