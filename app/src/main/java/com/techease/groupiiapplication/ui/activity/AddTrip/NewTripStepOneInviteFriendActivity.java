@@ -125,6 +125,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.ivDoneContact)
+    ImageView ivDoneContact;
 
     @BindView(R.id.btnNext)
     Button btnNext;
@@ -185,14 +187,22 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 }
             }
         });
-
-        etPhone.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, @SuppressLint("ClickableViewAccessibility") MotionEvent motionEvent) {
-                ContactLayoutVisible();
-                return false;
-            }
-        });
+//
+//        etPhone.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, @SuppressLint("ClickableViewAccessibility") MotionEvent motionEvent) {
+//
+//                if (rvMyContact.getVisibility()==View.VISIBLE){
+//                    ContactLayoutGone();
+//                    KeyBoardUtils.closeKeyboard(NewTripStepOneInviteFriendActivity.this);
+//                    KeyBoardUtils.hideKeyboard(NewTripStepOneInviteFriendActivity.this);
+//                }else {
+//
+//                    ContactLayoutVisible();
+//                }
+//                return false;
+//            }
+//        });
         cbShareCost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -237,7 +247,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone})
+    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone,R.id.ivDoneContact})
     @Override
     public void onClick(View view) {
 
@@ -271,7 +281,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
                 break;
             case R.id.btnNext:
-
                 if (addTripDataModels.size() != 0) {
                     TripFragment.aBooleanRefreshAllTripApi = true;
                     startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
@@ -281,34 +290,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 }
                 break;
 
-            case R.id.etPhone:
-
-                if (aBooleanLayvissible) {
-                    ContactLayoutVisible();
-                    aBooleanLayvissible = false;
-
-                } else {
-                    ContactLayoutGone();
-                    KeyBoardUtils.closeKeyboard(this);
-                    KeyBoardUtils.hideKeyboard(this);
-
-                }
-
-
+            case R.id.ivDoneContact:
+                ContactLayoutGone();
         }
     }
 
 
-    private void ContactLayoutVisible() {
-
-        cvName.setVisibility(View.GONE);
-        tilEmail.setVisibility(View.GONE);
-        tvSendInviteFriend.setVisibility(View.GONE);
-        tvInviteFriend.setVisibility(View.GONE);
-        btnNext.setVisibility(View.GONE);
-        rvMyContact.setVisibility(View.VISIBLE);
-
-    }
 
     private void ApiCallForAddInviteFriend() {
         dialog.show();
@@ -420,6 +407,18 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
 
 
+    private void ContactLayoutVisible() {
+        cvName.setVisibility(View.GONE);
+        tilEmail.setVisibility(View.GONE);
+        tvSendInviteFriend.setVisibility(View.GONE);
+        tvInviteFriend.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
+        rvMyContact.setVisibility(View.VISIBLE);
+        ivDoneContact.setVisibility(View.VISIBLE);
+
+
+    }
+
     private void ContactLayoutGone() {
         cvName.setVisibility(View.VISIBLE);
         tilEmail.setVisibility(View.VISIBLE);
@@ -427,6 +426,9 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         tvInviteFriend.setVisibility(View.VISIBLE);
         btnNext.setVisibility(View.VISIBLE);
         rvMyContact.setVisibility(View.GONE);
+        ivDoneContact.setVisibility(View.GONE);
+        KeyBoardUtils.closeKeyboard(this);
+        KeyBoardUtils.hideKeyboard(this);
 
     }
 
@@ -545,8 +547,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         etPhone.setText(contact.getNumContact());
         etPhone.setSelection(etPhone.getText().length());
         ContactLayoutGone();
-        KeyBoardUtils.closeKeyboard(this);
-        KeyBoardUtils.hideKeyboard(this);
 
     }
 }

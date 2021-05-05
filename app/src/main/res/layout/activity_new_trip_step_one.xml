@@ -323,6 +323,18 @@
                 app:layout_constraintTop_toBottomOf="@id/cvPhone" />
 
 
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/ivDoneContact"
+                android:layout_width="@dimen/fifty_dp"
+                android:layout_height="@dimen/fifty_dp"
+                android:src="@drawable/done"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                app:layout_constraintTop_toBottomOf="@id/rvMyContact"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

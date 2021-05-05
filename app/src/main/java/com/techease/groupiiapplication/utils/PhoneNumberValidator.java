@@ -5,7 +5,7 @@ import android.text.TextUtils;
 public class PhoneNumberValidator {
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        return !TextUtils.isEmpty(phoneNumber) && android.util.Patterns.PHONE.matcher(phoneNumber).matches();
+        return !TextUtils.isEmpty(phoneNumber) && android.util.Patterns.PHONE.matcher(phoneNumber).matches() && phoneNumber.length() > 6;
     }
 
 }

@@ -176,9 +176,18 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 if (etMessageView.getText().length() > 1) {
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("userid", userID);
-                        object.put("touser", strToUserId);
-                        object.put("tripid", strTripId);
+
+
+                        if (strChatType.equals("group")) {
+                            object.put("userid", userID);
+                            object.put("touser", strToUserId);
+                            object.put("tripid", strTripId);
+                        }
+                        if (strChatType.equals("user")) {
+                            object.put("userid", userID);
+                            object.put("touser", strToUserId);
+                            object.put("tripid", null);
+                        }
 
                         object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
 
@@ -304,8 +313,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                     Log.d("zma message send sho", "" + jsonObject);
 
-                                    if (strTripId.equals(tripId)) {
-                                        addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
+                                    if (strChatType.equals("user")) {
+                                        if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
+                                        }
+                                    }
+                                    if (strChatType.equals("group")) {
+                                        if (strTripId.equals(tripId)) {
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
+                                        }
                                     }
                                 }
                             } catch (JSONException e) {

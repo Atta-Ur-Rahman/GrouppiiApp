@@ -899,7 +899,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallGetUserTrip() {
         dialog.show();
-        Call<GetUserTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mUserID(this));
+        Call<GetUserTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<GetUserTripResponse>() {
             @Override
             public void onResponse(Call<GetUserTripResponse> call, Response<GetUserTripResponse> response) {

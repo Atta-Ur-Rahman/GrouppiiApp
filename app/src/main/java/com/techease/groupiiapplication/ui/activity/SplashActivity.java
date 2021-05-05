@@ -2,6 +2,8 @@
 package com.techease.groupiiapplication.ui.activity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -22,7 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +49,22 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+
+//        Geocoder gcd = new Geocoder(this, Locale.getDefault());
+//        List<Address> addresses = null;
+//        try {
+//            addresses = gcd.getFromLocation(33.6970677,72.969148, 1);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        if (addresses.size() > 0) {
+//            Toast.makeText(this, addresses.get(0).getCountryCode(), Toast.LENGTH_SHORT).show();
+//            System.out.println(addresses.get(0).getLocality());
+//        }
+//        else {
+//            // do your stuff
+//        }
+
 
         animationView.setAnimation(R.raw.network_lost);
         animationView.playAnimation();
