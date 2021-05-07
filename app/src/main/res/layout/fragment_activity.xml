@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backColor"
-    tools:context=".ui.fragment.ActivityFragment">
+    tools:context=".ui.fragment.notification.ActivityFragment">
 
     <TextView
         android:id="@+id/tvNotificationTitle"

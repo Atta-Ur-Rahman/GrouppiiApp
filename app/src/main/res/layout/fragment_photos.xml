@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.bottomSheetFragment.PhotosFragment">
+    tools:context=".ui.fragment.tripDetialScreen.PhotosFragment">
 
 
     <include layout="@layout/gallery_photos_recylerview" />

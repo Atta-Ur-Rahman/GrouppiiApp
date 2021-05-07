@@ -27,12 +27,12 @@
         <activity android:name=".ui.activity.LoginSignUp.CheckEmailActivity" />
         <activity android:name=".ui.activity.Map.MapViewActivity" />
         <activity android:name=".ui.activity.LoginSignUp.ResedPasswordActivity" />
-        <activity android:name=".ui.activity.ContactUsActivity" />
-        <activity android:name=".ui.activity.ImagePreviewActivity" />
+        <activity android:name=".ui.activity.profile.ContactUsActivity" />
+        <activity android:name=".ui.activity.tripDetailScreen.ImagePreviewActivity" />
         <activity android:name=".ui.activity.ChatsActivity" />
-        <activity android:name=".ui.activity.BottomSheetViewFragmentActivity" />
+        <activity android:name=".ui.activity.tripDetailScreen.BottomSheetViewFragmentActivity" />
         <activity android:name=".ui.activity.profile.ProfileActivity" />
-        <activity android:name=".ui.activity.TripDetailScreenActivity" />
+        <activity android:name=".ui.activity.tripDetailScreen.TripDetailScreenActivity" />
         <activity android:name=".ui.activity.AddTrip.NewTripStepFourPaymentActivity" />
         <activity android:name=".ui.activity.AddTrip.AddNewTripThreeHotelActivity" />
         <activity android:name=".ui.activity.AddTrip.AddInviteFriendActivity" />
@@ -69,7 +69,6 @@
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

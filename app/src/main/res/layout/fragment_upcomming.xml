@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/widget_margin_left_right"
-    tools:context=".ui.fragment.trip.UpcomingFragment">
+    tools:context=".ui.fragment.tripes.UpcomingFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView

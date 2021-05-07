@@ -21,7 +21,11 @@ public class AllTripDayDataModel {
     @SerializedName("userid")
     private Long mUserid;
     @SerializedName("username")
-    private Object mUsername;
+    private String  mUsername;
+
+
+    @SerializedName("type")
+    private String mType;
 
     public String getCreatedAt() {
         return mCreatedAt;
@@ -87,12 +91,16 @@ public class AllTripDayDataModel {
         mUserid = userid;
     }
 
-    public Object getUsername() {
+    public String getUsername() {
         return mUsername;
     }
-
-    public void setUsername(Object username) {
+    public void setUsername(String username) {
         mUsername = username;
     }
-
+    public String getType() {
+        return mType;
+    }
+    public void setType(String type) {
+        mType = type;
+    }
 }

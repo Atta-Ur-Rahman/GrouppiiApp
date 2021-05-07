@@ -20,6 +20,8 @@ public class AddTripDayDataModel {
     private String mTripid;
     @SerializedName("userid")
     private String mUserid;
+    @SerializedName("type")
+    private String mType;
 
     public String getCreatedAt() {
         return mCreatedAt;
@@ -84,5 +86,14 @@ public class AddTripDayDataModel {
     public void setUserid(String userid) {
         mUserid = userid;
     }
+
+    public String getType() {
+        return mType;
+    }
+    public void setType(String type) {
+        mType = type;
+    }
+
+
 
 }

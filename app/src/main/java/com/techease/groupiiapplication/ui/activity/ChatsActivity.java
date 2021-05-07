@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -22,11 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.dataModel.chat.ChatModel;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
+import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
 import com.techease.groupiiapplication.utils.MyMessageStatusFormatter;
@@ -42,6 +45,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -68,6 +72,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     TextView tvSend;
     @BindView(R.id.iv_send_file)
     ImageView ivSendFile;
+    @BindView(R.id.ivGroup)
+    CircleImageView ivChatImage;
 
     @BindView(R.id.etMessageView)
     EditText etMessageView;
@@ -84,7 +90,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout rlRootLayout;
     boolean isConnected;
 
-    private String strTripId, strToUserId, strUsername, strMessageType = "1", strChatType;
+    private String strTripId, strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
 
@@ -95,6 +101,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     private ChatAdapter chatAdapter;
     private Socket mSocket;
     boolean aBooleanOneTimeHistoryLoad = true;
+
+    Dialog dialog;
 
     private boolean mTyping = false;
     private Handler mTypingHandler = new Handler();
@@ -145,6 +153,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
         ButterKnife.bind(this);
+        dialog = AlertUtils.createProgressDialog(this);
         Bundle bundle = getIntent().getExtras();
         tvUserName.setText(bundle.getString("title_name"));
 
@@ -152,10 +161,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         userID = AppRepository.mUserID(this);
         strToUserId = bundle.getString("toUserId");
         strChatType = bundle.getString("type");
+        strChatImageLink = bundle.getString("picture");
 
-
+        if (strChatType.equals("group")) {
+            Glide.with(this).load(strChatImageLink).placeholder(R.drawable.group_image).into(ivChatImage);
+        }
+        if (strChatType.equals("user")) {
+            Glide.with(this).load(strChatImageLink).placeholder(R.drawable.user).into(ivChatImage);
+        }
         Log.d("zma trip id", strTripId);
-
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rvMessage.setLayoutManager(mLayoutManager);
@@ -209,6 +223,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void GetAllMessages() {
+        dialog.show();
         JSONObject objectGetAllMessages = new JSONObject();
         try {
             if (strChatType.equals("group")) {
@@ -229,7 +244,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-
     //getting chat history
     private Emitter.Listener onChatHistory = new Emitter.Listener() {
         @Override
@@ -244,6 +258,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    dialog.dismiss();
                                     JSONArray jsonArray = (JSONArray) args[0];
                                     Log.d("zma all messages", "" + jsonArray);
 

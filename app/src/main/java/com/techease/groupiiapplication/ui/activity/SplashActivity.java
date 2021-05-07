@@ -12,11 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.airbnb.lottie.L;
-import com.airbnb.lottie.LottieAnimationView;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 
@@ -36,9 +32,6 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class SplashActivity extends AppCompatActivity {
-
-    @BindView(R.id.animation_view)
-    LottieAnimationView animationView;
 
     private Socket mSocket;
 
@@ -66,8 +59,6 @@ public class SplashActivity extends AppCompatActivity {
 //        }
 
 
-        animationView.setAnimation(R.raw.network_lost);
-        animationView.playAnimation();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         new Handler().postDelayed(new Runnable() {
             @Override

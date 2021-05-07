@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chat.ChatAllUserDataModel;
-import com.techease.groupiiapplication.dataModel.tripDetail.Active;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
-import com.techease.groupiiapplication.ui.activity.TripDetailScreenActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +28,12 @@ import java.util.List;
 public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.MyViewHolder> implements Filterable {
     private List<ChatAllUserDataModel> chatAllUserDataModels;
     private List<ChatAllUserDataModel> chatAllUserDataModelsFilter;
-
     Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitleName, tvChatTime, tvChatType, tvMessage;
         ImageView ivGroupChatImage;
         RelativeLayout rlGroupChat;
-
 
         public MyViewHolder(View view) {
             super(view);
@@ -49,14 +44,12 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
             tvMessage = view.findViewById(R.id.tvMessage);
             rlGroupChat = view.findViewById(R.id.rlGroupChat);
             ivGroupChatImage = view.findViewById(R.id.ivGroupChatImage);
-
-
         }
     }
 
     public AllUserChatAdapter(Context context, List<ChatAllUserDataModel> chatAllUserDataModel) {
         this.chatAllUserDataModels = chatAllUserDataModel;
-        this.chatAllUserDataModelsFilter=chatAllUserDataModel;
+        this.chatAllUserDataModelsFilter = chatAllUserDataModel;
         this.context = context;
 
     }
@@ -70,8 +63,6 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.all_user_chat_layout, parent, false);
-
-
         return new MyViewHolder(itemView);
     }
 
@@ -81,10 +72,14 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvTitleName.setText(chatAllUserDataModel.getTitleName());
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
+            if (chatAllUserDataModel.getMessage().equals("group")) {
+                Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
 
-        Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
-//        Log.d("zma tilte",chatAllUserDataModel.getTitleName());
+            }
+            if (chatAllUserDataModel.getMessage().equals("user")) {
+                Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivGroupChatImage);
 
+            }
         holder.rlGroupChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +89,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
                 bundle.putString("title_name", chatAllUserDataModel.getTitleName());
                 bundle.putString("tripId", chatAllUserDataModel.getTripId());
                 bundle.putString("toUserId", chatAllUserDataModel.getToUser());
-                bundle.putString("type",chatAllUserDataModel.getMessage());
+                bundle.putString("type", chatAllUserDataModel.getMessage());
+                bundle.putString("picture", chatAllUserDataModel.getPicture());
 
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
@@ -103,7 +99,6 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
 
 
     }
-
 
 
     @Override

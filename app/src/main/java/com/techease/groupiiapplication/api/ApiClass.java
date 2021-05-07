@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.fragment.TripFragment;
+import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;

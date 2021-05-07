@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="30dp"
     android:background="@color/backColor"
-    tools:context=".ui.fragment.AllUsersChatFragment">
+    tools:context=".ui.fragment.chat.AllUsersChatFragment">
 
 
     <TextView

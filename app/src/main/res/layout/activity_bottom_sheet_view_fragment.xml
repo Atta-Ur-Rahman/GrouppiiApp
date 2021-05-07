@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    tools:context=".ui.activity.BottomSheetViewFragmentActivity">
+    tools:context=".ui.activity.tripDetailScreen.BottomSheetViewFragmentActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

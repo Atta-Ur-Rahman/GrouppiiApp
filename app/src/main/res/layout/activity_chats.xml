@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivGroup"
             android:layout_width="@dimen/fourty_dp"
             android:layout_height="@dimen/fourty_dp"

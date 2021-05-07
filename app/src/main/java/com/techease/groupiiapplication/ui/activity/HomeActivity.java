@@ -18,10 +18,10 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
-import com.techease.groupiiapplication.ui.fragment.ActivityFragment;
-import com.techease.groupiiapplication.ui.fragment.SettingsFragment;
-import com.techease.groupiiapplication.ui.fragment.TripFragment;
-import com.techease.groupiiapplication.ui.fragment.AllUsersChatFragment;
+import com.techease.groupiiapplication.ui.fragment.notification.ActivityFragment;
+import com.techease.groupiiapplication.ui.fragment.profile.SettingsFragment;
+import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
+import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 
 import java.util.Objects;

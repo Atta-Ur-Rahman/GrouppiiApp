@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.HotelAdapter;
+import com.techease.groupiiapplication.adapter.addTrip.HotelAdapter;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
 import com.techease.groupiiapplication.dataModel.ogodaHotelObject.AreaDataObject;

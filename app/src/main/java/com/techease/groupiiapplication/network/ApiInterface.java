@@ -144,7 +144,8 @@ public interface ApiInterface {
             @Field("date") String date,
             @Field("time") String time,
             @Field("tripid") String tripId,
-            @Field("userid") int userId);
+            @Field("userid") int userId,
+            @Field("type") String type);
 
 
     @Multipart
@@ -188,85 +189,4 @@ public interface ApiInterface {
     Call<ContactUsResponse> contactUs(
             @Field("contact") String message,
             @Field("userid") int userId);
-
-
-//
-//    @Multipart
-//    @POST("register")
-//    Call<SignUpResponse> signUpWithOutImage(
-//            @Part("name") RequestBody name,
-//            @Part("email") RequestBody email,
-//            @Part("phoneNumber") RequestBody phoneNumber,
-//            @Part("password") RequestBody password,
-//            @Part("confirmPassword") RequestBody confirmPassword,
-//            @Part("deviceType") RequestBody deviceType,
-//            @Part("deviceToken") RequestBody deviceToken,
-//            @Part("latitude") RequestBody latitude,
-//            @Part("longitude") RequestBody longitude);
-//
-//
-//    @Multipart
-//    @POST("update-user-profile-picture")
-//    Call<UpdateProfileResponse> updateProfilePic(
-//            @Part MultipartBody.Part photo,
-//            @Part("profilePicture") RequestBody fileName);
-//
-//
-//    @FormUrlEncoded
-//    @POST("reset-password")
-//    Call<ResetPasswordResponse> forgotPassword(@Field("email") String email);
-//
-//    @FormUrlEncoded
-//    @POST("reset-password-verify")
-//    Call<VerifyCodeResponse> verifyCode(@Field("email") String email,
-//                                        @Field("code") String code);
-//
-//
-//    @FormUrlEncoded
-//    @POST("change-password")
-//    Call<ChangePasswordResponse> changePassword(@Field("newPassword") String newPassword,
-//                                                @Field("confirmPassword") String confirmPassword);
-//
-//    @GET("get-profile-detail")
-//    Call<ProfileResponse> getProfile();
-//
-//
-//    @GET("get-restaurents")
-//    Call<NearRestaurantsResponse> getNearRestaurants(
-//            @Query("latitude") String latitude,
-//            @Query("longitude") String longitude);
-//
-//
-//    @GET("restaurent-details?")
-//    Call<RestaurantDetailResponse> getRestaurantDetail(
-//            @Query("id") String restaurantId);
-//
-//
-//    @FormUrlEncoded
-//    @POST("vote")
-//    Call<VoteResponse> vote(
-//            @Field("restaurentId") String restaurantId);
-//
-//    @FormUrlEncoded
-//    @POST("tast")
-//    Call<TastResponse> tast(
-//            @Field("restaurentId") String restaurantId);
-//
-//
-//    @FormUrlEncoded
-//    @POST("unTast")
-//    Call<UnTastedResponse> unTast(
-//            @Field("restaurentId") String restaurantId);
-//
-//
-//    @GET("category-restaurents")
-//    Call<CategoryResponse> getCategoryRestaurant();
-//
-//
-//    @GET("my-votes")
-//    Call<MyVotingResponse> getMyVotes();
-//
-//    @GET("top-tasted")
-//    Call<TopTastedResponse> getTopTasted();
-
 }
