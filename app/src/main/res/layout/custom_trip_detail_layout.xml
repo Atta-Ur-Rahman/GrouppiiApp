@@ -29,7 +29,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/progress_animation_icon_size"
+                    android:src="@drawable/progress_animation"
                     android:layout_centerInParent="true"/>
 
                 <ImageView
@@ -46,7 +46,7 @@
         <TextView
             android:id="@+id/tvTripTitle"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:text="Best Dubai Adventure Holiday Trip 15 days."
             android:textStyle="bold"
             android:gravity="center_vertical"

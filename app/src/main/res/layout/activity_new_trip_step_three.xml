@@ -65,20 +65,49 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-        android:id="@+id/tvCityTitle"
+
+    <RelativeLayout
+        android:id="@+id/rlCityTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fifty_dp"
         android:text="Dubai UAE"
         android:textStyle="bold"
         android:textSize="16sp"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/widget_margin"
         app:layout_constraintStart_toStartOf="parent"
-        android:drawableLeft="@mipmap/my_trips_selected"
-        android:drawablePadding="@dimen/widget_margin"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
-        app:layout_constraintTop_toBottomOf="@id/clHeader" />
+        app:layout_constraintTop_toBottomOf="@id/clHeader" >
+
+           <TextView
+                android:id="@+id/tvCityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                android:drawableLeft="@mipmap/my_trips_selected"
+                android:drawablePadding="@dimen/widget_margin"/>
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autocompleteCity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
+                android:background="@android:color/transparent"
+                android:completionThreshold="1"
+                android:text="Dubai"
+                android:selectAllOnFocus="true"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/widget_margin"
+                android:textSize="@dimen/textsize16sp"
+                tools:ignore="RtlSymmetry" />
+
+
+
+    </RelativeLayout>
+
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -89,7 +118,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="@dimen/widget_margin"
         app:layout_constraintBottom_toTopOf="@id/btnReverse"
-        app:layout_constraintTop_toBottomOf="@id/tvCityTitle" />
+        app:layout_constraintTop_toBottomOf="@id/rlCityTitle" />
 
 
     <Button

@@ -6,24 +6,28 @@ public class CriteriaDataObject {
     private AreaDataObject area;
     private String checkInDate;
     private String checkOutDate;
+    private int cityId;
 
 
-    public CriteriaDataObject(AreaDataObject area, String checkInDate, String checkOutDate) {
-        this.area = area;
+
+    public CriteriaDataObject(int cityId, String checkInDate, String checkOutDate) {
+
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
+        this.cityId = cityId;
     }
 
     public CriteriaDataObject() {
     }
 
 
-    public AreaDataObject getAreaDataObject() {
-        return area;
+
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setAreaDataObject(AreaDataObject areaDataObject) {
-        this.area = areaDataObject;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     public String getCheckInDate() {
