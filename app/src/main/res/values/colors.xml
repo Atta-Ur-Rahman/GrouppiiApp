@@ -22,6 +22,8 @@
     <color name="gry_chat">#5CAAAAAA</color>
     <color name="appBackground">#f1f4f6</color>
 
+    <color name="gry_app_color">#979BB4</color>
+
 
     <color name="colorPrimary">#125688</color>
     <color name="colorPrimaryDark">#125688</color>

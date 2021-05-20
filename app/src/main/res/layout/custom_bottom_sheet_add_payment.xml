@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="700dp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/top_side_round_conner"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/widget_margin_left_right">
+
+        <View
+            android:id="@+id/ivMinusIcon"
+            android:layout_width="30dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:background="@drawable/round_line_back"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <RelativeLayout
+            android:id="@+id/rlAddActivity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:orientation="horizontal"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivAddPaymentBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
+
+            <TextView
+                android:id="@+id/tvAddActivityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="Add Payment"
+                android:textColor="@color/black"
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tvPaymentAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:text="Add"
+                android:textColor="@color/purple_500"
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvProfile"
+            android:layout_width="@dimen/add_activity_sw_iv_height"
+            android:layout_height="@dimen/add_activity_sw_iv_height"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            app:cardCornerRadius="@dimen/round_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rlAddActivity">
+
+            <ImageView
+                android:id="@+id/ivType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_bg"
+                android:padding="@dimen/widget_margin_left_right"
+                android:src="@mipmap/flight" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swAddGroupPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/add_activity_sw_iv_height"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            android:checked="false"
+            android:text="Group "
+            android:theme="@style/SCBSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rlAddActivity" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvTripTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:cardBackgroundColor="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintTop_toBottomOf="@id/cvProfile">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPaymentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:hint="Title"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+
+                <EditText
+                    android:id="@+id/etPaymentTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvAddActivityDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintHorizontal_weight="5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cvEndDate"
+            app:layout_constraintTop_toBottomOf="@id/cvTripTitle">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tillAddPaymentDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="Date"
+                    android:padding="@dimen/edittext_padding"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <EditText
+                        android:id="@+id/etAddPaymentDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="#D7F7F7"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:src="@mipmap/date" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvEndDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintHorizontal_weight="5"
+            app:layout_constraintLeft_toRightOf="@+id/cvAddActivityDate"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvTripTitle">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tillAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_edittext"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Amount"
+                    android:padding="@dimen/edittext_padding"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <EditText
+                        android:id="@+id/etAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="#D7F7F7"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:src="@drawable/ic_baseline_access_time_filled_24"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvUser"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:cardBackgroundColor="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintTop_toBottomOf="@id/cvEndDate">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <Spinner
+                    android:id="@+id/spUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown"
+                    tools:listitem="@layout/custom_user_sppinner_layout" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvSource"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            app:cardBackgroundColor="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintTop_toBottomOf="@id/cvUser">
+
+            <LinearLayout
+                android:id="@+id/llPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/widget_margin">
+
+                <ImageView
+                    android:id="@+id/ivVisa"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/visa" />
+
+                <ImageView
+                    android:id="@+id/ivMastercard"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="@dimen/widget_margin"
+                    android:layout_marginEnd="@dimen/widget_margin"
+                    android:src="@drawable/mastercard" />
+
+
+                <ImageView
+                    android:id="@+id/ivJcb"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="@dimen/widget_margin"
+                    android:src="@drawable/jcb" />
+
+
+                <ImageView
+                    android:id="@+id/ivAmericanExpress"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/american_express" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvAddActivityNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@color/light_gry"
+            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            app:cardElevation="@dimen/card_view_elevation"
+            app:layout_constraintTop_toBottomOf="@id/cvSource">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAddPaymentShortDescription"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@drawable/rounded_edittext"
+                android:gravity="top"
+                android:hint="Short description"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:counterTextAppearance="@style/CounterText"
+                app:hintTextAppearance="@style/HintText">
+
+                <EditText
+                    android:id="@+id/etAddPaymentShortDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="#D7F7F7"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:maxLines="9"
+                    android:minLines="2"
+                    android:scrollbars="vertical" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <View
+            android:id="@+id/ivBottomMinusIcon"
+            android:layout_width="134dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:background="@drawable/round_line_back"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvAddActivityNote" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

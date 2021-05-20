@@ -23,7 +23,8 @@
         android:theme="@style/Theme.GroupiiApplication"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.activity.LoginSignUp.CodeVerificationActivity"></activity>
+        <activity android:name=".ui.activity.WebViewActivity"></activity>
+        <activity android:name=".ui.activity.LoginSignUp.CodeVerificationActivity" />
         <activity android:name=".ui.activity.LoginSignUp.CheckEmailActivity" />
         <activity android:name=".ui.activity.Map.MapViewActivity" />
         <activity android:name=".ui.activity.LoginSignUp.ResedPasswordActivity" />
@@ -69,6 +70,7 @@
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

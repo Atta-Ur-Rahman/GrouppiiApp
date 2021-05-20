@@ -17,6 +17,8 @@
     <string name="plesase_write_your_location">Please write your valid location</string>
     <string name="plesase_write_start_date">Please write start date</string>
     <string name="plesase_write_end_date">Please write end date</string>
+    <string name="plesase_write_payment_amount">Please write payment amount</string>
+    <string name="plesase_write_date">Please write date</string>
     <string name="plesase_write_pay_date">Please write pay by date</string>
     <string name="group_view"><u>Group View</u></string>
     <string name="days_plan">Days Plan</string>

@@ -26,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:cs_progress="40"
                 app:cs_max="100"
                 app:cs_pointer_stroke_width="20dp"
                 app:cs_negative_enabled="true"
@@ -49,10 +48,10 @@
 
 
                 <TextView
-                    android:id="@+id/tvPersentage"
+                    android:id="@+id/tvPercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="94%"
+                    android:text="00%"
                     android:textSize="20sp"
                     android:textColor="@color/white" />
 
@@ -63,7 +62,7 @@
                     android:text="Partially paid"
                     android:textSize="14sp"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@id/tvPersentage"
+                    app:layout_constraintTop_toBottomOf="@id/tvPercentage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </LinearLayout>
@@ -82,11 +81,11 @@
 
 
             <TextView
-                android:id="@+id/tvBalance"
+                android:id="@+id/tvPartiallyPaid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="$4800 / $7000"
+                android:text="$00 / $00"
                 android:textColor="@color/white"
                 android:textSize="@dimen/middle_text_size"
                 android:layout_marginRight="@dimen/widget_margin"
@@ -110,7 +109,7 @@
                 android:layout_marginTop="@dimen/widget_margin"
                 android:textStyle="bold"
                 android:paddingLeft="20sp"
-                android:text="4/7"
+                android:text="0/0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/middle_text_size"
                 app:layout_constraintRight_toLeftOf="@id/tvPaid"

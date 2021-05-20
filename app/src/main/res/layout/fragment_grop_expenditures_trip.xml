@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.tripDetialScreen.tripExpenditures.GropExpendituresTripFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGroupExpenditureTrip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:layout_marginBottom="170dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tvNoTripFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:paddingLeft="20sp"
+        android:text="No group expenditure trip found"
+        android:layout_marginTop="@dimen/fifty_dp"
+        android:textSize="@dimen/main_heading_text_size" />
+
+
+</FrameLayout>

@@ -1,11 +1,11 @@
 
 package com.techease.groupiiapplication.network;
 
+import com.techease.groupiiapplication.dataModel.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
 import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
-import com.techease.groupiiapplication.dataModel.contactUs.ContactUsData;
 import com.techease.groupiiapplication.dataModel.contactUs.ContactUsResponse;
 import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
@@ -13,6 +13,7 @@ import com.techease.groupiiapplication.dataModel.genrelResetPassword.GeneralRese
 import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.dataModel.login.LogInResponse;
@@ -189,4 +190,26 @@ public interface ApiInterface {
     Call<ContactUsResponse> contactUs(
             @Field("contact") String message,
             @Field("userid") int userId);
+
+    @FormUrlEncoded
+    @POST("trips/expenses")
+    Call<AddPaymentResponse> addPayment(
+            @Field("tripid") String tripId,
+            @Field("userid") int userId,
+            @Field("amount") String amount,
+            @Field("type_image") String type_image,
+            @Field("name") String name,
+            @Field("date") String date,
+            @Field("short_desc") String short_desc,
+            @Field("is_personal") String is_personal,
+            @Field("paid_by") String paid_by,
+            @Field("source") String source);
+
+
+    @FormUrlEncoded
+    @POST("trips/getexpenses")
+    Call<GetPaymentExpensesResponse> getPaymentExpenses(
+            @Field("tripid") String tripId,
+            @Field("userid") int userId);
+
 }

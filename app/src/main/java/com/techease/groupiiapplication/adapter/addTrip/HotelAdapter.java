@@ -1,11 +1,18 @@
 package com.techease.groupiiapplication.adapter.addTrip;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
+import com.techease.groupiiapplication.ui.activity.WebViewActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
@@ -56,18 +65,36 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
             @Override
             public void onClick(View v) {
 
-                new FinestWebView.Builder(context)
-                        .titleDefault("Groupii App")
-                        .theme(R.style.FinestWebViewTheme)
-                        .showUrl(false)
-                        .addWebViewListener(new WebViewListener() {
-                            @Override
-                            public void onPageFinished(String url) {
-                                super.onPageFinished(url);
+                String url = data.getLandingURL();
 
-                            }
-                        })
-                        .show(data.getLandingURL());
+//
+//                Intent intent = new Intent(context, WebViewActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("url", url);
+//                intent.putExtras(bundle);
+//                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+
+                try {
+                    Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } catch (ActivityNotFoundException e) {
+                    // Chrome is probably not installed
+                }
+//
+//                new FinestWebView.Builder(context)
+//                        .titleDefault("Groupii App")
+//                        .theme(R.style.FinestWebViewTheme)
+//                        .showUrl(false)
+//                        .addWebViewListener(new WebViewListener() {
+//                            @Override
+//                            public void onPageFinished(String url) {
+//                                super.onPageFinished(url);
+//
+//                            }
+//                        })
+//                        .show(data.getLandingURL());
             }
         });
 

@@ -226,6 +226,14 @@
                 android:id="@+id/bottom_sheet_add_activity"
                 layout="@layout/custom_bottom_sheet_add_activity" />
 
+            <include
+                android:id="@+id/bottom_sheet_add_payment"
+                layout="@layout/custom_bottom_sheet_add_payment" />
+
+            <include
+                android:id="@+id/bottom_sheet_partially_paid_trip"
+                layout="@layout/custom_bottom_sheet_partially_paid_trip_layout" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
