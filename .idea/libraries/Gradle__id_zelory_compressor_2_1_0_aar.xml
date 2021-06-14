@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: id.zelory:compressor:2.1.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0bd5d00e7f3af074b49d7729f8085280/jetified-compressor-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8387bec974a29e233d46c2b3480c4b3/jetified-compressor-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/89509b4bde77034b836b4f43efe122b8/jetified-compressor-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c0849a87a353a7c593008f39bf815ee1/jetified-compressor-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/89509b4bde77034b836b4f43efe122b8/jetified-compressor-2.1.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/89509b4bde77034b836b4f43efe122b8/jetified-compressor-2.1.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a126d3c2a4d38db9863847ba59b36f6/jetified-compressor-2.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a126d3c2a4d38db9863847ba59b36f6/jetified-compressor-2.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a126d3c2a4d38db9863847ba59b36f6/jetified-compressor-2.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/id.zelory/compressor/2.1.0/56d545c283992bb7ca5eb2b694225d2df05e89ee/compressor-2.1.0-javadoc.jar!/" />

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.contactUs.ContactUsResponse;
+import com.techease.groupiiapplication.dataModel.profile.contactUs.ContactUsResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -27,7 +27,6 @@ import retrofit2.Response;
 
 public class ContactUsActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     @BindView(R.id.ivBack)
     ImageView ivBack;
     @BindView(R.id.btnSend)
@@ -36,7 +35,6 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     EditText etContactUs;
     String strMessage;
     Dialog dialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ContactUsResponse> call, Response<ContactUsResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    Toast.makeText(ContactUsActivity.this, "We have received your message. Thanks.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContactUsActivity.this, "Your message has been submitted. Thanks.", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     dialog.dismiss();

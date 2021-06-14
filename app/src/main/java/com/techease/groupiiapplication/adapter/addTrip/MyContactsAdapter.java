@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.ContactDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.ContactDataModel;
 
 import java.util.ArrayList;
 import java.util.List;

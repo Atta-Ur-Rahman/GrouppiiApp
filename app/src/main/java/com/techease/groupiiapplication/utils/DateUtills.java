@@ -1,0 +1,217 @@
+package com.techease.groupiiapplication.utils;
+
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
+public class DateUtills {
+
+
+    public static final String DATE_FORMAT_1 = "yyyy-mm-dd";
+
+    Button btnDatePicker, btnTimePicker;
+    EditText txtDate, txtTime;
+    public static int mYear, mMonth, mDay, mHour, mMinute;
+
+
+
+    public static void GetDatePickerDialog(EditText tvSetDate, Context context) {
+
+        int mYear, mMonth, mDay;
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+//                        SimpleDateFormat simpledateformat = new SimpleDateFormat("EE, MMM dd");
+
+                        SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd");
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        String selectedDate = simpledateformat.format(newDate.getTime());
+                        tvSetDate.setText(selectedDate);
+
+
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
+    public static void GetStartDatePickerDialog(EditText tvSetDate, EditText tvNext7Day, Context context) {
+
+        int mYear, mMonth, mDay;
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+//                        SimpleDateFormat simpledateformat = new SimpleDateFormat("EE, MMM dd");
+
+                        SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd");
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        String selectedDate = simpledateformat.format(newDate.getTime());
+
+                        tvSetDate.setText(selectedDate);
+
+                        try {
+                            GetDatePickerNext7Days(tvNext7Day, selectedDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
+    public static void GetDatePickerNext7Days(EditText tvSetDate, String dt) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(dt));
+        c.add(Calendar.DATE, 7);  // number of days to add
+        dt = sdf.format(c.getTime());  // dt is now the new date
+
+        tvSetDate.setText(dt);
+
+    }
+
+
+    public static String getCurrentDate(String DATE_FORMAT) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date today = Calendar.getInstance().getTime();
+        return dateFormat.format(today);
+    }
+
+
+    public static void GetTimeDialog(TextView tvTime, Context context) {
+
+
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+
+                        tvTime.setText(hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
+    }
+
+
+    public static String timeFormated(String time) {
+        String inputPattern = "HH:mm:ss";
+        String outputPattern = "h:mm a";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+
+    public static String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date today = Calendar.getInstance().getTime();
+        return dateFormat.format(today);
+    }
+
+    public static String getDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("LLLL dd,yyyy");
+            Date date = null;
+            date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
+    public static String getChatDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+//            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+            Date date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getPhotoGalleryDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+//            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            SimpleDateFormat outputFormat = new SimpleDateFormat("LLLL-dd-yyyy hh:mm a");
+            Date date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+}

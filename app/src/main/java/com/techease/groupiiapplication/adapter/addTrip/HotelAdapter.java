@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,9 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.Result;
 import com.techease.groupiiapplication.ui.activity.WebViewActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
@@ -68,20 +66,20 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
                 String url = data.getLandingURL();
 
 //
-//                Intent intent = new Intent(context, WebViewActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("url", url);
-//                intent.putExtras(bundle);
-//                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+                Intent intent = new Intent(context, WebViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                intent.putExtras(bundle);
+                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
-                try {
-                    Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                } catch (ActivityNotFoundException e) {
-                    // Chrome is probably not installed
-                }
+//                try {
+//                    Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
+//                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+//                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(i);
+//                } catch (ActivityNotFoundException e) {
+//                    // Chrome is probably not installed
+//                }
 //
 //                new FinestWebView.Builder(context)
 //                        .titleDefault("Groupii App")

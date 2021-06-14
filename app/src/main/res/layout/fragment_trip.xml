@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/widget_margin_left_right"
             android:paddingRight="@dimen/widget_margin_left_right"
-            android:text="What would you \nlike to do?"
+            android:text="Where to?"
             android:textColor="@android:color/black"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -74,6 +74,7 @@
             android:layout_height="@dimen/fifty_dp"
             android:layout_margin="@dimen/widget_margin_left_right"
             app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
 
             <androidx.appcompat.widget.SearchView

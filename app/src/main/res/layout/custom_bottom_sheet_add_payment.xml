@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
@@ -262,14 +262,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-
                 <Spinner
                     android:id="@+id/spUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:spinnerMode="dropdown"
-                    tools:listitem="@layout/custom_user_sppinner_layout" />
+                    android:drawSelectorOnTop="true"/>
 
             </RelativeLayout>
 
@@ -364,7 +361,8 @@
                     android:inputType="textMultiLine"
                     android:maxLines="9"
                     android:minLines="2"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </com.google.android.material.card.MaterialCardView>

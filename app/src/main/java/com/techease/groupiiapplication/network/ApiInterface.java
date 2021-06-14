@@ -1,27 +1,27 @@
 
 package com.techease.groupiiapplication.network;
 
-import com.techease.groupiiapplication.dataModel.addPaymentExpenses.AddPaymentResponse;
-import com.techease.groupiiapplication.dataModel.addPhotoToGallery.AddPhotoToGalleryResponse;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
-import com.techease.groupiiapplication.dataModel.addTripDay.AddTripDayResponse;
-import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
-import com.techease.groupiiapplication.dataModel.contactUs.ContactUsResponse;
-import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
-import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
-import com.techease.groupiiapplication.dataModel.genrelResetPassword.GeneralResetPassword;
-import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
-import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GetGalleryPhotoResponse;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
-import com.techease.groupiiapplication.dataModel.getPaymentExpenses.GetPaymentExpensesResponse;
-import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripResponse;
-import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
-import com.techease.groupiiapplication.dataModel.login.LogInResponse;
-import com.techease.groupiiapplication.dataModel.publishTrip.PublishTripResponse;
-import com.techease.groupiiapplication.dataModel.signUp.SignUpResponse;
-import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
-import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
-import com.techease.groupiiapplication.dataModel.updateProfilePicture.UpdateProfilePicResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.addTripDay.AddTripDayResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
+import com.techease.groupiiapplication.dataModel.profile.contactUs.ContactUsResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.forgot.ForgotResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.genrelResetPassword.GeneralResetPassword;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GetGalleryPhotoResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
+import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.signUp.SignUpResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.TripDetailResponse;
+import com.techease.groupiiapplication.dataModel.profile.updateProfilePicture.UpdateProfilePicResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -181,7 +181,7 @@ public interface ApiInterface {
             @Url String url);
 
     @GET
-    Call<GetUserTripResponse> getUserTrip(
+    Call<AddTripResponse> getUserTrip(
             @Url String url);
 
 
@@ -202,7 +202,7 @@ public interface ApiInterface {
             @Field("date") String date,
             @Field("short_desc") String short_desc,
             @Field("is_personal") String is_personal,
-            @Field("paid_by") String paid_by,
+            @Field("paid_by") int paid_by,
             @Field("source") String source);
 
 

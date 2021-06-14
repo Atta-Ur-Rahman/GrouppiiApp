@@ -19,11 +19,12 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.api.ApiCallback;
-import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Unpublish;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -60,7 +61,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Unpublish data = unpublishListFilter.get(position);
-        Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+        Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
@@ -76,9 +77,6 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
         holder.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
-
-                Log.d("zma tripid", String.valueOf(data.getId()));
 
                 String strTripId = String.valueOf(data.getId());
 

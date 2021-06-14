@@ -20,10 +20,11 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Upcoming;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
@@ -60,7 +61,9 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Upcoming data = upcomingListFilter.get(position);
-        Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+//        Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+
+        Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
@@ -83,7 +86,6 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
-                    Log.d("zma tripid", String.valueOf(data.getId()));
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
                 } else {

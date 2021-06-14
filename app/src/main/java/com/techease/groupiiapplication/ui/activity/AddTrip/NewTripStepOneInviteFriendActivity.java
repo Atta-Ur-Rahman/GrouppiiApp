@@ -39,18 +39,16 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.AddTripParticipaintsAdapter;
 import com.techease.groupiiapplication.adapter.addTrip.MyContactsAdapter;
 import com.techease.groupiiapplication.adapter.gallery.RecyclerViewClickListener;
-import com.techease.groupiiapplication.dataModel.ContactDataModel;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripResponse;
-import com.techease.groupiiapplication.dataModel.createTrip.CreateTripResponse;
-import com.techease.groupiiapplication.dataModel.tripDelete.DeleteTripResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.ContactDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
-import com.techease.groupiiapplication.utils.PhoneNumberValidator;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
@@ -99,7 +97,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     EditText etPhone;
 
 
-    @BindView(R.id.tvInviteFriend)
+    @BindView(R.id.tvEditParticipant)
     TextView tvInviteFriend;
 
 
@@ -109,7 +107,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.cbShareTripCost)
     CheckBox cbShareCost;
 
-    ArrayList<AddTripDataModel> addTripDataModels = new ArrayList<>();
+    public static ArrayList<AddTripDataModel> addTripDataModels = new ArrayList<>();
 
     boolean contectBoolean = true;
 
@@ -120,7 +118,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
 
     LinearLayoutManager linearLayoutManager;
-    AddTripParticipaintsAdapter addTripAdapter;
+    public static AddTripParticipaintsAdapter addTripAdapter;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -246,7 +244,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone,R.id.ivDoneContact})
+    @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone, R.id.ivDoneContact})
     @Override
     public void onClick(View view) {
 
@@ -280,20 +278,19 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
                 break;
             case R.id.btnNext:
-                if (addTripDataModels.size() != 0) {
-                    TripFragment.aBooleanRefreshAllTripApi = true;
-                    startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
+//                if (addTripDataModels.size() != 0) {
+//                    TripFragment.aBooleanRefreshAllTripApi = true;
+                startActivity(new Intent(this, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepOneInviteFriendActivity.this).toBundle());
 //                    this.finish();
-                } else {
-                    Toast.makeText(this, "Please Add Trip Participants", Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(this, "Please Add Trip Participants", Toast.LENGTH_SHORT).show();
+//                }
                 break;
 
             case R.id.ivDoneContact:
                 ContactLayoutGone();
         }
     }
-
 
 
     private void ApiCallForAddInviteFriend() {
@@ -347,7 +344,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
 
-        if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
+     /*   if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
             valid = false;
             tilPhone.setErrorEnabled(true);
             tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
@@ -365,7 +362,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         } else {
             tilName.setError(null);
             tilName.setErrorEnabled(false);
-        }
+        }*/
         if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
             tilEmail.setErrorEnabled(true);
             tilEmail.setError(getString(R.string.valid_email));
@@ -403,7 +400,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
 
     }
-
 
 
     private void ContactLayoutVisible() {
@@ -523,7 +519,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
     private void ContactGetAndCheckPermission() {
-        Dexter.withActivity(this).withPermissions(
+        Dexter.withContext(this).withPermissions(
                 Manifest.permission.READ_CONTACTS
         ).withListener(new MultiplePermissionsListener() {
             @Override

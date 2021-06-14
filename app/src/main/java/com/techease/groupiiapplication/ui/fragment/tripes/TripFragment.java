@@ -21,21 +21,23 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripes.TabsViewPagerAdapter;
-import com.techease.groupiiapplication.dataModel.tripDetail.Active;
-import com.techease.groupiiapplication.dataModel.tripDetail.Past;
-import com.techease.groupiiapplication.dataModel.tripDetail.TripDetailResponse;
-import com.techease.groupiiapplication.dataModel.tripDetail.Unpublish;
-import com.techease.groupiiapplication.dataModel.tripDetail.Upcoming;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Active;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Past;
+import com.techease.groupiiapplication.dataModel.getAllTrip.TripDetailResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Unpublish;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Upcoming;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
-import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,6 +80,11 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         dialog = AlertUtils.createProgressDialog(getActivity());
         ButterKnife.bind(this, view);
         viewPagerTrip = viewPager;
+
+
+
+
+
 
 
         aBooleanRefreshAllTripApi = true;

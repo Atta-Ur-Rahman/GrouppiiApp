@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.HotelCityIdData;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
 import java.util.ArrayList;
 import java.util.List;
 

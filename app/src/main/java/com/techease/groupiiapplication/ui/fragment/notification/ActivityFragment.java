@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.notification.NotificationAdapter;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.utils.AlertUtils;
 
 import java.util.ArrayList;

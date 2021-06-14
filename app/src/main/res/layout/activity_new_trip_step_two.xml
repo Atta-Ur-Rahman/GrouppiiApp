@@ -111,7 +111,6 @@
                 android:background="@drawable/rounded_edittext"
                 android:gravity="top"
                 android:hint="Trip description"
-                android:nextFocusDown="@id/etLocation"
                 android:padding="@dimen/edittext_padding"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
@@ -157,14 +156,25 @@
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp">
 
-                <EditText
-                    android:id="@+id/etLocation"
+                <AutoCompleteTextView
+                    android:id="@+id/autocompleteCity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:background="@android:color/transparent"
-                    android:backgroundTint="#D7F7F7"
-                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:inputType="text" />
+                    android:completionThreshold="1"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/widget_margin"
+                    android:selectAllOnFocus="true"
+                    tools:ignore="RtlSymmetry" />
+                <!--                <EditText-->
+                <!--                    android:visibility="gone"-->
+                <!--                    android:id="@+id/etLocation"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@android:color/transparent"-->
+                <!--                    android:backgroundTint="#D7F7F7"-->
+                <!--                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"-->
+                <!--                    android:inputType="text" />-->
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.cardview.widget.CardView>
@@ -294,27 +304,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tillPayByDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edittext"
-                android:hint="Pay By Date"
-                android:padding="@dimen/edittext_padding"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
-
-                <EditText
-                    android:id="@+id/etTripPayByDate"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tillPayByDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#D7F7F7"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="date" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="Pay By Date"
+                    android:padding="@dimen/edittext_padding"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <EditText
+                        android:id="@+id/etTripPayByDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="#D7F7F7"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <ImageView
@@ -323,7 +333,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/date_margin_end"
-                    android:src="@mipmap/date"/>
+                    android:src="@mipmap/date" />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -372,7 +382,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:visibility="gone" />
         </RelativeLayout>
 

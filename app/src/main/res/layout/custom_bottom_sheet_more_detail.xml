@@ -31,7 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <LinearLayout
             android:id="@+id/llTabs"
             android:layout_width="match_parent"
@@ -75,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
                         <ImageView
@@ -99,6 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
                         <ImageView
@@ -123,6 +124,7 @@
                         android:layout_width="0sp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:animateLayoutChanges="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -149,6 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
                         <ImageView
@@ -233,10 +236,7 @@
             <include
                 android:id="@+id/bottom_sheet_partially_paid_trip"
                 layout="@layout/custom_bottom_sheet_partially_paid_trip_layout" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

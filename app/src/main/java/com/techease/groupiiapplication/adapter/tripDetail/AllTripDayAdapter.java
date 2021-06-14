@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayDataModel;
-import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
+import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.util.List;
 
@@ -48,26 +48,26 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
 
         holder.tvTitle.setText(String.valueOf(allTripDayDataModel.getTitle()));
         holder.tvDescription.setText(String.valueOf(allTripDayDataModel.getDescription()));
-        holder.tvActivityTime.setText(DatePickerClass.timeFormated(allTripDayDataModel.getTime()));
+        holder.tvActivityTime.setText(DateUtills.timeFormated(allTripDayDataModel.getTime()));
         holder.tvUserName.setText(allTripDayDataModel.getUsername());
 
-
-        switch (allTripDayDataModel.getType()) {
-            case "Taxi":
-                Glide.with(context).load(R.mipmap.taxi_wheel).into(holder.ivType);
-                break;
-            case "Bus":
-                Glide.with(context).load(R.mipmap.transfer).into(holder.ivType);
-                break;
-            case "Reserv":
-                Glide.with(context).load(R.mipmap.reserv_selected).into(holder.ivType);
-                break;
-            case "Flight":
-                Glide.with(context).load(R.mipmap.flight).into(holder.ivType);
-                break;
+        if (allTripDayDataModel.getType() != null) {
+            switch (allTripDayDataModel.getType()) {
+                case "Taxi":
+                    Glide.with(context).load(R.mipmap.taxi_wheel).into(holder.ivType);
+                    break;
+                case "Bus":
+                    Glide.with(context).load(R.mipmap.transfer).into(holder.ivType);
+                    break;
+                case "hotel":
+                    Glide.with(context).load(R.mipmap.reserv_selected).into(holder.ivType);
+                    break;
+                case "Flight":
+                    Glide.with(context).load(R.mipmap.flight).into(holder.ivType);
+                    break;
+            }
+            Log.d("zma type", String.valueOf(allTripDayDataModel.getType()));
         }
-        Log.d("zma type", String.valueOf(allTripDayDataModel.getType()));
-
 
     }
 

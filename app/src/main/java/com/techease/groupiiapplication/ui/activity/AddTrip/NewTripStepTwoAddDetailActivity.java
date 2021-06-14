@@ -4,21 +4,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -37,21 +33,28 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.addTripDetail.AddTripDetailResponse;
+import com.techease.groupiiapplication.adapter.addTrip.AutoCompleteCitiesAdapter;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
+import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
-import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.FileUtils;
+import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 import com.techease.groupiiapplication.utils.StringHelper;
 
-import java.io.ByteArrayOutputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -85,8 +88,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
     @BindView(R.id.tillLocation)
     TextInputLayout tillLocation;
-    @BindView(R.id.etLocation)
-    EditText etLocation;
+//    @BindView(R.id.etLocation)
+//    EditText etLocation;
 
     @BindView(R.id.etTripStartDate)
     EditText etTripStartDate;
@@ -120,11 +123,19 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     private static final int REQUEST_CODE_SELECT_PICTURE = 3;
     File sourceFile;
 
+    AutoCompleteCitiesAdapter autoCompleteCitiesAdapter;
+
+    int cityID = 2994;
 
     Dialog dialog;
 
     boolean valid;
     Uri imageUri;
+    List<HotelCityIdData> hotelCityIdDataList = new ArrayList<>();
+
+
+    @BindView(R.id.autocompleteCity)
+    AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +145,98 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
         ProcessBarAnimation();
+
+
+        getCityIdes();
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
+
+                KeyBoardUtils.closeKeyboard(NewTripStepTwoAddDetailActivity.this);
+                KeyBoardUtils.hideKeyboard(NewTripStepTwoAddDetailActivity.this);
+                cityID = hotelCityIdDataList.get(itemPosition).getCityId();
+                strLocation = hotelCityIdDataList.get(itemPosition).getCityName();
+
+
+                AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putInt("cityID", cityID).commit();
+                AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("cityName", strLocation).commit();
+
+//                try {
+////                    apiCallGetTripDetail();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+
+            }
+        });
+
     }
+
+
+    private void getCityIdes() {
+
+
+        try {
+            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            JSONArray m_jArry = obj.getJSONArray("cities");
+            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
+            HashMap<String, String> m_li;
+
+
+            for (int i = 0; i < m_jArry.length(); i++) {
+                JSONObject jo_inside = m_jArry.getJSONObject(i);
+//                Log.d("Details-->", jo_inside.getString("city"));
+                String city_id = jo_inside.getString("city_id");
+                String cityName = jo_inside.getString("city");
+
+                HotelCityIdData hotelCityIdData = new HotelCityIdData();
+                hotelCityIdData.setCityId(Integer.parseInt(city_id));
+                hotelCityIdData.setCityName(cityName);
+                hotelCityIdDataList.add(hotelCityIdData);
+
+
+//                //Add your values in your `ArrayList` as below:
+//                m_li = new HashMap<String, String>();
+//                m_li.put("city id", city_id);
+//                m_li.put("city name", cityName);
+//
+//                formList.add(m_li);
+            }
+
+
+            autoCompleteCitiesAdapter = new AutoCompleteCitiesAdapter(this, hotelCityIdDataList);
+            autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = null;
+            try {
+                is = getAssets().open("hotel_json.json");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.btnNext, R.id.ivBack, R.id.etTripStartDate, R.id.etTripEndtDate, R.id.etTripPayByDate, R.id.llCoverImage})
@@ -142,7 +244,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnNext:
-
                 if (isValid()) {
                     apiCallForCoverImage();
                 }
@@ -151,13 +252,13 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 onBackPressed();
                 break;
             case R.id.etTripStartDate:
-                DatePickerClass.GetDatePickerDialog(etTripStartDate, this);
+                DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, this);
                 break;
             case R.id.etTripEndtDate:
-                DatePickerClass.GetDatePickerDialog(etTripEndDate, this);
+                DateUtills.GetDatePickerDialog(etTripEndDate, this);
                 break;
             case R.id.etTripPayByDate:
-                DatePickerClass.GetDatePickerDialog(etTripPayByDate, this);
+                DateUtills.GetDatePickerDialog(etTripPayByDate, this);
                 break;
             case R.id.llCoverImage:
                 checkImagePermission();
@@ -173,7 +274,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
 
     private void checkImagePermission() {
-        Dexter.withActivity(this).withPermissions(
+        Dexter.withContext(this).withPermissions(
                 Manifest.permission.INTERNET,
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -181,6 +282,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
+
+
                 chooseAction();
             }
 
@@ -193,22 +296,28 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     }
 
     void chooseAction() {
-        File dir = FileUtils.getDiskCacheDir(this, "temp");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        String name = StringHelper.getDateRandomString() + ".png";
-        sourceFile = new File(dir, name);
-        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
+        ImagePicker.with(this)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
+                .start();
 
-        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        pickIntent.setType("image/*");
-
-        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.profile_photo));
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
-
-        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
+//        File dir = FileUtils.getDiskCacheDir(this, "temp");
+//        if (!dir.exists()) {
+//            dir.mkdirs();
+//        }
+//        String name = StringHelper.getDateRandomString() + ".png";
+//        sourceFile = new File(dir, name);
+//        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
+//
+//        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//        pickIntent.setType("image/*");
+//
+//        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.cover_image));
+//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
+//
+//        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
     }
 
     boolean checkActionType(Intent data) {
@@ -244,42 +353,55 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
 
-            case REQUEST_CODE_SELECT_PICTURE:
-                if (checkActionType(data)) { // Camera
-                    Uri imageUri = getPickImageResultUri(data);
-                    ivCoverImage.setVisibility(View.VISIBLE);
-                    Glide.with(this).load(imageUri).into(ivCoverImage);
-                     sourceFile = new File(imageUri.getPath());
+        if (resultCode == RESULT_OK) {
+            imageUri = getPickImageResultUri(data);
+            ivCoverImage.setVisibility(View.VISIBLE);
+            ivCoverImage.setImageURI(imageUri);
+//            Glide.with(this).load(imageUri).into(ivCoverImage);
+            sourceFile = new File(imageUri.getPath());
 
-                    sourceFile = FileUtils.compressImage(this, sourceFile);
+            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
 
-                } else {  // Gallery
-                    if (data.getData() != null) {
-                        Uri uri = data.getData();
-                         sourceFile = FileUtils.getFile(this, uri);
-//                        sourceFile = FileUtils.compressImage(this, originFile);
-                        ivCoverImage.setVisibility(View.VISIBLE);
-                        Glide.with(this).load(uri).into(ivCoverImage);
-
-                    }
-                }
-
-                break;
+        } else {
+            ivCoverImage.setVisibility(View.GONE);
         }
 
+//        switch (requestCode) {
+//
+//            case REQUEST_CODE_SELECT_PICTURE:
+//                if (checkActionType(data)) { // Camera
+//                    Uri imageUri = getPickImageResultUri(data);
+//                    ivCoverImage.setVisibility(View.VISIBLE);
+//                    Glide.with(this).load(imageUri).into(ivCoverImage);
+//                    sourceFile = new File(imageUri.getPath());
+//
+//                    sourceFile = FileUtils.compressImage(this, sourceFile);
+//
+//                } else {  // Gallery
+//                    if (data.getData() != null) {
+//                        Uri uri = data.getData();
+//                        sourceFile = FileUtils.getFile(this, uri);
+////                        sourceFile = FileUtils.compressImage(this, originFile);
+//                        ivCoverImage.setVisibility(View.VISIBLE);
+//                        Glide.with(this).load(uri).into(ivCoverImage);
+//
+//                    }
+//                }
 
+//                break;
+//        }
+//
+//
     }
 
 
     @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
-
         strTripTitle = etTripTitle.getText().toString();
         strDescription = etDescription.getText().toString();
-        strLocation = etLocation.getText().toString();
+        strLocation = autoCompleteTextView.getText().toString();
         strStartDate = etTripStartDate.getText().toString();
         strEndDate = etTripEndDate.getText().toString();
         strPayByDate = etTripPayByDate.getText().toString();

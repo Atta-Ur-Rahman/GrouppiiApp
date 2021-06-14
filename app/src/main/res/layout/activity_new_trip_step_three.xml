@@ -97,7 +97,6 @@
                 android:layout_marginEnd="@dimen/widget_margin_left_right"
                 android:background="@android:color/transparent"
                 android:completionThreshold="1"
-                android:text="Dubai"
                 android:selectAllOnFocus="true"
                 android:imeOptions="actionDone"
                 android:paddingStart="@dimen/widget_margin"
@@ -133,7 +132,7 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Reverse 3 night for $294" />
+        android:text="Continue" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

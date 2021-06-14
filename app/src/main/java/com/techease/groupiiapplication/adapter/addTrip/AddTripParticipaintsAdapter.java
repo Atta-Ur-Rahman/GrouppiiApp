@@ -1,8 +1,12 @@
 package com.techease.groupiiapplication.adapter.addTrip;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 
 import java.util.List;
 
@@ -59,6 +65,23 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
             holder.cbShareTripCost.setChecked(false);
         }
 
+        holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, EditParticipantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", addTripDataModel.getName());
+                bundle.putString("email", addTripDataModel.getEmail());
+                bundle.putString("phone", addTripDataModel.getPhone());
+                bundle.putString("shared_cost", String.valueOf(addTripDataModel.getSharedCost()));
+                bundle.putString("trip_id", String.valueOf(addTripDataModel.getTripid()));
+                bundle.putBoolean("aBooleanIsTripDetailScreen", false);
+                intent.putExtras(bundle);
+                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+            }
+        });
+
     }
 
     @Override
@@ -70,7 +93,7 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
 
 
         TextView tvTitle, tvStartEndDate;
-        ImageView ivUser;
+        ImageView ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
@@ -79,6 +102,7 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
             tvStartEndDate = view.findViewById(R.id.tvEmail);
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
+            ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);
 
         }
     }

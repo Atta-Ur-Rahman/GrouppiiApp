@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;

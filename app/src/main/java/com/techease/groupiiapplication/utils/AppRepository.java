@@ -110,4 +110,13 @@ public class AppRepository {
     }
 
 
+    public static String mCityName(Context context) {
+        return mGetValue(context).getString("cityName", "");
+    }
+
+    public static int mCityId(Context context) {
+        return mGetValue(context).getInt("cityID", 0);
+    }
+
+
 }

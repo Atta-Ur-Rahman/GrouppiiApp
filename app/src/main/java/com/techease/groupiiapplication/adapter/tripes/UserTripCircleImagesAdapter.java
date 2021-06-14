@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 
 import java.util.List;
 

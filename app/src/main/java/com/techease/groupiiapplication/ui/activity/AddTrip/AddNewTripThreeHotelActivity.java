@@ -4,7 +4,6 @@ import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -18,15 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.AutoCompleteCitiesAdapter;
 import com.techease.groupiiapplication.adapter.addTrip.HotelAdapter;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.HotelCityIdData;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.OgodaHotelResponse;
-import com.techease.groupiiapplication.dataModel.OgodaHotel.Result;
-import com.techease.groupiiapplication.dataModel.ogodaHotelObject.AreaDataObject;
-import com.techease.groupiiapplication.dataModel.ogodaHotelObject.CriteriaDataObject;
-import com.techease.groupiiapplication.dataModel.ogodaHotelObject.MainHotelObject;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
+import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.Result;
+import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.AreaDataObject;
+import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.CriteriaDataObject;
+import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
-import com.techease.groupiiapplication.utils.GeneralUtills;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
@@ -73,6 +72,8 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
         setContentView(R.layout.activity_new_trip_step_three);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
+        cityID= AppRepository.mCityId(this);
+        autoCompleteTextView.setText(AppRepository.mCityName(this));
         initAdapter();
         try {
             apiCallGetTripDetail();
@@ -80,6 +81,8 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
             e.printStackTrace();
         }
         ProcessBarAnimation();
+
+
 
 
         getCityIdes();

@@ -5,15 +5,14 @@
     android:layout_height="wrap_content"
     app:cardElevation="10dp"
     app:cardCornerRadius="10dp"
-    android:layout_margin="@dimen/widget_margin"
+    android:layout_marginTop="@dimen/widget_margin"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
 
 
     <ImageView
         android:id="@+id/ivType"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,8 +43,7 @@
         android:paddingLeft="@dimen/widget_margin"
         android:paddingRight="@dimen/widget_margin"
         android:paddingBottom="@dimen/widget_margin"
-        android:layout_marginLeft="100dp"
-        android:layout_marginStart="100dp">
+        android:layout_marginStart="70dp">
 
 
         <ImageView
@@ -88,7 +86,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/widget_margin"
+            android:paddingTop="@dimen/widget_margin"
             android:gravity="center_vertical"
             android:src="@drawable/dots" />
 

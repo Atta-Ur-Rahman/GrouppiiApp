@@ -20,11 +20,12 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.api.ApiCallback;
-import com.techease.groupiiapplication.dataModel.tripDetail.Past;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Past;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
@@ -64,7 +65,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         Past data = pastListFiltered.get(position);
 
         if (data.getCoverimage() != null) {
-            Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+            Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         }
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
@@ -83,11 +84,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                 @Override
                 public boolean onLongClick(View view) {
 
-
-                    Log.d("zma tripid", String.valueOf(data.getId()));
-
                     String strTripId = String.valueOf(data.getId());
-
                     if (GeneralUtills.PopupMenuDelete(new ApiCallback() {
                         @Override
                         public boolean onResponse(boolean success) {
@@ -115,7 +112,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
-                    Log.d("zma tripid", String.valueOf(data.getId()));
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
                 } else {
 
@@ -135,12 +131,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     intent.putExtras(bundle);
                     context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
-
-
                     TripFragment.userList = data.getUsers();
-                    Log.d("zma tripid", String.valueOf(data.getId()));
-
-
                 }
             }
         });

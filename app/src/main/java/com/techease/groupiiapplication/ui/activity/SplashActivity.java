@@ -42,7 +42,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
-
 //        Geocoder gcd = new Geocoder(this, Locale.getDefault());
 //        List<Address> addresses = null;
 //        try {
@@ -57,67 +56,63 @@ public class SplashActivity extends AppCompatActivity {
 //        else {
 //            // do your stuff
 //        }
-
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                finishAffinity();
+                finish();
                 if (AppRepository.isLoggedIn(SplashActivity.this)) {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                 } else {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }
-                finish();
             }
         }, 1000);
 
-
-        try {
-            mSocket = IO.socket("http://104.131.66.116:9000/");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
-        mSocket.on(Socket.EVENT_CONNECT, onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.connect();
+//        try {
+//            mSocket = IO.socket("http://104.131.66.116:9000/");
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        mSocket.on(Socket.EVENT_CONNECT, onConnect);
+//        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
+//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+//        mSocket.connect();
 
     }
 
 
-    private Emitter.Listener getOnNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-
-        }
-    };
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Log.d("zma", "connected...");
-            // This doesn't run in the UI thread, so use:
-            // .runOnUiThread if you want to do something in the UI
-
-        }
-    };
-
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Log.d("zma", "Error connecting...");
-        }
-    };
-
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Log.d("zma", "dis connecting...");
-        }
-    };
+//    private Emitter.Listener getOnNewMessage = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+//
+//        }
+//    };
+//    private Emitter.Listener onConnect = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+////            Log.d("zma", "connected...");
+//            // This doesn't run in the UI thread, so use:
+//            // .runOnUiThread if you want to do something in the UI
+//
+//        }
+//    };
+//
+//    private Emitter.Listener onConnectError = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+////            Log.d("zma", "Error connecting...");
+//        }
+//    };
+//
+//    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+////            Log.d("zma", "dis connecting...");
+//        }
+//    };
 
 
 }

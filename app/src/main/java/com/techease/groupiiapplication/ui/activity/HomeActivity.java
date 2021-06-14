@@ -3,6 +3,7 @@ package com.techease.groupiiapplication.ui.activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,17 +97,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
-        fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
-        fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();
-        fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
-        fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
+                fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();
+                fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
+                fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
+            }
+        });
 
 
 
 
     }
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

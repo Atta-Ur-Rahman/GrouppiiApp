@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.chat.ChatAllUserDataModel;
+import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 
 import java.util.ArrayList;
@@ -71,6 +72,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         final ChatAllUserDataModel chatAllUserDataModel = chatAllUserDataModelsFilter.get(position);
         holder.tvTitleName.setText(chatAllUserDataModel.getTitleName());
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
+
+
 
             if (chatAllUserDataModel.getMessage().equals("group")) {
                 Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);

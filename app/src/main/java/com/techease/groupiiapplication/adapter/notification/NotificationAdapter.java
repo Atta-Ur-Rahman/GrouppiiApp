@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 
 import java.util.List;
 

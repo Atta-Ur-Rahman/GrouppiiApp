@@ -15,10 +15,9 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.forgot.ForgotResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.forgot.ForgotResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
-import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 

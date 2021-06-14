@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
+import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +23,9 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
     LayoutInflater inflter;
 
-    List<User> userArrayList;
+    List<AddTripDataModel> userArrayList;
 
-    public CustomSpinnerAdapter(Context applicationContext, List<User> userArrayList) {
+    public CustomSpinnerAdapter(Context applicationContext, ArrayList<AddTripDataModel> userArrayList) {
         this.context = applicationContext;
         this.userArrayList = userArrayList;
         inflter = (LayoutInflater.from(applicationContext));
@@ -50,10 +52,13 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         ImageView icon = view.findViewById(R.id.ivUser);
         TextView names = view.findViewById(R.id.tvUserName);
 
-//        Log.d("zma text",userArrayList.get(i).getName());
+//        Log.d("zma text",""+userArrayList.get(i).getTripid());
 
         Glide.with(context).load(userArrayList.get(i).getPicture()).into(icon);
         names.setText(userArrayList.get(i).getName());
+
+
+
         return view;
     }
 }

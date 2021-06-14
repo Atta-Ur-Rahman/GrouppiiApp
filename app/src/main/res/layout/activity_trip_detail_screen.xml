@@ -22,6 +22,12 @@
         android:scaleType="centerCrop" />
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/shadow_top"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/ivBack"
         android:layout_width="@dimen/fourty_dp"
         android:layout_height="@dimen/fourty_dp"
@@ -227,6 +233,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llReservs"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -272,6 +279,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llPhoto"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -322,11 +330,10 @@
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:theme="@style/Animation.Design.BottomSheetDialog">
 
         <include
             android:id="@+id/llParticipantsBottomSheetBehaviorId"
@@ -336,8 +343,6 @@
             android:id="@+id/llBottomSheetBehaviorId"
             layout="@layout/custom_bottom_sheet_more_detail" />
 
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,13 +26,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
-import com.techease.groupiiapplication.dataModel.chat.ChatModel;
+import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.socket.ChatApplication;
-import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
-import com.techease.groupiiapplication.utils.MyMessageStatusFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

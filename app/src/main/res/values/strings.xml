@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Groupii Application</string>
+    <string name="app_name">groupii</string>
     <string name="valid_name">Please write your name</string>
     <string name="valid_email">Please write a valid email address</string>
     <string name="password_should_be_six">Password must be 8–20 characters and contain both number and letters/special characters.</string>
@@ -30,6 +30,7 @@
     <string name="action_leave">Leave</string>
     <string name="action_send">Send</string>
     <string name="prompt_message">Message</string>
+    <string name="cover_image">Cover Image</string>
 
     <string name="connect">Connected</string>
     <string name="disconnect">Disconnected, Please check your internet connection</string>

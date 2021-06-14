@@ -23,8 +23,9 @@ import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.getGalleryPhoto.GalleryPhotoDataModel;
+import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GalleryPhotoDataModel;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.ImagePreviewActivity;
+import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,7 +61,7 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         GalleryPhotoDataModel data = galleryPhotoDataModels.get(position);
         Glide.with(context).load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
         holder.tvTitle.setText(data.getTitle());
-        holder.tvHotelPrice.setText(data.getTime() + "," + data.getDate());
+        holder.tvHotelPrice.setText(DateUtills.getPhotoGalleryDateFormate(data.getDate() + "" + data.getTime()));
 
 
         holder.ivShareGalleryPhoto.setOnClickListener(new View.OnClickListener() {

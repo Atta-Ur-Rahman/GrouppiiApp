@@ -1,8 +1,12 @@
 package com.techease.groupiiapplication.adapter.tripDetail;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +19,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.getUserTrip.GetUserTripData;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
+import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
 
 import java.util.List;
 
 public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipantsAdapter.MyViewHolder> {
 
     private Context context;
-    private List<GetUserTripData> userList;
+    private List<AddTripDataModel> userList;
 
 
-    public TripParticipantsAdapter(Context context, List<GetUserTripData> userList) {
+    public TripParticipantsAdapter(Context context, List<AddTripDataModel> userList) {
         this.userList = userList;
         this.context = context;
 
@@ -43,11 +49,29 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        GetUserTripData user = userList.get(position);
+        AddTripDataModel user = userList.get(position);
 
         holder.tvTitle.setText(String.valueOf(user.getName()));
         holder.tvEmail.setText(String.valueOf(user.getEmail()));
         Glide.with(context).load(user.getPicture()).into(holder.ivUser);
+
+        holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, EditParticipantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", user.getName());
+                bundle.putString("email", user.getEmail());
+                bundle.putString("phone", user.getPhone());
+                bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
+                bundle.putString("trip_id", String.valueOf(user.getTripid()));
+                bundle.putBoolean("aBooleanIsTripDetailScreen", true);
+                intent.putExtras(bundle);
+                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+            }
+        });
+
 
     }
 
@@ -60,7 +84,7 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
 
 
         TextView tvTitle, tvEmail;
-        ImageView ivAddTripTick, ivUser;
+        ImageView ivAddTripTick, ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
@@ -69,6 +93,8 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
             tvEmail = view.findViewById(R.id.tvEmail);
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
+            ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);
+
 
         }
     }

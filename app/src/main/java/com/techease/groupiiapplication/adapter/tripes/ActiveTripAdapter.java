@@ -20,10 +20,11 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetail.Active;
-import com.techease.groupiiapplication.dataModel.tripDetail.User;
+import com.techease.groupiiapplication.dataModel.getAllTrip.Active;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -37,7 +38,6 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
     private Context context;
     private List<Active> activeList;
     private List<Active> activeListFilter;
-    public static List<User> userList = new ArrayList<>();
 
 
     public ActiveTripAdapter(Context context, List<Active> actives) {
@@ -59,7 +59,8 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Active data = activeListFilter.get(position);
-        Picasso.get().load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+        Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
+
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
@@ -67,16 +68,13 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
 
 
         if (data.getUsers() != null) {
-            userList.addAll(data.getUsers());
+            TripFragment.userList.addAll(data.getUsers());
         }
-
-                    Log.d("zma trip id", data.getId().toString());
-
 
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, TripFragment.userList));
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override

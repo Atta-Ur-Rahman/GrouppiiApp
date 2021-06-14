@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/widget_margin"
-
         android:layout_toRightOf="@id/ivUser"
         android:textSize="18sp"
         tools:text="User" />

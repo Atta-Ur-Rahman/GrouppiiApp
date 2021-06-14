@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.edsilfer:emoji-keyboard:1.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fc3bfc2d99b8cee9984e1e8fddcc30/jetified-emoji-keyboard-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fc3bfc2d99b8cee9984e1e8fddcc30/jetified-emoji-keyboard-1.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fc3bfc2d99b8cee9984e1e8fddcc30/jetified-emoji-keyboard-1.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3147ded8fc28223638c6424dc381fc14/jetified-emoji-keyboard-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3147ded8fc28223638c6424dc381fc14/jetified-emoji-keyboard-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3147ded8fc28223638c6424dc381fc14/jetified-emoji-keyboard-1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -20,8 +20,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.chat.ChatModel;
+import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,8 +68,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         viewHolder.setMessage(EmojiEncoder.decodeEmoji(message.messages), "0");
         viewHolder.tvDate.setText(message.getDate());
 
+
+        Log.d("zma message sent", DateUtills.getChatDateFormate(message.getDate()));
+
+
         if (message.getDate() != null) {
-            viewHolder.setDate(message.getDate());
+            viewHolder.setDate(DateUtills.getChatDateFormate(message.getDate()));
         }
         if (message.getFromuserName() != null) {
             viewHolder.tvName.setText(message.getFromuserName());
@@ -98,7 +103,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 viewHolder.ivSeenMessage.setVisibility(View.GONE);
                 viewHolder.ivSentAndReceiveMessage.setVisibility(View.GONE);
                 viewHolder.ivSentMessage.setVisibility(View.GONE);
-
 
 
             }

@@ -17,8 +17,8 @@ import android.widget.EditText;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
-import com.techease.groupiiapplication.dataModel.chat.ChatAllUserDataModel;
-import com.techease.groupiiapplication.dataModel.socketModel.Message;
+import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
+import com.techease.groupiiapplication.dataModel.chats.socketModel.Message;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -101,7 +101,7 @@ public class AllUsersChatFragment extends Fragment {
     }
 
     private void init() {
-        dialog= AlertUtils.createProgressDialog(getActivity());
+        dialog = AlertUtils.createProgressDialog(getActivity());
         messageList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
         allUserChatAdapter = new AllUserChatAdapter(getActivity(), chatAllUserDataModels);
@@ -137,7 +137,7 @@ public class AllUsersChatFragment extends Fragment {
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.d("zma", "connected...");
+//            Log.d("zma", "connected...");
             isConnected = true;
 
 
@@ -146,7 +146,7 @@ public class AllUsersChatFragment extends Fragment {
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.d("zma", "Error connecting...");
+//            Log.d("zma", "Error connecting...");
             isConnected = false;
 
         }
@@ -155,7 +155,7 @@ public class AllUsersChatFragment extends Fragment {
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.d("zma", "dis connecting...");
+//            Log.d("zma", "dis connecting...");
             isConnected = false;
 
         }
@@ -181,23 +181,24 @@ public class AllUsersChatFragment extends Fragment {
                                 JSONObject c = jsonArray.getJSONObject(i);
 
                                 String title = c.getString("group_title");
-                                String message = c.getString("chat_type");
+                                String strChatType = c.getString("chat_type");
                                 String tripId = c.getString("tripid");
-                                toUserId = c.getString("touser");
-//
-////                                String fromUserId=c.getString("fromuser");
-//                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
-//                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
-//                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
-////                                    toUserId = groupUser.getString("touser");
-////                                    strGroupChatPicture = groupUser.getString("picture");
-//                                }
+                                toUserId=c.getString("touser");
+//                                toUserId = c.getString("touser");
+//                                strGroupChatPicture = c.getString("picture");
+////                               String fromUserId=c.getString("fromuser");
+                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
+                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
+                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
+//                                    toUserId = groupUser.getString("touser");
+                                    strGroupChatPicture = groupUser.getString("picture");
+                                }
 
-                                Log.d("zma touser id", toUserId);
+                                Log.d("zma chat type", strChatType);
 
                                 //check condition if user id and user
-                                 if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", strChatType, tripId, toUserId, "date", "modfa", strGroupChatPicture);
                                 }
                             }
                         } catch (JSONException e) {
@@ -207,7 +208,8 @@ public class AllUsersChatFragment extends Fragment {
 
                         try {
                             JSONArray jsonArray = jsonObject.getJSONArray("single");
-                            Log.d("zma single json id", "" + jsonArray);
+
+//                            Log.d("zma single json id", "" + jsonArray);
 
 
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -219,7 +221,7 @@ public class AllUsersChatFragment extends Fragment {
                                 String toUserId = c.getString("touser");
                                 String userId = c.getString("userid");
 
-                                Log.d("zma touser single id", userId);
+//                                Log.d("zma touser single id", userId);
 
 
                                 String strGroupChatPicture = c.getString("picture");

@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripDetail.AllTripDayAdapter;
-import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayDataModel;
-import com.techease.groupiiapplication.dataModel.getAllTripDay.AllTripDayResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AppRepository;
-import com.techease.groupiiapplication.utils.DatePickerClass;
+import com.techease.groupiiapplication.utils.DateUtills;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
@@ -81,11 +81,14 @@ public class AllTripDayFragment extends Fragment {
     private void CustomDatePicker() {
 // Set a Start date (Default, 1 Jan 1970)
 
-        String year = DatePickerClass.getCurrentDate("yyyy");
-        String month = DatePickerClass.getCurrentDate("MM");
-        String day = DatePickerClass.getCurrentDate("dd");
+        String year = DateUtills.getCurrentDate("yyyy");
+        String month = DateUtills.getCurrentDate("MM");
+        String day = DateUtills.getCurrentDate("dd");
 
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt("1"));
+        Log.d("zma date", year + " " + month + " " + day);
+
+
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day));
 // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
