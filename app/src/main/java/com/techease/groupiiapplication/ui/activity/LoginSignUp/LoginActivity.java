@@ -110,8 +110,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.tvSignUp:
-                finish();
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                Intent mainIntent = new Intent(LoginActivity.this,SignUpActivity.class);
+                LoginActivity.this.startActivity(mainIntent);
+                LoginActivity.this.finish();
+
                 break;
 
             case R.id.tvForgotPassword:

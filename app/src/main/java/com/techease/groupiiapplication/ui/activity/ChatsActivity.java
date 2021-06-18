@@ -28,6 +28,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.socket.ChatApplication;
+import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
@@ -324,6 +325,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     isRead = jsonObject.getString("is_read");
 
 
+                                    AllUsersChatFragment.aBooleanRefreshSocket = true;
                                     Log.d("zma message send sho", "" + jsonObject);
 
                                     if (strChatType.equals("user")) {

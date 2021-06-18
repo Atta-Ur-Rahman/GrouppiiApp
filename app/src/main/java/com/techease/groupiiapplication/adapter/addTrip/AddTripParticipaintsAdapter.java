@@ -71,6 +71,7 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
 
                 Intent intent = new Intent(context, EditParticipantActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("userId", String.valueOf(addTripDataModel.getUserid()));
                 bundle.putString("name", addTripDataModel.getName());
                 bundle.putString("email", addTripDataModel.getEmail());
                 bundle.putString("phone", addTripDataModel.getPhone());

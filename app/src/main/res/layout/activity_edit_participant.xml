@@ -146,6 +146,9 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -225,11 +228,9 @@
             android:id="@+id/cvDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/widget_margin_left_right"
-            app:cardCornerRadius="7dp"
             app:cardElevation="@dimen/card_view_elevation"
-            app:cardBackgroundColor="@color/light_gry"
-            app:layout_constraintTop_toBottomOf="@id/cvCheckBox">
+            app:cardBackgroundColor="@android:color/holo_red_light"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/tvDeleteParticipants"
@@ -238,7 +239,7 @@
                 android:gravity="center"
                 android:text="Delete"
                 android:textAllCaps="false"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@android:color/white"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 

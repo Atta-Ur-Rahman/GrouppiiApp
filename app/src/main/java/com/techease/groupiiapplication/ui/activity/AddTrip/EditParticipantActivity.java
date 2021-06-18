@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -51,7 +54,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     @BindView(R.id.etPhone)
     EditText etPhone;
 
-
     @BindView(R.id.tvEditParticipant)
     TextView tvEditParticipant;
 
@@ -70,7 +72,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     CheckBox cbShareCost;
     boolean valid, aBooleanIsTripDetailScreen;
 
-    String strName, strEmail, strPhoneNumber, strTripId, strSharedCost = "0";
+    String strUserID,strName, strEmail, strPhoneNumber, strTripId, strSharedCost = "0";
     Dialog dialog;
 
     @Override
@@ -82,6 +84,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
         dialog = AlertUtils.createProgressDialog(this);
 
         Bundle bundle = getIntent().getExtras();
+        strUserID = bundle.getString("userId");
         strName = bundle.getString("name");
         strEmail = bundle.getString("email");
         strPhoneNumber = bundle.getString("phone");
@@ -205,12 +208,67 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.tvDeleteParticipants:
-
+                ApiCallForTripUser();
                 break;
 
             case R.id.ivBack:
                 finish();
                 break;
         }
+    }
+
+    private void ApiCallForTripUser() {
+        dialog.show();
+        Call<DeleteTripUserResponse> deleteTripUserResponseCall = BaseNetworking.ApiInterface().deleteTripUser(strTripId, strUserID);
+        deleteTripUserResponseCall.enqueue(new Callback<DeleteTripUserResponse>() {
+            @Override
+            public void onResponse(Call<DeleteTripUserResponse> call, Response<DeleteTripUserResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    ApiCallGetUserTrip();
+                } else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteTripUserResponse> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    private void ApiCallGetUserTrip() {
+        dialog.show();
+        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
+        getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @Override
+            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+
+                    if (aBooleanIsTripDetailScreen) {
+                        TripDetailScreenActivity.userParticipaintsList.clear();
+                        TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                        TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
+                        finish();
+                    } else {
+
+                        NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
+                        NewTripStepOneInviteFriendActivity.addTripAdapter.notifyDataSetChanged();
+                        finish();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddTripResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(EditParticipantActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

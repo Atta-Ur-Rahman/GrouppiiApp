@@ -28,6 +28,7 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
-//        holder.tvDaysLeft.setText(data.);
+        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate()))+" days left");
 
 
         if (data.getUsers() != null) {
@@ -89,6 +90,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
                 bundle.putString("image", data.getCoverimage());
                 bundle.putString("title", data.getTitle());
                 bundle.putString("trip_type", "Active Trip");
+                bundle.putString("date", data.getFromdate());
                 bundle.putString("description", data.getDescription());
                 bundle.putString("location", data.getLocation());
                 intent.putExtras(bundle);

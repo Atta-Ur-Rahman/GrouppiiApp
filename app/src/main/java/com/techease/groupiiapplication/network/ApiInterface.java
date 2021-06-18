@@ -10,6 +10,7 @@ import com.techease.groupiiapplication.dataModel.profile.contactUs.ContactUsResp
 import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.loginSignup.forgot.ForgotResponse;
 import com.techease.groupiiapplication.dataModel.loginSignup.genrelResetPassword.GeneralResetPassword;
+import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
@@ -211,5 +212,13 @@ public interface ApiInterface {
     Call<GetPaymentExpensesResponse> getPaymentExpenses(
             @Field("tripid") String tripId,
             @Field("userid") int userId);
+
+
+
+    @FormUrlEncoded
+    @POST("trips/deleteuser")
+    Call<DeleteTripUserResponse> deleteTripUser(
+            @Field("tripid") String tripId,
+            @Field("userid") String  userId);
 
 }

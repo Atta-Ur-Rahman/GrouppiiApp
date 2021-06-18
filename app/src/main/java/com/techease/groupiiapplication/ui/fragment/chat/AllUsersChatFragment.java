@@ -1,6 +1,5 @@
 package com.techease.groupiiapplication.ui.fragment.chat;
 
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -18,9 +17,7 @@ import android.widget.EditText;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
-import com.techease.groupiiapplication.dataModel.chats.socketModel.Message;
 import com.techease.groupiiapplication.socket.ChatApplication;
-import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
 import org.json.JSONArray;
@@ -43,19 +40,16 @@ public class AllUsersChatFragment extends Fragment {
     SearchView searchView;
     @BindView(R.id.rvMessagelist)
     RecyclerView rvMessageList;
-    public List<Message> messageList;
+
+    private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String id, strMessage, strTitleName, strGroupChatPicture, toUserId;
+    String strUserID, strMessage, strGroupType, strDateAndTime, strTitleName, strGroupChatPicture, strTripID, toUserId;
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
-    private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
-
-    public static boolean aBooleanRefreshSocket = true;
-
-    Dialog dialog;
+    public static boolean aBooleanRefreshSocket = false;
 
 
     @Override
@@ -65,7 +59,7 @@ public class AllUsersChatFragment extends Fragment {
 
         init();
         socketConnectivity();
-        GetAllUser();
+        getAllUserFun();
         userSearch();
 
 
@@ -101,8 +95,6 @@ public class AllUsersChatFragment extends Fragment {
     }
 
     private void init() {
-        dialog = AlertUtils.createProgressDialog(getActivity());
-        messageList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
         allUserChatAdapter = new AllUserChatAdapter(getActivity(), chatAllUserDataModels);
         rvMessageList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -116,10 +108,8 @@ public class AllUsersChatFragment extends Fragment {
     }
 
 
-    private void GetAllUser() {
-//        dialog.show();
-        chatAllUserDataModels.clear();
-        messageList.clear();
+    private void getAllUserFun() {
+
 
         jsonObjectGetAllUsers = new JSONObject();
         try {
@@ -169,71 +159,47 @@ public class AllUsersChatFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        dialog.dismiss();
-                        JSONObject jsonObject = (JSONObject) args[0];
-                        Log.d("zma all user jsonObject", jsonObject + "");
 
                         try {
-                            JSONArray jsonArray = jsonObject.getJSONArray("groups");
-
-                            Log.d("zma all user jsonArray", jsonArray + "");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.getJSONObject(i);
-
-                                String title = c.getString("group_title");
-                                String strChatType = c.getString("chat_type");
-                                String tripId = c.getString("tripid");
-                                toUserId=c.getString("touser");
-//                                toUserId = c.getString("touser");
-//                                strGroupChatPicture = c.getString("picture");
-////                               String fromUserId=c.getString("fromuser");
-                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
-                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
-                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
-//                                    toUserId = groupUser.getString("touser");
-                                    strGroupChatPicture = groupUser.getString("picture");
-                                }
-
-                                Log.d("zma chat type", strChatType);
-
-                                //check condition if user id and user
-                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(title, "1223", "text", strChatType, tripId, toUserId, "date", "modfa", strGroupChatPicture);
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        try {
-                            JSONArray jsonArray = jsonObject.getJSONArray("single");
-
-//                            Log.d("zma single json id", "" + jsonArray);
-
+                            String data = args[0].toString();
+                            JSONArray jsonArray = new JSONArray(data);
+                            Log.d("zma jsonarray", String.valueOf(jsonArray));
+                            Log.d("zmajsaonarray","call");
+                            allUserChatAdapter.clearApplications();
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
-                                String title = c.getString("name");
-                                String message = c.getString("group_type");
-                                String tripId = c.getString("tripid");
-                                String strId = c.getString("id");
-                                String toUserId = c.getString("touser");
-                                String userId = c.getString("userid");
+                                strGroupType = c.getString("group_type");
+                                strTripID = c.getString("tripid");
+                                toUserId = c.getString("touser");
 
-//                                Log.d("zma touser single id", userId);
+                                if (strGroupType.equals("group")) {
+                                    strDateAndTime = "null";
+                                    strTitleName = c.getString("group_title");
+                                    JSONArray jsonGroupUsers = c.getJSONArray("group_users");
+                                    for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
+                                        JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
+                                        strGroupChatPicture = groupUser.getString("picture");
+                                    }
+                                } else {
+                                    strTitleName = c.getString("name");
+                                    strGroupChatPicture = c.getString("picture");
+                                    strUserID = c.getString("userid");
+                                    strDateAndTime = c.getString("created_at");
 
-
-                                String strGroupChatPicture = c.getString("picture");
+                                }
 
                                 //check condition if user id and user
-                                if (userId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity()))) || strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, toUserId, strDateAndTime, "modfa", strGroupChatPicture);
                                 }
                             }
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+//
                     }
                 });
             }
@@ -242,12 +208,10 @@ public class AllUsersChatFragment extends Fragment {
 
 
     private void addUserToList(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt, String picture) {
+
         chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture));
         allUserChatAdapter.notifyItemInserted(chatAllUserDataModels.size() - 1);
         allUserChatAdapter.notifyDataSetChanged();
-
-
-//        scrollToBottom();
     }
 
     @Override
@@ -261,10 +225,14 @@ public class AllUsersChatFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (aBooleanRefreshSocket) {
-//            GetAllUser();
+            scrollTotop();
+            getAllUserFun();
             aBooleanRefreshSocket = false;
         }
-//        GetAllUser();
+    }
+
+    private void scrollTotop() {
+        rvMessageList.smoothScrollToPosition(0);
     }
 }
 
@@ -344,6 +312,11 @@ public class AllUsersChatFragment extends Fragment {
 
 
 /*
+
+
+
+
+
 
 
 
@@ -590,3 +563,70 @@ public class AllUsersChatFragment extends Fragment {
 //            }
 //        }
     }*/
+
+
+//      dialog.dismiss();
+                     /*   JSONObject jsonObject = (JSONObject) args[0];
+                        Log.d("zma all user jsonObject", jsonObject + "");
+
+                        try {
+                            JSONArray jsonArray = jsonObject.getJSONArray("groups");
+
+                            Log.d("zma all user jsonArray", jsonArray + "");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.getJSONObject(i);
+
+                                String title = c.getString("group_title");
+                                String strChatType = c.getString("chat_type");
+                                String tripId = c.getString("tripid");
+                                toUserId=c.getString("touser");
+//                                toUserId = c.getString("touser");
+//                                strGroupChatPicture = c.getString("picture");
+////                               String fromUserId=c.getString("fromuser");
+                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
+                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
+                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
+//                                    toUserId = groupUser.getString("touser");
+                                    strGroupChatPicture = groupUser.getString("picture");
+                                }
+
+                                Log.d("zma chat type", strChatType);
+
+                                //check condition if user id and user
+                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", strChatType, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+*/
+
+                      /*  try {
+                            JSONArray jsonArray = jsonObject.getJSONArray("single");
+
+//                            Log.d("zma single json id", "" + jsonArray);
+
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.getJSONObject(i);
+                                String title = c.getString("name");
+                                String message = c.getString("group_type");
+                                String tripId = c.getString("tripid");
+                                String strId = c.getString("id");
+                                String toUserId = c.getString("touser");
+                                String userId = c.getString("userid");
+
+//                                Log.d("zma touser single id", userId);
+
+
+                                String strGroupChatPicture = c.getString("picture");
+
+                                //check condition if user id and user
+                                if (userId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(title, "1223", "text", message, tripId, toUserId, "date", "modfa", strGroupChatPicture);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/

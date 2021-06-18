@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
+import com.techease.groupiiapplication.ui.activity.LoginSignUp.SignUpActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 
 import org.json.JSONArray;
@@ -60,14 +61,19 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                finish();
                 if (AppRepository.isLoggedIn(SplashActivity.this)) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                    SplashActivity.this.startActivity(mainIntent);
+                    SplashActivity.this.finish();
                 } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+                    SplashActivity.this.startActivity(mainIntent);
+                    SplashActivity.this.finish();
                 }
+                finish();
+
             }
-        }, 1000);
+        }, 000);
 
 //        try {
 //            mSocket = IO.socket("http://104.131.66.116:9000/");

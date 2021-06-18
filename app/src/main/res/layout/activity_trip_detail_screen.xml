@@ -120,11 +120,11 @@
             android:text="Dubai United Arab Emirates"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            app:layout_constraintBottom_toTopOf="@id/tvDaysLeft"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvDaysLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
@@ -147,7 +147,7 @@
             android:text="@string/group_view"
             android:textColor="@color/purple_500"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tvDate"
+            app:layout_constraintBottom_toTopOf="@id/tvDaysLeft"
             app:layout_constraintEnd_toEndOf="parent" />
 
 

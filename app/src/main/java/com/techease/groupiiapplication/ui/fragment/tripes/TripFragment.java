@@ -30,6 +30,7 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
+import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
@@ -209,7 +210,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivProfile:
-                startActivity(new Intent(getActivity(), AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                startActivity(new Intent(getActivity(), ProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 break;
         }
     }

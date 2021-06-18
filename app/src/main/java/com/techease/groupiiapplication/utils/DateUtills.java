@@ -11,21 +11,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class DateUtills {
 
 
     public static final String DATE_FORMAT_1 = "yyyy-mm-dd";
+    public static final String DATE_FORMAT_2 = "MM/dd/yyyy";
+
 
     Button btnDatePicker, btnTimePicker;
     EditText txtDate, txtTime;
     public static int mYear, mMonth, mDay, mHour, mMinute;
-
 
 
     public static void GetDatePickerDialog(EditText tvSetDate, Context context) {
@@ -59,7 +62,7 @@ public class DateUtills {
         datePickerDialog.show();
     }
 
-    public static void GetStartDatePickerDialog(EditText tvSetDate, EditText tvNext7Day, Context context) {
+    public static void GetStartDatePickerDialog(EditText tvSetDate, EditText tvNext7Day, EditText tvNext14Days, Context context) {
 
         int mYear, mMonth, mDay;
 
@@ -85,6 +88,7 @@ public class DateUtills {
 
                         try {
                             GetDatePickerNext7Days(tvNext7Day, selectedDate);
+                            GetDatePickerNext14Days(tvNext14Days, selectedDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -103,6 +107,18 @@ public class DateUtills {
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(dt));
         c.add(Calendar.DATE, 7);  // number of days to add
+        dt = sdf.format(c.getTime());  // dt is now the new date
+
+        tvSetDate.setText(dt);
+
+    }
+
+    public static void GetDatePickerNext14Days(EditText tvSetDate, String dt) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(dt));
+        c.add(Calendar.DATE, 14);  // number of days to add
         dt = sdf.format(c.getTime());  // dt is now the new date
 
         tvSetDate.setText(dt);
@@ -160,11 +176,45 @@ public class DateUtills {
     }
 
 
-    public static String getCurrentTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+    public static String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_2);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
+    }
+
+
+    public static String getTripDetailDayleft(String inputDate) {
+
+
+        try {
+            //Dates to compare
+            String CurrentDate = getCurrentDate();
+            String FinalDate = inputDate;
+
+            Date date1;
+            Date date2;
+
+            SimpleDateFormat dates = new SimpleDateFormat("MM/dd/yyyy");
+
+            //Setting dates
+            date1 = dates.parse(CurrentDate);
+            date2 = dates.parse(FinalDate);
+
+            //Comparing dates
+            long difference = Math.abs(date1.getTime() - date2.getTime());
+            long differenceDates = difference / (24 * 60 * 60 * 1000);
+
+            //Convert long to String
+            String dayDifference = Long.toString(differenceDates);
+
+
+            return dayDifference;
+
+        } catch (Exception exception) {
+            Log.e("DIDN'T WORK", "exception " + exception);
+        }
+        return "";
     }
 
     public static String getDateFormate(String timestamp) {
@@ -214,4 +264,113 @@ public class DateUtills {
         }
         return "";
     }
+
+    public static String covertTimeToText(String dataDate) {
+
+        String convTime = null;
+
+        String prefix = "";
+        String suffix = "Ago";
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date pasTime = dateFormat.parse(dataDate);
+
+            Date nowTime = new Date();
+
+            long dateDiff = nowTime.getTime() - pasTime.getTime();
+
+            Log.d("nowTime", nowTime + "now and pass time   " + pasTime);
+
+
+            long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
+            long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
+            long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
+            long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
+
+            if (second < 60) {
+                convTime = second + " Seconds " + suffix;
+            } else if (minute < 60) {
+                convTime = minute + " Minutes " + suffix;
+            } else if (hour < 24) {
+                convTime = hour + " Hours " + suffix;
+            } else if (day >= 7) {
+                if (day > 360) {
+                    convTime = (day / 360) + " Years " + suffix;
+                } else if (day > 30) {
+                    convTime = (day / 30) + " Months " + suffix;
+                } else {
+                    convTime = (day / 7) + " Week " + suffix;
+                }
+            } else if (day < 7) {
+                convTime = day + " Days " + suffix;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.e("ConvTimeE", e.getMessage());
+        }
+
+        return convTime;
+    }
+
+
+    public static String changeDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+//            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
+            Date date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
+    private static final int SECOND_MILLIS = 1000;
+    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+    private static final int WEEK_MILLIS = 7 * DAY_MILLIS;
+
+    public static String getTimeAgo(long time) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        long now = System.currentTimeMillis();
+        if (time > now || time <= 0) {
+            return null;
+        }
+
+        // TODO: localize
+        final long diff = now - time;
+        if (diff < MINUTE_MILLIS) {
+            return "just now";
+        } else if (diff < 2 * MINUTE_MILLIS) {
+            return "a minute ago";
+        } else if (diff < 50 * MINUTE_MILLIS) {
+            return diff / MINUTE_MILLIS + " minutes ago";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "an hour ago";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return diff / HOUR_MILLIS + " hours ago";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "yesterday";
+        } else if (diff < 7 * DAY_MILLIS) {
+            return diff / DAY_MILLIS + " days ago";
+        } else if (diff < 2 * WEEK_MILLIS) {
+            return "a week ago";
+        } else {
+            return diff / WEEK_MILLIS + " weeks ago";
+        }
+    }
+
+
 }

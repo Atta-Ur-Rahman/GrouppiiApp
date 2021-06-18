@@ -97,8 +97,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tvSignIn:
-                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                finish();
+
+                Intent mainIntent = new Intent(SignUpActivity.this,LoginActivity.class);
+                SignUpActivity.this.startActivity(mainIntent);
+                SignUpActivity.this.finish();
+
+//                finish();
+//                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                 break;
         }
     }

@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backColor"
     tools:context=".ui.activity.profile.ContactUsActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/signup_bg"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"

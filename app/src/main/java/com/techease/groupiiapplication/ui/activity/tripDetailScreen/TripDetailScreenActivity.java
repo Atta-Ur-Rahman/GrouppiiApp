@@ -59,8 +59,6 @@ import com.techease.groupiiapplication.dataModel.tripDetial.addTripDay.AddTripDa
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GroupExpendituresItem;
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.PersonalExpendituresItem;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 import com.techease.groupiiapplication.ui.activity.Map.MapViewActivity;
@@ -86,7 +84,14 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -165,7 +170,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     LinearLayout llBottomSheetAddDayActivity, llBottomSheetAddPayment, llBottomSheetPartiallyPaidTrip, llPaymentMethod;
     BottomSheetBehavior bottomSheetBehavior, addActivityBottomSheetBehavior, addPaymentBottomSheetBehavior, partiallyPaidTripBottomSheetBehavior, participantsBottomSheet;
 
-   public static TripParticipantsAdapter tripParticipantsAdapter;
+    public static TripParticipantsAdapter tripParticipantsAdapter;
     public static ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
 
     RecyclerView rvTripParticipants;
@@ -175,6 +180,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+
+    @BindView(R.id.tvDaysLeft)
+    TextView tvDaysLeft;
     boolean aBooleanAddImage = true;
     BottomNavigationView bottomNavigationView;
     ArrayList<String> stringArrayList = new ArrayList<>();
@@ -204,7 +212,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     Dialog addPhotoDialog, addActivityTypeDialog;
 
-    String strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strTitle, strPhoto, strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
+    String strTripDate, strActivityTitle, strActivityDate, strActivityTime, strActivityNote, strTitle, strPhoto, strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
 
     Dialog dialog;
 
@@ -220,7 +228,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     Spinner spUserName;
 
 
-
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,6 +244,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         Bundle bundle = getIntent().getExtras();
         strTitle = bundle.getString("title");
         strPhoto = bundle.getString("image");
+        strTripDate = bundle.getString("date");
+        tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate))+" days left");
 
         Log.d("zma user id", "" + AppRepository.mUserID(this));
         Log.d("zma trip id", "" + AppRepository.mTripId(this));
@@ -245,7 +256,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvTripTypeName.setText(bundle.getString("trip_type"));
         tvDescription.setText(bundle.getString("description"));
         tvLocation.setText(bundle.getString("location"));
-
 
         stringArrayList = bundle.getStringArrayList("users");
         Log.d("zma array", String.valueOf(stringArrayList));
@@ -668,7 +678,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         Log.d("zma usr", "" + TripFragment.userList);
-
 
 
         ConnectPaymentClick.addClickListener(new ConnectionBooleanClickChangedListener() {
@@ -1215,7 +1224,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     sourceFile = null;
                     Connect.setMyBoolean(true);
                     dialog.dismiss();
-                    Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
 
                 } else {
                     try {
@@ -1241,6 +1250,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallGetUserTrip() {
         dialog.show();
+        userParticipaintsList.clear();
         Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override

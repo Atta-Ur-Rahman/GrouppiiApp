@@ -29,6 +29,7 @@ import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDeta
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
+        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
+
 
         userList.addAll(data.getUsers());
 
@@ -94,6 +97,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
                     bundle.putString("image", data.getCoverimage());
                     bundle.putString("title", data.getTitle());
                     bundle.putString("trip_type", "Upcoming Trip");
+                    bundle.putString("date", data.getFromdate());
                     bundle.putString("description", data.getDescription());
                     bundle.putString("location", data.getLocation());
                     bundle.putStringArrayList("user", (ArrayList<String>) stringArrayList);
@@ -116,7 +120,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate, tvLocation;
+        TextView tvTitle, tvStartEndDate, tvDaysLeft, tvLocation;
         ImageView ivImage;
         RecyclerView rvUsers;
 
@@ -127,6 +131,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
             tvStartEndDate = view.findViewById(R.id.tvStartEndDate);
             tvLocation = view.findViewById(R.id.tvLocation);
             rvUsers = view.findViewById(R.id.rvUsers);
+            tvDaysLeft = view.findViewById(R.id.tvDaysLeft);
 
         }
     }

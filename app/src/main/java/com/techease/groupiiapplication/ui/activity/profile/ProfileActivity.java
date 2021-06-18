@@ -72,7 +72,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     final int RESULT_LOAD_IMAGE = 2;
     File sourceFile;
 
-
     Dialog dialog;
 
 

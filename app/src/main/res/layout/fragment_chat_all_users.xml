@@ -64,9 +64,10 @@
         android:layout_below="@id/mcvSearch"
         android:layout_marginStart="@dimen/widget_margin_left_right"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
+        android:layoutAnimation="@anim/layout_animationrecylvew"
         android:layout_marginBottom="@dimen/widget_margin_left_right"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="none" />
 
 
     <LinearLayout

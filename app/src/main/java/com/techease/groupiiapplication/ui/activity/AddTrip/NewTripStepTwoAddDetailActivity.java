@@ -252,7 +252,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 onBackPressed();
                 break;
             case R.id.etTripStartDate:
-                DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, this);
+                DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, etTripPayByDate,this);
                 break;
             case R.id.etTripEndtDate:
                 DateUtills.GetDatePickerDialog(etTripEndDate, this);

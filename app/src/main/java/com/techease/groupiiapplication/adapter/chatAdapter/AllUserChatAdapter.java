@@ -21,8 +21,12 @@ import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
+import com.techease.groupiiapplication.utils.DateUtills;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -74,8 +78,27 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
+        if (!chatAllUserDataModel.getCreatedAt().equals("null")){
 
-            if (chatAllUserDataModel.getMessage().equals("group")) {
+
+//            holder.tvChatTime.setText(chatAllUserDataModel.getCreatedAt());
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+        try {
+            Date d = f.parse(chatAllUserDataModel.getCreatedAt());
+            long milliseconds = d.getTime();
+            holder.tvChatTime.setText(DateUtills.getTimeAgo(milliseconds));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        }
+
+
+
+
+            if (chatAllUserDataModel.getChatType().equals("group")) {
                 Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
 
             }
@@ -103,6 +126,16 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
 
     }
 
+
+    public void clearApplications() {
+        int size = this.chatAllUserDataModels.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                chatAllUserDataModelsFilter.remove(0);
+            }
+            this.notifyItemRangeRemoved(0, size);
+        }
+    }
 
     @Override
     public Filter getFilter() {
