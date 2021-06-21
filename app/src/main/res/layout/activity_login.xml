@@ -40,17 +40,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edittext"
+            android:hint="Email"
             android:padding="@dimen/edittext_padding"
             app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            android:hint="Email">
+            app:boxStrokeWidthFocused="0dp">
 
             <EditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
                 android:background="@null"
+                android:backgroundTint="@android:color/transparent"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,15 +76,14 @@
                 android:id="@+id/tilPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
                 android:background="@drawable/rounded_edittext"
+                android:hint="Password"
                 android:padding="@dimen/edittext_padding"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
-                app:passwordToggleTint="@color/purple_500"
                 app:passwordToggleDrawable="@drawable/show_password_selector"
-                app:passwordToggleEnabled="true">
-
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/purple_500">
 
 
                 <EditText
@@ -107,15 +106,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
         android:layout_marginTop="@dimen/widget_margin"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="center"
-        android:text="Forgot Password?"
+        android:gravity="right"
+        android:text="@string/forgot_password"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/cvPassword" />
+        app:layout_constraintTop_toBottomOf="@id/cvPassword"
+        tools:ignore="RtlHardcoded" />
 
 
     <Button

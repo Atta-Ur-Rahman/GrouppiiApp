@@ -216,7 +216,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     Dialog dialog;
 
-    String strIsPersonal = "0", strActivityType, strPersonal = "1";
+    String strIsPersonal = "0", strActivityType="Flight", strPersonal = "1";
     EditText etPhotoName;
     ImageView ivGalleryPhoto, ivCloseParticipant;
     Button btnAddPhoto;

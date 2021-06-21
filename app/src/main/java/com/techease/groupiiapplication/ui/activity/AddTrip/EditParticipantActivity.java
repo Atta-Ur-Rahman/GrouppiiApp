@@ -255,6 +255,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         finish();
                     } else {
 
+                        NewTripStepOneInviteFriendActivity.addTripDataModels.clear();
                         NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
                         NewTripStepOneInviteFriendActivity.addTripAdapter.notifyDataSetChanged();
                         finish();

@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
@@ -29,10 +31,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class AllUsersChatFragment extends Fragment {
+public class AllUsersChatFragment extends Fragment implements View.OnClickListener {
 
     @BindView(R.id.etChat)
     EditText etChat;
@@ -40,6 +43,9 @@ public class AllUsersChatFragment extends Fragment {
     SearchView searchView;
     @BindView(R.id.rvMessagelist)
     RecyclerView rvMessageList;
+
+    @BindView(R.id.ivEdit)
+    ImageView ivEdit;
 
     private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
     public AllUserChatAdapter allUserChatAdapter;
@@ -61,7 +67,6 @@ public class AllUsersChatFragment extends Fragment {
         socketConnectivity();
         getAllUserFun();
         userSearch();
-
 
         return view;
     }
@@ -91,6 +96,7 @@ public class AllUsersChatFragment extends Fragment {
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket.on("allusers", getAllUsers);
         mSocket.connect();
     }
 
@@ -101,7 +107,6 @@ public class AllUsersChatFragment extends Fragment {
         rvMessageList.setItemAnimator(new DefaultItemAnimator());
         rvMessageList.setAdapter(allUserChatAdapter);
 
-
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search here...");
 
@@ -110,17 +115,19 @@ public class AllUsersChatFragment extends Fragment {
 
     private void getAllUserFun() {
 
-
+        allUserChatAdapter.clearApplications();
         jsonObjectGetAllUsers = new JSONObject();
         try {
             jsonObjectGetAllUsers.put("userid", AppRepository.mUserID(getActivity()));
+            mSocket.emit("getusers", jsonObjectGetAllUsers);
+
+            Log.d("zmajsaonarray", "zma call");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        mSocket.emit("getusers", jsonObjectGetAllUsers);
-        mSocket.on("allusers", getAllUsers);
+
     }
 
 
@@ -159,13 +166,11 @@ public class AllUsersChatFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("zmajsaonarray", "event call");
 
                         try {
                             String data = args[0].toString();
                             JSONArray jsonArray = new JSONArray(data);
-                            Log.d("zma jsonarray", String.valueOf(jsonArray));
-                            Log.d("zmajsaonarray","call");
-                            allUserChatAdapter.clearApplications();
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
@@ -196,7 +201,8 @@ public class AllUsersChatFragment extends Fragment {
                             }
 
 
-                        } catch (JSONException e) {
+                        } catch (
+                                JSONException e) {
                             e.printStackTrace();
                         }
 //
@@ -224,15 +230,28 @@ public class AllUsersChatFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+
         if (aBooleanRefreshSocket) {
             scrollTotop();
-            getAllUserFun();
             aBooleanRefreshSocket = false;
+            getAllUserFun();
         }
     }
 
+
     private void scrollTotop() {
         rvMessageList.smoothScrollToPosition(0);
+    }
+
+    @OnClick({R.id.ivEdit})
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ivEdit:
+                getAllUserFun();
+                break;
+        }
     }
 }
 

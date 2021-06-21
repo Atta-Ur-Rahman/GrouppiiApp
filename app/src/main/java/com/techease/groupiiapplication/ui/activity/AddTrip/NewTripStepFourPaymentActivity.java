@@ -33,11 +33,8 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripRespons
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -74,6 +71,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     ImageView ivAddPayment;
 
 
+    @BindView(R.id.ivBack)
+    ImageView ivBack;
     @BindView(R.id.tvPartiallyPaid)
     TextView tvPartiallyPaid;
     @BindView(R.id.tvPaidNumber)
@@ -111,6 +110,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
 
+    CustomSpinnerAdapter customSpinnerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +123,15 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         circularSeekBar.setEnabled(false);
         ProcessBarAnimation();
 
+
         addPaymentBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddPayment);
 
         addPaymentBottomSheet();
-        ApiCallGetUserTrip();
+
+        userList = NewTripStepOneInviteFriendActivity.addTripDataModels;
+        customSpinnerAdapter = new CustomSpinnerAdapter(getApplicationContext(), userList);
+        spUserName.setAdapter(customSpinnerAdapter);
+//        ApiCallGetUserTrip();
 
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +197,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 //        spUserName = llBottomSheetAddPayment.findViewById(R.id.spUserName);
         spUserName.setOnItemSelectedListener(this);
-
         ivVisa = llBottomSheetAddPayment.findViewById(R.id.ivVisa);
         ivMasterCard = llBottomSheetAddPayment.findViewById(R.id.ivMastercard);
         ivJcb = llBottomSheetAddPayment.findViewById(R.id.ivJcb);
@@ -229,8 +234,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         Log.d("zma usr", "" + TripFragment.userList);
 
 
-
-
     }
 
 
@@ -245,12 +248,14 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         // TODO Auto-generated method stub
     }
 
-
-    @OnClick({R.id.ivAddPayment})
+    @OnClick({R.id.ivAddPayment, R.id.ivBack})
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.ivBack:
+                onBackPressed();
+                break;
             case R.id.ivAddPayment:
                 addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
@@ -391,7 +396,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     private void getPaymentExpenses() {
         dialog.show();
-
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripId(this), AppRepository.mUserID(this));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
@@ -399,7 +403,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-//                    assert response.body() != null;
                     tvPartiallyPaidPercentage.setText(response.body().getData().getPaidPercent() + "%");
                     tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
                     circularSeekBar.setProgress(response.body().getData().getPaidPercent());
@@ -418,11 +421,9 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         });
     }
 
-
     @SuppressLint("ResourceType")
     private boolean isValidAddPayment() {
         valid = true;
-
         strPaymentTitle = etPaymentTitle.getText().toString();
         strPaymentDate = etPaymentDate.getText().toString();
         strPaymentAmount = etPaymentAmount.getText().toString();
@@ -475,6 +476,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 
     private void ApiCallGetUserTrip() {
+//        userList.clear();
         dialog.show();
         Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
@@ -483,8 +485,10 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     userList.addAll(response.body().getData());
-                    CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(getApplicationContext(), userList);
-                    spUserName.setAdapter(customAdapter);
+                    customSpinnerAdapter.notifyDataSetChanged();
+
+                    Log.d("zmauser", "" + userList);
+
                 }
             }
 

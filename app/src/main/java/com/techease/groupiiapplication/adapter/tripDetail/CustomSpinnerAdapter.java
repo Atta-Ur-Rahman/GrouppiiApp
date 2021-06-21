@@ -54,7 +54,7 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
 //        Log.d("zma text",""+userArrayList.get(i).getTripid());
 
-        Glide.with(context).load(userArrayList.get(i).getPicture()).into(icon);
+        Glide.with(context).load(userArrayList.get(i).getPicture()).placeholder(R.drawable.man_user).into(icon);
         names.setText(userArrayList.get(i).getName());
 
 

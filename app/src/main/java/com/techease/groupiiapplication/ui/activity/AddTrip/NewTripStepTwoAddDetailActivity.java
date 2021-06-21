@@ -361,7 +361,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 //            Glide.with(this).load(imageUri).into(ivCoverImage);
             sourceFile = new File(imageUri.getPath());
 
-            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
 
         } else {
             ivCoverImage.setVisibility(View.GONE);

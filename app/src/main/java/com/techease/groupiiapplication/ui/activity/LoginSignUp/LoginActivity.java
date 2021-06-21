@@ -20,6 +20,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
+import com.techease.groupiiapplication.ui.activity.SplashActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.tvSignUp:
-                Intent mainIntent = new Intent(LoginActivity.this,SignUpActivity.class);
+                Intent mainIntent = new Intent(LoginActivity.this, SignUpActivity.class);
                 LoginActivity.this.startActivity(mainIntent);
                 LoginActivity.this.finish();
 
@@ -145,10 +146,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
 
-                        finishAffinity();
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
 
+                        Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                        LoginActivity.this.startActivity(mainIntent);
+                        LoginActivity.this.finishAffinity();
+                        Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
 
 
                     } else {

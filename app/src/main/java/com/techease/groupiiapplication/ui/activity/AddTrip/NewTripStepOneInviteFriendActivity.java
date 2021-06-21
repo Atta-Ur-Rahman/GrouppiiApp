@@ -153,7 +153,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
-
         tvInviteFriendNotFound.setVisibility(View.VISIBLE);
 
         initAdapter();
@@ -448,6 +447,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     private void initAdapter() {
 
+        addTripDataModels.clear();
 
         linearLayoutManager = new LinearLayoutManager(this);
         dialog = AlertUtils.createProgressDialog(this);
