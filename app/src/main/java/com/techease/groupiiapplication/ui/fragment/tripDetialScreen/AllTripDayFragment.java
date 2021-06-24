@@ -100,8 +100,11 @@ public class AllTripDayFragment extends Fragment {
 
         Log.d("zma date", year + " " + month + " " + day);
 
+        /* starts before 1 month from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, -1);
 
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day));
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day)-1);
 // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override

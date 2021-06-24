@@ -163,8 +163,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                     Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
                     NewTripStepFourPaymentActivity.this.startActivity(mainIntent,ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
                     NewTripStepFourPaymentActivity.this.finishAffinity();
-
-
                     dialog.dismiss();
 
                 }

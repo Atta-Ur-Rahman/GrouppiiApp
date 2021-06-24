@@ -64,6 +64,10 @@ public class AppRepository {
         return String.valueOf(mGetValue(context).getString("mUserName", null));
     }
 
+    public static String mGetFromdate(Context context) {
+        return String.valueOf(mGetValue(context).getString("getFromdate", null));
+    }
+
     public static String mPhoneNumber(Context context) {
         return String.valueOf(mGetValue(context).getString("mPhoneNumber", null));
     }

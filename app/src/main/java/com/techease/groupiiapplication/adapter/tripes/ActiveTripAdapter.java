@@ -65,7 +65,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
-        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate()))+" days left");
+        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
 
         if (data.getUsers() != null) {
@@ -80,7 +80,7 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 TripFragment.userList = data.getUsers();
