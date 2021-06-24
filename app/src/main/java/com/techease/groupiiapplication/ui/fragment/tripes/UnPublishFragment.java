@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripes.UnPublishTripAdapter;
-import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
-import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
+import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectionSearchChangedListener;
 
 import java.util.Collections;
 

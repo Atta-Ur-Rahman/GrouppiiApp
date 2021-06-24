@@ -81,7 +81,6 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
             public boolean onLongClick(View view) {
 
                 String strTripId = String.valueOf(data.getId());
-
                 if (GeneralUtills.PopupMenuDelete(new ApiCallback() {
                     @Override
                     public boolean onResponse(boolean success) {

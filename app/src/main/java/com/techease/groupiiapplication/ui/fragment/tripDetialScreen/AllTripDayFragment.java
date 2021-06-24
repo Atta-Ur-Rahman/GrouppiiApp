@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,11 +57,9 @@ public class AllTripDayFragment extends Fragment {
     //    Dialog dialog;
     String strDate;
 
-
     LinearLayoutManager linearLayoutManager;
     public static AllTripDayAdapter allTripDayAdapter;
     public static List<AllTripDayDataModel> addTripDataModels = new ArrayList<>();
-
 
     public static AllTripDayFragment newInstance() {
         return new AllTripDayFragment();
@@ -75,6 +74,20 @@ public class AllTripDayFragment extends Fragment {
         ApiCallAllTirp(AppRepository.mTripId(getActivity()));
         initAdapter();
         CustomDatePicker();
+
+
+        /* starts before 1 month from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, -1);
+
+        /* ends after 1 month from now */
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 1);
+
+//        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+//                .range(startDate, endDate)
+//                .datesNumberOnScreen(5)
+//                .build();
         return view;
     }
 

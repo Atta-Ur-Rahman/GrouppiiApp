@@ -101,12 +101,10 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
             cbShareCost.setChecked(false);
 
         }
-
-
         if (aBooleanIsTripDetailScreen) {
             tvEditParticipant.setVisibility(View.GONE);
             tvSteps.setVisibility(View.GONE);
-            tvEditParticipantTitle.setText("Edit Participant");
+            tvEditParticipantTitle.setText(R.string.edit_participant);
             progressBar.setVisibility(View.GONE);
         }
 
@@ -123,7 +121,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
 
 
     }
-
 
     @SuppressLint("ResourceType")
     private boolean isValid() {
@@ -168,14 +165,12 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         etName.setText("");
                         cbShareCost.setChecked(false);
 
-
                         if (aBooleanIsTripDetailScreen) {
                             TripDetailScreenActivity.userParticipaintsList.clear();
                             TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                             TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
                             finish();
                         } else {
-
                             NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
                             NewTripStepOneInviteFriendActivity.addTripAdapter.notifyDataSetChanged();
                             finish();

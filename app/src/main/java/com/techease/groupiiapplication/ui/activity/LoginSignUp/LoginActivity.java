@@ -64,10 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().hide();
         dialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
-
-
     }
-
 
     @SuppressLint("ResourceType")
     private boolean isValid() {

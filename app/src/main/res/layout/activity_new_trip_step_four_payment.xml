@@ -7,7 +7,6 @@
     android:background="@color/light_gry"
     tools:context=".ui.activity.AddTrip.NewTripStepFourPaymentActivity">
 
-
     <ImageView
         android:id="@+id/ivBack"
         android:layout_width="45dp"
@@ -18,7 +17,6 @@
         android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/tvVerify"
@@ -49,11 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/text_view_edittext_height"
         android:layout_marginTop="@dimen/widget_margin"
-        android:layout_marginRight="@dimen/widget_margin"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
         android:gravity="center"
         android:text="Steps 4/4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -176,7 +175,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/fifty_dp"
                     android:layout_marginTop="@dimen/widget_margin"
-                    android:gravity="center_vertical"
                     android:paddingLeft="20sp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/middle_text_size"
@@ -193,6 +191,7 @@
                     android:layout_marginRight="@dimen/widget_margin"
                     android:paddingLeft="7dp"
                     android:text="Paid"
+                    android:paddingTop="3dp"
                     android:textColor="@color/light_gry"
                     android:textSize="12sp"
                     android:textStyle="bold"

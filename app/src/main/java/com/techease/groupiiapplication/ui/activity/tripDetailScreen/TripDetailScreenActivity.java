@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -84,14 +83,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -199,7 +191,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     TextView tvPartiallyPaid, tvPayDate, tvPayDaysLeft, tvParticipantsCostsCount, tvPartiallyPaidPercentage;
     CircularSeekBar circularSeekBar;
-    ImageView ivBackPartiallyPaid, ivPartiallyPaid;
+    ImageView ivBackPartiallyPaid, ivPartiallyPaid,ivAddTripParticipant;
     TabLayout tabsPartiallyPaid;
     ViewPager viewpagerExpenditures;
 
@@ -234,7 +226,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Remove notification bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_trip_detail_screen);
         getSupportActionBar().hide();
@@ -297,6 +289,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(View v) {
                 mBottomSheetDialog.dismiss();
+                participantsBottomSheet.setDraggable(false);
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
@@ -308,6 +301,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             }
         });
 
+
     }
 
 
@@ -317,6 +311,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View view) {
+        
         switch (view.getId()) {
             case R.id.ivBack:
                 onBackPressed();
@@ -449,6 +444,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
                 actionMenu();
                 break;
+            case R.id.ivAddTripParticipant:
+                startActivity(new Intent(this, AddUserTripParticpantActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
+                break;
             case R.id.ivActivityType:
             case R.id.ivType:
                 activityTripTypeDialog();
@@ -552,7 +550,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         rvTripParticipants = llParticipantsBottomSheetBehaviorId.findViewById(R.id.rvTripParticipants);
         ivCloseParticipant = llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivCloseParticipants);
+        ivAddTripParticipant =llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivAddTripParticipant);
+
         ivCloseParticipant.setOnClickListener(this);
+        ivAddTripParticipant.setOnClickListener(this);
 
 
         tabLayout = llActivityMoreBottomSheet.findViewById(R.id.tabs);

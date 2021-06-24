@@ -45,6 +45,7 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripRespons
 import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -249,7 +250,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
         switch (view.getId()) {
             case R.id.ivBack:
-
                 if (tilEmail.getVisibility() == View.VISIBLE) {
                     if (clInviteFriend.getVisibility() == View.VISIBLE) {
                         clAddInvite.setVisibility(View.VISIBLE);
@@ -267,7 +267,17 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             case R.id.tvSendInviteFriend:
 
                 if (isValid()) {
-                    ApiCallForAddInviteFriend();
+
+                    boolean emailExist = true;
+                    for (int i = 0; i < addTripDataModels.size(); i++) {
+                        if (strEmail.equals(addTripDataModels.get(i).getEmail())) {
+                            Toast.makeText(this, "email exist", Toast.LENGTH_SHORT).show();
+                            emailExist = false;
+                        }
+                    }
+                    if (emailExist) {
+                        ApiCallForAddInviteFriend();
+                    }
                 }
                 break;
             case R.id.ivAddUserTrip:

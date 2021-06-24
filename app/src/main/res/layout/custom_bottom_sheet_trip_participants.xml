@@ -55,11 +55,22 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTripParticipants"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/tendp"
             android:layout_marginStart="@dimen/widget_margin_left_right"
             android:layout_marginEnd="@dimen/widget_margin_left_right"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+
+        <ImageView
+            android:id="@+id/ivAddTripParticipant"
+            android:layout_width="@dimen/fifty_dp"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_margin="@dimen/widget_margin_left_right"
+            android:background="@mipmap/add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

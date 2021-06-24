@@ -14,11 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
+import com.techease.groupiiapplication.adapter.gallery.ConnectionBooleanChangedListener;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.utils.AppRepository;
 
@@ -51,7 +52,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String strUserID, strMessage, strGroupType, strDateAndTime, strTitleName, strGroupChatPicture, strTripID, toUserId;
+    String strUserID = "", strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
@@ -67,6 +68,18 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         socketConnectivity();
         getAllUserFun();
         userSearch();
+
+        ConnectChatResfresh.addUserToChat(new ConnectionBooleanChangedListener() {
+            @Override
+            public void OnMyBooleanChanged() {
+                getAllUserFun();
+
+                if (aBooleanRefreshSocket){
+                    scrollTotop();
+                }
+            }
+        });
+
 
         return view;
     }
@@ -168,17 +181,24 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                     public void run() {
                         Log.d("zmajsaonarray", "event call");
 
+
                         try {
                             String data = args[0].toString();
                             JSONArray jsonArray = new JSONArray(data);
+
+                            Log.d("zmajsonarray", "Chat" + jsonArray);
+
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
                                 strGroupType = c.getString("group_type");
                                 strTripID = c.getString("tripid");
-                                toUserId = c.getString("touser");
+                                strToUserId = c.getString("touser");
+
 
                                 if (strGroupType.equals("group")) {
+                                    strUserID = "";
+
                                     strDateAndTime = "null";
                                     strTitleName = c.getString("group_title");
                                     JSONArray jsonGroupUsers = c.getJSONArray("group_users");
@@ -195,8 +215,8 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                 }
 
                                 //check condition if user id and user
-                                if (toUserId.equals(String.valueOf(AppRepository.mUserID(getActivity()))) || strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, toUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity()))) || strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                    addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
                                 }
                             }
 
@@ -231,12 +251,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
 
-
-        if (aBooleanRefreshSocket) {
-            scrollTotop();
-            aBooleanRefreshSocket = false;
-            getAllUserFun();
-        }
+//
+//        if (aBooleanRefreshSocket) {
+//            aBooleanRefreshSocket = false;
+////            getAllUserFun();
+//        }
     }
 
 

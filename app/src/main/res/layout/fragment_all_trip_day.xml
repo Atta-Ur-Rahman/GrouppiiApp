@@ -20,6 +20,14 @@
         app:layout_constraintTop_toBottomOf="@id/datePickerTimeline" />
 
 
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        app:textColorSelected="#FFFF"/>
+
     <com.vivekkaushik.datepicker.DatePickerTimeline
         android:id="@+id/datePickerTimeline"
         android:layout_width="match_parent"
@@ -27,6 +35,7 @@
         android:layout_marginStart="@dimen/widget_margin_left_right"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

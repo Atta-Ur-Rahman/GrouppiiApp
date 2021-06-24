@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -89,11 +90,11 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout rlRootLayout;
     boolean isConnected;
 
-    private String strTripId, strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
+    private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
 
-    boolean aBooleanShowKeyboardListener = true;
+    boolean aBooleanShowKeyboardListener = true, aBooleanChaResfresh = true;
 
 
     private List<ChatModel> mMessages = new ArrayList();
@@ -186,37 +187,38 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.tvSend:
-                if (etMessageView.getText().length() > 1) {
-                    JSONObject object = new JSONObject();
-                    try {
-
-
-                        if (strChatType.equals("group")) {
-                            object.put("userid", userID);
-                            object.put("touser", strToUserId);
-                            object.put("tripid", strTripId);
-                        }
-                        if (strChatType.equals("user")) {
-                            object.put("userid", userID);
-                            object.put("touser", strToUserId);
-                            object.put("tripid", null);
-                        }
-
-                        object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    tvSend.setEnabled(false);
-                    mSocket.emit("sendmessage", object);
-//                    addMessage(String.valueOf(userID), fromUser, fromUserName, message, date, senderImage, type, isSent);
-                }
+                sendMessageFun();
                 break;
             case R.id.iv_send_file:
                 break;
 
 
+        }
+    }
+
+    private void sendMessageFun() {
+        if (etMessageView.getText().length() > 1) {
+            JSONObject object = new JSONObject();
+            try {
+                if (strChatType.equals("group")) {
+                    object.put("userid", userID);
+                    object.put("touser", strToUserId);
+                    object.put("tripid", strTripId);
+                }
+                if (strChatType.equals("user")) {
+                    object.put("userid", userID);
+                    object.put("touser", strToUserId);
+                    object.put("tripid", null);
+                }
+                object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            tvSend.setEnabled(false);
+            mSocket.emit("sendmessage", object);
+//                    addMessage(String.valueOf(userID), fromUser, fromUserName, message, date, senderImage, type, isSent);
         }
     }
 
@@ -327,6 +329,10 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                     AllUsersChatFragment.aBooleanRefreshSocket = true;
                                     Log.d("zma message send sho", "" + jsonObject);
+                                    if (aBooleanChaResfresh) {
+                                        aBooleanChaResfresh = false;
+                                        ConnectChatResfresh.setMyBoolean(true);
+                                    }
 
                                     if (strChatType.equals("user")) {
                                         if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {

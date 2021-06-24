@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripes.UpcomingTripAdapter;
-import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
-import com.techease.groupiiapplication.interfaceClass.ConnectionSearchChangedListener;
+import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectionSearchChangedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

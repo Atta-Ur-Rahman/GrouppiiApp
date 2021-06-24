@@ -27,18 +27,14 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.TripDetailResponse;
 import com.techease.groupiiapplication.dataModel.getAllTrip.Unpublish;
 import com.techease.groupiiapplication.dataModel.getAllTrip.Upcoming;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
-import com.techease.groupiiapplication.interfaceClass.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;

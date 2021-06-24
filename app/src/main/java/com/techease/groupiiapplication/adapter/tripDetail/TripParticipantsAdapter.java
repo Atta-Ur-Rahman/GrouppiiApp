@@ -7,11 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -19,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
 import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
@@ -54,6 +59,15 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         holder.tvTitle.setText(String.valueOf(user.getName()));
         holder.tvEmail.setText(String.valueOf(user.getEmail()));
         Glide.with(context).load(user.getPicture()).into(holder.ivUser);
+
+        Log.d("zmasharecost", user.getSharedCost() + "");
+
+        if (String.valueOf(user.getSharedCost()).equals("1")) {
+            holder.cbShareTripCost.setChecked(true);
+        } else {
+            holder.cbShareTripCost.setChecked(false);
+
+        }
 
         holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,5 +112,37 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
 
 
         }
+    }
+
+
+    public static boolean PopupMenuDelete(Context context, ImageView ivEdit) {
+        PopupMenu popup = new PopupMenu(context, ivEdit);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.bottom_edit_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(
+//                        LoginSignupSelectionActivity.this,
+//                        "You Clicked : " + item.getTitle(),
+//                        Toast.LENGTH_SHORT
+//                ).show();
+
+//                tvLanguage.setText(item.getTitle().toString());
+                if (item.getTitle().toString().equals("Delete")) {
+
+                }
+
+
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
+
+
+        return false;
     }
 }

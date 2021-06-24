@@ -3,8 +3,10 @@ package com.techease.groupiiapplication.adapter.tripes;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,10 +31,12 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
+import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +47,14 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     private List<Past> pastListFiltered;
     public static List<User> userList = new ArrayList<>();
     private ArrayList<String> stringArrayList = new ArrayList<>();
+    Dialog dialog;
 
 
     public PastTripAdapter(Context context, List<Past> pasts) {
         this.pastList = pasts;
         this.pastListFiltered = pasts;
         this.context = context;
+        dialog = AlertUtils.createProgressDialog((Activity) context);
 
     }
 
@@ -71,8 +77,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(data.getFromdate());
         holder.tvLocation.setText(data.getLocation());
-        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate()))+" days left");
-
+        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
 
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -122,20 +127,32 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                     for (int i = 0; i < userList.size(); i++) {
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
-                    TripFragment.userList = data.getUsers();
-                    Intent intent = new Intent(context, TripDetailScreenActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("image", data.getCoverimage());
-                    bundle.putString("title", data.getTitle());
-                    bundle.putString("trip_type", "Past Trip");
-                    bundle.putString("description", data.getDescription());
-                    bundle.putString("date", data.getFromdate());
-                    bundle.putString("location", data.getLocation());
-                    bundle.putStringArrayList("users", stringArrayList);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
-                    TripFragment.userList = data.getUsers();
+                    dialog.show();
+                    new Thread() {
+
+                        public void run() {
+
+                            TripFragment.userList = data.getUsers();
+                            Intent intent = new Intent(context, TripDetailScreenActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("image", data.getCoverimage());
+                            bundle.putString("title", data.getTitle());
+                            bundle.putString("trip_type", "Past Trip");
+                            bundle.putString("description", data.getDescription());
+                            bundle.putString("date", data.getFromdate());
+                            bundle.putString("location", data.getLocation());
+                            bundle.putStringArrayList("users", stringArrayList);
+                            intent.putExtras(bundle);
+                            context.startActivity(intent);
+
+                            dialog.dismiss();
+                        }
+
+                    }.start();
+
+
+
                 }
             }
         });
@@ -157,7 +174,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate, tvDaysLeft,tvLocation;
+        TextView tvTitle, tvStartEndDate, tvDaysLeft, tvLocation;
         ImageView ivImage;
         RecyclerView rvUsers;
 
@@ -214,4 +231,5 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             }
         };
     }
+
 }

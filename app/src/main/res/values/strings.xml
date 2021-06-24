@@ -52,6 +52,7 @@
     <string name="pin">******</string>
     <string name="correct_number">Is this your correct Number?</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="edit_participant">Edit Participant</string>
 
 
 </resources>

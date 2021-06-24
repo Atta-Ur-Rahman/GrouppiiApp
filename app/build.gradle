@@ -57,6 +57,9 @@ dependencies {
     }
 
 
+    //clender
+    implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
+
     //pinview
     implementation 'com.chaos.view:pinview:1.4.3'
 

@@ -49,17 +49,16 @@
             android:layout_marginBottom="21dp"
             android:progress="50" />
 
-
         <TextView
             android:id="@+id/tv_short_msg"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/text_view_edittext_height"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
             android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginRight="@dimen/widget_margin"
-            android:text="Steps 3/4" />
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:gravity="center"
+            android:text="Steps 3/4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
