@@ -35,6 +35,7 @@ import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.A
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
+import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -159,8 +160,10 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             public void onResponse(Call<PublishTripResponse> call, Response<PublishTripResponse> response) {
                 if (response.isSuccessful()) {
                     TripFragment.aBooleanRefreshAllTripApi = true;
-                    finishAffinity();
-                    startActivity(new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
+                    Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
+                    NewTripStepFourPaymentActivity.this.startActivity(mainIntent,ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
+                    NewTripStepFourPaymentActivity.this.finishAffinity();
+
 
                     dialog.dismiss();
 

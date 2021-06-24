@@ -16,17 +16,16 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
+import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 
-import java.util.Collections;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -53,26 +52,21 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     TextInputLayout tilPhone;
     @BindView(R.id.etPhone)
     EditText etPhone;
-
     @BindView(R.id.tvEditParticipant)
     TextView tvEditParticipant;
-
     @BindView(R.id.tvEditParticipantTitle)
     TextView tvEditParticipantTitle;
     @BindView(R.id.tvSteps)
     TextView tvSteps;
-
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-
     @BindView(R.id.tvUpdateParticipant)
     TextView tvUpdateParticipant;
-
     @BindView(R.id.cbShareTripCost)
     CheckBox cbShareCost;
     boolean valid, aBooleanIsTripDetailScreen;
 
-    String strUserID,strName, strEmail, strPhoneNumber, strTripId, strSharedCost = "0";
+    String strUserID, strName, strEmail, strPhoneNumber, strTripId, strSharedCost = "0";
     Dialog dialog;
 
     @Override
@@ -142,7 +136,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         }
 
-
         return valid;
     }
 
@@ -164,7 +157,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         etPhone.setText("");
                         etName.setText("");
                         cbShareCost.setChecked(false);
-
                         if (aBooleanIsTripDetailScreen) {
                             TripDetailScreenActivity.userParticipaintsList.clear();
                             TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
@@ -203,7 +195,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.tvDeleteParticipants:
-                ApiCallForTripUser();
+                ApiCallForDeleteTripUser();
                 break;
 
             case R.id.ivBack:
@@ -212,7 +204,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void ApiCallForTripUser() {
+    private void ApiCallForDeleteTripUser() {
         dialog.show();
         Call<DeleteTripUserResponse> deleteTripUserResponseCall = BaseNetworking.ApiInterface().deleteTripUser(strTripId, strUserID);
         deleteTripUserResponseCall.enqueue(new Callback<DeleteTripUserResponse>() {
@@ -220,6 +212,14 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
             public void onResponse(Call<DeleteTripUserResponse> call, Response<DeleteTripUserResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
+                    try {
+                        AllUsersChatFragment.aBooleanRefreshSocket = false;
+                        ConnectChatResfresh.setMyBoolean(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        AllUsersChatFragment.aBooleanRefreshSocket = true;
+//                            Log.d("zmaerror", e.getMessage());
+                    }
                     ApiCallGetUserTrip();
                 } else {
                     dialog.dismiss();
@@ -242,21 +242,17 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-
                     if (aBooleanIsTripDetailScreen) {
                         TripDetailScreenActivity.userParticipaintsList.clear();
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
                         finish();
                     } else {
-
                         NewTripStepOneInviteFriendActivity.addTripDataModels.clear();
                         NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
                         NewTripStepOneInviteFriendActivity.addTripAdapter.notifyDataSetChanged();
                         finish();
                     }
-
-
                 }
             }
 

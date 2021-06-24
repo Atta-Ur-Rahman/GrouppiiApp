@@ -37,6 +37,7 @@ import com.techease.groupiiapplication.dataModel.addTrips.ContactDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -217,10 +218,18 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    Log.d("zma response", String.valueOf(response.message() + " " + response.code()));
+                    Log.d("zmaAddUser response", String.valueOf(response.message() + " " + response.code()));
                     Toast.makeText(AddUserTripParticpantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
                     if (response.message().equals("OK")) {
-                        ConnectChatResfresh.setMyBoolean(true);
+                        try {
+                            AllUsersChatFragment.aBooleanRefreshSocket = false;
+                            ConnectChatResfresh.setMyBoolean(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            AllUsersChatFragment.aBooleanRefreshSocket = true;
+//                            Log.d("zmaerror", e.getMessage());
+                        }
+
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
                         finish();
@@ -228,6 +237,8 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                     }
 
                 } else {
+                    Log.d("zmaAddUser eresponse", String.valueOf(response.message() + " " + response.code()));
+
                     dialog.dismiss();
                 }
             }

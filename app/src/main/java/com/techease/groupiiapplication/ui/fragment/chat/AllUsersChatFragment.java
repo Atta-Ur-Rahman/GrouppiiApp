@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,17 +54,22 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String strUserID = "", strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
+    String strUserID = "",strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
     public static boolean aBooleanRefreshSocket = false;
+    int baseUserID;
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat_all_users, container, false);
         ButterKnife.bind(this, view);
+
+        baseUserID=AppRepository.mUserID(getActivity());
 
         init();
         socketConnectivity();
@@ -72,11 +79,12 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         ConnectChatResfresh.addUserToChat(new ConnectionBooleanChangedListener() {
             @Override
             public void OnMyBooleanChanged() {
-                getAllUserFun();
 
-                if (aBooleanRefreshSocket){
-                    scrollTotop();
-                }
+                    getAllUserFun();
+                    if (aBooleanRefreshSocket) {
+                        aBooleanRefreshSocket = false;
+                        scrollTotop();
+                    }
             }
         });
 
@@ -127,13 +135,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
 
 
     private void getAllUserFun() {
-
         allUserChatAdapter.clearApplications();
         jsonObjectGetAllUsers = new JSONObject();
         try {
-            jsonObjectGetAllUsers.put("userid", AppRepository.mUserID(getActivity()));
+            jsonObjectGetAllUsers.put("userid", baseUserID);
             mSocket.emit("getusers", jsonObjectGetAllUsers);
-
             Log.d("zmajsaonarray", "zma call");
 
         } catch (JSONException e) {
@@ -149,8 +155,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         public void call(Object... args) {
 //            Log.d("zma", "connected...");
             isConnected = true;
-
-
         }
     };
     private Emitter.Listener onConnectError = new Emitter.Listener() {
@@ -158,7 +162,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         public void call(Object... args) {
 //            Log.d("zma", "Error connecting...");
             isConnected = false;
-
         }
     };
 
@@ -215,9 +218,17 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                 }
 
                                 //check condition if user id and user
-                                if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity()))) || strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                    addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+
+                                if (strGroupType.equals("group")) {
+                                    if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                        addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                    }
+                                } else {
+                                    if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                        addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                    }
                                 }
+
                             }
 
 
@@ -225,7 +236,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                 JSONException e) {
                             e.printStackTrace();
                         }
-//
                     }
                 });
             }
@@ -250,12 +260,10 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-
-//
-//        if (aBooleanRefreshSocket) {
-//            aBooleanRefreshSocket = false;
-////            getAllUserFun();
-//        }
+        if (aBooleanRefreshSocket) {
+            aBooleanRefreshSocket = false;
+            getAllUserFun();
+        }
     }
 
 

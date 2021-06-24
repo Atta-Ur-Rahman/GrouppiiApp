@@ -72,7 +72,6 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(context, EditParticipantActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("name", user.getName());

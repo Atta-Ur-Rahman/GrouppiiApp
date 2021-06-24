@@ -6,87 +6,103 @@
     android:layout_margin="@dimen/widget_margin_left_right"
     android:background="@drawable/top_side_round_conner">
 
-    <TextView
-        android:id="@+id/tvEditTrip"
-        android:layout_marginTop="8dp"
-        android:text="Edit trip settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/edit"
-        app:drawableStartCompat="@mipmap/edit" />
 
-    <TextView
-        android:id="@+id/tvManageParticipants"
-        android:text="Manage participants"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEditTrip"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/manage_participants"
-        app:drawableStartCompat="@mipmap/manage_participants" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvManageBooking"
-        android:text="Manage booking"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvManageParticipants"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/manage_bookings"
-        app:drawableStartCompat="@mipmap/manage_bookings" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvRequestPayment"
-        android:text="Request a payment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvManageBooking"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/request_a_payment"
-        app:drawableStartCompat="@mipmap/request_a_payment" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/edit" />
 
-    <TextView
-        android:id="@+id/tvCancelTrip"
-        android:text="Cancel Trip"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRequestPayment"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/cancel_the_trip"
-        app:drawableStartCompat="@mipmap/cancel_the_trip" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/manage_participants" />
 
-    <TextView
-        android:id="@+id/tvShareTrip"
-        android:text="Share Trip"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCancelTrip"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/share_trip"
-        app:drawableStartCompat="@mipmap/share_trip" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/manage_bookings" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/request_a_payment" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/cancel_the_trip" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/share_trip" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/manage_notification" />
+            <ImageView
+                style="@style/ActionItemIcon"
+                android:src="@mipmap/cancel_the_trip" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvManageNotification"
-        android:text="Manage notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvShareTrip"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/manage_notification"
-        app:drawableStartCompat="@mipmap/manage_notification" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvCancel"
-        android:background="?attr/selectableItemBackground"
-        android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvManageNotification"
-        style="@style/ActionItem"
-        app:drawableLeftCompat="@mipmap/cancel_the_trip"
-        app:drawableStartCompat="@mipmap/cancel_the_trip" />
+            <TextView
+                android:id="@+id/tvEditTrip"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Edit trip settings" />
+
+
+            <TextView
+                android:id="@+id/tvManageParticipants"
+                style="@style/ActionItem"
+                android:text="Manage participants"/>
+
+            <TextView
+                android:id="@+id/tvManageBooking"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Manage booking"/>
+
+            <TextView
+                android:id="@+id/tvRequestPayment"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Request a payment" />
+
+            <TextView
+                android:id="@+id/tvCancelTrip"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Cancel Trip"/>
+
+            <TextView
+                android:id="@+id/tvShareTrip"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Share Trip" />
+
+            <TextView
+                android:id="@+id/tvManageNotification"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Manage notification" />
+
+            <TextView
+                android:id="@+id/tvCancel"
+                style="@style/ActionItem"
+                android:background="?attr/selectableItemBackground"
+                android:text="Cancel" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"

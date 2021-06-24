@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +51,6 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class ChatsActivity extends AppCompatActivity implements View.OnClickListener {
-
 
     private boolean keyboardListenersAttached = false;
     private ViewGroup rootLayout;
@@ -278,10 +278,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             isSent = data.getString("is_sent");
                                             isRead = data.getString("is_read");
 
-
                                             Log.d("zma sender", "this is type " + toUser);
 //                                            strToUserId.equals(fromUser) ||
-
 
 //                                            if ( strToUserId.equals(toUser)) {
                                             addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
@@ -313,6 +311,17 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         public void run() {
                             etMessageView.setText("");
                             tvSend.setEnabled(true);
+
+                            if (aBooleanChaResfresh) {
+                                aBooleanChaResfresh = false;
+                                try {
+                                    AllUsersChatFragment.aBooleanRefreshSocket = false;
+                                    ConnectChatResfresh.setMyBoolean(true);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+//                                    Log.d("zmaerror",e.getMessage());
+                                }
+                            }
                             JSONObject jsonObject = (JSONObject) args[0];
                             try {
                                 if (jsonObject != null) {
@@ -326,14 +335,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     type = jsonObject.getString("type");
                                     isRead = jsonObject.getString("is_read");
 
-
-                                    AllUsersChatFragment.aBooleanRefreshSocket = true;
                                     Log.d("zma message send sho", "" + jsonObject);
-                                    if (aBooleanChaResfresh) {
-                                        aBooleanChaResfresh = false;
-                                        ConnectChatResfresh.setMyBoolean(true);
-                                    }
-
                                     if (strChatType.equals("user")) {
                                         if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
@@ -348,7 +350,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
 
                         }
                     });
@@ -412,19 +413,17 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-
     @Override
     protected void onResume() {
         super.onResume();
-
         mSocket.connected();
         aBooleanOneTimeHistoryLoad = true;
+        aBooleanChaResfresh = true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }
