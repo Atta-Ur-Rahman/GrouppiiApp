@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -372,5 +373,43 @@ public class DateUtills {
         }
     }
 
+
+    public static String getPreviousDate(String inputDate) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = dateFormat.parse(inputDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, +1);
+        String yesterdayAsString = dateFormat.format(calendar.getTime());
+
+        return yesterdayAsString;
+    }
+
+
+    public static String getNextMonthDate(String inputDate) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = dateFormat.parse(inputDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);
+        String yesterdayAsString = dateFormat.format(calendar.getTime());
+
+        return yesterdayAsString;
+    }
+
+
+    public static void GetDatePickerNextOneMonth(EditText tvSetDate, String dt) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(dt));
+        c.add(Calendar.DATE, 30);  // number of days to add
+        dt = sdf.format(c.getTime());  // dt is now the new date
+
+        tvSetDate.setText(dt);
+
+    }
 
 }

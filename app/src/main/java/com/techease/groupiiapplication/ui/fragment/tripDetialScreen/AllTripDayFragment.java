@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.techease.groupiiapplication.utils.DateUtills;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,7 +58,7 @@ public class AllTripDayFragment extends Fragment {
     private String date;
 
     //    Dialog dialog;
-    String strDate;
+    String strDate, strNewDate;
 
     LinearLayoutManager linearLayoutManager;
     public static AllTripDayAdapter allTripDayAdapter;
@@ -76,18 +79,69 @@ public class AllTripDayFragment extends Fragment {
         CustomDatePicker();
 
 
+
         /* starts before 1 month from now */
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, -1);
+        startDate.add(Calendar.MONTH, -2);
+
 
         /* ends after 1 month from now */
         Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH, 1);
+        endDate.add(Calendar.MONTH, 2);
 
-//        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
-//                .range(startDate, endDate)
-//                .datesNumberOnScreen(5)
-//                .build();
+        Log.d("zmadatecheck", strDate + "    " + endDate);
+
+
+        // on below line we are setting up our horizontal calendar view and passing id our calendar view to it.
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+                // on below line we are adding a range
+                // as start date and end date to our calendar.
+                .range(startDate, endDate)
+                // on below line we are providing a number of dates
+                // which will be visible on the screen at a time.
+                .datesNumberOnScreen(6)
+                // at last we are calling a build method
+                // to build our horizontal recycler view.
+                .build();
+        // on below line we are setting calendar listener to our calendar view.
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                // on below line we are printing date
+                // in the logcat which is selected.
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(date.getTimeInMillis());
+
+                int mYear = calendar.get(Calendar.YEAR);
+                int mMonth = calendar.get(Calendar.MONTH);
+                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                strDate = mDay + "-" + mMonth + "-" + mYear;
+
+                strNewDate = mYear + "-" + mMonth + "-" + mDay;
+
+
+                Log.d("zmadatecalender", "CURRENT DATE " + strDate);
+                try {
+                    Log.d("zmadatecalender", "CURRENT DATE IS " + DateUtills.getNextMonthDate(DateUtills.getPreviousDate(strDate)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+
+                try {
+
+                } catch (Exception ignored) {
+
+
+                }
+
+
+            }
+        });
+
+
         return view;
     }
 
@@ -104,7 +158,8 @@ public class AllTripDayFragment extends Fragment {
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.MONTH, -1);
 
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day)-1);
+
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month) - 1)), Integer.parseInt(day) - 1);
 // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
@@ -162,9 +217,9 @@ public class AllTripDayFragment extends Fragment {
 
 
     public void ApiCallAllTirpGetByDate(String userId) {
-
+        Toast.makeText(getActivity(), "call", Toast.LENGTH_SHORT).show();
         addTripDataModels.clear();
-        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strDate, userId);
+        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strNewDate, userId);
         allTripDayResponseCall.enqueue(new Callback<AllTripDayResponse>() {
             @Override
             public void onResponse(Call<AllTripDayResponse> call, Response<AllTripDayResponse> response) {
