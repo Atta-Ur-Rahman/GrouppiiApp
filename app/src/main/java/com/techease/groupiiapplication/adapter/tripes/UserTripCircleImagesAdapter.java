@@ -1,5 +1,6 @@
 package com.techease.groupiiapplication.adapter.tripes;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCircleImagesAdapter.ViewHolder> {
 
-    private Context context;
-    private List<User> arrayList;
+    private final Context context;
+    private final List<User> arrayList;
     int anIntImage = 1;
 
     public UserTripCircleImagesAdapter(Context context, List<User> imagesArray) {
@@ -38,6 +39,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
         return new ViewHolder(imageLayout);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
@@ -82,7 +84,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
         return anIntImage;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout relativeLayout;
         TextView tvCount;
