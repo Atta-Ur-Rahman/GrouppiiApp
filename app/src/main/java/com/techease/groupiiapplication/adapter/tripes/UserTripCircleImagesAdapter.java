@@ -1,6 +1,7 @@
 package com.techease.groupiiapplication.adapter.tripes;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 
@@ -22,7 +24,6 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
     private Context context;
     private List<User> arrayList;
     int anIntImage = 1;
-
 
     public UserTripCircleImagesAdapter(Context context, List<User> imagesArray) {
         this.context = context;
@@ -39,15 +40,12 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-////        User user=arrayList.get(position);
-//        if (arrayList.get(position)!=null) {
-////            Log.d("userpic", arrayList.get(position).getPicture().toString());
-////        }
-//        Glide.with(context).load(arrayList.get(position).getPicture()).placeholder(R.drawable.image_thumbnail).into(holder.imageView);
-
-
-//        Log.d("zma array",String.valueOf(arrayList.get(position).getTripid()));
-
+        try {
+            Glide.with(context).load(arrayList.get(position).getPicture()).placeholder(R.drawable.user).into(holder.imageView);
+            Log.d("zma array", String.valueOf(arrayList.get(position).getTripid()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (arrayList.size() == 1) {
             anIntImage = 2;
             if (position == 1) {
@@ -76,7 +74,6 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
                 holder.relativeLayout.setVisibility(View.GONE);
             }
         }
-//
 
     }
 

@@ -1,5 +1,6 @@
 package com.techease.groupiiapplication.ui.fragment.tripDetialScreen;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +30,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,109 +78,55 @@ public class AllTripDayFragment extends Fragment {
         initAdapter();
         CustomDatePicker();
 
-
-
-        /* starts before 1 month from now */
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, -2);
-
-
-        /* ends after 1 month from now */
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH, 2);
-
-        Log.d("zmadatecheck", strDate + "    " + endDate);
-
-
-        // on below line we are setting up our horizontal calendar view and passing id our calendar view to it.
-        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
-                // on below line we are adding a range
-                // as start date and end date to our calendar.
-                .range(startDate, endDate)
-                // on below line we are providing a number of dates
-                // which will be visible on the screen at a time.
-                .datesNumberOnScreen(6)
-                // at last we are calling a build method
-                // to build our horizontal recycler view.
-                .build();
-        // on below line we are setting calendar listener to our calendar view.
-        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
-            @Override
-            public void onDateSelected(Calendar date, int position) {
-                // on below line we are printing date
-                // in the logcat which is selected.
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(date.getTimeInMillis());
-
-                int mYear = calendar.get(Calendar.YEAR);
-                int mMonth = calendar.get(Calendar.MONTH);
-                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-                strDate = mDay + "-" + mMonth + "-" + mYear;
-
-                strNewDate = mYear + "-" + mMonth + "-" + mDay;
-
-
-                Log.d("zmadatecalender", "CURRENT DATE " + strDate);
-                try {
-                    Log.d("zmadatecalender", "CURRENT DATE IS " + DateUtills.getNextMonthDate(DateUtills.getPreviousDate(strDate)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
-
-                try {
-
-                } catch (Exception ignored) {
-
-
-                }
-
-
-            }
-        });
-
-
         return view;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void CustomDatePicker() {
-// Set a Start date (Default, 1 Jan 1970)
-
+        // Set a Start date (Default, 1 Jan 1970)
         String year = DateUtills.getCurrentDate("yyyy");
         String month = DateUtills.getCurrentDate("MM");
         String day = DateUtills.getCurrentDate("dd");
 
-        Log.d("zma date", year + " " + month + " " + day);
 
-        /* starts before 1 month from now */
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, -1);
+//        Log.d("zma date", year + " " + month + " " + day);
+//
+//
+//        String strDates = DateUtills.setDateAddDayTripFormate(AppRepository.mGetFromdate(getActivity()));
+//
+//        StringTokenizer tokens = new StringTokenizer(strDates, ",");
+////        String first = tokens.nextToken();// this will contain "Fruit"
+////        String second = tokens.nextToken();
+//
+//        String year = tokens.nextToken();
+//        String month = tokens.nextToken();
+//        String day = tokens.nextToken();
+//        Log.d("zma date", year + " " + month + " " + day);
 
-
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month) - 1)), Integer.parseInt(day) - 1);
-// Set a date Selected Listener
+        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day)-1);
+        // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int dayOfWeek) {
                 // Do Something
-
                 strDate = year + "-" + month + "-" + day;
-                ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+                try {
+                    ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onDisabledDateSelected(int year, int month, int day, int dayOfWeek, boolean isDisabled) {
-
-                // Do Something
+                strDate = year + "-" + month + "-" + day;
+                try {
+                    ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
-// Disable date
-        Date[] dates = {Calendar.getInstance().getTime()};
-        datePickerTimeline.deactivateDates(dates);
-
     }
 
     public static void ApiCallAllTirp(String tripId) {
@@ -216,10 +162,12 @@ public class AllTripDayFragment extends Fragment {
     }
 
 
-    public void ApiCallAllTirpGetByDate(String userId) {
-        Toast.makeText(getActivity(), "call", Toast.LENGTH_SHORT).show();
+    public void ApiCallAllTirpGetByDate(String userId) throws ParseException {
+
+        Log.d("zmadate", strDate);
+
         addTripDataModels.clear();
-        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strNewDate, userId);
+        Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strDate, userId);
         allTripDayResponseCall.enqueue(new Callback<AllTripDayResponse>() {
             @Override
             public void onResponse(Call<AllTripDayResponse> call, Response<AllTripDayResponse> response) {
@@ -228,7 +176,6 @@ public class AllTripDayFragment extends Fragment {
                     addTripDataModels.addAll(response.body().getData());
                     Collections.reverse(addTripDataModels);
                     allTripDayAdapter.notifyDataSetChanged();
-
                     if (addTripDataModels.size() == 0) {
                         tvTripDayNotFound.setVisibility(View.VISIBLE);
                     } else {

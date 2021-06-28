@@ -79,11 +79,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         viewPagerTrip = viewPager;
 
 
-
-
-
-
-
         aBooleanRefreshAllTripApi = true;
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search a trip...");
@@ -199,6 +194,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.ivProfile})

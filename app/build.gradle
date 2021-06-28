@@ -58,9 +58,6 @@ dependencies {
 
 
 
-    implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
-
-
     //pinview
     implementation 'com.chaos.view:pinview:1.4.4'
 
@@ -104,7 +101,7 @@ dependencies {
     //map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
-
+    //date time line picker
     implementation 'com.vivekkaushik.datepicker:datePickerTimeline:0.0.4'
 
     testImplementation 'junit:junit:4.13.1'

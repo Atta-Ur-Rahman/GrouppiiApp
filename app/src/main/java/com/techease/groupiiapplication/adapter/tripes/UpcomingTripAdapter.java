@@ -88,6 +88,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
                 TripFragment.userList = data.getUsers();
 
+                AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {

@@ -36,6 +36,7 @@ import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.G
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -132,7 +133,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         userList = NewTripStepOneInviteFriendActivity.addTripDataModels;
         customSpinnerAdapter = new CustomSpinnerAdapter(getApplicationContext(), userList);
         spUserName.setAdapter(customSpinnerAdapter);
-//        ApiCallGetUserTrip();
+        ApiCallGetUserTrip();
 
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -477,7 +478,18 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 
     private void ApiCallGetUserTrip() {
-//        userList.clear();
+        userList.clear();
+        try {
+            AddTripDataModel addTripDataModel = new AddTripDataModel();
+            addTripDataModel.setEmail(AppRepository.mEmail(NewTripStepFourPaymentActivity.this));
+            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripId(this)));
+            addTripDataModel.setUserid((long) AppRepository.mUserID(this));
+            addTripDataModel.setName(AppRepository.mUserName(NewTripStepFourPaymentActivity.this));
+            userList.add(addTripDataModel);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         dialog.show();
         Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {

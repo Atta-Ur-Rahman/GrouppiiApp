@@ -191,7 +191,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     TextView tvPartiallyPaid, tvPayDate, tvPayDaysLeft, tvParticipantsCostsCount, tvPartiallyPaidPercentage;
     CircularSeekBar circularSeekBar;
-    ImageView ivBackPartiallyPaid, ivPartiallyPaid,ivAddTripParticipant;
+    ImageView ivBackPartiallyPaid, ivPartiallyPaid, ivAddTripParticipant;
     TabLayout tabsPartiallyPaid;
     ViewPager viewpagerExpenditures;
 
@@ -208,7 +208,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     Dialog dialog;
 
-    String strIsPersonal = "0", strActivityType="Flight", strPersonal = "1";
+    String strIsPersonal = "0", strActivityType = "Flight", strPersonal = "1";
     EditText etPhotoName;
     ImageView ivGalleryPhoto, ivCloseParticipant;
     Button btnAddPhoto;
@@ -219,6 +219,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @BindView(R.id.spUserName)
     Spinner spUserName;
 
+
+    String tripID;
+    int userID;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -237,10 +240,14 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         strTitle = bundle.getString("title");
         strPhoto = bundle.getString("image");
         strTripDate = bundle.getString("date");
-        tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate))+" days left");
+        tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate)) + " days left");
 
-        Log.d("zma user id", "" + AppRepository.mUserID(this));
-        Log.d("zma trip id", "" + AppRepository.mTripId(this));
+        userID = AppRepository.mUserID(this);
+        tripID = AppRepository.mTripId(this);
+
+
+        Log.d("zma user id", "" + userID);
+        Log.d("zma trip id", "" + tripID);
 
 
         Glide.with(this).load(strPhoto).into(ivTripImage);
@@ -311,7 +318,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View view) {
-        
+
         switch (view.getId()) {
             case R.id.ivBack:
                 onBackPressed();
@@ -550,7 +557,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         rvTripParticipants = llParticipantsBottomSheetBehaviorId.findViewById(R.id.rvTripParticipants);
         ivCloseParticipant = llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivCloseParticipants);
-        ivAddTripParticipant =llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivAddTripParticipant);
+        ivAddTripParticipant = llParticipantsBottomSheetBehaviorId.findViewById(R.id.ivAddTripParticipant);
 
         ivCloseParticipant.setOnClickListener(this);
         ivAddTripParticipant.setOnClickListener(this);
@@ -1086,7 +1093,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallForAddDayActivity() {
         dialog.show();
-        Call<AddTripDayResponse> addTripDayResponseCall = BaseNetworking.ApiInterface().addTripDay(strActivityTitle, strActivityNote, strActivityDate, strActivityTime, AppRepository.mTripId(this), AppRepository.mUserID(this), strActivityType);
+        Call<AddTripDayResponse> addTripDayResponseCall = BaseNetworking.ApiInterface().addTripDay(strActivityTitle, strActivityNote, strActivityDate, strActivityTime, tripID, userID, strActivityType);
         addTripDayResponseCall.enqueue(new Callback<AddTripDayResponse>() {
             @Override
             public void onResponse(Call<AddTripDayResponse> call, Response<AddTripDayResponse> response) {
@@ -1185,7 +1192,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     tvParticipantsCostsCount.setText(response.body().getData().getFullyPaidUsers() + " Paid," + response.body().getData().getFullyPaidUsers() + " Partially," + response.body().getData().getNotPaidUsers() + " Not");
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
                     personalExpendituresItems.addAll(response.body().getData().getPersonalExpenditures());
-
                     ConnectExpenditures.setMyBooleanListener(true);
 
                 } else {
@@ -1252,6 +1258,19 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     private void ApiCallGetUserTrip() {
         dialog.show();
         userParticipaintsList.clear();
+
+        try {
+            AddTripDataModel addTripDataModel = new AddTripDataModel();
+            addTripDataModel.setEmail(AppRepository.mEmail(TripDetailScreenActivity.this));
+            addTripDataModel.setTripid(Long.valueOf(tripID));
+            addTripDataModel.setUserid((long) userID);
+            addTripDataModel.setName(AppRepository.mUserName(TripDetailScreenActivity.this));
+            userParticipaintsList.add(addTripDataModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
@@ -1259,6 +1278,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     userParticipaintsList.addAll(response.body().getData());
+
 
                     CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userParticipaintsList);
                     spUserName.setAdapter(customAdapter);

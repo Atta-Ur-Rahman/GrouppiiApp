@@ -266,6 +266,23 @@ public class DateUtills {
         return "";
     }
 
+
+    public static String setDateAddDayTripFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+//            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy,mm,dd");
+            Date date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
     public static String covertTimeToText(String dataDate) {
 
         String convTime = null;
