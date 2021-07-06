@@ -49,7 +49,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
             e.printStackTrace();
         }
         if (arrayList.size() == 1) {
-            anIntImage = 2;
+            anIntImage = 1;
             if (position == 1) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
                 holder.tvCount.setText(arrayList.size() + "+");
@@ -58,7 +58,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
             }
         }
         if (arrayList.size() == 2) {
-            anIntImage = 3;
+            anIntImage = 2;
 
             if (position == 2) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
@@ -68,7 +68,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
             }
         }
         if (arrayList.size() >= 3) {
-            anIntImage = 4;
+            anIntImage = 3;
             if (position == 3) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
                 holder.tvCount.setText(arrayList.size() + "+");
@@ -81,7 +81,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     @Override
     public int getItemCount() {
-        return anIntImage;
+        return arrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

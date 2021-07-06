@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripes.PastTripAdapter;
 import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
@@ -18,8 +19,8 @@ import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.Connection
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.activeList;
 import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.pastList;
-
 
 
 public class PastFragment extends Fragment {
@@ -54,6 +55,7 @@ public class PastFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         pastTripDetailAdapter = new PastTripAdapter(getActivity(), pastList);
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        rvTripDetail.setItemViewCacheSize(pastList.size());
         rvTripDetail.setAdapter(pastTripDetailAdapter);
         pastTripDetailAdapter.notifyDataSetChanged();
         rvTripDetail.setItemViewCacheSize(pastList.size());
@@ -64,8 +66,6 @@ public class PastFragment extends Fragment {
 
             }
         });
-
-
 
         if (pastList.size() == 0) {
             tvNoPastTripFound.setVisibility(View.VISIBLE);

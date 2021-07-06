@@ -18,6 +18,7 @@ import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.Connection
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.activeList;
 import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.upcomingList;
 
 
@@ -46,6 +47,7 @@ public class UpcomingFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         upcommingTripDetailAdapter = new UpcomingTripAdapter(getActivity(), upcomingList);
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        rvTripDetail.setItemViewCacheSize(upcomingList.size());
         rvTripDetail.setAdapter(upcommingTripDetailAdapter);
         upcommingTripDetailAdapter.notifyDataSetChanged();
 

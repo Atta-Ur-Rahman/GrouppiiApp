@@ -165,6 +165,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public static TripParticipantsAdapter tripParticipantsAdapter;
     public static ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
 
+    public static ArrayList<AddTripDataModel> userParticipaintsCircleList = new ArrayList<>();
+
     RecyclerView rvTripParticipants;
     LinearLayoutManager linearLayoutManager;
     @BindView(R.id.tabs)
@@ -301,7 +303,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
-                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsCircleList);
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
 
@@ -1258,6 +1260,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     private void ApiCallGetUserTrip() {
         dialog.show();
         userParticipaintsList.clear();
+        userParticipaintsCircleList.clear();
+
+
 
         try {
             AddTripDataModel addTripDataModel = new AddTripDataModel();
@@ -1278,6 +1283,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     userParticipaintsList.addAll(response.body().getData());
+                    userParticipaintsCircleList.addAll(response.body().getData());
 
 
                     CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userParticipaintsList);

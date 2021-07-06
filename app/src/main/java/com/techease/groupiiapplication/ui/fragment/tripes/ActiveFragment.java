@@ -51,6 +51,7 @@ public class ActiveFragment extends Fragment {
         activeTripDetailAdapter = new ActiveTripAdapter(getActivity(), activeList);
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         rvTripDetail.setAdapter(activeTripDetailAdapter);
+        rvTripDetail.setItemViewCacheSize(activeList.size());
         rvTripDetail.setNestedScrollingEnabled(true);
         Collections.reverse(activeList);
         activeTripDetailAdapter.notifyDataSetChanged();

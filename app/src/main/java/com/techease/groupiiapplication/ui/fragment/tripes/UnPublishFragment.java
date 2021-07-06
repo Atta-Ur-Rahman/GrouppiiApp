@@ -21,6 +21,9 @@ import java.util.Collections;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.activeList;
+import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.unpublishList;
+
 
 public class UnPublishFragment extends Fragment {
 
@@ -54,6 +57,7 @@ public class UnPublishFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         unPublishTripAdapter = new UnPublishTripAdapter(getActivity(), TripFragment.unpublishList);
         rvTripDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        rvTripDetail.setItemViewCacheSize(unpublishList.size());
         rvTripDetail.setAdapter(unPublishTripAdapter);
         rvTripDetail.setNestedScrollingEnabled(true);
         Collections.reverse(TripFragment.unpublishList);

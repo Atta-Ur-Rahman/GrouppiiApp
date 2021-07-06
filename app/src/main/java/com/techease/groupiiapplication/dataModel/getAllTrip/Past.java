@@ -32,6 +32,8 @@ public class Past {
     private String mTodate;
     @SerializedName("userid")
     private Long mUserid;
+    @SerializedName("tripid")
+    private Long mTripid;
     @SerializedName("users")
     private List<User> mUsers;
 
@@ -137,6 +139,14 @@ public class Past {
 
     public void setUserid(Long userid) {
         mUserid = userid;
+    }
+
+    public void setTripid(Long tripid) {
+        mTripid = tripid;
+    }
+
+    public Long getTripid() {
+        return mTripid;
     }
 
     public List<User> getUsers() {

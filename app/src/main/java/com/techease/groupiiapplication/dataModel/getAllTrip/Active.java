@@ -2,6 +2,7 @@
 package com.techease.groupiiapplication.dataModel.getAllTrip;
 
 import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Active {
@@ -32,6 +33,8 @@ public class Active {
     private String mTodate;
     @SerializedName("userid")
     private Long mUserid;
+    @SerializedName("tripid")
+    private Long mTripid;
     @SerializedName("users")
     private List<User> mUsers;
 
@@ -138,6 +141,15 @@ public class Active {
     public void setUserid(Long userid) {
         mUserid = userid;
     }
+
+    public void setTripid(Long tripid) {
+        mTripid = tripid;
+    }
+
+    public Long getTripid() {
+        return mTripid;
+    }
+
 
     public List<User> getUsers() {
         return mUsers;

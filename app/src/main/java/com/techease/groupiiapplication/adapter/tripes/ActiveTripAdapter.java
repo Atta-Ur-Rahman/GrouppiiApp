@@ -67,21 +67,19 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
         holder.tvLocation.setText(data.getLocation());
         holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
-
         if (data.getUsers() != null) {
             TripFragment.userList.addAll(data.getUsers());
         }
-
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
         holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, TripFragment.userList));
+        holder.rvUsers.setAdapter(new UserTripCircleImagesAdapter(context, data.getUsers()));
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
 
                 TripFragment.userList = data.getUsers();
 
