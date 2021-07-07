@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.getAllTrip.Active;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -80,8 +81,8 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
-
                 TripFragment.userList = data.getUsers();
+
 
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();

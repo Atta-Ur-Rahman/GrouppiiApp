@@ -244,6 +244,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         strTripDate = bundle.getString("date");
         tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate)) + " days left");
 
+        AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripDate)).commit();
+
         userID = AppRepository.mUserID(this);
         tripID = AppRepository.mTripId(this);
 
@@ -1261,7 +1263,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         dialog.show();
         userParticipaintsList.clear();
         userParticipaintsCircleList.clear();
-
 
 
         try {

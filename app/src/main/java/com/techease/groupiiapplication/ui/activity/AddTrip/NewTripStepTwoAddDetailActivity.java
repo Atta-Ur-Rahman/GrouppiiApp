@@ -252,7 +252,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 onBackPressed();
                 break;
             case R.id.etTripStartDate:
-                DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, etTripPayByDate,this);
+                DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, etTripPayByDate, this);
                 break;
             case R.id.etTripEndtDate:
                 DateUtills.GetDatePickerDialog(etTripEndDate, this);
@@ -499,6 +499,10 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 if (response.isSuccessful()) {
 
 //                    finish();
+
+                    Log.d("zmadate", response.body().getData().getStartdate());
+
+                    AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
                     startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
                     dialog.dismiss();
                     Log.d("zma uploddImage", String.valueOf(sourceFile));

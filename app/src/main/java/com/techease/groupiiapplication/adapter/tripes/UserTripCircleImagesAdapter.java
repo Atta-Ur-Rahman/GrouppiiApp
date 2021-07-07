@@ -81,7 +81,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return anIntImage;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

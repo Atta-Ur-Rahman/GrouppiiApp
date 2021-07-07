@@ -36,31 +36,45 @@ public class DateUtills {
 
         int mYear, mMonth, mDay;
 
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        String date = AppRepository.mTripStartDate(context);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dt = df.parse(date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+            System.out.println(c.getTimeInMillis());
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
 //                        SimpleDateFormat simpledateformat = new SimpleDateFormat("EE, MMM dd");
 
-                        SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar newDate = Calendar.getInstance();
-                        newDate.set(year, monthOfYear, dayOfMonth);
-                        String selectedDate = simpledateformat.format(newDate.getTime());
-                        tvSetDate.setText(selectedDate);
+                            SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd");
+                            Calendar newDate = Calendar.getInstance();
+                            newDate.set(year, monthOfYear, dayOfMonth);
+                            String selectedDate = simpledateformat.format(newDate.getTime());
+                            tvSetDate.setText(selectedDate);
 
 
-                    }
-                }, mYear, mMonth, mDay);
+                        }
+                    }, mYear, mMonth, mDay);
 
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public static void GetStartDatePickerDialog(EditText tvSetDate, EditText tvNext7Day, EditText tvNext14Days, Context context) {
@@ -119,7 +133,7 @@ public class DateUtills {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(dt));
-        c.add(Calendar.DATE, 14);  // number of days to add
+        c.add(Calendar.DATE, -7);  // number of days to add
         dt = sdf.format(c.getTime());  // dt is now the new date
 
         tvSetDate.setText(dt);
@@ -236,7 +250,7 @@ public class DateUtills {
 
     public static String getChatDateFormate(String timestamp) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
             Date date = inputFormat.parse(timestamp);
@@ -266,10 +280,9 @@ public class DateUtills {
         return "";
     }
 
-
     public static String setDateAddDayTripFormate(String timestamp) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
             SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy,mm,dd");
             Date date = inputFormat.parse(timestamp);
@@ -335,7 +348,7 @@ public class DateUtills {
 
     public static String changeDateFormate(String timestamp) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
             SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
             Date date = inputFormat.parse(timestamp);
@@ -343,6 +356,22 @@ public class DateUtills {
             System.out.println(formattedDate); // prints 10-04-2018
 
             Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String changeDateTripStartDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//            inputFormat.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+
+            Log.d("zmaformatedate", formattedDate);
             return formattedDate;
         } catch (Exception e) {
         }

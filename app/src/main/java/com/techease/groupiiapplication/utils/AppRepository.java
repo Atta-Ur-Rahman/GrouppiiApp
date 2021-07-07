@@ -68,6 +68,9 @@ public class AppRepository {
     public static String mGetFromdate(Context context) {
         return String.valueOf(mGetValue(context).getString("getFromdate", null));
     }
+    public static String mTripStartDate(Context context) {
+        return String.valueOf(mGetValue(context).getString("trip_start_date", null));
+    }
 
     public static String mPhoneNumber(Context context) {
         return String.valueOf(mGetValue(context).getString("mPhoneNumber", null));
