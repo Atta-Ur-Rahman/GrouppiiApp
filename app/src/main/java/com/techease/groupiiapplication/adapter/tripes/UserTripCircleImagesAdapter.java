@@ -69,7 +69,7 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
         }
         if (arrayList.size() >= 3) {
             anIntImage = 3;
-            if (position == 3) {
+            if (position >= 3) {
                 holder.relativeLayout.setVisibility(View.VISIBLE);
                 holder.tvCount.setText(arrayList.size() + "+");
             } else {

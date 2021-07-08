@@ -34,10 +34,13 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.MyContactsAdapter;
 import com.techease.groupiiapplication.adapter.gallery.RecyclerViewClickListener;
 import com.techease.groupiiapplication.dataModel.addTrips.ContactDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
+import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -211,6 +214,20 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     private void ApiCallForAddInviteFriend() {
         dialog.show();
         TripDetailScreenActivity.userParticipaintsList.clear();
+        TripDetailScreenActivity.userParticipaintsCircleList.clear();
+        TripDetailScreenActivity.paymentUserParticipaintsList.clear();
+
+
+        try {
+            AddTripDataModel addTripDataModel = new AddTripDataModel();
+            addTripDataModel.setEmail(AppRepository.mEmail(AddUserTripParticpantActivity.this));
+            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripId(this)));
+            addTripDataModel.setUserid((long) AppRepository.mUserID(this));
+            addTripDataModel.setName(AppRepository.mUserName(AddUserTripParticpantActivity.this));
+            TripDetailScreenActivity.paymentUserParticipaintsList.add(addTripDataModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName, strEmail, strPhoneNumber, strShareCost,
                 AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
@@ -230,8 +247,29 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 //                            Log.d("zmaerror", e.getMessage());
                         }
 
+
+
+
+
+                        TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
+                        TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                        TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
+
+
+
+                        TripFragment.userList.clear();
+                        for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
+                            User user = new User();
+                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
+                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
+                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
+                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
+                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                            TripFragment.userList.add(user);
+
+                        }
                         finish();
 
                     }

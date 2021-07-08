@@ -1,6 +1,11 @@
 package com.techease.groupiiapplication.ui.fragment.profile;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +25,8 @@ import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.thefinestartist.finestwebview.listeners.WebViewListener;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +68,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @OnClick({R.id.rlSignOut, R.id.ivProfilePicture, R.id.rlChangePassword, R.id.rlContactUs, R.id.rlShare, R.id.rlPrivacyPolicy})
+    @OnClick({R.id.rlSignOut, R.id.ivProfilePicture, R.id.rlChangePassword, R.id.rlContactUs, R.id.rlShare, R.id.rlPrivacyPolicy, R.id.ivBrowser, R.id.ivFacebook, R.id.ivTwitter, R.id.ivinstagram})
     @Override
     public void onClick(View view) {
 
@@ -114,8 +121,71 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         })
                         .show("https://www.freeprivacypolicy.com/live/6151174f-2367-4f51-bec5-0b0763d4a600");
                 break;
+
+            case R.id.ivBrowser:
+
+                String url = "http://www.google.com";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browserIntent);
+                break;
+            case R.id.ivFacebook:
+                launchFacebook();
+                break;
+            case R.id.ivTwitter:
+                launchTwitter();
+                break;
+            case R.id.ivinstagram:
+                launchInstagram();
+                break;
         }
 
+    }
+
+    private void launchTwitter() {
+        Intent intent = null;
+        try {
+            // get the Twitter app if possible
+            getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=USERID"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (Exception e) {
+            // no Twitter app, revert to browser
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/Groupii"));
+        }
+        this.startActivity(intent);
+    }
+
+    private void launchInstagram() {
+        Uri uri = Uri.parse("http://instagram.com/_u/Groupii");
+        Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+        likeIng.setPackage("com.instagram.android");
+
+        try {
+            startActivity(likeIng);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/Groupii")));
+        }
+    }
+
+    public final void launchFacebook() {
+        final String urlFb = "fb://page/" + "426253597411506";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(urlFb));
+
+        // If a Facebook app is installed, use it. Otherwise, launch
+        // a browser
+        final PackageManager packageManager = getActivity().getPackageManager();
+        List<ResolveInfo> list =
+                packageManager.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        if (list.size() == 0) {
+            final String urlBrowser = "https://www.facebook.com/" + "426253597411506";
+            intent.setData(Uri.parse(urlBrowser));
+        }
+
+        startActivity(intent);
     }
 
     @Override

@@ -52,6 +52,7 @@ import com.techease.groupiiapplication.adapter.tripes.UserTripCircleImagesAdapte
 import com.techease.groupiiapplication.adapter.tripDetail.TripParticipantsAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDay.AddTripDayResponse;
@@ -164,8 +165,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     public static TripParticipantsAdapter tripParticipantsAdapter;
     public static ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
+    public static ArrayList<AddTripDataModel> paymentUserParticipaintsList = new ArrayList<>();
 
     public static ArrayList<AddTripDataModel> userParticipaintsCircleList = new ArrayList<>();
+    public static List<AddTripDataModel> userCircleList = new ArrayList<>();
 
     RecyclerView rvTripParticipants;
     LinearLayoutManager linearLayoutManager;
@@ -175,6 +178,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     ViewPager viewPager;
 
 
+    public static boolean aBooleanResfreshGetUserTrip = false;
     @BindView(R.id.tvDaysLeft)
     TextView tvDaysLeft;
     boolean aBooleanAddImage = true;
@@ -225,6 +229,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     String tripID;
     int userID;
 
+    public static UserTripCircleImagesAdapter userTripCircleImagesAdapter;
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -262,11 +268,11 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         stringArrayList = bundle.getStringArrayList("users");
         Log.d("zma array", String.valueOf(stringArrayList));
-
+        userTripCircleImagesAdapter = new UserTripCircleImagesAdapter(TripDetailScreenActivity.this, TripFragment.userList);
         rvImages.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, LinearLayoutManager.HORIZONTAL, false));
         rvImages.addItemDecoration(new GeneralUtills.OverlapDecoration());
         rvImages.setHasFixedSize(true);
-        rvImages.setAdapter(new UserTripCircleImagesAdapter(TripDetailScreenActivity.this, TripFragment.userList));
+        rvImages.setAdapter(userTripCircleImagesAdapter);
 
 
         getPaymentExpenses();
@@ -305,7 +311,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
-                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsCircleList);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList);
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
 
@@ -1271,21 +1277,21 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             addTripDataModel.setTripid(Long.valueOf(tripID));
             addTripDataModel.setUserid((long) userID);
             addTripDataModel.setName(AppRepository.mUserName(TripDetailScreenActivity.this));
-            userParticipaintsList.add(addTripDataModel);
+            paymentUserParticipaintsList.add(addTripDataModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
-        getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     userParticipaintsList.addAll(response.body().getData());
                     userParticipaintsCircleList.addAll(response.body().getData());
-
+                    paymentUserParticipaintsList.addAll(response.body().getData());
 
                     CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userParticipaintsList);
                     spUserName.setAdapter(customAdapter);
@@ -1302,5 +1308,14 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (aBooleanResfreshGetUserTrip) {
+            aBooleanResfreshGetUserTrip = false;
+            tripParticipantsAdapter.notifyDataSetChanged();
+            userTripCircleImagesAdapter.notifyDataSetChanged();
+        }
+    }
 }
 

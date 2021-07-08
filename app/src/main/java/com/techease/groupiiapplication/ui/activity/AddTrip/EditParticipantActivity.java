@@ -17,11 +17,13 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
+import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -158,9 +160,24 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         etName.setText("");
                         cbShareCost.setChecked(false);
                         if (aBooleanIsTripDetailScreen) {
+                            TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
                             TripDetailScreenActivity.userParticipaintsList.clear();
                             TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                            TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
+                            TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
                             TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
+
+                            TripFragment.userList.clear();
+                            for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
+                                User user = new User();
+                                user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
+                                user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
+                                user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
+                                user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
+                                user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                                TripFragment.userList.add(user);
+
+                            }
                             finish();
                         } else {
                             NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
@@ -246,6 +263,20 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         TripDetailScreenActivity.userParticipaintsList.clear();
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
+
+                        TripFragment.userList.clear();
+                        for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
+                            User user = new User();
+                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
+                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
+                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
+                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
+                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                            TripFragment.userList.add(user);
+
+                        }
+
+
                         finish();
                     } else {
                         NewTripStepOneInviteFriendActivity.addTripDataModels.clear();
