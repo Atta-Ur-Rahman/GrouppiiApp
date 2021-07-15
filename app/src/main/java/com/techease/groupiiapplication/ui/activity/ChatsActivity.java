@@ -320,6 +320,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                 } catch (Exception e) {
                                     e.printStackTrace();
 //                                    Log.d("zmaerror",e.getMessage());
+                                    AllUsersChatFragment.aBooleanRefreshSocket = true;
+
                                 }
                             }
                             JSONObject jsonObject = (JSONObject) args[0];

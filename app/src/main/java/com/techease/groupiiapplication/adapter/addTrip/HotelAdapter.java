@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Result data = hotelDataModels.get(position);
+
+        Log.d("zmaimage", data.getImageURL());
         Glide.with(context).load(data.getImageURL()).into(holder.ivImage);
         holder.tvTitle.setText(data.getHotelName());
         holder.tvRoom.setText(data.getDailyRate() + "");
@@ -64,8 +67,6 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.MyViewHolder
             public void onClick(View v) {
 
                 String url = data.getLandingURL();
-
-//
                 Intent intent = new Intent(context, WebViewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);

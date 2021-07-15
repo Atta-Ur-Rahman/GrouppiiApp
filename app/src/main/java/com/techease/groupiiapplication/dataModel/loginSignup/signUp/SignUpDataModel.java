@@ -24,6 +24,11 @@ public class SignUpDataModel {
     @SerializedName("usertype")
     private String mUsertype;
 
+    @SerializedName("latitude")
+    private String latitude;
+    @SerializedName("longitude")
+    private String longitude;
+
     public String getCreatedAt() {
         return mCreatedAt;
     }
@@ -94,6 +99,23 @@ public class SignUpDataModel {
 
     public void setUsertype(String usertype) {
         mUsertype = usertype;
+    }
+
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
 }

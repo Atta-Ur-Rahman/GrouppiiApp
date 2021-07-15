@@ -1,10 +1,16 @@
 package com.techease.groupiiapplication.ui.activity.LoginSignUp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
@@ -38,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
 
     boolean valid;
@@ -73,6 +81,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Dialog alertDialog;
 
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
+    protected LocationManager locationManager;
+    String strLatitude, strLongitude;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +94,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         ButterKnife.bind(this);
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
+        getCurrentLocation();
 
 
     }
@@ -98,7 +112,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tvSignIn:
 
-                Intent mainIntent = new Intent(SignUpActivity.this,LoginActivity.class);
+                Intent mainIntent = new Intent(SignUpActivity.this, LoginActivity.class);
                 SignUpActivity.this.startActivity(mainIntent);
                 SignUpActivity.this.finish();
 
@@ -109,51 +123,53 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void ApiCallForSignUp() {
+        try {
+            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, String.valueOf(Calendar.getInstance().getTime()), "android", "user", strLatitude, strLongitude);
+            signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
+                @Override
+                public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
 
-        Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, String.valueOf(Calendar.getInstance().getTime()), "android", "user");
-        signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                    Log.d("zma signup response", String.valueOf(response));
 
-                Log.d("zma signup response", String.valueOf(response));
+                    if (response.code() == 400) {
+                        Toast.makeText(SignUpActivity.this, "The email has already been taken", Toast.LENGTH_SHORT).show();
 
+                    }
 
-                if (response.code()==400){
-                    Toast.makeText(SignUpActivity.this, "The email has already been taken", Toast.LENGTH_SHORT).show();
-
-                }
-
-                if (response.isSuccessful()) {
-                    alertDialog.dismiss();
-                    finishAffinity();
-                    Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) SignUpActivity.this).toBundle());
+                    if (response.isSuccessful()) {
+                        alertDialog.dismiss();
+                        finishAffinity();
+                        Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) SignUpActivity.this).toBundle());
 
 //                    AppRepository.mPutValue(SignUpActivity.this).putInt("userID",response.body().getData().getId());
 //                    AppRepository.mPutValue(SignUpActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
 //                    AppRepository.mPutValue(SignUpActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().ge())).commit();
 
 
-                } else {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                    } else {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.errorBody().string());
 //                        Toast.makeText(SignUpActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alertDialog.dismiss();
                     }
-                    alertDialog.dismiss();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
-                alertDialog.dismiss();
-                Log.d("zma signup error", String.valueOf(t.getMessage()));
-                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<SignUpResponse> call, Throwable t) {
+                    alertDialog.dismiss();
+                    Log.d("zma signup error", String.valueOf(t.getMessage()));
+                    Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @SuppressLint("ResourceType")
@@ -251,5 +267,44 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
+
+    private void getCurrentLocation() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        strLatitude = String.valueOf(location.getLatitude());
+        strLongitude = String.valueOf(location.getLongitude());
+        Log.d("zma", strLatitude + "  " + strLongitude);
+
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude", "disable");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude", "enable");
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Latitude", "status");
+    }
+
 
 }

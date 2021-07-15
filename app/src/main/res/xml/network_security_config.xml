@@ -3,7 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">104.131.66.116</domain>
         <domain includeSubdomains="true">affiliateapi7643.agoda.com</domain>
+        <domain includeSubdomains="true">q-xx.bstatic.com</domain>
         <domain includeSubdomains="true">pix6.agoda.net</domain>
-
+        <domain includeSubdomains="true">pix8.agoda.net</domain>
     </domain-config>
 </network-security-config>

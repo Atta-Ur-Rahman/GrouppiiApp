@@ -75,8 +75,8 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
                 Intent intent = new Intent(context, EditParticipantActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("name", user.getName());
-                bundle.putString("email", user.getEmail());
-                bundle.putString("phone", user.getPhone());
+                bundle.putString("email", user.getEmail()+"");
+                bundle.putString("phone", user.getPhone()+"");
                 bundle.putString("userId", String.valueOf(user.getUserid()));
                 bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
                 bundle.putString("trip_id", String.valueOf(user.getTripid()));

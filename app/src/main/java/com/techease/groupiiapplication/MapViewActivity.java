@@ -1,10 +1,10 @@
-package com.techease.groupiiapplication.ui.activity.Map;
+package com.techease.groupiiapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.techease.groupiiapplication.R;
+import java.util.Objects;
 
 public class MapViewActivity extends AppCompatActivity {
 
@@ -12,10 +12,10 @@ public class MapViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_view);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, LocationMapViewFragment.newInstance())
+                    .replace(R.id.container, MapsFragment.newInstance())
                     .commitNow();
         }
     }

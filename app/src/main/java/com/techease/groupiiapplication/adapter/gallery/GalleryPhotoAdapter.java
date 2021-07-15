@@ -111,8 +111,17 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         Picasso.get().load(url).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "palette", "share palette");
+                Uri bitmapUri = Uri.parse(bitmapPath);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/png");
+                intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                context.startActivity(Intent.createChooser(intent, "Share"));
+
+                /*
                 try {
-                    File mydir = new File(Environment.getExternalStorageDirectory() + "/Groupii");
+                  File mydir = new File(Environment.getExternalStorageDirectory() + "/Groupii");
                     if (!mydir.exists()) {
                         mydir.mkdirs();
                     }
@@ -131,7 +140,7 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/*");
                 share.putExtra(Intent.EXTRA_STREAM, uri);
-                context.startActivity(Intent.createChooser(share, "Share Image"));
+                context.startActivity(Intent.createChooser(share, "Share Image"));*/
             }
 
             @Override

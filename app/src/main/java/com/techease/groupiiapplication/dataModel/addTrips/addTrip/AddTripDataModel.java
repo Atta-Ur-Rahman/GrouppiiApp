@@ -1,5 +1,6 @@
 
 package com.techease.groupiiapplication.dataModel.addTrips.addTrip;
+
 import com.google.gson.annotations.SerializedName;
 
 public class AddTripDataModel {
@@ -17,7 +18,12 @@ public class AddTripDataModel {
     @SerializedName("userid")
     private Long mUserid;
     @SerializedName("name")
-    private String  mName;
+    private String mName;
+    @SerializedName("latitude")
+    private String latitude;
+    @SerializedName("longitude")
+    private String longitude;
+
 
     public String getEmail() {
         return mEmail;
@@ -74,6 +80,22 @@ public class AddTripDataModel {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
 

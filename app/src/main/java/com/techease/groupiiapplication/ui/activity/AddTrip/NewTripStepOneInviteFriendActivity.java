@@ -45,11 +45,11 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripRespons
 import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
+import com.techease.groupiiapplication.utils.PhoneNumberValidator;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
@@ -133,12 +133,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     Cursor cursor;
     private String name, phoneNumber;
     public static final int RequestPermissionCode = 1;
-
     MyContactsAdapter contactsAdapter;
-
     RecyclerViewClickListener listener;
-
-
     @BindView(R.id.rvMyContact)
     RecyclerView rvMyContact;
 
@@ -276,7 +272,27 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                         }
                     }
                     if (emailExist) {
-                        ApiCallForAddInviteFriend();
+
+                        if (strPhoneNumber.length() > 1) {
+                            if (strEmail.length() > 1) {
+                                ApiCallForAddInviteFriendWithGmailAndPhone();
+                            }
+                        }
+                        if (strEmail.length() < 1) {
+                            if (strPhoneNumber.length() < 1) {
+                                ApiCallForAddInviteFriendWithGmailAndPhone();
+                            }
+                        }
+
+                        if (strPhoneNumber.length() > 1 && strEmail.length() < 1) {
+                            ApiCallForAddInviteFriendWithPhone();
+                        }
+
+                        if (strEmail.length() > 1 && strPhoneNumber.length() < 1) {
+                            ApiCallForAddInviteFriendWithGmail();
+                        }
+
+
                     }
                 }
                 break;
@@ -301,12 +317,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         }
     }
 
-
-    private void ApiCallForAddInviteFriend() {
+    private void ApiCallForAddInviteFriendWithGmailAndPhone() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName, strEmail, strPhoneNumber, strShareCost,
-                AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -340,6 +354,97 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             public void onFailure(Call<AddTripResponse> call, Throwable t) {
                 dialog.dismiss();
                 Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf("error " + t), Toast.LENGTH_SHORT).show();
+                Log.d("zma", t.getMessage());
+            }
+        });
+
+    }
+
+    private void ApiCallForAddInviteFriendWithGmail() {
+        dialog.show();
+        addTripDataModels.clear();
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strEmail, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @Override
+            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    Log.d("zma response", String.valueOf(response.message()));
+                    Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    if (response.message().equals("OK")) {
+                        clAddInvite.setVisibility(View.VISIBLE);
+                        clInviteFriend.setVisibility(View.GONE);
+                        btnNext.setVisibility(View.VISIBLE);
+                        etEmail.setText("");
+                        etPhone.setText("");
+                        etName.setText("");
+                        cbShareCost.setChecked(false);
+                        addTripDataModels.addAll(response.body().getData());
+                        btnNext.setVisibility(View.VISIBLE);
+                        Collections.reverse(addTripDataModels);
+                        addTripAdapter.notifyDataSetChanged();
+                        tvInviteFriendNotFound.setVisibility(View.GONE);
+
+                        Log.d("zma user", "" + addTripDataModels);
+                    }
+
+                } else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddTripResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(NewTripStepOneInviteFriendActivity.this, "email exist", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf("error " + t), Toast.LENGTH_SHORT).show();
+                Log.d("zma", t.getMessage());
+            }
+        });
+
+    }
+
+
+    private void ApiCallForAddInviteFriendWithPhone() {
+        dialog.show();
+        addTripDataModels.clear();
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @Override
+            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    Log.d("zma response", String.valueOf(response.message()));
+                    Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    if (response.message().equals("OK")) {
+                        clAddInvite.setVisibility(View.VISIBLE);
+                        clInviteFriend.setVisibility(View.GONE);
+                        btnNext.setVisibility(View.VISIBLE);
+                        etEmail.setText("");
+                        etPhone.setText("");
+                        etName.setText("");
+                        cbShareCost.setChecked(false);
+                        addTripDataModels.addAll(response.body().getData());
+                        btnNext.setVisibility(View.VISIBLE);
+                        Collections.reverse(addTripDataModels);
+                        addTripAdapter.notifyDataSetChanged();
+                        tvInviteFriendNotFound.setVisibility(View.GONE);
+
+                        Log.d("zma user", "" + addTripDataModels);
+                    }
+
+                } else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddTripResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(NewTripStepOneInviteFriendActivity.this, "phone number exist", Toast.LENGTH_SHORT).show();
+
+//                Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf("error " + t), Toast.LENGTH_SHORT).show();
+                Log.d("zma", t.getMessage());
             }
         });
 
@@ -352,6 +457,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         strName = etName.getText().toString();
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
+
+
+
+
 
      /*   if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
             valid = false;
@@ -372,14 +481,40 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             tilName.setError(null);
             tilName.setErrorEnabled(false);
         }*/
-        if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-            tilEmail.setErrorEnabled(true);
-            tilEmail.setError(getString(R.string.valid_email));
-            valid = false;
-        } else {
-            tilEmail.setError(null);
+
+
+        if (strPhoneNumber.length() < 1) {
+            if (strEmail.length() < 1) {
+                valid = false;
+            }
+        }
+        if (strEmail.length() < 1) {
+            if (strPhoneNumber.length() < 1) {
+                valid = false;
+            }
         }
 
+        if (strPhoneNumber.length() > 0) {
+            if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
+                valid = false;
+                tilPhone.setErrorEnabled(true);
+                tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
+
+            } else {
+                tilPhone.setError(null);
+                tilPhone.setErrorEnabled(false);
+            }
+        }
+
+        if (strEmail.length() > 0) {
+            if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+                tilEmail.setErrorEnabled(true);
+                tilEmail.setError(getString(R.string.valid_email));
+                valid = false;
+            } else {
+                tilEmail.setError(null);
+            }
+        }
         if (!Connectivity.isConnected(this)) {
             valid = false;
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();

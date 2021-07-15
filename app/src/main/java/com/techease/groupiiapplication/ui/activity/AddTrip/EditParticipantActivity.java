@@ -145,7 +145,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     private void ApiCallForEditParticipants() {
         dialog.show();
         NewTripStepOneInviteFriendActivity.addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTrip(strName, strEmail, strPhoneNumber, strSharedCost,
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strSharedCost,
                 strTripId, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override

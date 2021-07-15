@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class AddTripResponse {
 
     @SerializedName("data")
-    private List<AddTripDataModel> mData;
+    private List<AddTripDataModel> mData=null;
     @SerializedName("message")
     private String mMessage;
     @SerializedName("success")

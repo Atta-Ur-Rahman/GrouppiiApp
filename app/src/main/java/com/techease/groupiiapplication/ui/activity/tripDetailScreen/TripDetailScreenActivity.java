@@ -44,6 +44,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.techease.groupiiapplication.MapViewActivity;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.gallery.Connect;
 import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
@@ -52,7 +53,6 @@ import com.techease.groupiiapplication.adapter.tripes.UserTripCircleImagesAdapte
 import com.techease.groupiiapplication.adapter.tripDetail.TripParticipantsAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
-import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDay.AddTripDayResponse;
@@ -61,7 +61,6 @@ import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.G
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.PersonalExpendituresItem;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
-import com.techease.groupiiapplication.ui.activity.Map.MapViewActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.paymentClickInterface.ConnectPaymentClick;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.paymentClickInterface.ConnectionBooleanClickChangedListener;
@@ -351,7 +350,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 break;
             case R.id.tvLocation:
-                startActivity(new Intent(this, MapViewActivity.class));
+                startActivity(new Intent(TripDetailScreenActivity.this, MapViewActivity.class));
                 break;
             case R.id.ivMore:
             case R.id.tvMore:
@@ -520,6 +519,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 break;
         }
     }
+
 
     private void HighliteImage(ImageView iv1, ImageView iv2, ImageView iv3, ImageView iv4) {
         iv1.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
@@ -1218,9 +1218,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
     private void ApiCallForAddPhotoToGallery() {
-
         dialog.show();
-
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));

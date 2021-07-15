@@ -15,6 +15,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,9 +81,10 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
             @Override
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
                 TripFragment.userList = data.getUsers();
 
+                Toast.makeText(context, ""+data.getTripid(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();

@@ -117,7 +117,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             @Override
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));

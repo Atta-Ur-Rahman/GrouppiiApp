@@ -56,7 +56,9 @@ public interface ApiInterface {
             @Field("password") String userPassword,
             @Field("fcm_token") String fcmToken,
             @Field("device_type") String deviceType,
-            @Field("usertype") String userType);
+            @Field("usertype") String userType,
+            @Field("latitude") String latitude,
+            @Field("longitude") String longitude);
 
 
     @FormUrlEncoded
@@ -102,13 +104,30 @@ public interface ApiInterface {
     Call<TripDetailResponse> getTripDetail(
             @Field("userid") int userId);
 
-
     @FormUrlEncoded
     @POST("trips/tripusers")
-    Call<AddTripResponse> addTrip(
+    Call<AddTripResponse> addTripWithGmailAndPhone(
             @Field("name") String name,
             @Field("email") String email,
             @Field("phone") String phone,
+            @Field("share_cost") String shareCost,
+            @Field("tripid") String tripId,
+            @Field("userid") int userId);
+
+    @FormUrlEncoded
+    @POST("trips/tripusers")
+    Call<AddTripResponse> addTripWithPhone(
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("share_cost") String shareCost,
+            @Field("tripid") String tripId,
+            @Field("userid") int userId);
+
+    @FormUrlEncoded
+    @POST("trips/tripusers")
+    Call<AddTripResponse> addTripWithGmail(
+            @Field("name") String name,
+            @Field("email") String email,
             @Field("share_cost") String shareCost,
             @Field("tripid") String tripId,
             @Field("userid") int userId);
@@ -214,11 +233,10 @@ public interface ApiInterface {
             @Field("userid") int userId);
 
 
-
     @FormUrlEncoded
     @POST("trips/deleteuser")
     Call<DeleteTripUserResponse> deleteTripUser(
             @Field("tripid") String tripId,
-            @Field("userid") String  userId);
+            @Field("userid") String userId);
 
 }
