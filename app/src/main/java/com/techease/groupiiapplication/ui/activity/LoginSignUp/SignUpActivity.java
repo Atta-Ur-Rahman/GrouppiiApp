@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +27,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.loginSignup.signUp.SignUpResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.Connectivity;
+import com.techease.groupiiapplication.utils.GPSTracker;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
 import org.json.JSONException;
@@ -38,6 +45,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     boolean valid;
@@ -89,12 +97,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContentView(R.layout.activity_sign_up);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
-        getCurrentLocation();
+        getCurrentLocationPermission();
 
 
     }
@@ -217,6 +226,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             tilAgainPassword.setError(null);
             tilAgainPassword.setErrorEnabled(false);
         }
+
+        if (TextUtils.isEmpty(strLongitude)) {
+            valid = false;
+            Toast.makeText(this, "location not fond wait!", Toast.LENGTH_SHORT).show();
+        }
+
         if (!Connectivity.isConnected(this)) {
             valid = false;
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
@@ -268,43 +283,59 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void getCurrentLocation() {
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
+    private void getCurrentLocationPermission() {
+        Dexter.withContext(this).withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION
+        ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                GPSTracker gpsTracker = new GPSTracker(SignUpActivity.this);
 
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                if (gpsTracker.getIsGPSTrackingEnabled()) {
+                    double latitude = gpsTracker.latitude;
+                    double longitude = gpsTracker.longitude;
 
+                    strLatitude = String.valueOf(latitude);
+                    strLongitude = String.valueOf(longitude);
 
-        }
+                }
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken
+                    token) {
+
+            }
+        }).check();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        strLatitude = String.valueOf(location.getLatitude());
-        strLongitude = String.valueOf(location.getLongitude());
-        Log.d("zma", strLatitude + "  " + strLongitude);
 
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.d("Latitude", "disable");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d("Latitude", "enable");
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude", "status");
-    }
+//
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        strLatitude = String.valueOf(location.getLatitude());
+//        strLongitude = String.valueOf(location.getLongitude());
+//        Log.d("zma", strLatitude + "  " + strLongitude);
+//
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//        Log.d("Latitude", "disable");
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//        Log.d("Latitude", "enable");
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//        Log.d("Latitude", "status");
+//    }
 
 
 }

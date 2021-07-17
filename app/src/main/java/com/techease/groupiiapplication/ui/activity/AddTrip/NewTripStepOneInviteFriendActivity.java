@@ -363,7 +363,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriendWithGmail() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strEmail, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strEmail, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -408,7 +408,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriendWithPhone() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {

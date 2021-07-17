@@ -1,6 +1,12 @@
 package com.techease.groupiiapplication.utils;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,39 +22,50 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import com.techease.groupiiapplication.R;
 
 /**
- * Created by kashif on 11/2/18.
+ * Create this Class from tutorial :
+ * http://www.androidhive.info/2012/07/android-gps-location-manager-tutorial
+ *
+ * For Geocoder read this : http://stackoverflow.com/questions/472313/android-reverse-geocoding-getfromlocation
+ *
  */
 
 public class GPSTracker extends Service implements LocationListener {
 
-    // The minimum distance to change updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     // Get Class Name
     private static String TAG = GPSTracker.class.getName();
+
     private final Context mContext;
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
+
     // flag for GPS Status
     boolean isGPSEnabled = false;
+
     // flag for network status
     boolean isNetworkEnabled = false;
+
     // flag for GPS Tracking is enabled
     boolean isGPSTrackingEnabled = false;
+
     Location location;
-    double latitude;
-    double longitude;
+    public double latitude;
+    public double longitude;
+
     // How many Geocoder should return our GPSTracker
     int geocoderMaxResults = 1;
+
+    // The minimum distance to change updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+
+    // Declaring a Location Manager
+    protected LocationManager locationManager;
+
     // Store LocationManager.GPS_PROVIDER or LocationManager.NETWORK_PROVIDER information
     private String provider_info;
 
@@ -60,6 +77,7 @@ public class GPSTracker extends Service implements LocationListener {
     /**
      * Try to get my current location by GPS or Network Provider
      */
+    @SuppressLint("MissingPermission")
     public void getLocation() {
 
         try {
@@ -90,27 +108,13 @@ public class GPSTracker extends Service implements LocationListener {
 
                 Log.d(TAG, "Application use Network State to get GPS coordinates");
 
-                /*
-                 * This provider determines location based on
-                 * availability of cell tower and WiFi access points. Results are retrieved
-                 * by means of a network lookup.
-                 */
                 provider_info = LocationManager.NETWORK_PROVIDER;
 
             }
 
             // Application can use GPS or Network Provider
             if (!provider_info.isEmpty()) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
+
                 locationManager.requestLocationUpdates(
                         provider_info,
                         MIN_TIME_BW_UPDATES,
@@ -123,7 +127,9 @@ public class GPSTracker extends Service implements LocationListener {
                     updateGPSCoordinates();
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             //e.printStackTrace();
             Log.e(TAG, "Impossible to connect to LocationManager", e);
         }
@@ -141,7 +147,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * GPSTracker latitude getter and setter
-     *
      * @return latitude
      */
     public double getLatitude() {
@@ -154,7 +159,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * GPSTracker longitude getter and setter
-     *
      * @return
      */
     public double getLongitude() {
@@ -191,26 +195,28 @@ public class GPSTracker extends Service implements LocationListener {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         //Setting Dialog Title
-        alertDialog.setTitle("GPS Alert Dialog");
+        alertDialog.setTitle("GPS");
 
         //Setting Dialog Message
-        alertDialog.setMessage("Message");
+        alertDialog.setMessage("on location");
 
         //On Pressing Setting button
-        alertDialog.setPositiveButton("Action setting", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("settings", new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 mContext.startActivity(intent);
             }
         });
 
         //On pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
                 dialog.cancel();
             }
         });
@@ -220,7 +226,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Get list of address by latitude and longitude
-     *
      * @return null or List<Address>
      */
     public List<Address> getGeocoderAddress(Context context) {
@@ -247,7 +252,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Try to get AddressLine
-     *
      * @return null or addressLine
      */
     public String getAddressLine(Context context) {
@@ -265,7 +269,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Try to get Locality
-     *
      * @return null or locality
      */
     public String getLocality(Context context) {
@@ -276,14 +279,14 @@ public class GPSTracker extends Service implements LocationListener {
             String locality = address.getLocality();
 
             return locality;
-        } else {
+        }
+        else {
             return null;
         }
     }
 
     /**
      * Try to get Postal Code
-     *
      * @return null or postalCode
      */
     public String getPostalCode(Context context) {
@@ -301,7 +304,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Try to get CountryName
-     *
      * @return null or postalCode
      */
     public String getCountryName(Context context) {

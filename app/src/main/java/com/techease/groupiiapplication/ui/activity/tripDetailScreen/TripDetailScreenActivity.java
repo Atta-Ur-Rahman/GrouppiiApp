@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -110,6 +111,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     TextView tvDescription;
     @BindView(R.id.tvLocation)
     TextView tvLocation;
+    @BindView(R.id.tvGroupView)
+    TextView tvGroupView;
     @BindView(R.id.ivBack)
     ImageView ivBack;
     @BindView(R.id.ivMenu)
@@ -299,7 +302,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             }
         });
 
-
         TextView tvParticipants = mBottomSheetDialog.findViewById(R.id.tvManageParticipants);
         tvParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,13 +319,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             }
         });
 
-
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvLocation, R.id.tvMore, R.id.ivMore, R.id.cvMenu, R.id.ivChat, R.id.llDayPlan, R.id.llReservs, R.id.llPayment, R.id.llPhoto})
+    @OnClick({R.id.ivBack, R.id.ivMenu, R.id.tvLocation, R.id.tvGroupView, R.id.tvMore, R.id.ivMore, R.id.cvMenu, R.id.ivChat, R.id.llDayPlan, R.id.llReservs, R.id.llPayment, R.id.llPhoto})
 
     @Override
     public void onClick(View view) {
@@ -350,6 +351,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 break;
             case R.id.tvLocation:
+            case R.id.tvGroupView:
                 startActivity(new Intent(TripDetailScreenActivity.this, MapViewActivity.class));
                 break;
             case R.id.ivMore:

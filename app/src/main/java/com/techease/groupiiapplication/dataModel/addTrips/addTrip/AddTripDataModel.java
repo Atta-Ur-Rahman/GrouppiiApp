@@ -10,7 +10,7 @@ public class AddTripDataModel {
     @SerializedName("phone")
     private String mPhone;
     @SerializedName("picture")
-    private Object mPicture;
+    private String mPicture;
     @SerializedName("shared_cost")
     private Long mSharedCost;
     @SerializedName("tripid")
@@ -41,11 +41,11 @@ public class AddTripDataModel {
         mPhone = phone;
     }
 
-    public Object getPicture() {
+    public String getPicture() {
         return mPicture;
     }
 
-    public void setPicture(Object picture) {
+    public void setPicture(String  picture) {
         mPicture = picture;
     }
 

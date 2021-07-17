@@ -84,8 +84,6 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
                 TripFragment.userList = data.getUsers();
 
-                Toast.makeText(context, ""+data.getTripid(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("image", data.getCoverimage());

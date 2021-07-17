@@ -62,8 +62,6 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         Glide.with(context).load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
         holder.tvTitle.setText(data.getTitle());
         holder.tvHotelPrice.setText(DateUtills.getPhotoGalleryDateFormate(data.getDate() + "" + data.getTime()));
-
-
         holder.ivShareGalleryPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +72,6 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(context, ImagePreviewActivity.class);
                 intent.putExtra("file", data.getFile());
                 context.startActivity(intent);
@@ -111,36 +108,12 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         Picasso.get().load(url).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
                 String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "palette", "share palette");
                 Uri bitmapUri = Uri.parse(bitmapPath);
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("image/png");
                 intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
                 context.startActivity(Intent.createChooser(intent, "Share"));
-
-                /*
-                try {
-                  File mydir = new File(Environment.getExternalStorageDirectory() + "/Groupii");
-                    if (!mydir.exists()) {
-                        mydir.mkdirs();
-                    }
-
-                    fileUri = mydir.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
-                    FileOutputStream outputStream = new FileOutputStream(fileUri);
-
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), BitmapFactory.decodeFile(fileUri), null, null));
-                // use intent to share image
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("image/*");
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                context.startActivity(Intent.createChooser(share, "Share Image"));*/
             }
 
             @Override

@@ -119,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void checkImagePermission() {
-        Dexter.withActivity(this).withPermissions(
+        Dexter.withContext(this).withPermissions(
                 Manifest.permission.INTERNET,
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
