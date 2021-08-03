@@ -119,7 +119,7 @@ public class FileUtils {
         }
 
         // Before Froyo we need to construct the external cache dir ourselves
-        final String cacheDir = "/Android/data/" + context.getPackageName() + "/cache/";
+        final String cacheDir = "/Android/media/" + context.getPackageName() + "/cache/";
         return new File(Environment.getExternalStorageDirectory().getPath() + cacheDir);
     }
 

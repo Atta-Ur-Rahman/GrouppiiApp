@@ -23,6 +23,7 @@ import com.techease.groupiiapplication.utils.DateUtills;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,6 +90,24 @@ public class AllTripDayFragment extends Fragment {
         String day = DateUtills.getCurrentDate("dd");
 
 
+        int mYear = 0, mMonth = 0, mDay = 0;
+
+        String date = AppRepository.mTripStartDate(getActivity());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dt = df.parse(date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
 //        Log.d("zma date", year + " " + month + " " + day);
 //
 //
@@ -103,7 +122,7 @@ public class AllTripDayFragment extends Fragment {
 //        String day = tokens.nextToken();
 //        Log.d("zma date", year + " " + month + " " + day);
 
-        datePickerTimeline.setInitialDate(Integer.parseInt(year), Integer.parseInt(String.valueOf(Integer.parseInt(month)-1)), Integer.parseInt(day)-1);
+        datePickerTimeline.setInitialDate(mYear, mMonth, mDay);
         // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override

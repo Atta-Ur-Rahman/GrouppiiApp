@@ -258,8 +258,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tripID = AppRepository.mTripId(this);
 
 
-        Log.d("zma user id", "" + userID);
-        Log.d("zma trip id", "" + tripID);
+//        Log.d("zma user id", "" + userID);
+//        Log.d("zma trip id", "" + tripID);
 
 
         Glide.with(this).load(strPhoto).into(ivTripImage);
@@ -269,7 +269,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvLocation.setText(bundle.getString("location"));
 
         stringArrayList = bundle.getStringArrayList("users");
-        Log.d("zma array", String.valueOf(stringArrayList));
+//        Log.d("zma array", String.valueOf(stringArrayList));
         userTripCircleImagesAdapter = new UserTripCircleImagesAdapter(TripDetailScreenActivity.this, TripFragment.userList);
         rvImages.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, LinearLayoutManager.HORIZONTAL, false));
         rvImages.addItemDecoration(new GeneralUtills.OverlapDecoration());
@@ -697,7 +697,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         ivAmericanCard.setOnClickListener(this);
 
 
-        Log.d("zma usr", "" + TripFragment.userList);
+//        Log.d("zma usr", "" + TripFragment.userList);
 
 
         ConnectPaymentClick.addClickListener(new ConnectionBooleanClickChangedListener() {
@@ -1112,7 +1112,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 if (response.isSuccessful()) {
 
                     dialog.dismiss();
-                    Log.d("zma", String.valueOf(response.message()));
+//                    Log.d("zma", String.valueOf(response.message()));
 
                     AllTripDayFragment.ApiCallAllTirp(AppRepository.mTripId(TripDetailScreenActivity.this));
 
@@ -1146,7 +1146,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallForAddPayment() {
 
-        Log.d("zma date", strPaymentDate);
+//        Log.d("zma date", strPaymentDate);
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripId(this), AppRepository.mUserID(this),
                 strPaymentAmount, strActivityType, strTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, AppRepository.mUserID(this), strPaymentMethod);
@@ -1154,7 +1154,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
 
-                Log.d("zma addpayment", String.valueOf(response));
+//                Log.d("zma addpayment", String.valueOf(response));
                 if (response.isSuccessful()) {
                     dialog.dismiss();
 
@@ -1173,7 +1173,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
             @Override
             public void onFailure(Call<AddPaymentResponse> call, Throwable t) {
-                Log.d("zma addpayment error", String.valueOf(t.getMessage()));
+//                Log.d("zma addpayment error", String.valueOf(t.getMessage()));
 
                 Toast.makeText(TripDetailScreenActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -1234,7 +1234,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<AddPhotoToGalleryResponse> call, Response<AddPhotoToGalleryResponse> response) {
 
-                Log.d("zma response", String.valueOf(response));
+//                Log.d("zma response", String.valueOf(response));
                 if (response.isSuccessful()) {
 
                     addPhotoDialog.dismiss();

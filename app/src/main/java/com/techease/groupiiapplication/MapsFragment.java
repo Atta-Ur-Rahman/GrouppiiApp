@@ -76,8 +76,9 @@ public class MapsFragment extends Fragment {
     ViewGroup infoWindow;
     MarkerOptions markerOptions;
     int globleCount = 0;
-
     GoogleMap googleMap;
+
+    ArrayList<Integer> integerArrayList = new ArrayList<>();
 
 
     boolean firstTimeRunMap = false;
@@ -91,9 +92,6 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             markerOptions = new MarkerOptions();
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Groupii"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             ApiCallGetUserTrip(googleMap);
 
         }
@@ -123,113 +121,78 @@ public class MapsFragment extends Fragment {
         userParticipaintsList.clear();
         this.googleMap = googleMap;
 
+
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(getActivity()));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     userParticipaintsList.addAll(response.body().getData());
 
+                    for (int i = 0; i < userParticipaintsList.size(); i++) {
+                        new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
+                    }
 
-                    new ImportImages(getActivity()).execute("");
+                    Log.d("zmaimge", "map" + userParticipaintsList.get(0));
 
-/*
-
-                    try {
-                        Log.d("zmaimge", "map" + userParticipaintsList.size());
+               /*     try {
+//                        Log.d("zmaimge", "map" + userParticipaintsList.size());
                         do {
                             Log.d("zmaimge", "load");
+//
+//                            Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
+//                                @Override
+//                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+////                                    Log.d("zmaimge", "loadBitmap");
+////                                    if (!TextUtils.isEmpty(userParticipaintsList.get(globleCount).getLongitude())) {
+//                                    Log.d("zmaimge", "" + globleCount+  bitmap);
+//
+//                                    globleCount++;
 
-                            Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
-                                @Override
-                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                    Log.d("zmaimge", "loadBitmap");
+                            try {
+//                                        Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
+//                                                Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
+//                                                icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), bitmap))));
+//                                        marker.setTitle(userParticipaintsList.get(globleCount).getName());
+//                                        markers.add(marker);
 
-                                    try {
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-                                        if (!TextUtils.isEmpty(userParticipaintsList.get(globleCount).getLongitude())) {
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//
+//                                }
+//                            });
 
-                                            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
-                                                    Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
-                                                    icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), userParticipaintsList.get(globleCount).getPicture(), bitmap))));
-//                                snippet(userParticipaintsList.get(i).getName()));
-                                            marker.setTitle(userParticipaintsList.get(globleCount).getName());
-                                            markers.add(marker);
-
-
-                                            //                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
-
-
-                                        }
-                                        globleCount++;
-
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-
-                                }
-
-                                @Override
-                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                }
-
-                                @Override
-                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                }
-                            });
 
                         } while (globleCount < userParticipaintsList.size());
 
-                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                        for (Marker marker : markers) {
-                            builder.include(marker.getPosition());
-                        }
-                        LatLngBounds bounds = builder.build();
-
-                        int padding = 0; // offset from edges of the map in pixels
-                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                        googleMap.animateCamera(cu);
-*/
-
-
-
-
-
-
-
-
-
-/*
-                        for (int i = 0; i < userParticipaintsList.size(); i++) {
-                            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(i).getLatitude()),
-                                    Double.parseDouble(userParticipaintsList.get(i).getLongitude()))).
-                                    icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), userParticipaintsList.get(i).getPicture()))));
-//                                snippet(userParticipaintsList.get(i).getName()));
-                            marker.setTitle(userParticipaintsList.get(i).getName());
-                            marker.showInfoWindow();
-                            markers.add(marker);
-                            markers.add(marker);
-//                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
-                        }
-                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                        for (Marker marker : markers) {
-                            builder.include(marker.getPosition());
-                        }
-                        LatLngBounds bounds = builder.build();
-
-                        int padding = 0; // offset from edges of the map in pixels
-                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                        googleMap.animateCamera(cu);*/
-
+//                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//                        for (Marker marker : markers) {
+//                            builder.include(marker.getPosition());
+//                        }
+//                        LatLngBounds bounds = builder.build();
 //
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
+//                        int padding = 0; // offset from edges of the map in pixels
+//                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+//                        googleMap.animateCamera(cu);
 
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+*/
                 }
             }
 
@@ -242,20 +205,11 @@ public class MapsFragment extends Fragment {
 
     }
 
-    public static Bitmap createCustomMarker(Context context, String imag_url, Bitmap image) {
+    public static Bitmap createCustomMarker(Context context, Bitmap image) {
 
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
         CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
-//        markerImage.setImageResource(R.drawable.user);
-
-
-//        Glide.with(context).load(R.drawable.emoji_26d1).placeholder(R.drawable.user).into(markerImage);
-//        Log.d("zmaimge", imag_url);
-
         markerImage.setImageBitmap(image);
-//        TextView txt_name = (TextView)marker.findViewById(R.id.name);
-//        txt_name.setText(_name);
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         marker.setLayoutParams(new ViewGroup.LayoutParams(80, 80));
@@ -272,11 +226,88 @@ public class MapsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        globleCount = 0;
 
     }
 
+}
 
+
+class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
+    //    ImageView imageView;
+    Bitmap bitmap;
+    ArrayList<AddTripDataModel> userParticipaintsList;
+    Context context;
+    GoogleMap googleMap;
+    int anIntPosition = 0;
+    List<Marker> markers;
+    MarkerOptions markerOptions;
+    Dialog dialog;
+
+    public GetImageFromUrl(Dialog dialog, Context context, ArrayList<AddTripDataModel> addTripDataModel, GoogleMap googleMap, List<Marker> markers, MarkerOptions markerOptions, int anIntPosition) {
+        this.dialog = dialog;
+        this.context = context;
+        this.userParticipaintsList = addTripDataModel;
+        this.googleMap = googleMap;
+        this.markers = markers;
+        this.markerOptions = markerOptions;
+        this.anIntPosition = anIntPosition;
+
+
+    }
+
+    @Override
+    protected Bitmap doInBackground(String... url) {
+
+
+
+        String stringUrl = url[0];
+        bitmap = null;
+        InputStream inputStream;
+        try {
+            inputStream = new java.net.URL(stringUrl).openStream();
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        super.onPostExecute(bitmap);
+//        imageView.setImageBitmap(bitmap);
+        Log.d("zma", "bitmap" + bitmap);
+
+        dialog.dismiss();
+
+        try {
+            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(anIntPosition).getLatitude()),
+                    Double.parseDouble(userParticipaintsList.get(anIntPosition).getLongitude()))).
+                    icon(BitmapDescriptorFactory.fromBitmap(MapsFragment.createCustomMarker(context, bitmap))));
+            marker.setTitle(userParticipaintsList.get(anIntPosition).getName());
+            markers.add(marker);
+
+
+            Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 0; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        googleMap.animateCamera(cu);
+
+
+    }
+}
+
+/*
     @SuppressLint("StaticFieldLeak")
     private class ImportImages extends AsyncTask<String, String, String> {
         private final Context context;
@@ -295,70 +326,44 @@ public class MapsFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(String... args) {
-            // TODO Auto-generated method stub
 
 
-            try {
-
-                do {
-
-                    Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            Log.d("zmaimge", "loadBitmap");
-
-
-                            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
-                                    Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
-                                    icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), userParticipaintsList.get(globleCount).getPicture(), bitmap))));
+            do {
+                Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Log.d("zmaimge", "loadBitmap");
+                        Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
+                                Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
+                                icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), bitmap))));
 //                                snippet(userParticipaintsList.get(i).getName()));
-                            marker.setTitle(userParticipaintsList.get(globleCount).getName());
-                            marker.showInfoWindow();
-                            markers.add(marker);
+                        marker.setTitle(userParticipaintsList.get(globleCount).getName());
+                        marker.showInfoWindow();
+                        markers.add(marker);
+                        globleCount++;
+                    }
 
-                            globleCount++;
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
+                    }
 
-                        }
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
 
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
-                    });
-
-                } while (globleCount < userParticipaintsList.size());
+            } while (globleCount < userParticipaintsList.size());
 
 
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for (Marker marker : markers) {
-                    builder.include(marker.getPosition());
-                }
-                LatLngBounds bounds = builder.build();
-
-                int padding = 0; // offset from edges of the map in pixels
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                googleMap.animateCamera(cu);
-
-//                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
             }
-
-
-//
-//            int j = 0;
-//            do {
-//                j++;
-//
-//
-//            } while (j < userParticipaintsList.size());
+            LatLngBounds bounds = builder.build();
+            int padding = 0; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            googleMap.animateCamera(cu);
 
 
             return null;
@@ -368,9 +373,8 @@ public class MapsFragment extends Fragment {
         protected void onPostExecute(String args) {
 
 
-
         }
-    }
+    }*/
 
 
-}
+

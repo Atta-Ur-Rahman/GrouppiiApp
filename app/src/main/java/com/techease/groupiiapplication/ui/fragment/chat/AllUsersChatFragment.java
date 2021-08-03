@@ -140,7 +140,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         try {
             jsonObjectGetAllUsers.put("userid", baseUserID);
             mSocket.emit("getusers", jsonObjectGetAllUsers);
-            Log.d("zmajsaonarray", "zma call");
+//            Log.d("zmajsaonarray", "zma call");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,14 +182,14 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("zmajsaonarray", "event call");
+//                        Log.d("zmajsaonarray", "event call");
 
 
                         try {
                             String data = args[0].toString();
                             JSONArray jsonArray = new JSONArray(data);
 
-                            Log.d("zmajsonarray", "Chat" + jsonArray);
+//                            Log.d("zmajsonarray", "Chat" + jsonArray);
 
 
                             for (int i = 0; i < jsonArray.length(); i++) {

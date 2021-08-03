@@ -207,4 +207,5 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
 }

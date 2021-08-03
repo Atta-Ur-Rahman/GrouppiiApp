@@ -97,17 +97,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
+
+        fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
+        fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();
+        fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
+        fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
+
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
-                fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();
-                fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
-                fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
             }
         });
-
-
 
 
     }
