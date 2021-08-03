@@ -4,6 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/home_screen_background.xml" value="0.1625" />
+        <entry key="app/src/main/res/drawable/line.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/line_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/thumb.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/thumb_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/layout/activity_chats.xml" value="0.1300925925925926" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/layout/custom_add_photo_layout.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.14814814814814814" />
