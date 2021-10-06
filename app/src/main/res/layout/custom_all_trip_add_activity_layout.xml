@@ -109,7 +109,30 @@
             android:drawablePadding="@dimen/widget_margin"/>
 
 
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvActivityDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 june"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/widget_margin"
+        app:layout_constraintEnd_toStartOf="@id/ivDayPlaneEdit"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivDayPlaneEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/widget_margin"
+        android:src="@drawable/dots"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

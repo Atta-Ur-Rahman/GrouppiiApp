@@ -1,10 +1,15 @@
 package com.techease.groupiiapplication.ui.fragment.chat;
 
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.AllUserChatAdapter;
@@ -37,31 +44,39 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
 
 public class AllUsersChatFragment extends Fragment implements View.OnClickListener {
 
+    private static final int STATE_DRAG_END_SIDE = 1;
     @BindView(R.id.etChat)
     EditText etChat;
     @BindView(R.id.searchViewChat)
     SearchView searchView;
     @BindView(R.id.rvMessagelist)
     RecyclerView rvMessageList;
-
     @BindView(R.id.ivEdit)
     ImageView ivEdit;
-
+    private IOverScrollDecor mVertOverScrollEffect;
     private List<ChatAllUserDataModel> chatAllUserDataModels = new ArrayList<>();
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String strUserID = "",strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
+    String strUserID = "", strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
     public static boolean aBooleanRefreshSocket = false;
     int baseUserID;
+    private int STATE_BOUNCE_BACK;
 
-
+    @BindView(R.id.tvNoUserFound)
+    TextView tvNoUserFound;
 
 
     @Override
@@ -69,7 +84,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_chat_all_users, container, false);
         ButterKnife.bind(this, view);
 
-        baseUserID=AppRepository.mUserID(getActivity());
+        baseUserID = AppRepository.mUserID(getActivity());
 
         init();
         socketConnectivity();
@@ -80,11 +95,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
             @Override
             public void OnMyBooleanChanged() {
 
-                    getAllUserFun();
-                    if (aBooleanRefreshSocket) {
-                        aBooleanRefreshSocket = false;
-                        scrollTotop();
-                    }
+                getAllUserFun();
+                if (aBooleanRefreshSocket) {
+                    aBooleanRefreshSocket = false;
+                    scrollTotop();
+                }
             }
         });
 
@@ -122,6 +137,8 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     }
 
     private void init() {
+
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         allUserChatAdapter = new AllUserChatAdapter(getActivity(), chatAllUserDataModels);
         rvMessageList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -131,6 +148,66 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search here...");
 
+/*
+        // Set-up of recycler-view's native item swiping.
+        ItemTouchHelper.Callback itemTouchHelperCallback = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(0, ItemTouchHelper.RIGHT);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Item swiping is supported!")
+                        .setMessage("Recycler-view's native item swiping and the over-scrolling effect can co-exist! But, to get them to work WELL -- please apply the effect using the dedicated helper method!")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                allUserChatAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+        };*/
+
+        // Apply over-scroll in 'advanced form' - i.e. create an instance manually.
+        mVertOverScrollEffect = new VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter(rvMessageList));
+
+        // Over-scroll listeners are applied here via the mVertOverScrollEffect explicitly.
+        mVertOverScrollEffect.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
+            @Override
+            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+//                mVertScrollMeasure.setText(String.valueOf((int) offset));
+            }
+        });
+        mVertOverScrollEffect.setOverScrollStateListener(new IOverScrollStateListener() {
+            private final int mDragColorTop = getResources().getColor(android.R.color.holo_red_light);
+            private final int mBounceBackColorTop = getResources().getColor(android.R.color.holo_orange_dark);
+            private final int mDragColorBottom = getResources().getColor(android.R.color.holo_purple);
+            private final int mBounceBackColorBottom = getResources().getColor(android.R.color.holo_blue_light);
+//            private final int mClearColor = mHorizScrollMeasure.getCurrentTextColor();
+
+            @Override
+            public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
+                if (newState == STATE_DRAG_START_SIDE) {
+//                    mVertScrollMeasure.setTextColor(mDragColorTop);
+                } else if (newState == STATE_DRAG_END_SIDE) {
+//                    mVertScrollMeasure.setTextColor(mDragColorBottom);
+                } else if (newState == STATE_BOUNCE_BACK) {
+//                    mVertScrollMeasure.setTextColor(oldState == STATE_DRAG_START_SIDE ? mBounceBackColorTop : mBounceBackColorBottom);
+                } else {
+//                    mVertScrollMeasure.setTextColor(mClearColor);
+                }
+            }
+
+        });
     }
 
 
@@ -183,6 +260,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void run() {
 //                        Log.d("zmajsaonarray", "event call");
+                        allUserChatAdapter.clearApplications();
 
 
                         try {
@@ -248,6 +326,15 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture));
         allUserChatAdapter.notifyItemInserted(chatAllUserDataModels.size() - 1);
         allUserChatAdapter.notifyDataSetChanged();
+
+
+        if (chatAllUserDataModels.size() == 0) {
+            tvNoUserFound.setVisibility(View.VISIBLE);
+        } else {
+            tvNoUserFound.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override

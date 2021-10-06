@@ -68,14 +68,15 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Past data = pastListFiltered.get(position);
 
         if (data.getCoverimage() != null) {
             Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         }
         holder.tvTitle.setText(data.getTitle());
-        holder.tvStartEndDate.setText(data.getFromdate());
+        holder.tvStartEndDate.setText(DateUtills.getDateFormate(data.getFromdate()));
+
         holder.tvLocation.setText(data.getLocation());
         holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
@@ -117,7 +118,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             @Override
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
+                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+
 
                 if (data.getTitle().equals("unpublished")) {
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));
@@ -143,6 +146,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                             bundle.putString("date", data.getFromdate());
                             bundle.putString("location", data.getLocation());
                             bundle.putStringArrayList("users", stringArrayList);
+                            bundle.putBoolean("is_createdby", data.isIsCreatedby());
                             intent.putExtras(bundle);
                             context.startActivity(intent);
 

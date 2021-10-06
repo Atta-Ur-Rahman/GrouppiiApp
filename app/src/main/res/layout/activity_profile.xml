@@ -32,22 +32,10 @@
             android:gravity="center"
             android:text="My Profile"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/app_screen_title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/ivEdit"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_marginLeft="@dimen/widget_margin"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            android:src="@mipmap/edit_icon"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -79,14 +67,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:visibility="gone" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="@dimen/edit_icon_size"
+            android:layout_height="@dimen/edit_icon_size"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/edit"
+            android:layout_marginLeft="@dimen/widget_margin"
+            app:layout_constraintStart_toEndOf="@id/tvProfileName"
+            app:layout_constraintTop_toBottomOf="@id/cvProfilePicture" />
+
         <TextView
             android:id="@+id/tvProfileName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/widget_margin"
@@ -143,6 +142,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rlPayments"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:layout_marginTop="@dimen/widget_margin"
@@ -192,6 +192,7 @@
                 android:background="@android:color/darker_gray" />
 
             <RelativeLayout
+                android:id="@+id/rlCurrencyPicker"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:background="?attr/selectableItemBackground"
@@ -295,6 +296,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tvAirbnbEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -332,6 +334,12 @@
                     android:layout_centerVertical="true"
                     android:src="@mipmap/tripadvisor" />
 
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/vrbo_logo"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -339,7 +347,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
-                    android:text="Tripadvisor"
+                    android:text="Vrbo"
                     android:textColor="@color/black"
                     android:textSize="@dimen/middle_text_size"
                     android:textStyle="bold" />
@@ -356,7 +364,8 @@
                     android:layout_marginEnd="@dimen/widget_margin_left_right"
                     android:drawableLeft="@drawable/edit"
                     android:drawablePadding="@dimen/widget_margin"
-                    android:text="Edit" />
+                    android:text="Edit"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -396,6 +405,7 @@
 
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tvCashAppAddAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -448,6 +458,7 @@
 
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tvTransferViceAddAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

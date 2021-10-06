@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.profile.AddCreditCardFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screenPadding"
+        android:layout_marginEnd="@dimen/screenPadding">
+
+        <ImageView
+            android:id="@+id/ivBackArrow"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:background="@drawable/round_bg"
+            android:src="@mipmap/backicon" />
+
+
+        <TextView
+            android:id="@+id/verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivBackArrow"
+            android:layout_marginTop="@dimen/tenDP"
+            android:text="Add Card"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/app_screen_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAddCredit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/verify"
+            android:layout_marginTop="@dimen/tenDP"
+            android:text="Enter your credit card details."
+            android:textAllCaps="false" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/tvAddCredit"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Card Holder Name"
+            android:padding="@dimen/edittext_padding"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCardHolderName"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/tenDP"
+                android:layout_weight="1"
+                android:background="@null"
+                android:backgroundTint="@android:color/transparent"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="40"
+                android:paddingBottom="20dp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/tilName"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Card Number"
+            android:padding="@dimen/edittext_padding"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/tilName"
+                android:layout_marginTop="@dimen/tenDP"
+                android:layout_weight="1"
+                android:background="@null"
+                android:backgroundTint="@android:color/transparent"
+                android:digits="1234567890 "
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="16"
+                android:paddingBottom="20dp"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/llEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tilCardNumber"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilExpiry"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/tenDP"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edittext"
+                android:hint="Expiry MM/YY"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etExpiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="@dimen/tenDP"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:backgroundTint="@android:color/transparent"
+                    android:imeOptions="actionNext"
+                    android:inputType="date"
+                    android:maxLength="5"
+                    android:paddingBottom="20dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCVV"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/tenDP"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edittext"
+                android:hint="CVV"
+                android:padding="@dimen/edittext_padding"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCVV"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="@dimen/tenDP"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:backgroundTint="@android:color/transparent"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingBottom="20dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_below="@id/llEditText"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/tenDP"
+            android:layout_marginTop="@dimen/tenDP"
+            android:layout_marginEnd="@dimen/tenDP"
+            android:layout_marginBottom="@dimen/tenDP"
+            android:text="Continue"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

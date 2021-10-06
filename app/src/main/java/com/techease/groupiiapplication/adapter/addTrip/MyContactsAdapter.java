@@ -84,7 +84,7 @@ public class MyContactsAdapter extends RecyclerView.Adapter<MyContactsAdapter.My
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getNameContact().toLowerCase().contains(charString.toLowerCase()) || row.getNumContact().contains(charSequence)) {
+                        if (row.getNameContact().toLowerCase().startsWith(charString.toLowerCase()) || row.getNumContact().contains(charSequence)) {
                             filteredList.add(row);
                         }
                     }

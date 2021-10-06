@@ -7,10 +7,68 @@
     tools:context=".ui.activity.WebViewActivity">
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/round_bg"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginLeft="@dimen/widget_margin" />
+
+
+        <TextView
+            android:id="@+id/tvNewTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_view_edittext_height"
+            android:layout_marginTop="@dimen/widget_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textColor="@android:color/black"
+            android:text="New Trip" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvNewTrip"
+            android:layout_marginBottom="21dp"
+            android:progress="75" />
+
+        <TextView
+            android:id="@+id/tv_short_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_view_edittext_height"
+            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:gravity="center"
+            android:text="Steps 3/4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/clHeader">
 
     </WebView>
 
@@ -28,6 +86,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="5sp"
+        android:layout_below="@id/clHeader"
         android:max="100"
         android:progressDrawable="@drawable/greenprogress" />
 </RelativeLayout>

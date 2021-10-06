@@ -58,7 +58,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cvTripTitle"
             android:layout_width="match_parent"
@@ -159,13 +158,16 @@
                 <AutoCompleteTextView
                     android:id="@+id/autocompleteCity"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
                     android:background="@android:color/transparent"
                     android:completionThreshold="1"
                     android:imeOptions="actionDone"
                     android:paddingStart="@dimen/widget_margin"
                     android:selectAllOnFocus="true"
                     tools:ignore="RtlSymmetry" />
+
                 <!--                <EditText-->
                 <!--                    android:visibility="gone"-->
                 <!--                    android:id="@+id/etLocation"-->
@@ -180,6 +182,7 @@
         </androidx.cardview.widget.CardView>
 
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cvStartDate"
             android:layout_width="0dp"
@@ -192,7 +195,7 @@
             app:layout_constraintHorizontal_weight="5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/cvEndDate"
-            app:layout_constraintTop_toBottomOf="@id/cvTripLocation">
+            app:layout_constraintTop_toBottomOf="@id/places_recycler_view">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -244,7 +247,7 @@
             app:layout_constraintHorizontal_weight="5"
             app:layout_constraintLeft_toRightOf="@+id/cvStartDate"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvTripLocation">
+            app:layout_constraintTop_toBottomOf="@id/places_recycler_view">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -399,6 +402,21 @@
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llCoverImage" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/places_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFF"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@id/cvTripLocation" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

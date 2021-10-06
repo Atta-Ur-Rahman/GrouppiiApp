@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="40dp"
+    app:behavior_peekHeight="10dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
@@ -88,7 +88,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Days Plan"
+                            android:text="@string/days_plan"
                             android:textColor="@color/purple_500"
                             android:textSize="@dimen/text_size14sp" />
                     </LinearLayout>
@@ -114,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:text="Reservs"
+                            android:text="@string/rsvp"
                             android:textColor="@color/gry"
                             android:textSize="@dimen/text_size14sp" />
                     </LinearLayout>
@@ -140,7 +140,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:text="Payments"
+                            android:text="@string/payments"
                             android:textColor="@color/gry"
                             android:textSize="@dimen/text_size14sp" />
                     </LinearLayout>
@@ -166,7 +166,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:text="Photos"
+                            android:text="@string/photos"
                             android:textColor="@color/gry"
                             android:textSize="@dimen/text_size14sp" />
                     </LinearLayout>
@@ -236,6 +236,10 @@
             <include
                 android:id="@+id/bottom_sheet_partially_paid_trip"
                 layout="@layout/custom_bottom_sheet_partially_paid_trip_layout" />
+
+            <include
+                android:id="@+id/bottom_sheet_participants_costs"
+                layout="@layout/custom_bottom_sheet_participant_costs_layout" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

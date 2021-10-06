@@ -10,7 +10,6 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,34 +31,45 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="Trip Participants"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon"
+            android:layout_marginTop="@dimen/widget_margin"
             android:gravity="center"
-            android:layout_marginTop="@dimen/widget_margin"/>
-
+            android:text="Trip Participants"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon" />
 
 
         <ImageView
             android:id="@+id/ivCloseParticipants"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginEnd="@dimen/widget_margin_left_right"
-            android:src="@drawable/ic_baseline_close_24" />
+            android:src="@drawable/ic_baseline_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewMinusIcon" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTripParticipants"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/tendp"
             android:layout_marginStart="@dimen/widget_margin_left_right"
+            android:layout_marginTop="@dimen/tendp"
             android:layout_marginEnd="@dimen/widget_margin_left_right"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+
+        <TextView
+            android:id="@+id/tvNoActiveTripFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:paddingLeft="20sp"
+            android:text="No participant found"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
 

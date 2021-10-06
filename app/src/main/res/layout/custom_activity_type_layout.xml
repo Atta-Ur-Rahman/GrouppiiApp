@@ -26,7 +26,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
-                android:src="@mipmap/taxi_wheel" />
+                android:src="@drawable/taxi_wheel" />
 
             <TextView
                 android:id="@+id/tvTitleName"
@@ -56,7 +56,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
-                android:src="@mipmap/transfer" />
+                android:src="@drawable/transfer" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,14 +84,14 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
-                android:src="@mipmap/reserv_selected" />
+                android:src="@drawable/reserv_selected" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/widget_margin"
                 android:gravity="center_vertical"
-                android:text="Reserv"
+                android:text="Rsvp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize16sp"
                 android:textStyle="bold" />
@@ -110,7 +110,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
-                android:src="@mipmap/flight" />
+                android:src="@drawable/flight" />
 
             <TextView
                 android:layout_width="wrap_content"

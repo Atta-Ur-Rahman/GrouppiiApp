@@ -24,7 +24,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:paddingLeft="20sp"
-        android:text="No unpublish trip found"
+        android:text="No suggestions trip found"
         android:layout_marginTop="@dimen/fifty_dp"
         android:textSize="@dimen/main_heading_text_size" />
 

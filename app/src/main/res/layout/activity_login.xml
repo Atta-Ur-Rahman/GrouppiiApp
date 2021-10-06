@@ -39,8 +39,8 @@
             android:id="@+id/tilEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext"
             android:hint="Email"
+            android:background="@drawable/rounded_edittext"
             android:padding="@dimen/edittext_padding"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp">
@@ -122,7 +122,7 @@
     <Button
         android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginRight="20dp"

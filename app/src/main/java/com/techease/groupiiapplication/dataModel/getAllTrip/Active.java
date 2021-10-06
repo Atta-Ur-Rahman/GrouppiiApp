@@ -38,6 +38,10 @@ public class Active {
     @SerializedName("users")
     private List<User> mUsers;
 
+
+    @SerializedName("is_createdby")
+    private boolean isCreatedby;
+
     public String getCoverimage() {
         return mCoverimage;
     }
@@ -148,6 +152,14 @@ public class Active {
 
     public Long getTripid() {
         return mTripid;
+    }
+
+    public void setIsCreatedby(boolean isCreatedby) {
+        this.isCreatedby = isCreatedby;
+    }
+
+    public boolean isIsCreatedby() {
+        return isCreatedby;
     }
 
 

@@ -97,7 +97,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.etPhone)
     EditText etPhone;
 
-
     @BindView(R.id.tvEditParticipant)
     TextView tvInviteFriend;
 
@@ -155,7 +154,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         initAdapter();
         initContactAdapter();
         ApiCallGetTripID();
-        ContactGetAndCheckPermission();
         ProcessBarAnimation();
 
 
@@ -297,6 +295,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 }
                 break;
             case R.id.ivAddUserTrip:
+                ContactGetAndCheckPermission();
+
                 clAddInvite.setVisibility(View.GONE);
                 clInviteFriend.setVisibility(View.VISIBLE);
                 ContactLayoutGone();
@@ -403,7 +403,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         });
 
     }
-
 
     private void ApiCallForAddInviteFriendWithPhone() {
         dialog.show();
@@ -630,8 +629,13 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
         while (cursor.moveToNext()) {
 
+
+
+
             name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+
 
             ContactDataModel number = new ContactDataModel();
             number.setNameContact(name);

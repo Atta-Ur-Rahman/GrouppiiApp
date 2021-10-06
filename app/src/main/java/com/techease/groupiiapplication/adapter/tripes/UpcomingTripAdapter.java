@@ -68,7 +68,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
         Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
-        holder.tvStartEndDate.setText(data.getFromdate());
+        holder.tvStartEndDate.setText(DateUtills.getDateFormate(data.getFromdate()));
         holder.tvLocation.setText(data.getLocation());
         holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
@@ -89,7 +89,9 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
                 TripFragment.userList = data.getUsers();
 
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
+                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+
 
                 if (data.getTitle().equals("unpublished")) {
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
@@ -106,6 +108,7 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
                     bundle.putString("description", data.getDescription());
                     bundle.putString("location", data.getLocation());
                     bundle.putStringArrayList("user", (ArrayList<String>) stringArrayList);
+                    bundle.putBoolean("is_createdby", data.isIsCreatedby());
 
                     intent.putExtras(bundle);
                     context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());

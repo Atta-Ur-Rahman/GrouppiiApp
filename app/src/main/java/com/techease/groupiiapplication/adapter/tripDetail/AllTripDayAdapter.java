@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
+import com.techease.groupiiapplication.interfaceClass.AddActivityBackListener;
+import com.techease.groupiiapplication.interfaceClass.EditActivityDayPlanListener;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.util.List;
@@ -25,10 +28,16 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
     private Context context;
     private List<AllTripDayDataModel> allTripDayDataModels;
 
+    EditActivityDayPlanListener editActivityDayPlanListener;
+
 
     public AllTripDayAdapter(Context context, List<AllTripDayDataModel> allTripDayDataModel) {
         this.allTripDayDataModels = allTripDayDataModel;
         this.context = context;
+
+        if (context instanceof AddActivityBackListener)
+            editActivityDayPlanListener = (EditActivityDayPlanListener) context;
+
 
     }
 
@@ -50,6 +59,19 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
         holder.tvDescription.setText(String.valueOf(allTripDayDataModel.getDescription()));
         holder.tvActivityTime.setText(DateUtills.timeFormated(allTripDayDataModel.getTime()));
         holder.tvUserName.setText(allTripDayDataModel.getUsername());
+        holder.tvActivityDate.setText(DateUtills.getDateFormate(allTripDayDataModel.getDate()));
+
+        holder.ivDayPlaneEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppRepository.mPutValue(context).putBoolean("mEditDayPlanActivity", true).commit();
+
+//                String strData=allTripDayDataModel.getDate()+"{"+;
+//                AppRepository.mPutValue(context).putString("mDataDayPlanActivity", strData).commit();
+
+                editActivityDayPlanListener.onEditActivityDayPlan();
+            }
+        });
 
         if (allTripDayDataModel.getType() != null) {
             switch (allTripDayDataModel.getType()) {
@@ -79,8 +101,8 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvDescription, tvActivityTime, tvUserName;
-        ImageView ivAddTripTick, ivType;
+        TextView tvTitle, tvActivityDate, tvDescription, tvActivityTime, tvUserName;
+        ImageView ivAddTripTick, ivDayPlaneEdit, ivType;
 
         MyViewHolder(View view) {
             super(view);
@@ -89,6 +111,8 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
             tvActivityTime = view.findViewById(R.id.tvActivityTime);
             tvUserName = view.findViewById(R.id.tvUserName);
             ivType = view.findViewById(R.id.ivType);
+            tvActivityDate = view.findViewById(R.id.tvActivityDate);
+            ivDayPlaneEdit = view.findViewById(R.id.ivDayPlaneEdit);
 
 
         }

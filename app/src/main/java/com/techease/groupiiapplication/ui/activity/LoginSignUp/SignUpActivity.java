@@ -88,7 +88,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     Dialog alertDialog;
 
-
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
     protected LocationManager locationManager;
     String strLatitude, strLongitude;
@@ -103,7 +102,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         ButterKnife.bind(this);
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
-        getCurrentLocationPermission();
 
 
     }
@@ -114,6 +112,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSignUp:
+                getCurrentLocationPermission();
                 if (isValid()) {
                     alertDialog.show();
                     ApiCallForSignUp();
@@ -237,6 +236,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         }
 
+        try {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                valid = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return valid;
     }
@@ -285,6 +293,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private void getCurrentLocationPermission() {
+        valid = false;
         Dexter.withContext(this).withPermissions(
                 Manifest.permission.ACCESS_FINE_LOCATION
         ).withListener(new MultiplePermissionsListener() {
@@ -298,6 +307,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     strLatitude = String.valueOf(latitude);
                     strLongitude = String.valueOf(longitude);
+
+                    valid = true;
+
 
                 }
 

@@ -60,11 +60,11 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Unpublish data = unpublishListFilter.get(position);
         Glide.with(context).load(data.getCoverimage()).placeholder(R.drawable.image_thumbnail).into(holder.ivImage);
         holder.tvTitle.setText(data.getTitle());
-        holder.tvStartEndDate.setText(data.getFromdate());
+        holder.tvStartEndDate.setText(DateUtills.getDateFormate(data.getFromdate()));
         holder.tvLocation.setText(data.getLocation());
         holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate()))+" days left");
 
@@ -104,16 +104,14 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getId())).commit();
+                AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
 //                    Log.d("zma tripid", String.valueOf(data.getId()));
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
                 } else {
-
                     context.startActivity(new Intent(context, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
-
 
 //                    TripFragment.userList = data.getUsers();
 //                    Intent intent = new Intent(context, TripDetailScreenActivity.class);

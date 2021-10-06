@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.thefinestartist:finestwebview:1.2.7@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ec79b29f394dbf7811170b89830f9a3a/jetified-finestwebview-1.2.7/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ec79b29f394dbf7811170b89830f9a3a/jetified-finestwebview-1.2.7/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ec79b29f394dbf7811170b89830f9a3a/jetified-finestwebview-1.2.7/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60cc38b64d013232bd6c4b88091ba8a5/jetified-finestwebview-1.2.7/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60cc38b64d013232bd6c4b88091ba8a5/jetified-finestwebview-1.2.7/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60cc38b64d013232bd6c4b88091ba8a5/jetified-finestwebview-1.2.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5830f38488d47d840f74bef91d247318/transformed/jetified-finestwebview-1.2.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5830f38488d47d840f74bef91d247318/transformed/jetified-finestwebview-1.2.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5830f38488d47d840f74bef91d247318/transformed/jetified-finestwebview-1.2.7/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.thefinestartist/finestwebview/1.2.7/3905d4c708e10209a48297c66ae86408302d5ec9/finestwebview-1.2.7-javadoc.jar!/" />

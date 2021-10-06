@@ -111,7 +111,7 @@
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginBottom="@dimen/widget_margin_left_right"
@@ -120,7 +120,10 @@
             android:text="Dubai United Arab Emirates"
             android:textColor="@android:color/white"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/tvDaysLeft"
+            android:layout_marginRight="120dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -227,7 +230,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Days Plan"
+                        android:text="@string/days_plan"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size14sp" />
                 </LinearLayout>
@@ -250,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="center"
-                        android:text="Reservs"
+                        android:text="@string/rsvp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size14sp" />
                 </LinearLayout>
@@ -273,7 +276,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="center"
-                        android:text="Payments"
+                        android:text="@string/payments"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size14sp" />
                 </LinearLayout>
@@ -296,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="center"
-                        android:text="Photos"
+                        android:text="@string/photos"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size14sp" />
                 </LinearLayout>

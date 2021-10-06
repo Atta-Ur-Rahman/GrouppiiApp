@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
@@ -17,68 +17,61 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/widget_margin_left_right">
 
-        <View
-            android:id="@+id/ivMinusIcon"
-            android:layout_width="30dp"
-            android:layout_height="5dp"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:background="@drawable/round_line_back"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
-        <RelativeLayout
-            android:id="@+id/rlTop"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty_dp"
-            android:layout_margin="@dimen/widget_margin_left_right"
-            android:orientation="horizontal"
-            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/ivPartiallyBack"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+            <View
+                android:id="@+id/ivMinusIcon"
+                android:layout_width="30dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:background="@drawable/round_line_back"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tvAddActivityTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center_vertical"
-                android:text="Partially Paid Trip"
-                android:textColor="@color/black"
-                android:textSize="@dimen/main_heading_text_size"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:id="@+id/rlTop"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fifty_dp"
+                android:layout_margin="@dimen/widget_margin_left_right"
+                android:orientation="horizontal"
+                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivPartiallyBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
 
 
-            <ImageView
-                android:id="@+id/tvPaymentAdd"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:src="@drawable/dots" />
+                <TextView
+                    android:id="@+id/tvAddActivityTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Partially Paid Trip"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/main_heading_text_size"
+                    android:textStyle="bold" />
 
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/tvPaymentAdd"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/dots" />
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clPay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/widget_margin_left_right"
-            android:layout_marginEnd="@dimen/widget_margin_left_right"
-            app:layout_constraintTop_toBottomOf="@id/rlTop">
+            </RelativeLayout>
 
 
             <me.tankery.lib.circularseekbar.CircularSeekBar
@@ -94,7 +87,7 @@
                 app:cs_pointer_halo_color="@color/circle_color"
                 app:cs_pointer_halo_color_ontouch="@color/circle_color"
                 app:cs_pointer_stroke_width="20dp"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/rlTop" />
 
             <LinearLayout
                 android:id="@+id/llProgessBarText"
@@ -104,7 +97,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/rlTop">
 
 
                 <TextView
@@ -134,6 +127,8 @@
                 android:layout_height="wrap_content"
                 android:text="Partially paid"
                 android:textSize="@dimen/middle_text_size"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/csPayment" />
 
@@ -145,6 +140,8 @@
                 android:text="$00 / $00"
                 android:textColor="@color/purple_500"
                 android:textSize="@dimen/middle_text_size"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/csPayment" />
@@ -162,6 +159,8 @@
                 android:id="@+id/clPayDate"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
                 app:layout_constraintTop_toBottomOf="@id/viewLine">
 
                 <TextView
@@ -214,6 +213,8 @@
                 android:id="@+id/clParticipantsCosts"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
                 app:layout_constraintTop_toBottomOf="@id/clPayDate">
 
                 <TextView
@@ -266,6 +267,8 @@
                 android:textSize="@dimen/textsize16sp"
                 android:layout_marginTop="@dimen/widget_margin"
                 android:textStyle="bold"
+                android:layout_marginStart="@dimen/widget_margin_left_right"
+                android:layout_marginEnd="@dimen/widget_margin_left_right"
                 app:layout_constraintStart_toStartOf="parent"/>
 
 
@@ -288,12 +291,14 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpagerExpenditures"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintTop_toBottomOf="@id/tabsPartiallyPaid" />
+                app:layout_constraintTop_toBottomOf="@id/tabsPartiallyPaid"
+                android:paddingBottom="20dp"/>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

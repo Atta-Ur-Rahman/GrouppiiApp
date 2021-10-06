@@ -45,7 +45,7 @@ public class GroupExpendituresAdapter extends RecyclerView.Adapter<GroupExpendit
 
         GroupExpendituresItem groupExpendituresItem = groupExpendituresItems.get(position);
 
-        holder.tvExpenditureTitle.setText(String.valueOf(groupExpendituresItem.getName()));
+        holder.tvExpenditureTitle.setText("$"+groupExpendituresItem.getAmount()+" - "+groupExpendituresItem.getName());
         holder.tvShortDescription.setText(String.valueOf(groupExpendituresItem.getShortDesc()));
 
 

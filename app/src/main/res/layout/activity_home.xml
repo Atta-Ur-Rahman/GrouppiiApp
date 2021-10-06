@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
@@ -29,7 +28,7 @@
             android:layout_gravity="bottom"
             app:fabCradleMargin="10dp"
             app:fabCradleRoundedCornerRadius="10dp"
-            app:fabCradleVerticalOffset="10dp"/>
+            app:fabCradleVerticalOffset="10dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -38,19 +37,19 @@
             android:scaleType="center"
             android:src="@drawable/ic_baseline_add_24"
             app:fabCustomSize="@dimen/fab_size"
-            app:tint="@color/white"
             app:layout_anchor="@id/bottomAppBar"
-            app:rippleColor="@color/white" />
+            app:rippleColor="@color/white"
+            app:tint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <LinearLayout
@@ -58,10 +57,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingTop="@dimen/padding_top"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="?attr/selectableItemBackground">
+            android:paddingTop="@dimen/padding_top">
 
             <ImageView
                 android:id="@+id/ivTrip"
@@ -83,10 +82,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="@dimen/padding_top"
-            android:background="?attr/selectableItemBackground">
+            android:paddingTop="@dimen/padding_top">
 
             <ImageView
                 android:id="@+id/ivChat"
@@ -114,18 +113,18 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/padding_top"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_top">
 
             <ImageView
                 android:id="@+id/ivActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/watever"/>
+                android:background="@drawable/watever" />
 
             <TextView
                 android:id="@+id/tvActivity"
@@ -140,12 +139,12 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/padding_top"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_top">
 
             <ImageView
                 android:id="@+id/ivSettings"
@@ -162,10 +161,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

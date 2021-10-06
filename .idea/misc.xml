@@ -3,16 +3,69 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/greenprogress.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/home_screen_background.xml" value="0.1625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_drag_indicator_24.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/drawable/line.xml" value="0.14444444444444443" />
         <entry key="app/src/main/res/drawable/line_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/round_line.xml" value="0.31461187214611874" />
+        <entry key="app/src/main/res/drawable/round_line_white.xml" value="0.31461187214611874" />
+        <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.31461187214611874" />
+        <entry key="app/src/main/res/drawable/show_password_selector.xml" value="0.31461187214611874" />
+        <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.3189814814814815" />
         <entry key="app/src/main/res/drawable/thumb.xml" value="0.14444444444444443" />
         <entry key="app/src/main/res/drawable/thumb_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/layout/activity_add_credit_card.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_add_user_trip_particpant.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/activity_chats.xml" value="0.1300925925925926" />
+        <entry key="app/src/main/res/layout/activity_edit_participant.xml" value="0.16944444444444445" />
+        <entry key="app/src/main/res/layout/activity_edit_profile_activity.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.14814814814814814" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.275" />
+        <entry key="app/src/main/res/layout/activity_new_trip_step_four_payment.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_new_trip_step_three.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_new_trip_step_two.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/activity_trip_detail_screen.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/all_user_chat_layout.xml" value="0.2777777777777778" />
+        <entry key="app/src/main/res/layout/custom_activity_type_layout.xml" value="0.3004566210045662" />
         <entry key="app/src/main/res/layout/custom_add_photo_layout.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/layout/custom_add_trip_layout.xml" value="0.2962962962962963" />
+        <entry key="app/src/main/res/layout/custom_all_trip_add_activity_layout.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_add_activity.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_add_payment.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_more_detail.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_partially_paid_trip_layout.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_participant_costs_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_bottom_sheet_trip_participants.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_circle_layout.xml" value="0.17685185185185184" />
+        <entry key="app/src/main/res/layout/custom_gallery_photo_grid_view_layout.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/custom_gallery_photo_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_menu_bottom_sheet.xml" value="0.16203703703703703" />
+        <entry key="app/src/main/res/layout/custom_recent_transaction_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_trip_detail_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_trip_expenditures_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_user_sppinner_layout.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/fragment_active.xml" value="0.2101851851851852" />
+        <entry key="app/src/main/res/layout/fragment_add_and_edit_day_plane.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_add_credit_card.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_chat_all_users.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_grop_expenditures_trip.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.14814814814814814" />
+        <entry key="app/src/main/res/layout/fragment_participant_costs.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_payments.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_personal_expenditures.xml" value="0.2796296296296296" />
+        <entry key="app/src/main/res/layout/fragment_photos.xml" value="0.16898148148148148" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_trip.xml" value="0.14814814814814814" />
+        <entry key="app/src/main/res/layout/fragment_un_publish.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/gallery_photos_recylerview.xml" value="0.16898148148148148" />
+        <entry key="app/src/main/res/layout/place_recycler_item_layout.xml" value="0.30462962962962964" />
       </map>
     </option>
   </component>
@@ -21,5 +74,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3004566210045662" />
+      </ProjectState>
+    </option>
   </component>
 </project>

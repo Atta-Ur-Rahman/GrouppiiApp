@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AllTripDayFragment;
+import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AllTripDayPlanFragment;
 
 public class BottomSheetViewFragmentActivity extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class BottomSheetViewFragmentActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, AllTripDayFragment.newInstance())
+                    .replace(R.id.container, AllTripDayPlanFragment.newInstance())
                     .commitNow();
         }
     }

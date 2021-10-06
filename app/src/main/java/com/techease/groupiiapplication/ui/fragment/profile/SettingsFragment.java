@@ -93,7 +93,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
-                    String shareMessage = "\nGroupii Application\n\n";
+                    String shareMessage = "\nGrouppii Application\n\n";
                     shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=ff" + BuildConfig.APPLICATION_ID + "\n\n";
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, getString(R.string.choose)));
@@ -109,7 +109,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.rlPrivacyPolicy:
 
                 new FinestWebView.Builder(getActivity())
-                        .titleDefault("Groupii Privacy Policy")
+                        .titleDefault("Grouppii Privacy Policy")
                         .theme(R.style.FinestWebViewTheme)
                         .showUrl(false)
                         .addWebViewListener(new WebViewListener() {
@@ -158,14 +158,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void launchInstagram() {
         Uri uri = Uri.parse("http://instagram.com/_u/Groupii");
         Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
-
         likeIng.setPackage("com.instagram.android");
 
         try {
             startActivity(likeIng);
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://instagram.com/Groupii")));
+                    Uri.parse("https://www.instagram.com/grouppiiapp/")));
         }
     }
 

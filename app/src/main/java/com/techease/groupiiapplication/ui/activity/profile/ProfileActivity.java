@@ -2,6 +2,8 @@ package com.techease.groupiiapplication.ui.activity.profile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,8 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.mynameismidori.currencypicker.CurrencyPicker;
+import com.mynameismidori.currencypicker.CurrencyPickerListener;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.profile.updateProfilePicture.UpdateProfilePicResponse;
@@ -67,12 +72,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.tvProfileEmail)
     TextView tvProfileEmail;
 
+    @BindView(R.id.rlPayments)
+    RelativeLayout rlPayments;
 
     final int CAMERA_CAPTURE = 1;
     final int RESULT_LOAD_IMAGE = 2;
     File sourceFile;
 
+
+    @BindView(R.id.tvCurrencyType)
+    TextView tvCurrencyType;
+
+
     Dialog dialog;
+    CurrencyPicker picker;
 
 
     @Override
@@ -81,9 +94,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
-        dialog= AlertUtils.createProgressDialog(this);
+        dialog = AlertUtils.createProgressDialog(this);
         setProfileImageAndName();
 
+        picker = CurrencyPicker.newInstance("Select Currency");  // dialog title
+        picker.setListener((name, code, symbol, flagDrawableResID) -> {
+            // Implement your code here
+            AppRepository.mPutValue(ProfileActivity.this).putString("mCurrencyType", symbol + code).commit();
+            tvCurrencyType.setText(symbol + code);
+            picker.dismiss();
+        });
+
+
+        if (!AppRepository.mCurrencyType(this).equals("")) {
+            tvCurrencyType.setText(AppRepository.mCurrencyType(this));
+        }
 
     }
 
@@ -101,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    @OnClick({R.id.ivBack, R.id.ivProfilePicture,R.id.ivAddProfilePicture})
+    @OnClick({R.id.ivBack, R.id.ivEdit, R.id.ivProfilePicture, R.id.ivAddProfilePicture, R.id.rlPayments, R.id.rlCurrencyPicker})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -109,10 +134,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 onBackPressed();
                 break;
             case R.id.ivEdit:
+                startActivity(new Intent(this, EditProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
 
                 break;
             case R.id.ivAddProfilePicture:
                 checkImagePermission();
+                break;
+            case R.id.rlPayments:
+                startActivity(new Intent(this, AddCreditCardActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
+                break;
+            case R.id.rlCurrencyPicker:
+
+                picker.show(getSupportFragmentManager(), "CURRENCY_PICKER");
+
+
                 break;
         }
     }
@@ -192,7 +227,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
-
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
 
@@ -251,7 +285,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part picture = MultipartBody.Part.createFormData("picture", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
-        RequestBody BodyUserId = RequestBody.create(AppRepository.mUserID(this)+"", MediaType.parse("multipart/form-data"));
+        RequestBody BodyUserId = RequestBody.create(AppRepository.mUserID(this) + "", MediaType.parse("multipart/form-data"));
 
 
         Call<UpdateProfilePicResponse> updateProfilePicResponseCall = BaseNetworking.ApiInterface().updateProfilePic(BodyUserId, picture, BodyName);

@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,9 +25,21 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -37,6 +51,7 @@ import com.techease.groupiiapplication.adapter.addTrip.AutoCompleteCitiesAdapter
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.fragment.PlacesAutoCompleteAdapter;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -67,7 +82,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implements View.OnClickListener{
 
     @BindView(R.id.ivBack)
     ImageView ivBack;
@@ -112,6 +127,13 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     String strTripTitle, strDescription, strLocation, strStartDate, strEndDate, strPayByDate;
 
 
+    private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
+
+    @BindView(R.id.places_recycler_view)
+    RecyclerView recyclerView;
+
+    private StringBuilder mResult;
+
     @BindView(R.id.ivCover)
     ImageView ivCoverImage;
 
@@ -137,6 +159,9 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @BindView(R.id.autocompleteCity)
     AutoCompleteTextView autoCompleteTextView;
 
+
+    PlacesClient placesClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,8 +171,93 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         dialog = AlertUtils.createProgressDialog(this);
         ProcessBarAnimation();
 
+        Places.initialize(this, getResources().getString(R.string.google_maps_key));
 
-        getCityIdes();
+
+
+
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+        autoCompleteCitiesAdapter = new AutoCompleteCitiesAdapter(this, hotelCityIdDataList);
+            autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
+
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+
+//                Toast.makeText(NewTripStepTwoAddDetailActivity.this, autoCompleteTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+                // and once again when the user makes a selection (for example when calling fetchPlace()).
+                AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+                // Create a RectangularBounds object.
+                RectangularBounds bounds = RectangularBounds.newInstance(
+                        new LatLng(-33.880490, 151.184363), //dummy lat/lng
+                        new LatLng(-33.858754, 151.229596));
+                // Use the builder to create a FindAutocompletePredictionsRequest.
+                FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                        // Call either setLocationBias() OR setLocationRestriction().
+                        .setLocationBias(bounds)
+                        //.setLocationRestriction(bounds)
+
+                        .setSessionToken(token)
+                        .setQuery(autoCompleteTextView.getText().toString())
+                        .build();
+
+
+                placesClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
+                    mResult = new StringBuilder();
+                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                        HotelCityIdData hotelCityIdData=new HotelCityIdData();
+//                        hotelCityIdData.setCityId(Integer.parseInt(prediction.getPlaceId()));
+                        hotelCityIdData.setCityName(String.valueOf(prediction.getFullText(null)));
+                        hotelCityIdDataList.add(hotelCityIdData);
+                        autoCompleteCitiesAdapter.notifyDataSetChanged();
+                        mResult.append(" ").append(prediction.getFullText(null) + "\n");
+                        Log.i("TAG", prediction.getPlaceId());
+                        Log.i("TAG", prediction.getPrimaryText(null).toString());
+//                        Toast.makeText(NewTripStepTwoAddDetailActivity.this, prediction.getPrimaryText(null) + "-" + prediction.getSecondaryText(null), Toast.LENGTH_SHORT).show();
+                    }
+//                    autoCompleteTextView.setText(String.valueOf(mResult));
+                }).addOnFailureListener((exception) -> {
+                    if (exception instanceof ApiException) {
+                        ApiException apiException = (ApiException) exception;
+                        Log.e("TAG", "Place not found: " + apiException.getStatusCode());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+
+
+
+//
+//        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        mAutoCompleteAdapter.setClickListener(this);
+//        recyclerView.setAdapter(mAutoCompleteAdapter);
+//        mAutoCompleteAdapter.notifyDataSetChanged();
+
+
+//        getCityIdes();
+
+//        autoCompleteTextView.addTextChangedListener(filterTextWatcher);
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -176,6 +286,38 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
     }
 
+
+  /*  private TextWatcher filterTextWatcher = new TextWatcher() {
+        public void afterTextChanged(Editable s) {
+            if (!s.toString().equals("")) {
+                mAutoCompleteAdapter.getFilter().filter(s.toString());
+                if (recyclerView.getVisibility() == View.GONE) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (recyclerView.getVisibility() == View.VISIBLE) {
+                    recyclerView.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+    };
+
+
+    @Override
+    public void click(Place place) {
+
+
+        AppRepository.mPutValue(this).putString("cityName", place.getName()).commit();
+        autoCompleteTextView.setText(place.getAddress() + "");
+        Toast.makeText(this, place.getAddress() + ", " + place.getLatLng().latitude + place.getLatLng().longitude, Toast.LENGTH_SHORT).show();
+
+    }*/
 
     private void getCityIdes() {
 
@@ -208,8 +350,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             }
 
 
-            autoCompleteCitiesAdapter = new AutoCompleteCitiesAdapter(this, hotelCityIdDataList);
-            autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -467,9 +608,11 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         }
 
         if (sourceFile == null) {
-            valid = false;
+//            valid = false;
 
-            Toast.makeText(this, "cover image missing", Toast.LENGTH_SHORT).show();
+            sourceFile = null;
+
+//            Toast.makeText(this, "required cover image", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -480,9 +623,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
         dialog.show();
 
-        RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
-        final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("coverimage", sourceFile.getAbsoluteFile().getName(), requestFile);
-        RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
         RequestBody BodyTitle = RequestBody.create(strTripTitle, MediaType.parse("multipart/form-data"));
         RequestBody BodyDescription = RequestBody.create(strDescription, MediaType.parse("multipart/form-data"));
         RequestBody BodyLocation = RequestBody.create(strLocation, MediaType.parse("multipart/form-data"));
@@ -491,33 +631,66 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         RequestBody BodyPayByDate = RequestBody.create(strPayByDate, MediaType.parse("multipart/form-data"));
         RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
 
-        Call<AddTripDetailResponse> addTripDetailResponseCall = BaseNetworking.ApiInterface().addTripDetail(BodyTripId, BodyTitle, BodyDescription, BodyLocation, BodyStartDate, BodyEndDate, BodyPayByDate, CoverImage, BodyName);
-        addTripDetailResponseCall.enqueue(new Callback<AddTripDetailResponse>() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
-                if (response.isSuccessful()) {
+        if (sourceFile != null) {
+            RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
+            final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("coverimage", sourceFile.getAbsoluteFile().getName(), requestFile);
+            RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
+            Call<AddTripDetailResponse> addTripDetailResponseCall = BaseNetworking.ApiInterface().addTripDetail(BodyTripId, BodyTitle, BodyDescription, BodyLocation, BodyStartDate, BodyEndDate, BodyPayByDate, CoverImage, BodyName);
+            addTripDetailResponseCall.enqueue(new Callback<AddTripDetailResponse>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
+                    if (response.isSuccessful()) {
 
 //                    finish();
 
-                    Log.d("zmadate", response.body().getData().getStartdate());
+                        Log.d("zmadate", response.body().getData().getStartdate());
 
-                    AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
-                    startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
-                    dialog.dismiss();
-                    Log.d("zma uploddImage", String.valueOf(sourceFile));
+                        AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
+                        startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+                        dialog.dismiss();
+                        Log.d("zma uploddImage", String.valueOf(sourceFile));
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddTripDetailResponse> call, Throwable t) {
-                Toast.makeText(NewTripStepTwoAddDetailActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-                Log.d("zma error", String.valueOf(t.getMessage()));
+                @Override
+                public void onFailure(Call<AddTripDetailResponse> call, Throwable t) {
+                    Toast.makeText(NewTripStepTwoAddDetailActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    Log.d("zma error", String.valueOf(t.getMessage()));
 
 
-            }
-        });
+                }
+            });
+        } else {
+            Call<AddTripDetailResponse> addTripDetailResponseCall = BaseNetworking.ApiInterface().addTripDetailWithOutImage(BodyTripId, BodyTitle, BodyDescription, BodyLocation, BodyStartDate, BodyEndDate, BodyPayByDate);
+            addTripDetailResponseCall.enqueue(new Callback<AddTripDetailResponse>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
+                    if (response.isSuccessful()) {
+
+//                    finish();
+
+                        Log.d("zmadate", response.body().getData().getStartdate());
+
+                        AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
+                        startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+                        dialog.dismiss();
+                        Log.d("zma uploddImage", String.valueOf(sourceFile));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddTripDetailResponse> call, Throwable t) {
+                    Toast.makeText(NewTripStepTwoAddDetailActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    Log.d("zma error", String.valueOf(t.getMessage()));
+
+
+                }
+            });
+        }
 
 
     }

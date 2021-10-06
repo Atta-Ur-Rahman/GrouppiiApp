@@ -41,6 +41,10 @@ public class Unpublish {
     private List<User> mUsers;
 
 
+    @SerializedName("is_createdby")
+    private boolean isCreatedby;
+
+
 
     public String getCoverimage() {
         return mCoverimage;
@@ -161,5 +165,16 @@ public class Unpublish {
     public void setUsers(List<User> users) {
         mUsers = users;
     }
+
+
+
+    public void setIsCreatedby(boolean isCreatedby) {
+        this.isCreatedby = isCreatedby;
+    }
+
+    public boolean isIsCreatedby() {
+        return isCreatedby;
+    }
+
 
 }

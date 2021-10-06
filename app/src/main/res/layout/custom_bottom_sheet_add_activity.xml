@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
@@ -10,11 +10,21 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/top_side_round_conner"
         android:orientation="vertical"
-        android:paddingTop="@dimen/widget_margin_left_right">
+        android:paddingTop="@dimen/widget_margin_left_right" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/top_side_round_conner"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/widget_margin_left_right"
+        android:visibility="gone">
 
         <View
             android:id="@+id/ivMinusIcon"
@@ -124,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_edittext"
-                android:hint="Trip title"
+                android:hint="Activity title"
                 android:padding="@dimen/edittext_padding"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp">
@@ -135,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:imeOptions="actionDone"
                     android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 

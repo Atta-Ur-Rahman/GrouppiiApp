@@ -27,6 +27,7 @@
     <dimen name="edit_text_round_corner">9dp</dimen>
     <dimen name="edittext_padding">2dp</dimen>
     <dimen name="icon_size">45dp</dimen>
+    <dimen name="edit_icon_size">20dp</dimen>
     <dimen name="fab_size">55dp</dimen>
     <dimen name="text_size14sp">14sp</dimen>
     <dimen name="date_margin_end">10dp</dimen>
@@ -35,6 +36,8 @@
     <dimen name="tendp">10dp</dimen>
     <dimen name="screenPadding">16dp</dimen>
     <dimen name="tenDP">10dp</dimen>
+    <dimen name="app_screen_title">20sp</dimen>
+    <dimen name="button_height">60dp</dimen>
 
 
 </resources>

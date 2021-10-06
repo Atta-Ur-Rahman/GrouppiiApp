@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +30,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllTripDayFragment extends Fragment {
+public class AllTripDayPlanFragment extends Fragment {
 
     @BindView(R.id.rvAllTripDay)
     RecyclerView rvAllTripDay;
@@ -65,13 +63,13 @@ public class AllTripDayFragment extends Fragment {
     public static AllTripDayAdapter allTripDayAdapter;
     public static List<AllTripDayDataModel> addTripDataModels = new ArrayList<>();
 
-    public static AllTripDayFragment newInstance() {
-        return new AllTripDayFragment();
+    public static AllTripDayPlanFragment newInstance() {
+        return new AllTripDayPlanFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_trip_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_trip_day_plan, container, false);
         ButterKnife.bind(this, view);
         tvTripNotFound = tvTripDayNotFound;
 //        dialog = AlertUtils.createProgressDialog(getActivity());

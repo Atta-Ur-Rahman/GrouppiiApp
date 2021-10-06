@@ -15,11 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
+import com.techease.groupiiapplication.ui.fragment.SearchFragment;
 import com.techease.groupiiapplication.ui.fragment.notification.ActivityFragment;
 import com.techease.groupiiapplication.ui.fragment.profile.SettingsFragment;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
@@ -77,7 +79,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     FloatingActionButton floatingActionButton;
 
     Dialog dialog;
-
 
     final Fragment fragmentTrip = new TripFragment();
     final Fragment fragmentChatActivity = new AllUsersChatFragment();

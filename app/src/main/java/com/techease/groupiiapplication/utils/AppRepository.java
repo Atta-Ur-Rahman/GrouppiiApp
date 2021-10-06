@@ -68,6 +68,7 @@ public class AppRepository {
     public static String mGetFromdate(Context context) {
         return String.valueOf(mGetValue(context).getString("getFromdate", null));
     }
+
     public static String mTripStartDate(Context context) {
         return String.valueOf(mGetValue(context).getString("trip_start_date", null));
     }
@@ -105,6 +106,11 @@ public class AppRepository {
     }
 
 
+    public static boolean mEditDayPlanActivity(Context context) {
+        return mGetValue(context).getBoolean("mEditDayPlanActivity", true);
+
+    }
+
     public static String mDetailLat(Context context) {
         return mGetValue(context).getString("detail_lat", "");
     }
@@ -125,6 +131,19 @@ public class AppRepository {
     public static int mCityId(Context context) {
         return mGetValue(context).getInt("cityID", 0);
     }
+
+
+    public static String mTripIDForUpdation(Context context) {
+        return mGetValue(context).getString("tripIDForUpdation", "");
+    }
+
+
+
+    public static String mCurrencyType(Context context) {
+        return mGetValue(context).getString("mCurrencyType", "");
+    }
+
+
 
 
 }

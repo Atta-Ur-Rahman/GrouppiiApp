@@ -160,6 +160,8 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 
         ///jogar jogar
 
+
+
         if (strPhoneNumber.length() < 1) {
             if (strEmail.length() < 1) {
                 valid = false;
@@ -198,7 +200,12 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         }
 
+        if (strEmail.equals(AppRepository.mEmail(this))) {
 
+            valid = false;
+            tilEmail.setErrorEnabled(true);
+            tilEmail.setError(getString(R.string.valid_email)+" not admin email");
+        }
         return valid;
     }
 
@@ -261,20 +268,27 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         if (strPhoneNumber.length() > 1) {
             if (strEmail.length() > 1) {
                 ApiCAllForAddInviteFriendWithGmailAndPhone();
+
+                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
             }
         }
         if (strEmail.length() < 1) {
             if (strPhoneNumber.length() < 1) {
                 ApiCAllForAddInviteFriendWithGmailAndPhone();
+                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
+
             }
         }
         if (strPhoneNumber.length() > 1 && strEmail.length() < 1) {
             ApiCAllForAddInviteFriendWithPhone();
+            Toast.makeText(this, "phone", Toast.LENGTH_SHORT).show();
+
         }
         if (strEmail.length() > 1 && strPhoneNumber.length() < 1) {
             ApiCAllForAddInviteFriendWithGmail();
-        }
+            Toast.makeText(this, "gmail", Toast.LENGTH_SHORT).show();
 
+        }
 
 
     }
@@ -282,7 +296,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     private void ApiCAllForAddInviteFriendWithGmailAndPhone() {
 
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strShareCost,
-                AppRepository.mTripId(this), AppRepository.mUserID(this));
+                AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -333,8 +347,10 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             @Override
             public void onFailure(Call<AddTripResponse> call, Throwable t) {
                 dialog.dismiss();
-                Log.d("zmaaddparticipant",t.getMessage());
-                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
+                Log.d("zmaaddparticipant", t.getMessage());
+//                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddUserTripParticpantActivity.this, "phone number already exist", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -394,9 +410,10 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             @Override
             public void onFailure(Call<AddTripResponse> call, Throwable t) {
                 dialog.dismiss();
-                Log.d("zmaaddparticipantgmail",t.getMessage());
+                Log.d("zmaaddparticipantgmail", t.getMessage());
+                Toast.makeText(AddUserTripParticpantActivity.this, "phone number already exist", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -455,7 +472,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             @Override
             public void onFailure(Call<AddTripResponse> call, Throwable t) {
                 dialog.dismiss();
-                Log.d("zmaaddparticipantphone",t.getMessage());
+                Log.d("zmaaddparticipantphone", t.getMessage());
                 Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
             }
         });

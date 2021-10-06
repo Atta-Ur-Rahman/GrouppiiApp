@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -38,6 +39,9 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
     ImageView ivGalleryPhotoGridView;
     @BindView(R.id.rvGalleryPhoto)
     RecyclerView rvGalleryPhoto;
+
+    @BindView(R.id.tvPhotoAlbumIsEmpty)
+    TextView tvPhotoAlbumIsEmpty;
     GalleryPhotoAdapter galleryPhotoAdapter;
     LinearLayoutManager linearLayoutManager;
     Dialog dialog;
@@ -95,7 +99,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
 
     private void ApiCallGetAllGalleryPhoto() {
         galleryPhotoDataModels.clear();
-        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/" +strTripId);
+        Call<GetGalleryPhotoResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getAllGalleryPhoto("trips/gallery/" + strTripId);
         getGalleryPhotoResponseCall.enqueue(new Callback<GetGalleryPhotoResponse>() {
             @Override
             public void onResponse(Call<GetGalleryPhotoResponse> call, Response<GetGalleryPhotoResponse> response) {
@@ -105,6 +109,12 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
                     galleryPhotoDataModels.addAll(response.body().getData());
                     Collections.reverse(galleryPhotoDataModels);
                     galleryPhotoAdapter.notifyDataSetChanged();
+
+                    if (galleryPhotoDataModels.size() == 0) {
+                        tvPhotoAlbumIsEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        tvPhotoAlbumIsEmpty.setVisibility(View.GONE);
+                    }
                 }
             }
 

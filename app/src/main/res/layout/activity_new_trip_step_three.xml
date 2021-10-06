@@ -9,45 +9,49 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clHeader"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/widget_margin"
+            android:layout_marginTop="@dimen/widget_margin"
             android:background="@drawable/round_bg"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginLeft="@dimen/widget_margin" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
-            android:id="@+id/tvNewTrip"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTripTitle"
+            android:layout_width="0dp"
             android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:ellipsize="end"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/main_heading_text_size"
+            android:lines="1"
+            android:paddingLeft="@dimen/widget_margin"
+            android:paddingRight="@dimen/widget_margin"
+            android:text="New Trip"
             android:textColor="@android:color/black"
-            android:text="New Trip" />
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tv_short_msg"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvNewTrip"
             android:layout_marginBottom="21dp"
-            android:progress="50" />
+            android:progress="50"
+            app:layout_constraintTop_toBottomOf="@id/tvTripTitle" />
 
         <TextView
             android:id="@+id/tv_short_msg"
@@ -64,74 +68,89 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rlCityTitle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/fifty_dp"
-        android:text="Dubai UAE"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/widget_margin"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
-        app:layout_constraintTop_toBottomOf="@id/clHeader" >
+        android:layout_marginTop="@dimen/widget_margin"
+        android:gravity="center_vertical"
+        android:text="Dubai UAE"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clHeader">
 
-           <TextView
-                android:id="@+id/tvCityTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                android:drawableLeft="@mipmap/my_trips_selected"
-                android:drawablePadding="@dimen/widget_margin"/>
+        <TextView
+            android:id="@+id/tvCityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@mipmap/my_trips_selected"
+            android:drawablePadding="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <AutoCompleteTextView
-                android:id="@+id/autocompleteCity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/widget_margin_left_right"
-                android:layout_marginEnd="@dimen/widget_margin_left_right"
-                android:background="@android:color/transparent"
-                android:completionThreshold="1"
-                android:selectAllOnFocus="true"
-                android:imeOptions="actionDone"
-                android:paddingStart="@dimen/widget_margin"
-                android:textSize="@dimen/textsize16sp"
-                tools:ignore="RtlSymmetry" />
-
+        <AutoCompleteTextView
+            android:id="@+id/autocompleteCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
+            android:layout_marginEnd="@dimen/widget_margin_left_right"
+            android:background="@android:color/transparent"
+            android:completionThreshold="1"
+            android:imeOptions="actionDone"
+            android:paddingStart="@dimen/widget_margin"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/textsize16sp"
+            tools:ignore="RtlSymmetry" />
 
 
     </RelativeLayout>
-
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTripDetail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="@dimen/widget_margin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnReverse"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rlCityTitle" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/widget_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnReverse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlCityTitle" />
+
+    <TextView
+        android:id="@+id/tv_back_no_internet_connection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="gone" />
 
 
     <Button
         android:id="@+id/btnReverse"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/round_button_conner"
-        android:layout_marginBottom="@dimen/widget_margin_left_right"
-        android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:layout_marginBottom="@dimen/widget_margin_left_right"
+        android:background="@drawable/round_button_conner"
+        android:text="Continue"
         android:textAllCaps="false"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Continue" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

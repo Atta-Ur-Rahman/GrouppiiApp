@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,12 +63,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements View.OnClickListener {
 
     public ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
     public Dialog dialog;
@@ -77,12 +80,10 @@ public class MapsFragment extends Fragment {
     MarkerOptions markerOptions;
     int globleCount = 0;
     GoogleMap googleMap;
-
     ArrayList<Integer> integerArrayList = new ArrayList<>();
-
-
     boolean firstTimeRunMap = false;
-
+    @BindView(R.id.ivClose)
+    ImageView ivClose;
 
     public static MapsFragment newInstance() {
         return new MapsFragment();
@@ -110,17 +111,30 @@ public class MapsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        ButterKnife.bind(this, view);
         dialog = AlertUtils.createProgressDialog(getActivity());
 
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                getActivity().finish();
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         return view;
     }
-
 
     private void ApiCallGetUserTrip(GoogleMap googleMap) {
         dialog.show();
         userParticipaintsList.clear();
         this.googleMap = googleMap;
-
 
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(getActivity()));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
@@ -134,7 +148,7 @@ public class MapsFragment extends Fragment {
                         new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
                     }
 
-                    Log.d("zmaimge", "map" + userParticipaintsList.get(0));
+//                    Log.d("zmaimge", "map" + userParticipaintsList.get(0));
 
                /*     try {
 //                        Log.d("zmaimge", "map" + userParticipaintsList.size());
@@ -229,6 +243,11 @@ public class MapsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+
+    }
 }
 
 
@@ -259,7 +278,6 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... url) {
 
 
-
         String stringUrl = url[0];
         bitmap = null;
         InputStream inputStream;
@@ -286,22 +304,27 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
                     icon(BitmapDescriptorFactory.fromBitmap(MapsFragment.createCustomMarker(context, bitmap))));
             marker.setTitle(userParticipaintsList.get(anIntPosition).getName());
             markers.add(marker);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
+//            Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
 
 
-            Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
+        try {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
+
+            int padding = 0; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            googleMap.animateCamera(cu);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-        LatLngBounds bounds = builder.build();
-
-        int padding = 0; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.animateCamera(cu);
 
 
     }

@@ -80,7 +80,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.rvMessages)
     RecyclerView rvMessage;
 
-
     @BindView(R.id.tv_typer_name)
     TextView tvSenderName;
     @BindView(R.id.typing_layout)
@@ -321,7 +320,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     e.printStackTrace();
 //                                    Log.d("zmaerror",e.getMessage());
                                     AllUsersChatFragment.aBooleanRefreshSocket = true;
-
                                 }
                             }
                             JSONObject jsonObject = (JSONObject) args[0];

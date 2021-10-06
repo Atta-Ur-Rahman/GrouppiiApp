@@ -1,6 +1,7 @@
 
 package com.techease.groupiiapplication.network;
 
+import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
@@ -15,7 +16,6 @@ import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTri
 import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
@@ -23,6 +23,7 @@ import com.techease.groupiiapplication.dataModel.loginSignup.signUp.SignUpRespon
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.dataModel.getAllTrip.TripDetailResponse;
 import com.techease.groupiiapplication.dataModel.profile.updateProfilePicture.UpdateProfilePicResponse;
+import com.techease.groupiiapplication.dataModel.updateUserProfile.UpdateUserProfileResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -147,6 +148,18 @@ public interface ApiInterface {
             @Part("coverimage") RequestBody fileName);
 
 
+    @Multipart
+    @POST("trips/tripdetail")
+    Call<AddTripDetailResponse> addTripDetailWithOutImage(
+            @Part("tripid") RequestBody tripID,
+            @Part("title") RequestBody title,
+            @Part("description") RequestBody description,
+            @Part("location") RequestBody location,
+            @Part("startdate") RequestBody startDate,
+            @Part("enddate") RequestBody endDate,
+            @Part("paydate") RequestBody payByDate);
+
+
     @FormUrlEncoded
     @POST("trips/deletetrip")
     Call<DeleteTripResponse> deleteTrip(
@@ -222,7 +235,7 @@ public interface ApiInterface {
             @Field("date") String date,
             @Field("short_desc") String short_desc,
             @Field("is_personal") String is_personal,
-            @Field("paid_by") int paid_by,
+            @Field("paid_by") String paid_by,
             @Field("source") String source);
 
 
@@ -238,5 +251,28 @@ public interface ApiInterface {
     Call<DeleteTripUserResponse> deleteTripUser(
             @Field("tripid") String tripId,
             @Field("userid") String userId);
+
+
+
+    @FormUrlEncoded
+    @POST("users/updateprofile")
+    Call<UpdateUserProfileResponse> updateProfile(
+            @Field("userid") String userid,
+            @Field("name") String name,
+            @Field("email") String userEmail,
+            @Field("description") String description,
+            @Field("phone") String phone);
+
+
+    @FormUrlEncoded
+    @POST("payment/addcard")
+    Call<AddCreditCardResponse> addCreditCard(
+            @Field("name") String name,
+            @Field("cardnumber") String cardNumber,
+            @Field("month") String month,
+            @Field("year") String year,
+            @Field("cvc") String cvc,
+            @Field("stripeid") String stripId);
+
 
 }

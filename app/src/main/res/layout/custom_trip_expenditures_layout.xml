@@ -1,99 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="10dp"
-    app:cardCornerRadius="10dp"
     android:layout_marginTop="@dimen/widget_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
-    <ImageView
-        android:id="@+id/ivType"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@mipmap/taxi_wheel" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="@dimen/widget_margin_left_right"
-        android:layout_marginBottom="@dimen/widget_margin_left_right"
-        app:layout_constraintLeft_toRightOf="@id/ivType"
-        android:background="@color/gry"/>
-
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingLeft="@dimen/widget_margin"
-        android:paddingRight="@dimen/widget_margin"
-        android:paddingBottom="@dimen/widget_margin"
-        android:layout_marginStart="70dp">
+        android:layout_height="wrap_content">
 
 
         <ImageView
-            android:id="@+id/ivTaxi"
-            android:layout_width="30dp"
-            android:layout_height="40sp"
-            android:src="@drawable/car"
-            android:paddingRight="7dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/widget_margin" />
-
-
-        <TextView
-            android:id="@+id/tvExpenditureTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/ivType"
+            android:layout_width="50dp"
             android:layout_height="40dp"
-            android:text="$80% - Taxi"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/widget_margin"
-            app:layout_constraintLeft_toRightOf="@id/ivTaxi"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textsize16sp" />
-
-        <TextView
-            android:id="@+id/tvShortDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Open Uber Mobile app"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
+            android:src="@mipmap/taxi_wheel"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvExpenditureTitle" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="@dimen/widget_margin_left_right"
+            android:background="@color/gry"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ivType"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
-            android:id="@+id/ivMenuDot"
-            android:layout_width="20dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingTop="@dimen/widget_margin"
-            android:gravity="center_vertical"
-            android:src="@drawable/dots" />
+            android:scaleType="centerCrop" />
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:paddingLeft="@dimen/widget_margin"
+            android:paddingRight="@dimen/widget_margin"
+            android:paddingBottom="@dimen/widget_margin"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/ivTaxi"
+                android:layout_width="20dp"
+                android:layout_height="40sp"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:paddingRight="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvExpenditureTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:gravity="center_vertical"
+                android:text="$80% - Taxi"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/ivTaxi"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShortDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Open Uber Mobile app"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvExpenditureTitle" />
+
+
+            <ImageView
+                android:id="@+id/ivMenuDot"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/widget_margin"
+                android:src="@drawable/dots"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

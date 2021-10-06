@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,11 +35,12 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
 
     private Context context;
     private List<AddTripDataModel> userList;
+    private boolean isCreatedBy;
 
-
-    public TripParticipantsAdapter(Context context, List<AddTripDataModel> userList) {
+    public TripParticipantsAdapter(Context context, List<AddTripDataModel> userList, boolean IsCreateBy) {
         this.userList = userList;
         this.context = context;
+        this.isCreatedBy = IsCreateBy;
 
     }
 
@@ -53,12 +55,11 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
         AddTripDataModel user = userList.get(position);
 
         holder.tvTitle.setText(String.valueOf(user.getName()));
         holder.tvEmail.setText(String.valueOf(user.getEmail()));
-        Glide.with(context).load(user.getPicture()).into(holder.ivUser);
+        Glide.with(context).load(user.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
 
         Log.d("zmasharecost", user.getSharedCost() + "");
 
@@ -72,17 +73,22 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EditParticipantActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("name", user.getName());
-                bundle.putString("email", user.getEmail()+"");
-                bundle.putString("phone", user.getPhone()+"");
-                bundle.putString("userId", String.valueOf(user.getUserid()));
-                bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
-                bundle.putString("trip_id", String.valueOf(user.getTripid()));
-                bundle.putBoolean("aBooleanIsTripDetailScreen", true);
-                intent.putExtras(bundle);
-                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+                if (isCreatedBy) {
+                    Intent intent = new Intent(context, EditParticipantActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", user.getName());
+                    bundle.putString("email", user.getEmail() + "");
+                    bundle.putString("phone", user.getPhone() + "");
+                    bundle.putString("userId", String.valueOf(user.getUserid()));
+                    bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
+                    bundle.putString("trip_id", String.valueOf(user.getTripid()));
+                    bundle.putBoolean("aBooleanIsTripDetailScreen", true);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+                } else {
+                    Toast.makeText(context, "Edit only admin", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

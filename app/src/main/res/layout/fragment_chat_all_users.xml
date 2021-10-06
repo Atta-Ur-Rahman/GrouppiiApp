@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="30dp"
     android:background="@color/backColor"
+    android:paddingBottom="30dp"
     tools:context=".ui.fragment.chat.AllUsersChatFragment">
-
 
     <TextView
         android:id="@+id/tvChatsTitle"
@@ -29,10 +28,11 @@
         android:id="@+id/ivEdit"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
-        android:layout_alignParentEnd="true"
         android:src="@mipmap/chat_dark"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,10 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
             android:gravity="center"
-            app:searchIcon="@drawable/search"
-            app:queryBackground="@android:color/transparent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryBackground="@android:color/transparent"
+            app:searchIcon="@drawable/search" />
     </com.google.android.material.card.MaterialCardView>
 
 
@@ -64,10 +64,23 @@
         android:layout_below="@id/mcvSearch"
         android:layout_marginStart="@dimen/widget_margin_left_right"
         android:layout_marginEnd="@dimen/widget_margin_left_right"
-        android:layoutAnimation="@anim/layout_animationrecylvew"
         android:layout_marginBottom="@dimen/widget_margin_left_right"
         android:clipToPadding="false"
+        android:layoutAnimation="@anim/layout_animationrecylvew"
         android:scrollbars="none" />
+
+
+    <TextView
+        android:id="@+id/tvNoUserFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mcvSearch"
+        android:layout_marginTop="@dimen/fifty_dp"
+        android:gravity="center"
+        android:paddingLeft="20sp"
+        android:text="No user found"
+        android:textSize="@dimen/main_heading_text_size"
+        android:textStyle="bold" />
 
 
     <LinearLayout
@@ -99,5 +112,8 @@
             android:contentDescription="@string/action_send"
             android:src="@android:drawable/ic_menu_send" />
 
+
     </LinearLayout>
+
+
 </RelativeLayout>

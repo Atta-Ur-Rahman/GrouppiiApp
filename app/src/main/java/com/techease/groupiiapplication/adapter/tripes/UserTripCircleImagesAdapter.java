@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
+import com.techease.groupiiapplication.utils.AppRepository;
 
 import java.util.List;
 
@@ -42,6 +43,10 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
+        Glide.with(context).load(AppRepository.mUserProfileImage(context)).placeholder(R.drawable.user).into(holder.imageView);
+
         try {
             Glide.with(context).load(arrayList.get(position).getPicture()).placeholder(R.drawable.user).into(holder.imageView);
             Log.d("zma array", String.valueOf(arrayList.get(position).getTripid()));

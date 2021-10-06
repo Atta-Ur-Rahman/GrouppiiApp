@@ -33,11 +33,12 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripRespons
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.AddPaymentOnBackListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
-import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
+import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AddPaymentFragment;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -56,7 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentCallBackListener, AddPaymentOnBackListener {
 
 
     Dialog addActivityTypeDialog;
@@ -85,7 +86,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     TextView tvPartiallyPaidPercentage;
 
 
-    boolean valid;
     ImageView ivPaymentBack;
 
     @BindView(R.id.llBottomSheetBehaviorId)
@@ -98,6 +98,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     @BindView(R.id.spUserName)
     Spinner spUserName;
+    boolean valid;
 
     String strTitle, strPhoto, strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
 
@@ -205,6 +206,10 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         ivAmericanCard = llBottomSheetAddPayment.findViewById(R.id.ivAmericanExpress);
 
 
+
+
+
+
         strIsPersonal = "1";
         swAddGroupPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -243,6 +248,9 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
 //        Toast.makeText(getApplicationContext(), countryNames[position], Toast.LENGTH_LONG).show();
+
+        strPaymentUser = String.valueOf(userList.get(position).getUserid());
+
     }
 
     @Override
@@ -260,6 +268,9 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                 break;
             case R.id.ivAddPayment:
                 addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerPayment, AddPaymentFragment.newInstance())
+                        .commitNow();
                 break;
             case R.id.ivAddPaymentBack:
                 addPaymentBottomSheetBehavior.setHideable(true);
@@ -361,7 +372,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripId(this), AppRepository.mUserID(this),
-                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, AppRepository.mUserID(this), strPaymentMethod);
+                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal,strPaymentUser, strPaymentMethod);
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
@@ -513,4 +524,23 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         });
     }
 
+
+
+    @Override
+    public void onPaymentBack() {
+        addPaymentBottomSheetBehavior.setHideable(true);
+        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    @Override
+    public void onPaymentAdddCallBack() {
+
+        addPaymentBottomSheetBehavior.setHideable(true);
+        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        etPaymentTitle.setText("");
+        etPaymentDate.setText("");
+        etPaymentAmount.setText("");
+        etShortDescription.setText("");
+        getPaymentExpenses();
+    }
 }

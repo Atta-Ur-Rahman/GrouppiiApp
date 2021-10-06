@@ -3,6 +3,7 @@ package com.techease.groupiiapplication.ui.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,6 +22,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.ui.activity.AddTrip.AddNewTripThreeHotelActivity;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepFourPaymentActivity;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,8 +34,9 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     String webViewUrl;
@@ -47,6 +51,8 @@ public class WebViewActivity extends AppCompatActivity {
     @BindView(R.id.pb_webview)
     ProgressBar progressBar;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBarActivity;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -208,6 +214,18 @@ public class WebViewActivity extends AppCompatActivity {
 
     }
 
+
+    @OnClick({R.id.ivBack})
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.ivBack:
+                onBackPressed();
+                break;
+
+        }
+    }
     ArrayList retrieveLinks(String text) {
         ArrayList links = new ArrayList();
 
