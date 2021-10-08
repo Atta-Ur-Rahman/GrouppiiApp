@@ -15,17 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GroupExpendituresItem;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GroupExpenditure;
+
 
 import java.util.List;
 
 public class GroupExpendituresAdapter extends RecyclerView.Adapter<GroupExpendituresAdapter.MyViewHolder> {
 
     private Context context;
-    private List<GroupExpendituresItem> groupExpendituresItems;
+    private List<GroupExpenditure> groupExpendituresItems;
 
 
-    public GroupExpendituresAdapter(Context context, List<GroupExpendituresItem> groupExpendituresItems) {
+    public GroupExpendituresAdapter(Context context, List<GroupExpenditure> groupExpendituresItems) {
         this.groupExpendituresItems = groupExpendituresItems;
         this.context = context;
 
@@ -43,7 +44,7 @@ public class GroupExpendituresAdapter extends RecyclerView.Adapter<GroupExpendit
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        GroupExpendituresItem groupExpendituresItem = groupExpendituresItems.get(position);
+        GroupExpenditure groupExpendituresItem = groupExpendituresItems.get(position);
 
         holder.tvExpenditureTitle.setText("$"+groupExpendituresItem.getAmount()+" - "+groupExpendituresItem.getName());
         holder.tvShortDescription.setText(String.valueOf(groupExpendituresItem.getShortDesc()));

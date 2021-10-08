@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.payment.ParticipantCostsFragment">
+    tools:context=".ui.fragment.payment.ParticipantCostsTabsFragment">
 
     <View
         android:id="@+id/ivMinusIcon"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/rlTop"
         app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+        app:tabTextAppearance="@style/TabLayoutTextStyleParticipantCosts" />
 
 
     <androidx.viewpager.widget.ViewPager

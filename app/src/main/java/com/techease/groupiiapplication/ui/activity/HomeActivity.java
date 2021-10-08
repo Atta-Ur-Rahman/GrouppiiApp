@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,8 +35,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -83,8 +86,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     final Fragment fragmentTrip = new TripFragment();
     final Fragment fragmentChatActivity = new AllUsersChatFragment();
     final Fragment fragmentActivity = new ActivityFragment();
-
-
     final Fragment fragmentSettings = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentTrip;
@@ -97,7 +98,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Objects.requireNonNull(getSupportActionBar()).hide();
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
-
 
         fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();
         fm.beginTransaction().add(R.id.container, fragmentActivity, "3").hide(fragmentActivity).commit();

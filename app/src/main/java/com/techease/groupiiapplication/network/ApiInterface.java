@@ -2,6 +2,7 @@
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
@@ -15,7 +16,6 @@ import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.Delet
 import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
@@ -236,7 +236,8 @@ public interface ApiInterface {
             @Field("short_desc") String short_desc,
             @Field("is_personal") String is_personal,
             @Field("paid_by") String paid_by,
-            @Field("source") String source);
+            @Field("source") String source,
+            @Field("paid") String paid);
 
 
     @FormUrlEncoded
@@ -251,7 +252,6 @@ public interface ApiInterface {
     Call<DeleteTripUserResponse> deleteTripUser(
             @Field("tripid") String tripId,
             @Field("userid") String userId);
-
 
 
     @FormUrlEncoded

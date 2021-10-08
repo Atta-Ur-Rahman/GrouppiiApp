@@ -3,7 +3,6 @@ package com.techease.groupiiapplication.adapter.payment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.PersonalExpendituresItem;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
+import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.util.List;
 
@@ -24,11 +23,11 @@ import me.tankery.lib.circularseekbar.CircularSeekBar;
 public class RecentTransctionAdapter extends RecyclerView.Adapter<RecentTransctionAdapter.MyViewHolder> {
 
     private Context context;
-    private List<PersonalExpendituresItem> groupExpendituresItems;
+    private List<RecentTransaction> recentTransaction;
 
 
-    public RecentTransctionAdapter(Context context, List<PersonalExpendituresItem> groupExpendituresItems) {
-        this.groupExpendituresItems = groupExpendituresItems;
+    public RecentTransctionAdapter(Context context, List<RecentTransaction> groupExpendituresItems) {
+        this.recentTransaction = groupExpendituresItems;
         this.context = context;
 
     }
@@ -45,13 +44,19 @@ public class RecentTransctionAdapter extends RecyclerView.Adapter<RecentTranscti
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+        RecentTransaction recentTransaction= this.recentTransaction.get(position);
+
         holder.circularSeekBar.setEnabled(false);
+
+        holder.tvTitileName.setText(recentTransaction.getName());
+        holder.tvDate.setText(DateUtills.getDateFormate(recentTransaction.getDate()));
+//        holder.circularSeekBar.setProgress(recentTransaction);
 
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return recentTransaction.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -31,14 +31,14 @@ import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentOnBackListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
-import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AddPaymentFragment;
+import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentFragment;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -163,7 +163,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                 if (response.isSuccessful()) {
                     TripFragment.aBooleanRefreshAllTripApi = true;
                     Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
-                    NewTripStepFourPaymentActivity.this.startActivity(mainIntent,ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
+                    NewTripStepFourPaymentActivity.this.startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
                     NewTripStepFourPaymentActivity.this.finishAffinity();
                     dialog.dismiss();
 
@@ -204,10 +204,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         ivMasterCard = llBottomSheetAddPayment.findViewById(R.id.ivMastercard);
         ivJcb = llBottomSheetAddPayment.findViewById(R.id.ivJcb);
         ivAmericanCard = llBottomSheetAddPayment.findViewById(R.id.ivAmericanExpress);
-
-
-
-
 
 
         strIsPersonal = "1";
@@ -372,7 +368,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripId(this), AppRepository.mUserID(this),
-                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal,strPaymentUser, strPaymentMethod);
+                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, "0");
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
@@ -418,7 +414,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                     dialog.dismiss();
                     tvPartiallyPaidPercentage.setText(response.body().getData().getPaidPercent() + "%");
                     tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
-                    circularSeekBar.setProgress(response.body().getData().getPaidPercent());
+//                    circularSeekBar.setProgress(response.body().getData().getPaidPercent());
                     tvPaidNumber.setText("" + response.body().getData().getFullyPaidUsers());
                     ConnectExpenditures.setMyBooleanListener(true);
 
@@ -497,7 +493,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             addTripDataModel.setUserid((long) AppRepository.mUserID(this));
             addTripDataModel.setName(AppRepository.mUserName(NewTripStepFourPaymentActivity.this));
             userList.add(addTripDataModel);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -523,7 +519,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             }
         });
     }
-
 
 
     @Override

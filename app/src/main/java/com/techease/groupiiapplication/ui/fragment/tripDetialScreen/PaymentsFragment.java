@@ -1,10 +1,10 @@
 package com.techease.groupiiapplication.ui.fragment.tripDetialScreen;
 
-import static com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity.personalExpendituresItems;
-
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,15 +19,19 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.payment.RecentTransctionAdapter;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesData;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GroupExpendituresItem;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.FullPaid;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesDataModel;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GroupExpenditure;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.PartialPaid;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.SharesNoCost;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
-import com.techease.groupiiapplication.interfaceClass.participantsCostsClickInterface.ConnectParticipantCostsClick;
+import com.techease.groupiiapplication.interfaceClass.ClickPartiallyPaidTripListener;
+import com.techease.groupiiapplication.interfaceClass.ClickRecentTransactionListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.paymentClickInterface.ConnectPaymentClick;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.NumberFormatUtil;
 
 import java.util.ArrayList;
 
@@ -55,6 +59,8 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     @BindView(R.id.tvPaidNumber)
     TextView tvPaidNumber;
 
+    @BindView(R.id.tvNoRecentTransactionsFound)
+    TextView tvNoRecentTransactionsFound;
     @BindView(R.id.rvRecentTransaction)
     RecyclerView rvRecentTransaction;
 
@@ -62,18 +68,24 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     @BindView(R.id.tvRecentTransaction)
     TextView tvRecentTransaction;
 
-    AddPaymentCallBackListener addPaymentCallBackListener;
-
-
     @BindView(R.id.tvPaymentPaid)
     TextView tvPaymentPaid;
-    ArrayList<GetPaymentExpensesData> getPaymentExpensesData = new ArrayList<>();
-    ArrayList<GroupExpendituresItem> groupExpendituresItems = new ArrayList<>();
+    ArrayList<GetPaymentExpensesDataModel> getPaymentExpensesData = new ArrayList<>();
+
+    ArrayList<RecentTransaction> recentTransactions = new ArrayList<>();
+    ArrayList<GroupExpenditure> groupExpendituresItems = new ArrayList<>();
+
+
+    ClickPartiallyPaidTripListener clickPartiallyPaidTripListener;
+
+
+    public static ArrayList<FullPaid> fullPaidArrayList = new ArrayList<>();
+    public static ArrayList<PartialPaid> partialPaidArrayList = new ArrayList<>();
+    public static ArrayList<SharesNoCost> sharesNoCostArrayList = new ArrayList<>();
     String strTripID;
     int strUserID;
-
-
     RecentTransctionAdapter recentTransctionAdapter;
+    ClickRecentTransactionListener clickParticipantCostsListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +99,17 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         strTripID = AppRepository.mTripIDForUpdation(getActivity());
         strUserID = AppRepository.mUserID(getActivity());
 
+        if (getActivity() instanceof ClickRecentTransactionListener)
+            clickParticipantCostsListener = (ClickRecentTransactionListener) getActivity();
+
+        if (getActivity() instanceof ClickPartiallyPaidTripListener)
+            clickPartiallyPaidTripListener = (ClickPartiallyPaidTripListener) getActivity();
+
         ButterKnife.bind(this, view);
         circularSeekBar.setEnabled(false);
         getPaymentExpenses();
 
-        recentTransctionAdapter = new RecentTransctionAdapter(getActivity(), personalExpendituresItems);
+        recentTransctionAdapter = new RecentTransctionAdapter(getActivity(), recentTransactions);
         rvRecentTransaction.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rvRecentTransaction.setAdapter(recentTransctionAdapter);
 
@@ -106,22 +124,41 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         Log.d("zmaids", strTripID + "     " + strUserID);
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(strTripID, strUserID);
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
 
                     assert response.body() != null;
-                    tvPercentage.setText(response.body().getData().getPaidPercent() + "%");
                     tvPaidNumber.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
-//                    tvBalance.setText("" + response.body().getData().getTotalpayment());
+
+                    fullPaidArrayList.clear();
+                    partialPaidArrayList.clear();
+                    sharesNoCostArrayList.clear();
+                    recentTransactions.clear();
+
+                    fullPaidArrayList.addAll(response.body().getData().getFullPaid());
+                    partialPaidArrayList.addAll(response.body().getData().getPartialPaid());
+                    sharesNoCostArrayList.addAll(response.body().getData().getSharesNoCost());
+                    recentTransactions.addAll(response.body().getData().getRecentTransaction());
+                    recentTransctionAdapter.notifyDataSetChanged();
+
+                    if (recentTransactions.size() == 0) {
+                        tvNoRecentTransactionsFound.setTransitionVisibility(View.VISIBLE);
+                    } else {
+                        tvNoRecentTransactionsFound.setTransitionVisibility(View.GONE);
+                    }
+
+
                     try {
-                        circularSeekBar.setProgress(response.body().getData().getPaidPercent());
-                    }catch (Exception e){
+                        tvPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));
+                        circularSeekBar.setProgress(Float.parseFloat(NumberFormatUtil.FormatPercentageShowCircle(response.body().getData().getPaidPercent())));
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
-                    tvPaymentPaid.setText("0 / " + "$ " + response.body().getData().getTotalpayment());
+                    tvPaymentPaid.setText("$" + response.body().getData().getRecievedpayment() + " / " + "$" + response.body().getData().getTotalpayment());
 
                     Log.d("zma payment response", "" + response.body().getData().getGroupExpenditures());
 
@@ -143,10 +180,10 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mcvPayment:
-                ConnectPaymentClick.setMyBoolean(true);
+                clickPartiallyPaidTripListener.goClickPartiallyPaidTrip();
                 break;
             case R.id.tvRecentTransaction:
-                ConnectParticipantCostsClick.setMyBoolean(true);
+                clickParticipantCostsListener.goClickRecentTransaction();
                 break;
 
         }
@@ -159,14 +196,4 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         Toast.makeText(getActivity(), "payment added", Toast.LENGTH_SHORT).show();
     }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        try {
-//            addPaymentCallBackListener = (AddPaymentCallBackListener) context;
-//        } catch (Exception e) {
-//
-//        }
-//
-//    }
 }

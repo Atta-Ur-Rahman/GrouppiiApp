@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -630,11 +631,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         while (cursor.moveToNext()) {
 
 
-
-
             name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
 
 
             ContactDataModel number = new ContactDataModel();
@@ -674,7 +672,9 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    GetContactsIntoArrayList();
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewTripStepOneInviteFriendActivity.this, Manifest.permission.READ_CONTACTS)) {
+                        GetContactsIntoArrayList();
+                    }
                 }
             }
 

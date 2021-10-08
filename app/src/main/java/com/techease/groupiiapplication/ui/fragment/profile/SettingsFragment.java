@@ -47,7 +47,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.rlPrivacyPolicy)
     RelativeLayout rlPrivacyPolicy;
 
-
     @BindView(R.id.ivProfilePicture)
     ImageView ivProfilePicture;
 
@@ -59,7 +58,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
-
 
     private void setProfileImage() {
 
@@ -116,7 +114,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onPageFinished(String url) {
                                 super.onPageFinished(url);
-
                             }
                         })
                         .show("https://www.freeprivacypolicy.com/live/6151174f-2367-4f51-bec5-0b0763d4a600");

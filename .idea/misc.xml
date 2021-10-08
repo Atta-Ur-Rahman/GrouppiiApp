@@ -45,6 +45,7 @@
         <entry key="app/src/main/res/layout/custom_gallery_photo_grid_view_layout.xml" value="0.3004566210045662" />
         <entry key="app/src/main/res/layout/custom_gallery_photo_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_menu_bottom_sheet.xml" value="0.16203703703703703" />
+        <entry key="app/src/main/res/layout/custom_participaints_costs_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_recent_transaction_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_trip_detail_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_trip_expenditures_layout.xml" value="0.30462962962962964" />
@@ -52,9 +53,15 @@
         <entry key="app/src/main/res/layout/fragment_active.xml" value="0.2101851851851852" />
         <entry key="app/src/main/res/layout/fragment_add_and_edit_day_plane.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_add_credit_card.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_add_payment.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_add_payments_tabs.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_chat_all_users.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_dont_share_costs_participant.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_full_paid_participant.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_grop_expenditures_trip.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.14814814814814814" />
+        <entry key="app/src/main/res/layout/fragment_partially_paid_participant.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/fragment_partially_paid_trip.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/fragment_participant_costs.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_payments.xml" value="0.30462962962962964" />

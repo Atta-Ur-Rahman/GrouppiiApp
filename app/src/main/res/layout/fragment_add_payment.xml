@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backColor"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.tripDetialScreen.AddPaymentFragment">
+    android:fillViewport="true"
+    tools:context=".ui.fragment.payment.AddPaymentFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:layout_marginTop="@dimen/widget_margin"
             android:background="@drawable/round_line_back"
             android:scaleType="fitXY"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +36,7 @@
             android:layout_margin="@dimen/widget_margin_left_right"
             android:orientation="horizontal"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,21 +60,20 @@
                 android:textStyle="bold" />
 
 
-            <TextView
-                android:id="@+id/tvPaymentAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:text="Add"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/main_heading_text_size"
-                android:textStyle="bold" />
-
-
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tvPaymentAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="@dimen/widget_margin_left_right"
+            android:gravity="center_vertical"
+            android:text="Add"
+            android:textColor="@color/purple_500"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvProfile"
@@ -367,6 +369,7 @@
 
 
         <View
+            android:visibility="gone"
             android:id="@+id/ivBottomMinusIcon"
             android:layout_width="134dp"
             android:layout_height="5dp"

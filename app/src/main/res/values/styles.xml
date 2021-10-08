@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="FilledBoxEndIconTint">fill_color</style>
 
     <style name="CounterText" tools:ignore="DuplicateDefinition"></style>
+
     <style name="HintText" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/purple_500</item>
@@ -23,7 +24,19 @@
         <!--<item name="fontFamily">@font/montserrat_light</item>-->
     </style>
 
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/tab_indicator_text</item>
+    </style>
 
+
+
+    <style name="TabLayoutTextStyleParticipantCosts">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/tab_indicator_text</item>
+    </style>
 
 
     <!--Style Material Dialog Bottom Sheet-->
@@ -36,11 +49,11 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
     </style>
+
     <style name="MaterialDialogSheetAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
-
 
 
     <style name="SCBSwitch" parent="Theme.AppCompat.Light">
@@ -79,7 +92,6 @@
     </style>
 
 
-
     <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!--buttons color-->
         <item name="colorAccent">@android:color/holo_orange_dark</item>
@@ -89,4 +101,4 @@
         <item name="android:windowBackground">@drawable/background_dialog</item>
     </style>
 
-    </resources>
+</resources>

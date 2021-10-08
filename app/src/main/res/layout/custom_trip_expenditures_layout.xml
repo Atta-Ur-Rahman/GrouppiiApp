@@ -20,6 +20,7 @@
             android:id="@+id/ivType"
             android:layout_width="50dp"
             android:layout_height="40dp"
+            android:padding="4dp"
             android:src="@mipmap/taxi_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -53,6 +54,7 @@
 
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/ivTaxi"
                 android:layout_width="20dp"
                 android:layout_height="40sp"
@@ -68,7 +70,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="@dimen/widget_margin"
                 android:gravity="center_vertical"
-                android:text="$80% - Taxi"
+                android:text="$80 - Taxi"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize16sp"
                 android:textStyle="bold"

@@ -54,6 +54,7 @@
     <string name="days_plan">Days Plan</string>
     <string name="payments">Payments</string>
     <string name="photos">Photos</string>
+    <string name="dosnotsharecost">Don\'t Share Costs</string>
 
 
 </resources>

@@ -17,12 +17,10 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripDetail.GroupExpendituresAdapter;
-import com.techease.groupiiapplication.dataModel.tripDetial.getPaymentExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectionBooleanExpendituresListener;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.paymentClickInterface.ConnectPaymentClick;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.paymentClickInterface.ConnectionBooleanClickChangedListener;
 import com.techease.groupiiapplication.utils.AppRepository;
 
 import java.util.Collections;
@@ -61,8 +59,6 @@ public class GropExpendituresTripFragment extends Fragment {
         tripExpendituresAdapter = new GroupExpendituresAdapter(getActivity(), groupExpendituresItems);
         rvGroupExpenditure.setLayoutManager(linearLayoutManager);
         rvGroupExpenditure.setAdapter(tripExpendituresAdapter);
-        Collections.reverse(groupExpendituresItems);
-
 
         ConnectExpenditures.addClickListener(new ConnectionBooleanExpendituresListener() {
             @Override
@@ -77,7 +73,7 @@ public class GropExpendituresTripFragment extends Fragment {
 
             }
         });
-//        getPaymentExpenses();
+        getPaymentExpenses();
 
 
         return view;
@@ -86,6 +82,7 @@ public class GropExpendituresTripFragment extends Fragment {
 
 
     private void getPaymentExpenses() {
+
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripId(getActivity()), AppRepository.mUserID(getActivity()));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
@@ -94,8 +91,9 @@ public class GropExpendituresTripFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     assert response.body() != null;
-                    groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
-                    tripExpendituresAdapter.notifyDataSetChanged();
+//                    groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
+//                    Collections.reverse(groupExpendituresItems);
+//                    tripExpendituresAdapter.notifyDataSetChanged();
 
 //                    Log.d("zma payment response", "" + response.body().getData().getGroupExpenditures());
 
