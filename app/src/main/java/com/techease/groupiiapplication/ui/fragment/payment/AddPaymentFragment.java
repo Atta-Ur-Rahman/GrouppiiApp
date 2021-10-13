@@ -30,6 +30,7 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataMod
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFragment;
@@ -71,6 +72,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
     CustomSpinnerAdapter customSpinnerAdapter;
+
     public static AddPaymentFragment newInstance() {
         AddPaymentFragment fragment = new AddPaymentFragment();
         return fragment;
@@ -135,7 +137,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     private void getUser() {
 
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gallery/" + AppRepository.mTripId(getActivity()));
+        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gallery/" + AppRepository.mTripIDForUpdation(getActivity()));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -252,12 +254,9 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         strPaymentUser = String.valueOf(userList.get(position).getUserid());
-
-
     }
 
     @Override
@@ -265,15 +264,15 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     }
 
-
     private void ApiCallForAddPayment() {
-
         String strPaid;
         if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
+            //zero for paid
             strPaid = "0";
         } else {
+            //one for expenses
             strPaid = "1";
-
+            strIsPersonal = "0";
         }
 
         dialog.show();
@@ -292,11 +291,12 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                     etShortDescription.setText("");
 
                     callBackListener.onPaymentAdddCallBack();
+                    ConnectParticipantCostsBackClick.setMyBoolean(true);
 
                     PaymentsFragment paymentsFragment = new PaymentsFragment();
                     paymentsFragment.getPaymentExpenses();
 
-                    KeyBoardUtils.hideKeyboard(Objects.requireNonNull(getActivity()));
+                    KeyBoardUtils.hideKeyboard(requireActivity());
                     KeyBoardUtils.closeKeyboard(getActivity());
 
                 } else {
@@ -378,5 +378,16 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         userList.addAll(TripDetailScreenActivity.paymentUserParticipaintsList);
         customSpinnerAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
+            swAddGroupPayment.setVisibility(View.VISIBLE);
+        } else {
+            swAddGroupPayment.setVisibility(View.GONE);
+
+        }
     }
 }

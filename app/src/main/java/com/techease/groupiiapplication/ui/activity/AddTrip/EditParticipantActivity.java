@@ -253,7 +253,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
 
     private void ApiCallGetUserTrip() {
         dialog.show();
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
+        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(this));
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -263,7 +263,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         TripDetailScreenActivity.userParticipaintsList.clear();
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
-
                         TripFragment.userList.clear();
                         for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
                             User user = new User();

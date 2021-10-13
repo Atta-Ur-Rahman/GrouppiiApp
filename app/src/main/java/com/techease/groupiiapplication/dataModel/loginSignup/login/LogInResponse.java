@@ -1,29 +1,28 @@
-
 package com.techease.groupiiapplication.dataModel.loginSignup.login;
+
 import com.google.gson.annotations.SerializedName;
 
+public class LogInResponse{
 
-public class LogInResponse {
+	@SerializedName("data")
+	private Data data;
 
-    @SerializedName("data")
-    private LoginDataModel mData;
-    @SerializedName("success")
-    private Boolean mSuccess;
+	@SerializedName("success")
+	private boolean success;
 
-    public LoginDataModel getData() {
-        return mData;
-    }
+	public void setData(Data data){
+		this.data = data;
+	}
 
-    public void setData(LoginDataModel data) {
-        mData = data;
-    }
+	public Data getData(){
+		return data;
+	}
 
-    public Boolean getSuccess() {
-        return mSuccess;
-    }
+	public void setSuccess(boolean success){
+		this.success = success;
+	}
 
-    public void setSuccess(Boolean success) {
-        mSuccess = success;
-    }
-
+	public boolean isSuccess(){
+		return success;
+	}
 }

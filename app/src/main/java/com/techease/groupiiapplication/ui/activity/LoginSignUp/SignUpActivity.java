@@ -102,6 +102,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         ButterKnife.bind(this);
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
+        getCurrentLocationPermission();
 
 
     }
@@ -307,6 +308,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     strLatitude = String.valueOf(latitude);
                     strLongitude = String.valueOf(longitude);
+
+
 
                     valid = true;
 

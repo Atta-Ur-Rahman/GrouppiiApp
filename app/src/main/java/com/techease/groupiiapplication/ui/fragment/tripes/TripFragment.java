@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -196,16 +199,18 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     }
 
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.ivProfile})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivProfile:
+//                setAnimation();
                 startActivity(new Intent(getActivity(), ProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 break;
         }
     }
-
 
 }

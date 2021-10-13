@@ -73,7 +73,7 @@ public class AllTripDayPlanFragment extends Fragment {
         ButterKnife.bind(this, view);
         tvTripNotFound = tvTripDayNotFound;
 //        dialog = AlertUtils.createProgressDialog(getActivity());
-        ApiCallAllTirp(AppRepository.mTripId(getActivity()));
+        ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
         initAdapter();
         CustomDatePicker();
 
@@ -128,7 +128,7 @@ public class AllTripDayPlanFragment extends Fragment {
                 // Do Something
                 strDate = year + "-" + month + "-" + day;
                 try {
-                    ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -138,7 +138,7 @@ public class AllTripDayPlanFragment extends Fragment {
             public void onDisabledDateSelected(int year, int month, int day, int dayOfWeek, boolean isDisabled) {
                 strDate = year + "-" + month + "-" + day;
                 try {
-                    ApiCallAllTirpGetByDate(AppRepository.mTripId(getActivity()));
+                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

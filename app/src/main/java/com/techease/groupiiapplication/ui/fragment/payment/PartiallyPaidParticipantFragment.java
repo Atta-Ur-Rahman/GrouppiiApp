@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.payment.PartiallyPaidAdapter;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFragment;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +49,7 @@ public class PartiallyPaidParticipantFragment extends Fragment {
 
         partiallyPaidAdapter = new PartiallyPaidAdapter(getActivity(), PaymentsFragment.partialPaidArrayList);
         rvPartiallyPaid.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rvPartiallyPaid.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(getActivity()));
         rvPartiallyPaid.setAdapter(partiallyPaidAdapter);
         partiallyPaidAdapter.notifyDataSetChanged();
 

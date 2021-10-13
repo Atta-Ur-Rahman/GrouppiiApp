@@ -93,6 +93,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             markerOptions = new MarkerOptions();
+            googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             ApiCallGetUserTrip(googleMap);
 
         }
@@ -136,14 +137,13 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
         userParticipaintsList.clear();
         this.googleMap = googleMap;
 
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(getActivity()));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(getActivity()));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
 //                    dialog.dismiss();
                     userParticipaintsList.addAll(response.body().getData());
-
                     for (int i = 0; i < userParticipaintsList.size(); i++) {
                         new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
                     }

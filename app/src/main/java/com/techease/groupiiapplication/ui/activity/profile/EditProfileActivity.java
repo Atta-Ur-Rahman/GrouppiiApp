@@ -109,9 +109,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private void setProfileImageAndName() {
         if (AppRepository.mUserName(this).length() > 0) {
             tvProfileName.setText(AppRepository.mUserName(this));
+            etName.setText(AppRepository.mUserName(this));
+            etPhoneNumber.setText(AppRepository.mPhoneNumber(this));
         }
         if (AppRepository.mEmail(this).length() > 0) {
             tvProfileEmail.setText(AppRepository.mEmail(this));
+            etEmail.setText(AppRepository.mEmail(this));
         }
         if (AppRepository.mUserProfileImage(this).length() > 0) {
             Picasso.get().load(AppRepository.mUserProfileImage(this)).placeholder(R.drawable.user).into(ivProfilePicture);
@@ -156,6 +159,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     AppRepository.mPutValue(EditProfileActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
                     AppRepository.mPutValue(EditProfileActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
                     AppRepository.mPutValue(EditProfileActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
+                    AppRepository.mPutValue(EditProfileActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
+                    Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+
                     dialog.dismiss();
                 } else {
                     try {

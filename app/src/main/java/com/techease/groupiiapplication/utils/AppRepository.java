@@ -29,9 +29,9 @@ public class AppRepository {
         return mGetValue(context).getString("auth_token", "");
     }
 
-    public static String mTripId(Context context) {
-        return mGetValue(context).getString("tripID", "");
-    }
+//    public static String mTripId(Context context) {
+//        return mGetValue(context).getString("tripID", "");
+//    }
 
 
     public static String mUrl(Context context) {
@@ -40,12 +40,11 @@ public class AppRepository {
 
 
     public static String mLat(Context context) {
-        return mGetValue(context).getString("lat", "");
+        return mGetValue(context).getString("lat", "null");
     }
 
-
     public static String mLng(Context context) {
-        return mGetValue(context).getString("lng", "");
+        return mGetValue(context).getString("lng", "null");
     }
 
     public static int mUserID(Context context) {
@@ -138,12 +137,9 @@ public class AppRepository {
     }
 
 
-
     public static String mCurrencyType(Context context) {
         return mGetValue(context).getString("mCurrencyType", "");
     }
-
-
 
 
 }

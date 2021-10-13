@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.techease.groupiiapplication.R;
@@ -32,6 +33,7 @@ import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDeta
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.GeneralUtills;
@@ -92,14 +94,12 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             holder.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-
                     String strTripId = String.valueOf(data.getId());
                     if (GeneralUtills.PopupMenuDelete(new ApiCallback() {
                         @Override
                         public boolean onResponse(boolean success) {
                             if (success) {
                                 removeAt(position);
-
                             }
                             return true;
                         }
@@ -131,11 +131,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
 
-                    dialog.show();
+
+//                    dialog.show();
                     new Thread() {
 
                         public void run() {
-
+//                            ActivityOptions options = ActivityOptions
+//                                    .makeSceneTransitionAnimation((Activity) context,view, "robot");
                             TripFragment.userList = data.getUsers();
                             Intent intent = new Intent(context, TripDetailScreenActivity.class);
                             Bundle bundle = new Bundle();
@@ -149,6 +151,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                             bundle.putBoolean("is_createdby", data.isIsCreatedby());
                             intent.putExtras(bundle);
                             context.startActivity(intent);
+                            Animatoo.animateFade(context);
 
                             dialog.dismiss();
                         }

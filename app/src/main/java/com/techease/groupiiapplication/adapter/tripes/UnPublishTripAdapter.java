@@ -105,6 +105,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
             @Override
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
+                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
 
                 if (data.getTitle().equals("unpublished")) {
 //                    Log.d("zma tripid", String.valueOf(data.getId()));

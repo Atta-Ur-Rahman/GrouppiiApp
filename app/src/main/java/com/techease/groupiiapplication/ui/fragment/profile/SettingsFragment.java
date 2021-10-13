@@ -1,15 +1,20 @@
 package com.techease.groupiiapplication.ui.fragment.profile;
 
+import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -78,11 +83,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.ivProfilePicture:
-                startActivity(new Intent(getActivity(), ProfileActivity.class));
+                startActivity(new Intent(getActivity(), ProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
 
                 break;
             case R.id.rlChangePassword:
-                startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
+                startActivity(new Intent(getActivity(), ChangePasswordActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 break;
 
             case R.id.rlShare:
@@ -101,7 +106,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.rlContactUs:
-                startActivity(new Intent(getActivity(), ContactUsActivity.class));
+//                setAnimation();
+                startActivity(new Intent(getActivity(), ContactUsActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
 
                 break;
             case R.id.rlPrivacyPolicy:
@@ -120,10 +126,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.ivBrowser:
-
                 String url = "http://www.google.com";
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(browserIntent);
+                startActivity(browserIntent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 break;
             case R.id.ivFacebook:
                 launchFacebook();
@@ -153,7 +158,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void launchInstagram() {
-        Uri uri = Uri.parse("http://instagram.com/_u/Groupii");
+        Uri uri = Uri.parse("https://www.instagram.com/grouppiiapp/");
         Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
         likeIng.setPackage("com.instagram.android");
 
@@ -189,4 +194,5 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         setProfileImage();
     }
+
 }

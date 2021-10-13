@@ -50,10 +50,16 @@ public class FullyPaidAdapter extends RecyclerView.Adapter<FullyPaidAdapter.MyVi
 
         holder.circularSeekBar.setEnabled(false);
 
-        holder.tvTitileName.setText(recentTransaction.getName());
+        holder.tvTitileName.setText("$" + recentTransaction.getAmount() + "-" + recentTransaction.getName());
         holder.tvDate.setText("Fully Paid");
         holder.circularSeekBar.setProgress(100);
         holder.tvPersentage.setText("100%");
+
+        if (recentTransaction.getAmount() == null) {
+            holder.tvTitileName.setText("$0" + "-" + recentTransaction.getName());
+            holder.circularSeekBar.setProgress(0);
+            holder.tvPersentage.setText("0%");
+        }
 
     }
 
@@ -81,7 +87,6 @@ public class FullyPaidAdapter extends RecyclerView.Adapter<FullyPaidAdapter.MyVi
             circularSeekBar = view.findViewById(R.id.csPayment);
 
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
-
 
 
         }

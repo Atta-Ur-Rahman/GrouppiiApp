@@ -100,6 +100,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     Spinner spUserName;
     boolean valid;
 
+    String strTripID;
+
     String strTitle, strPhoto, strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
 
 
@@ -125,6 +127,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         dialog = AlertUtils.createProgressDialog(this);
         circularSeekBar.setEnabled(false);
         ProcessBarAnimation();
+
+        strTripID = AppRepository.mTripIDForUpdation(this);
 
 
         addPaymentBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddPayment);
@@ -156,7 +160,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     private void ApiCallPublishTrip() {
         dialog.show();
-        Call<PublishTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().publishTrip("trips/publish/" + AppRepository.mTripId(this));
+        Call<PublishTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().publishTrip("trips/publish/" + strTripID);
         getGalleryPhotoResponseCall.enqueue(new Callback<PublishTripResponse>() {
             @Override
             public void onResponse(Call<PublishTripResponse> call, Response<PublishTripResponse> response) {
@@ -367,7 +371,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     private void ApiCallForAddPayment() {
 
         dialog.show();
-        Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripId(this), AppRepository.mUserID(this),
+        Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(strTripID, AppRepository.mUserID(this),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, "0");
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
@@ -405,7 +409,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     private void getPaymentExpenses() {
         dialog.show();
-        Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(strTripID, AppRepository.mUserID(this));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -489,7 +493,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         try {
             AddTripDataModel addTripDataModel = new AddTripDataModel();
             addTripDataModel.setEmail(AppRepository.mEmail(NewTripStepFourPaymentActivity.this));
-            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripId(this)));
+            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripIDForUpdation(this)));
             addTripDataModel.setUserid((long) AppRepository.mUserID(this));
             addTripDataModel.setName(AppRepository.mUserName(NewTripStepFourPaymentActivity.this));
             userList.add(addTripDataModel);
@@ -498,7 +502,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         }
 
         dialog.show();
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripId(this));
+        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + strTripID);
         getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {

@@ -161,6 +161,7 @@
                     android:paddingRight="@dimen/widget_margin_left_right"
                     android:text="Attaurrahman"
                     android:textAlignment="textEnd"
+                    android:selectAllOnFocus="true"
                     android:textSize="@dimen/middle_text_size"
                     tools:ignore="RtlCompat" />
 
@@ -190,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="PhoneNumber"
+                    android:text="Phone Number"
                     android:textColor="@color/black"
                     android:textSize="@dimen/middle_text_size"
                     android:textStyle="bold" />
@@ -205,6 +206,8 @@
                     android:gravity="right"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
+                    android:selectAllOnFocus="true"
+                    android:inputType="phone"
                     android:text="03038060226"
                     android:textSize="@dimen/middle_text_size" />
 
@@ -248,6 +251,8 @@
                     android:gravity="right"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
+                    android:selectAllOnFocus="true"
+                    android:inputType="textEmailAddress"
                     android:text="attaurrahman321@gmail.com"
                     android:textSize="@dimen/middle_text_size" />
 

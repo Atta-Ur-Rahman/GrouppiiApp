@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -110,7 +111,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     public static ArrayList<AddTripDataModel> addTripDataModels = new ArrayList<>();
 
-    boolean contectBoolean = true;
+    boolean contactPermissiongBoolean = true;
 
     Dialog dialog;
 
@@ -132,14 +133,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private List<ContactDataModel> contactDataModelList = new ArrayList<>();
     Cursor cursor;
     private String name, phoneNumber;
-    public static final int RequestPermissionCode = 1;
     MyContactsAdapter contactsAdapter;
     RecyclerViewClickListener listener;
     @BindView(R.id.rvMyContact)
     RecyclerView rvMyContact;
 
-
-    boolean aBooleanLayvissible = true;
+    String strTripID;
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -151,11 +150,12 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
         tvInviteFriendNotFound.setVisibility(View.VISIBLE);
-
         initAdapter();
         initContactAdapter();
         ApiCallGetTripID();
         ProcessBarAnimation();
+
+        strTripID = AppRepository.mTripIDForUpdation(this);
 
 
         etPhone.addTextChangedListener(new TextWatcher() {
@@ -171,11 +171,13 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String text = editable.toString();
-                Log.d("zma text", text);
-                contactsAdapter.getFilter().filter(text);
-                if (tilEmail.getVisibility() == View.VISIBLE) {
-                    ContactLayoutVisible();
+                if (contactPermissiongBoolean) {
+                    String text = editable.toString();
+                    Log.d("zma text", text);
+                    contactsAdapter.getFilter().filter(text);
+                    if (tilEmail.getVisibility() == View.VISIBLE) {
+                        ContactLayoutVisible();
+                    }
                 }
             }
         });
@@ -223,7 +225,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 if (response.isSuccessful()) {
                     Log.d("zma tripid", String.valueOf(response.body().getTripid()));
                     dialog.dismiss();
-                    AppRepository.mPutValue(NewTripStepOneInviteFriendActivity.this).putString("tripID", String.valueOf(response.body().getTripid())).commit();
+                    strTripID = response.body().getTripid() + "";
+                    AppRepository.mPutValue(NewTripStepOneInviteFriendActivity.this).putString("tripIDForUpdation", strTripID).commit();
                 } else {
                     dialog.dismiss();
                 }
@@ -297,7 +300,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 break;
             case R.id.ivAddUserTrip:
                 ContactGetAndCheckPermission();
-
                 clAddInvite.setVisibility(View.GONE);
                 clInviteFriend.setVisibility(View.VISIBLE);
                 ContactLayoutGone();
@@ -321,7 +323,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriendWithGmailAndPhone() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strShareCost, strTripID, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -364,7 +366,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriendWithGmail() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strEmail, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strEmail, strShareCost, strTripID, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -408,7 +410,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     private void ApiCallForAddInviteFriendWithPhone() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost, AppRepository.mTripId(this), AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost, strTripID, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -572,7 +574,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
     private void apiCallForTripDelete() {
-        Call<DeleteTripResponse> deleteTripResponseCall = BaseNetworking.ApiInterface().deleteTrip(AppRepository.mTripId(this));
+        Call<DeleteTripResponse> deleteTripResponseCall = BaseNetworking.ApiInterface().deleteTrip(strTripID);
         deleteTripResponseCall.enqueue(new Callback<DeleteTripResponse>() {
             @Override
             public void onResponse(Call<DeleteTripResponse> call, Response<DeleteTripResponse> response) {
@@ -671,9 +673,18 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewTripStepOneInviteFriendActivity.this, Manifest.permission.READ_CONTACTS)) {
+                    if (report.getGrantedPermissionResponses().size() == 1) {
+                        etPhone.setInputType(InputType.TYPE_CLASS_TEXT);
                         GetContactsIntoArrayList();
+                        contactPermissiongBoolean = true;
+                    }
+
+                    if (report.getDeniedPermissionResponses().size() == 1) {
+                        etPhone.setInputType(InputType.TYPE_CLASS_PHONE);
+                        contactPermissiongBoolean = false;
+
                     }
                 }
             }

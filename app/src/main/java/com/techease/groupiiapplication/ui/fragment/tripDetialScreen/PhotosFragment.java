@@ -55,7 +55,7 @@ public class PhotosFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
         ButterKnife.bind(this, view);
 
-        strTripId = AppRepository.mTripId(getActivity());
+        strTripId = AppRepository.mTripIDForUpdation(getActivity());
         ApiCallGetAllGalleryPhoto();
         dialog = AlertUtils.createProgressDialog(getActivity());
 

@@ -1,6 +1,7 @@
 package com.techease.groupiiapplication.ui.fragment.tripDetialScreen;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +31,10 @@ import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.Sh
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.ClickPartiallyPaidTripListener;
 import com.techease.groupiiapplication.interfaceClass.ClickRecentTransactionListener;
+import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
+import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ParticipantCostsBackClickChangedListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.NumberFormatUtil;
 
@@ -111,11 +116,30 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
 
         recentTransctionAdapter = new RecentTransctionAdapter(getActivity(), recentTransactions);
         rvRecentTransaction.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rvRecentTransaction.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(getActivity()));
         rvRecentTransaction.setAdapter(recentTransctionAdapter);
 
 
+        ConnectParticipantCostsBackClick.addClickListener(new ParticipantCostsBackClickChangedListener() {
+            @Override
+            public void OnMyBooleanClickChanged() {
+                getPaymentExpenses();
+
+
+                InputMethodManager imm = (InputMethodManager) getActivity()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (imm.isAcceptingText()) {
+                    Toast.makeText(getActivity(), "Software Keyboard was shown", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Software Keyboard was not shown", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         Log.d("zma user id", "" + AppRepository.mUserID(getActivity()));
-        Log.d("zma trip id", "" + AppRepository.mTripId(getActivity()));
+        Log.d("zma trip id", "" + AppRepository.mTripIDForUpdation(getActivity()));
         return view;
     }
 

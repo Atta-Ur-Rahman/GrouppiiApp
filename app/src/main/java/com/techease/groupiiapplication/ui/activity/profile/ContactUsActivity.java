@@ -3,8 +3,12 @@ package com.techease.groupiiapplication.ui.activity.profile;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,6 +48,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
         init();
+        setAnimation();
 
     }
 
@@ -93,5 +98,17 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+    }
+
+
+    public void setAnimation() {
+        if (Build.VERSION.SDK_INT > 20) {
+            Slide slide = new Slide();
+            slide.setSlideEdge(Gravity.RIGHT);
+            slide.setDuration(200);
+            slide.setInterpolator(new AccelerateDecelerateInterpolator());
+            getWindow().setExitTransition(slide);
+            getWindow().setEnterTransition(slide);
+        }
     }
 }

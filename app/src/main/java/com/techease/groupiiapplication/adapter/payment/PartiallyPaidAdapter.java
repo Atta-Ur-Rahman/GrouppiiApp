@@ -46,7 +46,7 @@ public class PartiallyPaidAdapter extends RecyclerView.Adapter<PartiallyPaidAdap
 
         PartialPaid partialPaid = this.partialPaidList.get(position);
         holder.circularSeekBar.setEnabled(false);
-        holder.tvTitileName.setText(partialPaid.getName());
+        holder.tvTitileName.setText("$" + partialPaid.getAmount() + "-"+ partialPaid.getName());
         holder.tvDate.setText("Partially Paid");
         holder.circularSeekBar.setProgress(partialPaid.getPercent());
         holder.tvPersentage.setText(NumberFormatUtil.FormatPercentage(Double.valueOf(partialPaid.getPercent())));

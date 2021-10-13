@@ -72,7 +72,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
 
 
         userID = AppRepository.mUserID(getActivity());
-        tripID = AppRepository.mTripId(getActivity());
+        tripID = AppRepository.mTripIDForUpdation(getActivity());
 
         //add activity
         ivAddActivityBack = parentView.findViewById(R.id.ivAddActivityBack);
@@ -258,7 +258,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
                     dialog.dismiss();
 //                    Log.d("zma", String.valueOf(response.message()));
 
-                    AllTripDayPlanFragment.ApiCallAllTirp(AppRepository.mTripId(getActivity()));
+                    AllTripDayPlanFragment.ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
 
 
                     //add activity bottom sheet

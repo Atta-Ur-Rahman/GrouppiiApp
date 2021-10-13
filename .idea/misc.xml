@@ -6,8 +6,10 @@
         <entry key="app/src/main/res/drawable/greenprogress.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/home_screen_background.xml" value="0.1625" />
         <entry key="app/src/main/res/drawable/ic_baseline_drag_indicator_24.xml" value="0.31461187214611874" />
+        <entry key="app/src/main/res/drawable/image_thumbnail.xml" value="0.13986486486486485" />
         <entry key="app/src/main/res/drawable/line.xml" value="0.14444444444444443" />
         <entry key="app/src/main/res/drawable/line_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/progress_animation_icon_size.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/drawable/round_line.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/drawable/round_line_white.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.31461187214611874" />
@@ -15,6 +17,7 @@
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.3189814814814815" />
         <entry key="app/src/main/res/drawable/thumb.xml" value="0.14444444444444443" />
         <entry key="app/src/main/res/drawable/thumb_drawable.xml" value="0.14444444444444443" />
+        <entry key="app/src/main/res/drawable/vegitartian_icon_size.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/layout/activity_add_credit_card.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_add_user_trip_particpant.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.16898148148148148" />
@@ -24,6 +27,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.275" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_four_payment.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_new_trip_step_one.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_three.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_two.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3004566210045662" />

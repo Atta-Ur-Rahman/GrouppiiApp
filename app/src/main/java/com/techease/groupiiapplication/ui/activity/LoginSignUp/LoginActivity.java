@@ -20,7 +20,7 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
-import com.techease.groupiiapplication.ui.activity.SplashActivity;
+import com.techease.groupiiapplication.ui.activity.profile.EditProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -134,15 +134,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     Log.d("zma login", String.valueOf(response.message()));
-                    if (response.body().getSuccess()) {
-
+                    if (response.isSuccessful()) {
                         AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId().toString())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
                         AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
                         AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
                         AppRepository.mPutValue(LoginActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
-
                         AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("lat", String.valueOf(response.body().getData().getLatitude())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("lng", String.valueOf(response.body().getData().getLongitude())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
 
 
                         Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);

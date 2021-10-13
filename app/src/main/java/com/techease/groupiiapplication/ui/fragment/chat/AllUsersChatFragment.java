@@ -217,7 +217,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         try {
             jsonObjectGetAllUsers.put("userid", baseUserID);
             mSocket.emit("getusers", jsonObjectGetAllUsers);
-//            Log.d("zmajsaonarray", "zma call");
+            Log.d("zmajsaonarray", "zma call");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -230,14 +230,14 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-//            Log.d("zma", "connected...");
+            Log.d("zma", "connected...");
             isConnected = true;
         }
     };
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-//            Log.d("zma", "Error connecting...");
+            Log.d("zma", "Error connecting...");
             isConnected = false;
         }
     };
@@ -245,7 +245,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-//            Log.d("zma", "dis connecting...");
+            Log.d("zma", "dis connecting...");
             isConnected = false;
 
         }
@@ -259,7 +259,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        Log.d("zmajsaonarray", "event call");
+                        Log.d("zmajsaonarray", "event call");
                         allUserChatAdapter.clearApplications();
 
 
@@ -267,7 +267,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                             String data = args[0].toString();
                             JSONArray jsonArray = new JSONArray(data);
 
-//                            Log.d("zmajsonarray", "Chat" + jsonArray);
+                            Log.d("zmajsonarray", "Chat" + jsonArray);
 
 
                             for (int i = 0; i < jsonArray.length(); i++) {

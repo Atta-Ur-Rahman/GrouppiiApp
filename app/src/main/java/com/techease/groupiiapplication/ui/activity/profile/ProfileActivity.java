@@ -12,10 +12,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -94,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
+        setAnimation();
         dialog = AlertUtils.createProgressDialog(this);
         setProfileImageAndName();
 
@@ -126,6 +131,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick({R.id.ivBack, R.id.ivEdit, R.id.ivProfilePicture, R.id.ivAddProfilePicture, R.id.rlPayments, R.id.rlCurrencyPicker})
     @Override
     public void onClick(View view) {
@@ -133,6 +139,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ivBack:
                 onBackPressed();
                 break;
+            case R.id.ivProfilePicture:
             case R.id.ivEdit:
                 startActivity(new Intent(this, EditProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
 
@@ -321,5 +328,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setProfileImageAndName();
+    }
+
+    public void setAnimation() {
+        if (Build.VERSION.SDK_INT > 20) {
+            Slide slide = new Slide();
+            slide.setSlideEdge(Gravity.LEFT);
+            slide.setDuration(200);
+            slide.setInterpolator(new AccelerateDecelerateInterpolator());
+            getWindow().setExitTransition(slide);
+            getWindow().setEnterTransition(slide);
+        }
+    }
 
 }

@@ -5,18 +5,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -67,7 +68,6 @@ import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentsTabsFragment;
-import com.techease.groupiiapplication.ui.fragment.payment.PartiallyPaidTripFragment;
 import com.techease.groupiiapplication.ui.fragment.payment.ParticipantCostsTabsFragment;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AddAndEditDayPlaneFragment;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.tripExpenditures.GropExpendituresTripFragment;
@@ -78,6 +78,7 @@ import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFrag
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PhotosFragment;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.ReservesFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.FileUtils;
@@ -195,7 +196,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     TabLayout tabsPartiallyPaid;
 
 
-
     TextView tvPartiallyPaid, tvPayDate, tvPayDaysLeft, tvParticipantsCostsCount, tvPartiallyPaidPercentage, tvNoActiveTripFound;
     CircularSeekBar circularSeekBar;
     ImageView ivBackPartiallyPaid, ivAddTripParticipant;
@@ -230,6 +230,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_trip_detail_screen);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
+        setupWindowAnimations();
         dialog = AlertUtils.createProgressDialog(this);
 
         Bundle bundle = getIntent().getExtras();
@@ -243,7 +244,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripDate)).commit();
 
         userID = AppRepository.mUserID(this);
-        tripID = AppRepository.mTripId(this);
+        tripID = AppRepository.mTripIDForUpdation(this);
 
 
 //        Log.d("zma user id", "" + userID);
@@ -300,6 +301,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
                 tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList, aBooleanIsCreatedBy);
+                rvTripParticipants.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(TripDetailScreenActivity.this));
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
 
@@ -333,7 +335,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 Intent intent = new Intent(this, ChatsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("title_name", tvTripTitle.getText().toString());
-                bundle.putString("tripId", AppRepository.mTripId(this));
+                bundle.putString("tripId", AppRepository.mTripIDForUpdation(this));
                 bundle.putString("toUserId", "" + AppRepository.mUserID(this));
                 bundle.putString("type", "group");
                 bundle.putString("picture", strPhoto);
@@ -349,21 +351,26 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 break;
             case R.id.ivMore:
             case R.id.tvMore:
+                bottomSheetBehavior.setHideable(false);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.llDayPlan:
+                bottomSheetBehavior.setHideable(false);
                 viewPager.setCurrentItem(0);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.llReservs:
+                bottomSheetBehavior.setHideable(false);
                 viewPager.setCurrentItem(1);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.llPayment:
+                bottomSheetBehavior.setHideable(false);
                 viewPager.setCurrentItem(2);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.llPhoto:
+                bottomSheetBehavior.setHideable(false);
                 viewPager.setCurrentItem(3);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
@@ -845,7 +852,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                         tvPartiallyPaidPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));
                         circularSeekBar.setProgress(Float.parseFloat(NumberFormatUtil.FormatPercentageShowCircle(response.body().getData().getPaidPercent())));
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
@@ -857,9 +864,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
                     personalExpendituresItems.addAll(response.body().getData().getPersonalExpenditures());
                     ConnectExpenditures.setMyBooleanListener(true);
-
-                    KeyBoardUtils.closeKeyboard(TripDetailScreenActivity.this);
-                    KeyBoardUtils.hideKeyboard(TripDetailScreenActivity.this);
 
                 } else {
                     dialog.dismiss();
@@ -879,7 +883,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));
-        RequestBody BodyTripId = RequestBody.create(AppRepository.mTripId(this), MediaType.parse("multipart/form-data"));
+        RequestBody BodyTripId = RequestBody.create(AppRepository.mTripIDForUpdation(this), MediaType.parse("multipart/form-data"));
         RequestBody BodyTitle = RequestBody.create(etPhotoName.getText().toString(), MediaType.parse("multipart/form-data"));
         RequestBody BodyTime = RequestBody.create(DateUtills.getCurrentDate("hh:mm"), MediaType.parse("multipart/form-data"));
         RequestBody BodyDate = RequestBody.create(DateUtills.getCurrentDate("yyyy-MM-dd"), MediaType.parse("multipart/form-data"));
@@ -945,7 +949,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     userParticipaintsCircleList.addAll(response.body().getData());
 
 
-                    for (AddTripDataModel addTripDataModel:response.body().getData()){
+                    for (AddTripDataModel addTripDataModel : response.body().getData()) {
 //                        paymentUserParticipaintsList
                     }
                     paymentUserParticipaintsList.addAll(response.body().getData());
@@ -1003,17 +1007,20 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         addPaymentBottomSheetBehavior.setHideable(true);
         addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         getPaymentExpenses();
+
+
+        Toast.makeText(this, "paymentresrsh", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onParticipantBack() {
+        bottomSheetBehavior.setDraggable(true);
         participantCostsBottomSheetBehaior.setHideable(true);
         participantCostsBottomSheetBehaior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
     public void goClickRecentTransaction() {
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_participantCosts, ParticipantCostsTabsFragment.newInstance())
                 .commitNow();
@@ -1035,5 +1042,28 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (!bottomSheetBehavior.isHideable()) {
+            bottomSheetBehavior.setHideable(true);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+            super.onBackPressed();
+            Animatoo.animateZoom(TripDetailScreenActivity.this);
+            finish();
+        }
+    }
+
+
+
+    private void setupWindowAnimations() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
+
+        Slide slide = new Slide();
+        slide.setDuration(1000);
+        getWindow().setReturnTransition(slide);
+    }
 }
 

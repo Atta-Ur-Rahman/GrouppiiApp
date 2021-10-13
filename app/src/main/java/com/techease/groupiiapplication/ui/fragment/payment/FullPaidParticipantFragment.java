@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.payment.FullyPaidAdapter;
-import com.techease.groupiiapplication.adapter.payment.RecentTransctionAdapter;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFragment;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 
 import org.w3c.dom.Text;
 
@@ -50,6 +50,7 @@ public class FullPaidParticipantFragment extends Fragment {
 
         fullyPaidAdapter = new FullyPaidAdapter(getActivity(), PaymentsFragment.fullPaidArrayList);
         rvFullyPaid.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rvFullyPaid.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(getActivity()));
         rvFullyPaid.setAdapter(fullyPaidAdapter);
         fullyPaidAdapter.notifyDataSetChanged();
 

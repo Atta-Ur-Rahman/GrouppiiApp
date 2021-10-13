@@ -2,6 +2,7 @@
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
+import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -17,7 +18,6 @@ import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTri
 import com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto.GetGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.OgodaHotelResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
-import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
 import com.techease.groupiiapplication.dataModel.loginSignup.signUp.SignUpResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
@@ -263,6 +263,17 @@ public interface ApiInterface {
             @Field("description") String description,
             @Field("phone") String phone);
 
+
+    @FormUrlEncoded
+    @POST("users/updateprofile")
+    Call<UpdateUserProfileResponse> updateProfileLatLng(
+            @Field("userid") String userid,
+            @Field("name") String name,
+            @Field("email") String userEmail,
+            @Field("description") String description,
+            @Field("phone") String phone,
+            @Field("latitude") String latitude,
+            @Field("longitude") String langitude);
 
     @FormUrlEncoded
     @POST("payment/addcard")

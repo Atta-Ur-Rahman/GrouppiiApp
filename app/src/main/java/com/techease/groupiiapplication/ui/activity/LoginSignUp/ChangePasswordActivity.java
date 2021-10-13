@@ -3,10 +3,14 @@ package com.techease.groupiiapplication.ui.activity.LoginSignUp;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -67,11 +71,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_change_password);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+        setAnimation();
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
 
     }
-
 
     @OnClick({R.id.ivBack, R.id.btnResetPassword})
     @Override
@@ -213,4 +217,14 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public void setAnimation() {
+        if (Build.VERSION.SDK_INT > 20) {
+            Slide slide = new Slide();
+            slide.setSlideEdge(Gravity.RIGHT);
+            slide.setDuration(200);
+            slide.setInterpolator(new AccelerateDecelerateInterpolator());
+            getWindow().setExitTransition(slide);
+            getWindow().setEnterTransition(slide);
+        }
+    }
 }

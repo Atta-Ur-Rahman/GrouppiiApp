@@ -3,6 +3,7 @@ package com.techease.groupiiapplication.ui.activity.tripDetailScreen;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,11 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowPositionRules;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.MyContactsAdapter;
 import com.techease.groupiiapplication.adapter.gallery.RecyclerViewClickListener;
@@ -161,7 +167,6 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         ///jogar jogar
 
 
-
         if (strPhoneNumber.length() < 1) {
             if (strEmail.length() < 1) {
                 valid = false;
@@ -204,7 +209,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 
             valid = false;
             tilEmail.setErrorEnabled(true);
-            tilEmail.setError(getString(R.string.valid_email)+" not admin email");
+            tilEmail.setError(getString(R.string.valid_email) + " not admin email");
         }
         return valid;
     }
@@ -227,6 +232,26 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                     for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
                         if (strEmail.equals(TripDetailScreenActivity.userParticipaintsList.get(i).getEmail())) {
                             Toast.makeText(this, "email exist", Toast.LENGTH_SHORT).show();
+
+                            Balloon balloon = new Balloon.Builder(this)
+                                    .setArrowSize(10)
+                                    .setArrowOrientation(ArrowOrientation.TOP)
+                                    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                                    .setArrowPosition(0.5f)
+                                    .setWidth(BalloonSizeSpec.WRAP)
+                                    .setHeight(65)
+                                    .setTextSize(15f)
+                                    .setCornerRadius(4f)
+                                    .setAlpha(0.9f)
+                                    .setText("You can access your profile from now on.")
+                                    .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                                    .setTextIsHtml(true)
+                                    .setIconDrawable(ContextCompat.getDrawable(this, R.drawable.grouppii_logo))
+                                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+//                                    .setOnBalloonClickListener(onBalloonClickListener)
+                                    .setBalloonAnimation(BalloonAnimation.FADE)
+                                    .build();
+                            balloon.shouldShowUp();
                             emailExist = false;
                         }
                     }
@@ -256,7 +281,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         try {
             AddTripDataModel addTripDataModel = new AddTripDataModel();
             addTripDataModel.setEmail(AppRepository.mEmail(AddUserTripParticpantActivity.this));
-            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripId(this)));
+            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripIDForUpdation(this)));
             addTripDataModel.setUserid((long) AppRepository.mUserID(this));
             addTripDataModel.setName(AppRepository.mUserName(AddUserTripParticpantActivity.this));
             TripDetailScreenActivity.paymentUserParticipaintsList.add(addTripDataModel);
@@ -269,24 +294,24 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             if (strEmail.length() > 1) {
                 ApiCAllForAddInviteFriendWithGmailAndPhone();
 
-                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
             }
         }
         if (strEmail.length() < 1) {
             if (strPhoneNumber.length() < 1) {
                 ApiCAllForAddInviteFriendWithGmailAndPhone();
-                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
 
             }
         }
         if (strPhoneNumber.length() > 1 && strEmail.length() < 1) {
             ApiCAllForAddInviteFriendWithPhone();
-            Toast.makeText(this, "phone", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "phone", Toast.LENGTH_SHORT).show();
 
         }
         if (strEmail.length() > 1 && strPhoneNumber.length() < 1) {
             ApiCAllForAddInviteFriendWithGmail();
-            Toast.makeText(this, "gmail", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "gmail", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -331,7 +356,6 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                             user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
                             user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
                             TripFragment.userList.add(user);
-
                         }
                         finish();
 
@@ -359,7 +383,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     private void ApiCAllForAddInviteFriendWithGmail() {
 
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strEmail, strShareCost,
-                AppRepository.mTripId(this), AppRepository.mUserID(this));
+                AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -421,7 +445,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 
     private void ApiCAllForAddInviteFriendWithPhone() {
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost,
-                AppRepository.mTripId(this), AppRepository.mUserID(this));
+                AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {

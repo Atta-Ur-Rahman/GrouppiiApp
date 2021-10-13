@@ -24,6 +24,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGroupExpenditureTrip"
         android:layout_width="match_parent"
+        android:paddingTop="@dimen/widget_margin"
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
