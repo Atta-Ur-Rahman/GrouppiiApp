@@ -1,6 +1,10 @@
 package com.techease.groupiiapplication.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.BuildCompat;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,12 +17,16 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +34,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
+import com.techease.groupiiapplication.chatGif.MyEditText;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
@@ -89,6 +98,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout rlRootLayout;
     boolean isConnected;
 
+    MyEditText myEditText;
+
     private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
@@ -114,6 +125,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_chats);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        myEditText = findViewById(R.id.etMessageView);
         init();
         socketConnectivity();
         GetAllMessages();
@@ -175,6 +187,37 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         rvMessage.setItemAnimator(new DefaultItemAnimator());
         chatAdapter = new ChatAdapter(this, mMessages, strTripId);
         rvMessage.setAdapter(chatAdapter);
+
+
+        myEditText.setKeyBoardInputCallbackListener(new MyEditText.KeyBoardInputCallbackListener() {
+            @Override
+            public void onCommitContent(InputContentInfoCompat inputContentInfo,
+                                        int flags, Bundle opts) {
+                //you will get your gif/png/jpg here in opts bundle
+
+                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+
+                // populate layout with your image and text
+                // or whatever you want to put in here
+                ImageView imageView = new ImageView(getApplicationContext());
+
+                // adding image to be shown
+                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
+
+                // adding image to linearlayout
+                linearLayout.addView(imageView);
+                Toast toast = new Toast(getApplicationContext());
+
+                // showing toast on bottom
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+
+                // setting view of toast to linear layout
+                toast.setView(linearLayout);
+                toast.show();
+
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -469,6 +512,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
 }
+
+
 
 
 

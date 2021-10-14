@@ -80,10 +80,13 @@
             android:text="Share trip cost"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textStyle="bold"
             android:theme="@style/checkBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cvImage"
+            app:layout_constraintEnd_toStartOf="@id/llProgessBarText"
             app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
 
 

@@ -69,6 +69,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         viewHolder.tvDate.setText(message.getDate());
 
 
+//        Log.d("zm")
+
+        
         Log.d("zma message sent", DateUtills.getChatDateFormate(message.getDate()));
 
 

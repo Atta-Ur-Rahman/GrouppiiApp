@@ -132,7 +132,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("allusers", getAllUsers);
+        mSocket.on("allusers_" + AppRepository.mUserID(getActivity()), getAllUsers);
         mSocket.connect();
     }
 
@@ -279,7 +279,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
 
                                 if (strGroupType.equals("group")) {
                                     strUserID = "";
-
                                     strDateAndTime = "null";
                                     strTitleName = c.getString("group_title");
                                     JSONArray jsonGroupUsers = c.getJSONArray("group_users");
@@ -292,23 +291,21 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                     strGroupChatPicture = c.getString("picture");
                                     strUserID = c.getString("userid");
                                     strDateAndTime = c.getString("created_at");
-
                                 }
 
                                 //check condition if user id and user
-
-                                if (strGroupType.equals("group")) {
-                                    if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                        addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
-                                    }
-                                } else {
-                                    if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                        addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                if (!strTitleName.equals("")) {
+                                    if (strGroupType.equals("group")) {
+                                        if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                        }
+                                    } else {
+                                        if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                        }
                                     }
                                 }
-
                             }
-
 
                         } catch (
                                 JSONException e) {

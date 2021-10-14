@@ -181,6 +181,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public static boolean aBooleanResfreshGetUserTrip = false;
     @BindView(R.id.tvDaysLeft)
     TextView tvDaysLeft;
+
+    TextView tvPaymentsDaysLeft;
+
     boolean aBooleanAddImage = true, aBooleanIsCreatedBy = false;
     ArrayList<String> stringArrayList = new ArrayList<>();
     private static final int REQUEST_CODE_SELECT_PICTURE = 3;
@@ -591,6 +594,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvPayDate = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPayDate);
         tvPayDaysLeft = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
         tvParticipantsCostsCount = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvParticipantsCostsCount);
+        tvPaymentsDaysLeft=llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
 
         viewpagerExpenditures = llBottomSheetPartiallyPaidTrip.findViewById(R.id.viewpagerExpenditures);
         tabsPartiallyPaid = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tabsPartiallyPaid);
@@ -857,8 +861,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     }
                     tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
                     tvPayDate.setText(DateUtills.getDateFormate(response.body().getData().getTripdate()));
-                    tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate)) + " days left");
-
+                    tvPaymentsDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(response.body().getData().getTripdate())) + " days left");
 
                     tvParticipantsCostsCount.setText(response.body().getData().getFullyPaidUsers() + " Paid," + response.body().getData().getPartialPaidUsers() + " Partially," + response.body().getData().getNotPaidUsers() + " Not");
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());

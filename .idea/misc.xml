@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/drawable/greenprogress.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/home_screen_background.xml" value="0.1625" />
         <entry key="app/src/main/res/drawable/ic_baseline_drag_indicator_24.xml" value="0.31461187214611874" />
@@ -51,6 +52,7 @@
         <entry key="app/src/main/res/layout/custom_menu_bottom_sheet.xml" value="0.16203703703703703" />
         <entry key="app/src/main/res/layout/custom_participaints_costs_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_recent_transaction_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/custom_sender_layout.xml" value="0.22006688963210702" />
         <entry key="app/src/main/res/layout/custom_trip_detail_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_trip_expenditures_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_user_sppinner_layout.xml" value="0.3004566210045662" />
@@ -77,6 +79,7 @@
         <entry key="app/src/main/res/layout/fragment_un_publish.xml" value="0.3004566210045662" />
         <entry key="app/src/main/res/layout/gallery_photos_recylerview.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/place_recycler_item_layout.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/toast_image_layout.xml" value="0.2222972972972973" />
       </map>
     </option>
   </component>

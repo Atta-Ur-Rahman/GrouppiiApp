@@ -78,34 +78,32 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
-        if (!chatAllUserDataModel.getCreatedAt().equals("null")){
+        if (!chatAllUserDataModel.getCreatedAt().equals("null")) {
 
 
 //            holder.tvChatTime.setText(chatAllUserDataModel.getCreatedAt());
 
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
-        try {
-            Date d = f.parse(chatAllUserDataModel.getCreatedAt());
-            long milliseconds = d.getTime();
-            holder.tvChatTime.setText(DateUtills.getTimeAgo(milliseconds));
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:m:ss.SSS'Z'");
+            try {
+                Date d = f.parse(chatAllUserDataModel.getCreatedAt());
+                long milliseconds = d.getTime();
+                holder.tvChatTime.setText(DateUtills.getTimeAgo(milliseconds));
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        }
 
+        Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivGroupChatImage);
 
-
-
-            if (chatAllUserDataModel.getChatType().equals("group")) {
-                Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
-
-            }
-            if (chatAllUserDataModel.getMessage().equals("user")) {
-                Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivGroupChatImage);
-
-            }
+//        if (chatAllUserDataModel.getChatType().equals("group")) {
+//            Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.group_image).into(holder.ivGroupChatImage);
+//        }
+//        if (chatAllUserDataModel.getMessage().equals("user")) {
+//            Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivGroupChatImage);
+//        }
         holder.rlGroupChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

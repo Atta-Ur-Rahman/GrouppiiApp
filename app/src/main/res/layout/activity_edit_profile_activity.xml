@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <ImageView
+         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
@@ -159,9 +158,9 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
+                    android:selectAllOnFocus="true"
                     android:text="Attaurrahman"
                     android:textAlignment="textEnd"
-                    android:selectAllOnFocus="true"
                     android:textSize="@dimen/middle_text_size"
                     tools:ignore="RtlCompat" />
 
@@ -180,9 +179,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:layout_marginTop="@dimen/widget_margin"
+                android:background="@android:color/transparent"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@android:color/transparent"
                 android:paddingLeft="@dimen/widget_margin_left_right"
                 android:paddingRight="@dimen/widget_margin_left_right">
 
@@ -204,10 +203,10 @@
                     android:layout_toRightOf="@+id/ivPhoneNumber"
                     android:background="@android:color/transparent"
                     android:gravity="right"
+                    android:inputType="phone"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
                     android:selectAllOnFocus="true"
-                    android:inputType="phone"
                     android:text="03038060226"
                     android:textSize="@dimen/middle_text_size" />
 
@@ -225,9 +224,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:layout_marginTop="@dimen/widget_margin"
+                android:background="@android:color/transparent"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@android:color/transparent"
                 android:paddingLeft="@dimen/widget_margin_left_right"
                 android:paddingRight="@dimen/widget_margin_left_right">
 
@@ -249,10 +248,10 @@
                     android:layout_toRightOf="@+id/tvEmail"
                     android:background="@android:color/transparent"
                     android:gravity="right"
+                    android:inputType="textEmailAddress"
                     android:paddingLeft="@dimen/widget_margin_left_right"
                     android:paddingRight="@dimen/widget_margin_left_right"
                     android:selectAllOnFocus="true"
-                    android:inputType="textEmailAddress"
                     android:text="attaurrahman321@gmail.com"
                     android:textSize="@dimen/middle_text_size" />
 
@@ -267,17 +266,16 @@
                 android:background="@android:color/darker_gray" />
 
 
-
             <Button
                 android:id="@+id/btnUpdateProfile"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="20dp"
-                android:textStyle="bold"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
                 android:text="Update Profile"
                 android:textAllCaps="false"
+                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/tvForgotPassword" />
 
         </LinearLayout>

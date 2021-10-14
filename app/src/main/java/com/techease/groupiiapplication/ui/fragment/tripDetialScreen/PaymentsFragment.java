@@ -124,16 +124,14 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void OnMyBooleanClickChanged() {
                 getPaymentExpenses();
-
-
-                InputMethodManager imm = (InputMethodManager) getActivity()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                if (imm.isAcceptingText()) {
-                    Toast.makeText(getActivity(), "Software Keyboard was shown", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Software Keyboard was not shown", Toast.LENGTH_SHORT).show();
-                }
+//                InputMethodManager imm = (InputMethodManager) getActivity()
+//                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//                if (imm.isAcceptingText()) {
+//                    Toast.makeText(getActivity(), "Software Keyboard was shown", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(getActivity(), "Software Keyboard was not shown", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
