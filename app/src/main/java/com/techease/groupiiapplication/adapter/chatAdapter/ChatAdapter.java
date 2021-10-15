@@ -1,6 +1,7 @@
 package com.techease.groupiiapplication.adapter.chatAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.ImagePreviewActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
@@ -118,6 +120,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
+        viewHolder.ivMessageImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImagePreviewActivity.class);
+                intent.putExtra("file", message.getMessages());
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
 
@@ -141,7 +153,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessageView, tvDate, tvName;
-        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage,ivMessageImage;
+        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage, ivMessageImage;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
@@ -152,9 +164,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvName = itemView.findViewById(R.id.tvName);
             ivSeenMessage = itemView.findViewById(R.id.ivSeenMessage);
             ivSentMessage = itemView.findViewById(R.id.ivSentMessages);
-            messageLayout=itemView.findViewById(R.id.message_layout);
-            ivMessageImage=itemView.findViewById(R.id.message_image);
-            progressBar=itemView.findViewById(R.id.progress);
+            messageLayout = itemView.findViewById(R.id.message_layout);
+            ivMessageImage = itemView.findViewById(R.id.message_image);
+            progressBar = itemView.findViewById(R.id.progress);
             ivSentAndReceiveMessage = itemView.findViewById(R.id.ivSentAndReceiveMessage);
 
 
@@ -198,6 +210,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                 }
                             })
                             .into(ivMessageImage);
+
+
                 } else {
                     tvMessageView.setVisibility(View.VISIBLE);
                     messageLayout.setVisibility(View.GONE);

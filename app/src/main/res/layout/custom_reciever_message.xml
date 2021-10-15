@@ -79,10 +79,11 @@
 
             <ImageView
                 android:id="@+id/message_image"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginStart="@dimen/spacing"
-                android:src="@color/colorPrimary" />
+                android:padding="3dp"
+                android:src="@drawable/their_message_image" />
 
             <ProgressBar
                 android:id="@+id/progress"
