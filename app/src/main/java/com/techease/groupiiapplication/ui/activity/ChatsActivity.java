@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -32,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.fxn.pix.Options;
+import com.fxn.pix.Pix;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.chatGif.MyEditText;
@@ -135,7 +140,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void KeyBoardListener() {
-
 //        etMessageView.requestFocus();
         rlRootLayout = findViewById(R.id.rlRootLayout);
         rlRootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -194,27 +198,31 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
             public void onCommitContent(InputContentInfoCompat inputContentInfo,
                                         int flags, Bundle opts) {
                 //you will get your gif/png/jpg here in opts bundle
+//
+//                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+//
+//                // populate layout with your image and text
+//                // or whatever you want to put in here
+//                ImageView imageView = new ImageView(getApplicationContext());
+//
+//                // adding image to be shown
+//                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
+//
+//                // adding image to linearlayout
+//                linearLayout.addView(imageView);
+//                Toast toast = new Toast(getApplicationContext());
+//
+//                // showing toast on bottom
+//                toast.setGravity(Gravity.BOTTOM, 0, 0);
+//                toast.setDuration(Toast.LENGTH_LONG);
+//
+//                // setting view of toast to linear layout
+//                toast.setView(linearLayout);
+//                toast.show();
 
-                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
 
-                // populate layout with your image and text
-                // or whatever you want to put in here
-                ImageView imageView = new ImageView(getApplicationContext());
+                addMessage(toUser, fromUser, "", inputContentInfo.getContentUri() + "", date, "senderImage", type, isSent, isRead, "image");
 
-                // adding image to be shown
-                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
-
-                // adding image to linearlayout
-                linearLayout.addView(imageView);
-                Toast toast = new Toast(getApplicationContext());
-
-                // showing toast on bottom
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-
-                // setting view of toast to linear layout
-                toast.setView(linearLayout);
-                toast.show();
 
             }
         });
@@ -232,9 +240,34 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 sendMessageFun();
                 break;
             case R.id.iv_send_file:
+
+                ArrayList<String> uris = new ArrayList<>();
+                Options options = Options.init()
+                        .setRequestCode(100)                                           //Request code for activity results
+                        .setCount(5)                                                   //Number of images to restict selection count
+                        .setFrontfacing(false)                                         //Front Facing camera on start
+                        .setPreSelectedUrls(uris)                               //Pre selected Image Urls
+                        .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
+                        .setMode(Options.Mode.Picture)                                     //Option to select only pictures or videos or both
+                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
+                        .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
+                        .setPath("/pix/images");                                       //Custom Path For media Storage
+
+                Pix.start(this, options);
                 break;
 
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
+            for (String arrayList : returnValue) {
+                addMessage(toUser, fromUser, "", arrayList + "", date, "senderImage", type, isSent, isRead, "image");
+            }
         }
     }
 
@@ -324,7 +357,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 //                                            strToUserId.equals(fromUser) ||
 
 //                                            if ( strToUserId.equals(toUser)) {
-                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead);
+                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead, "0");
 
 //                                            }
                                         } catch (JSONException e) {
@@ -380,13 +413,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                     Log.d("zma message send sho", "" + jsonObject);
                                     if (strChatType.equals("user")) {
+
                                         if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
-                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, "text");
                                         }
                                     }
                                     if (strChatType.equals("group")) {
                                         if (strTripId.equals(tripId)) {
-                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead);
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, "text");
                                         }
                                     }
                                 }
@@ -402,10 +436,11 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     };
 
 
-    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String type, String isSent, String isRead) {
-        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, type, isSent, isRead));
+    private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String userType, String isSent, String isRead, String messageType) {
+        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, userType, isSent, isRead, messageType));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
+
     }
 
 

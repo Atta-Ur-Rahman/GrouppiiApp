@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,13 +66,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         ChatModel message = mMessages.get(position);
         viewHolder.setDate(String.valueOf(message.getDate()));
-        viewHolder.setMessage(EmojiEncoder.decodeEmoji(message.messages), "0");
+        viewHolder.setMessage(EmojiEncoder.decodeEmoji(message.messages), message.getMessageType());
         viewHolder.tvDate.setText(message.getDate());
 
 
 //        Log.d("zm")
 
-        
+
         Log.d("zma message sent", DateUtills.getChatDateFormate(message.getDate()));
 
 
@@ -140,7 +141,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessageView, tvDate, tvName;
-        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage;
+        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage,ivMessageImage;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
@@ -151,6 +152,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvName = itemView.findViewById(R.id.tvName);
             ivSeenMessage = itemView.findViewById(R.id.ivSeenMessage);
             ivSentMessage = itemView.findViewById(R.id.ivSentMessages);
+            messageLayout=itemView.findViewById(R.id.message_layout);
+            ivMessageImage=itemView.findViewById(R.id.message_image);
+            progressBar=itemView.findViewById(R.id.progress);
             ivSentAndReceiveMessage = itemView.findViewById(R.id.ivSentAndReceiveMessage);
 
 
@@ -178,7 +182,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 if (type.equals("image")) {
                     tvMessageView.setVisibility(View.GONE);
                     messageLayout.setVisibility(View.VISIBLE);
-
                     Glide.with(context)
                             .load(message)
                             .listener(new RequestListener<Drawable>() {
@@ -194,10 +197,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                     return false;
                                 }
                             })
-                            .into(ivSeenMessage);
+                            .into(ivMessageImage);
                 } else {
-//                    mMessageView.setVisibility(View.VISIBLE);
-//                    messageLayout.setVisibility(View.GONE);
+                    tvMessageView.setVisibility(View.VISIBLE);
+                    messageLayout.setVisibility(View.GONE);
                     tvMessageView.setText(message);
                 }
             } catch (Exception e) {
