@@ -147,7 +147,7 @@
             app:tint="@color/white" />
 
 
-        <com.techease.groupiiapplication.chatGif.MyEditText
+        <com.techease.groupiiapplication.chat.MyEditText
             android:id="@+id/etMessageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

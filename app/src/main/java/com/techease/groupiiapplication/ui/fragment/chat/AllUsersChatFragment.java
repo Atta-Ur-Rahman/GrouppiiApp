@@ -131,13 +131,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
         mSocket.on("allusers_" + AppRepository.mUserID(getActivity()), getAllUsers);
         mSocket.connect();
     }
 
     private void init() {
-
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         allUserChatAdapter = new AllUserChatAdapter(getActivity(), chatAllUserDataModels);
@@ -275,7 +273,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                 strGroupType = c.getString("group_type");
                                 strTripID = c.getString("tripid");
                                 strToUserId = c.getString("touser");
-
 
                                 if (strGroupType.equals("group")) {
                                     strUserID = "";

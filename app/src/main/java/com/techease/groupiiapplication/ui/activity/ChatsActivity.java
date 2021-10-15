@@ -1,9 +1,6 @@
 package com.techease.groupiiapplication.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.BuildCompat;
-import androidx.core.view.inputmethod.EditorInfoCompat;
-import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,22 +11,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodSession;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +32,9 @@ import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
-import com.techease.groupiiapplication.chatGif.MyEditText;
+import com.techease.groupiiapplication.chat.MyEditText;
+import com.techease.groupiiapplication.chat.images.FileUploadManager;
+import com.techease.groupiiapplication.chat.images.UploadFileMoreDataReqListener;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
@@ -52,7 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -105,6 +100,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     MyEditText myEditText;
 
+
+    private static final String TAG = "MainActivity";
+    private static final String URL = "http://192.168.0.103:8090";
+    private static String UPLOAD_FILE_PATH = "/sdcard/com.irule.activity-1.apk"; // Make sure file exists ..
+    private FileUploadManager mFileUploadManager;
+
+
+//    private SocketIOClient mClient;
+
     private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
@@ -115,6 +119,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     private List<ChatModel> mMessages = new ArrayList();
     private ChatAdapter chatAdapter;
     private Socket mSocket;
+
     boolean aBooleanOneTimeHistoryLoad = true;
 
     Dialog dialog;
@@ -129,6 +134,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chats);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        mFileUploadManager = new FileUploadManager();
+        new FileUploadTask().execute();
 
         myEditText = findViewById(R.id.etMessageView);
         init();
@@ -198,32 +206,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
             public void onCommitContent(InputContentInfoCompat inputContentInfo,
                                         int flags, Bundle opts) {
                 //you will get your gif/png/jpg here in opts bundle
-//
-//                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
-//
-//                // populate layout with your image and text
-//                // or whatever you want to put in here
-//                ImageView imageView = new ImageView(getApplicationContext());
-//
-//                // adding image to be shown
-//                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
-//
-//                // adding image to linearlayout
-//                linearLayout.addView(imageView);
-//                Toast toast = new Toast(getApplicationContext());
-//
-//                // showing toast on bottom
-//                toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                toast.setDuration(Toast.LENGTH_LONG);
-//
-//                // setting view of toast to linear layout
-//                toast.setView(linearLayout);
-//                toast.show();
-
-
                 addMessage(toUser, fromUser, "", inputContentInfo.getContentUri() + "", date, "senderImage", type, isSent, isRead, "image");
-
-
+                scrollToBottom();
             }
         });
     }
@@ -249,9 +233,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         .setPreSelectedUrls(uris)                               //Pre selected Image Urls
                         .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
                         .setMode(Options.Mode.Picture)                                     //Option to select only pictures or videos or both
-                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
+//                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
                         .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
-                        .setPath("/pix/images");                                       //Custom Path For media Storage
+                        .setPath("/Grouppii/images");                                       //Custom Path For media Storage
 
                 Pix.start(this, options);
                 break;
@@ -266,7 +250,29 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
             for (String arrayList : returnValue) {
+
+                UPLOAD_FILE_PATH = arrayList;
                 addMessage(toUser, fromUser, "", arrayList + "", date, "senderImage", type, isSent, isRead, "image");
+                scrollToBottom();
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("tripid", AppRepository.mTripIDForUpdation(this));
+                    jsonObject1.put("userid", AppRepository.mUserID(this));
+                    jsonObject1.put("touser", AppRepository.mUserID(this));
+                    jsonObject.put("data", jsonObject1);
+
+
+                    Log.d("zmajason", jsonObject + "");
+
+
+                    mSocket.emit("uploader", jsonObject);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
@@ -456,8 +462,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
         mSocket.on("getbacksendmessage", sendMessages);
+        mSocket.on("start", arg0 -> Toast.makeText(ChatsActivity.this, "start image sending", Toast.LENGTH_SHORT).show());
         mSocket.connect();
 
 //        mSocket.on("typing", onTyping);
@@ -546,6 +552,88 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    private class FileUploadTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+
+            mFileUploadManager.prepare(UPLOAD_FILE_PATH, ChatsActivity.this);
+
+
+            // Tell server we are ready to start uploading ..
+            JSONArray jsonArr = new JSONArray();
+            JSONObject res = new JSONObject();
+
+            try {
+                res.put("Name", mFileUploadManager.getFileName());
+                res.put("Size", mFileUploadManager.getFileSize());
+                jsonArr.put(res);
+
+                // This will trigger server 'uploadFileStart' function
+//                mSocket.emit("uploadFileStart", jsonArr);
+            } catch (JSONException e) {
+                //TODO: Log errors some where..
+
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    private UploadFileMoreDataReqListener mUploadFileMoreDataReqListener = new UploadFileMoreDataReqListener() {
+
+        @Override
+        public void uploadChunck(int offset, int percent) {
+            Log.v(TAG, String.format("Uploading %d completed. offset at: %d", percent, offset));
+
+            try {
+
+                // Read the next chunk
+                mFileUploadManager.read(offset);
+
+                JSONArray jsonArr = new JSONArray();
+                JSONObject res = new JSONObject();
+
+                try {
+                    res.put("Name", mFileUploadManager.getFileName());
+                    res.put("Data", mFileUploadManager.getData());
+                    res.put("chunkSize", mFileUploadManager.getBytesRead());
+                    jsonArr.put(res);
+
+                    // This will trigger server 'uploadFileChuncks' function
+                    mSocket.emit("uploadFileChuncks", jsonArr);
+                } catch (JSONException e) {
+                    //TODO: Log errors some where..
+
+                }
+
+            } catch (IOException e) {
+
+            }
+
+        }
+
+        @Override
+        public void err(JSONException e) {
+            // TODO Auto-generated method stub
+
+        }
+    };
+
+
+
 }
 
 
@@ -577,6 +665,30 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
 /*
+
+
+
+//
+//                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+//
+//                // populate layout with your image and text
+//                // or whatever you want to put in here
+//                ImageView imageView = new ImageView(getApplicationContext());
+//
+//                // adding image to be shown
+//                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
+//
+//                // adding image to linearlayout
+//                linearLayout.addView(imageView);
+//                Toast toast = new Toast(getApplicationContext());
+//
+//                // showing toast on bottom
+//                toast.setGravity(Gravity.BOTTOM, 0, 0);
+//                toast.setDuration(Toast.LENGTH_LONG);
+//
+//                // setting view of toast to linear layout
+//                toast.setView(linearLayout);
+//                toast.show();
 
     //recieving new messages from coach
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
