@@ -1,8 +1,13 @@
 package com.techease.groupiiapplication.adapter.chatAdapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +27,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.chat.VideoPlayerActivity;
+import com.techease.groupiiapplication.chat.images.ChatImagePreviewActivity;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.ImagePreviewActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -30,6 +37,7 @@ import com.techease.groupiiapplication.utils.EmojiEncoder;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,11 +48,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private Drawable mDeliveredIcon;
     private Drawable mSeenIcon;
     private String strTripId;
+    public static String imageBase64;
+
+
+    ArrayList<String> chatImages = new ArrayList<>();
 
     public ChatAdapter(Context context, List<ChatModel> messages, String strTripId) {
         this.context = context;
         mMessages = messages;
         this.strTripId = strTripId;
+
     }
 
     @Override
@@ -68,7 +81,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         ChatModel message = mMessages.get(position);
         viewHolder.setDate(String.valueOf(message.getDate()));
-        viewHolder.setMessage(EmojiEncoder.decodeEmoji(message.messages), message.getMessageType());
+        viewHolder.setMessage(message.getMessages(), message.getMessageType());
         viewHolder.tvDate.setText(message.getDate());
 
 
@@ -123,11 +136,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         viewHolder.ivMessageImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ImagePreviewActivity.class);
-                intent.putExtra("file", message.getMessages());
-                context.startActivity(intent);
+
+
+                String extension = message.getMessages().substring(message.getMessages().lastIndexOf("."));
+                Log.d("zmaexitern", extension);
+
+                if (extension.equals(".mp4")) {
+                    Intent intent = new Intent(context, VideoPlayerActivity.class);
+                    intent.putExtra("file", message.getMessages());
+                    intent.putExtra("images", chatImages);
+                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+
+                } else {
+                    Intent intent = new Intent(context, ChatImagePreviewActivity.class);
+                    intent.putExtra("file", message.getMessages());
+                    intent.putExtra("images", chatImages);
+                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+
+                }
+
             }
         });
+
+
+        for (int i = 0; i < mMessages.size(); i++) {
+            if (mMessages.get(i).getMessageType().equals("image")) {
+                chatImages.add(mMessages.get(i).getMessages());
+            }
+        }
 
 
     }
@@ -192,8 +228,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
             try {
                 if (type.equals("image")) {
+                    Log.d("zmaimageinadapter", message);
+
                     tvMessageView.setVisibility(View.GONE);
                     messageLayout.setVisibility(View.VISIBLE);
+//                    chatImages.add(message);
+                    String extension = message.substring(message.lastIndexOf("."));
+
+                    if (extension.equals("mp4")) {
+
+                    }
+
                     Glide.with(context)
                             .load(message)
                             .listener(new RequestListener<Drawable>() {
@@ -215,7 +260,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 } else {
                     tvMessageView.setVisibility(View.VISIBLE);
                     messageLayout.setVisibility(View.GONE);
-                    tvMessageView.setText(message);
+                    tvMessageView.setText(EmojiEncoder.decodeEmoji(message));
                 }
             } catch (Exception e) {
                 Log.d("error", "" + e.getMessage());

@@ -1,5 +1,7 @@
 package com.techease.groupiiapplication.ui.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -10,17 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Rect;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.inputmethod.InputMethodSession;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,8 +40,7 @@ import com.fxn.pix.Pix;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
 import com.techease.groupiiapplication.chat.MyEditText;
-import com.techease.groupiiapplication.chat.images.FileUploadManager;
-import com.techease.groupiiapplication.chat.images.UploadFileMoreDataReqListener;
+import com.techease.groupiiapplication.chat.images.FileUploader;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
@@ -47,7 +53,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -104,12 +114,11 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "MainActivity";
     private static final String URL = "http://192.168.0.103:8090";
     private static String UPLOAD_FILE_PATH = "/sdcard/com.irule.activity-1.apk"; // Make sure file exists ..
-    private FileUploadManager mFileUploadManager;
 
 
 //    private SocketIOClient mClient;
 
-    private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType = "1", strChatType, strChatImageLink;
+    private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType, strChatType, strChatImageLink;
     private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
     int userID;
 
@@ -129,15 +138,15 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     private static int firstVisibleInListview;
 
+    ArrayList<String> chatImageFiles = new ArrayList<>();
+    private ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chats);
+        pDialog = new ProgressDialog(this);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-        mFileUploadManager = new FileUploadManager();
-        new FileUploadTask().execute();
-
         myEditText = findViewById(R.id.etMessageView);
         init();
         socketConnectivity();
@@ -206,10 +215,49 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
             public void onCommitContent(InputContentInfoCompat inputContentInfo,
                                         int flags, Bundle opts) {
                 //you will get your gif/png/jpg here in opts bundle
-                addMessage(toUser, fromUser, "", inputContentInfo.getContentUri() + "", date, "senderImage", type, isSent, isRead, "image");
-                scrollToBottom();
+
+                Log.d("zmabundle", inputContentInfo.getContentUri() + "");
+
+//                sendMessageFun("image", inputContentInfo.getContentUri()+"");
+//                File file=new File(inputContentInfo.getContentUri().getPath());
+//                chatImageFiles.add(String.valueOf(file));
+//                uploadFiles();
+
+
+                chatImageFiles.clear();
+                chatImageFiles.add(createCopyAndReturnRealPath(ChatsActivity.this, inputContentInfo.getContentUri()));
+                uploadFiles();
+
+
             }
         });
+    }
+
+    @Nullable
+    public static String createCopyAndReturnRealPath(
+            @NonNull Context context, @NonNull Uri uri) {
+        final ContentResolver contentResolver = context.getContentResolver();
+        if (contentResolver == null)
+            return null;
+
+        // Create file path inside app's data dir
+        String filePath = context.getApplicationInfo().dataDir + File.separator + "temp_file";
+        File file = new File(filePath);
+        try {
+            InputStream inputStream = contentResolver.openInputStream(uri);
+            if (inputStream == null)
+                return null;
+            OutputStream outputStream = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buf)) > 0)
+                outputStream.write(buf, 0, len);
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException ignore) {
+            return null;
+        }
+        return file.getAbsolutePath();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -221,21 +269,23 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.tvSend:
-                sendMessageFun();
+                sendMessageFun("text", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
                 break;
             case R.id.iv_send_file:
 
+                chatImageFiles.clear();
                 ArrayList<String> uris = new ArrayList<>();
                 Options options = Options.init()
                         .setRequestCode(100)                                           //Request code for activity results
                         .setCount(5)                                                   //Number of images to restict selection count
                         .setFrontfacing(false)                                         //Front Facing camera on start
                         .setPreSelectedUrls(uris)                               //Pre selected Image Urls
-                        .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
-                        .setMode(Options.Mode.Picture)                                     //Option to select only pictures or videos or both
+                        .setSpanCount(5)                                               //Span count for gallery min 1 & max 5
+                        .setMode(Options.Mode.All)                                     //Option to select only pictures or videos or both
 //                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
                         .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
                         .setPath("/Grouppii/images");                                       //Custom Path For media Storage
+
 
                 Pix.start(this, options);
                 break;
@@ -249,54 +299,40 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
-            for (String arrayList : returnValue) {
+            chatImageFiles.addAll(returnValue);
+            uploadFiles();
 
-                UPLOAD_FILE_PATH = arrayList;
-                addMessage(toUser, fromUser, "", arrayList + "", date, "senderImage", type, isSent, isRead, "image");
-                scrollToBottom();
-                try {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("tripid", AppRepository.mTripIDForUpdation(this));
-                    jsonObject1.put("userid", AppRepository.mUserID(this));
-                    jsonObject1.put("touser", AppRepository.mUserID(this));
-                    jsonObject.put("data", jsonObject1);
-
-
-                    Log.d("zmajason", jsonObject + "");
-
-
-                    mSocket.emit("uploader", jsonObject);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
         }
     }
 
-    private void sendMessageFun() {
-        if (etMessageView.getText().length() > 1) {
+    private void sendMessageFun(String messageType, String strMessage) {
+
+        if (strMessage.length() > 1) {
             JSONObject object = new JSONObject();
             try {
                 if (strChatType.equals("group")) {
                     object.put("userid", userID);
                     object.put("touser", strToUserId);
                     object.put("tripid", strTripId);
+
                 }
                 if (strChatType.equals("user")) {
                     object.put("userid", userID);
                     object.put("touser", strToUserId);
                     object.put("tripid", null);
                 }
-                object.put("message", EmojiEncoder.encodeEmoji(etMessageView.getText().toString()));
+                object.put("type", messageType);
+                object.put("message", strMessage);
+
+//                Log.d("zmabas64", strMessage);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.d("zmasendmessage", e.getMessage());
             }
 
+            ivSendFile.setEnabled(false);
             tvSend.setEnabled(false);
             mSocket.emit("sendmessage", object);
 //                    addMessage(String.valueOf(userID), fromUser, fromUserName, message, date, senderImage, type, isSent);
@@ -358,12 +394,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             type = data.getString("type");
                                             isSent = data.getString("is_sent");
                                             isRead = data.getString("is_read");
+                                            strMessageType = data.getString("type");
 
-                                            Log.d("zma sender", "this is type " + toUser);
+
+                                            Log.d("zmamessagetype", strMessageType);
 //                                            strToUserId.equals(fromUser) ||
 
 //                                            if ( strToUserId.equals(toUser)) {
-                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead, "0");
+                                            addMessage(toUser, fromUser, fromUserName, message, date, senderImage, type, isSent, isRead, strMessageType);
 
 //                                            }
                                         } catch (JSONException e) {
@@ -392,7 +430,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         public void run() {
                             etMessageView.setText("");
                             tvSend.setEnabled(true);
-
+                            dialog.dismiss();
+                            ivSendFile.setEnabled(true);
                             if (aBooleanChaResfresh) {
                                 aBooleanChaResfresh = false;
                                 try {
@@ -414,19 +453,21 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     date = jsonObject.getString("created_at");
                                     tripId = jsonObject.getString("tripid");
                                     isSent = jsonObject.getString("is_sent");
-                                    type = jsonObject.getString("type");
+
                                     isRead = jsonObject.getString("is_read");
+                                    strMessageType = jsonObject.getString("type");
+
 
                                     Log.d("zma message send sho", "" + jsonObject);
                                     if (strChatType.equals("user")) {
 
                                         if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
-                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, "text");
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
                                     if (strChatType.equals("group")) {
                                         if (strTripId.equals(tripId)) {
-                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, "text");
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
                                 }
@@ -552,86 +593,70 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private class FileUploadTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-
-            mFileUploadManager.prepare(UPLOAD_FILE_PATH, ChatsActivity.this);
-
-
-            // Tell server we are ready to start uploading ..
-            JSONArray jsonArr = new JSONArray();
-            JSONObject res = new JSONObject();
-
-            try {
-                res.put("Name", mFileUploadManager.getFileName());
-                res.put("Size", mFileUploadManager.getFileSize());
-                jsonArr.put(res);
-
-                // This will trigger server 'uploadFileStart' function
-//                mSocket.emit("uploadFileStart", jsonArr);
-            } catch (JSONException e) {
-                //TODO: Log errors some where..
-
-
+    public void uploadFiles() {
+        File[] filesToUpload = new File[chatImageFiles.size()];
+        for (int i = 0; i < chatImageFiles.size(); i++) {
+            filesToUpload[i] = new File(chatImageFiles.get(i));
+        }
+        showProgress("Uploading media ...");
+        FileUploader fileUploader = new FileUploader();
+        fileUploader.uploadFiles("/", "images", filesToUpload, new FileUploader.FileUploaderCallback() {
+            @Override
+            public void onError() {
+                hideProgress();
             }
 
-            return null;
-        }
+            @Override
+            public void onFinish(String[] responses) {
+                hideProgress();
 
-        @Override
-        protected void onPostExecute(String result) {
-        }
+                for (int i = 0; i < responses.length; i++) {
+                    String strImageUrl = responses[i];
+                    Log.e("RESPONSE " + i, responses[i]);
+                    strImageUrl = strImageUrl.replace("[", "");
+                    strImageUrl = strImageUrl.replace("]", "");
+                    sendMessageFun("image", strImageUrl);
+                }
+            }
 
-        @Override
-        protected void onPreExecute() {
-        }
+            @Override
+            public void onProgressUpdate(int currentpercent, int totalpercent, int filenumber) {
+                updateProgress(totalpercent, "Uploading images " + filenumber, "");
+                Log.e("Progress Status", currentpercent + " " + totalpercent + " " + filenumber);
+            }
+        });
+    }
 
-        @Override
-        protected void onProgressUpdate(Void... values) {
+    public void updateProgress(int val, String title, String msg) {
+        pDialog.setTitle(title);
+        pDialog.setMessage(msg);
+        pDialog.setProgress(val);
+    }
+
+    public void showProgress(String str) {
+        try {
+            pDialog.setCancelable(false);
+            pDialog.setTitle("Please wait");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setMax(100); // Progress Dialog Max Value
+            pDialog.setMessage(str);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            pDialog.show();
+        } catch (Exception e) {
+
         }
     }
 
-    private UploadFileMoreDataReqListener mUploadFileMoreDataReqListener = new UploadFileMoreDataReqListener() {
-
-        @Override
-        public void uploadChunck(int offset, int percent) {
-            Log.v(TAG, String.format("Uploading %d completed. offset at: %d", percent, offset));
-
-            try {
-
-                // Read the next chunk
-                mFileUploadManager.read(offset);
-
-                JSONArray jsonArr = new JSONArray();
-                JSONObject res = new JSONObject();
-
-                try {
-                    res.put("Name", mFileUploadManager.getFileName());
-                    res.put("Data", mFileUploadManager.getData());
-                    res.put("chunkSize", mFileUploadManager.getBytesRead());
-                    jsonArr.put(res);
-
-                    // This will trigger server 'uploadFileChuncks' function
-                    mSocket.emit("uploadFileChuncks", jsonArr);
-                } catch (JSONException e) {
-                    //TODO: Log errors some where..
-
-                }
-
-            } catch (IOException e) {
-
-            }
+    public void hideProgress() {
+        try {
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+        } catch (Exception e) {
 
         }
 
-        @Override
-        public void err(JSONException e) {
-            // TODO Auto-generated method stub
-
-        }
-    };
-
+    }
 
 
 }

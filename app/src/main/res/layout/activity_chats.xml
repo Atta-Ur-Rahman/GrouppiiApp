@@ -39,9 +39,9 @@
                 android:id="@+id/ivGroup"
                 android:layout_width="@dimen/fourty_dp"
                 android:layout_height="@dimen/fourty_dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/widget_margin"
                 android:background="@drawable/group_image"
-                android:layout_gravity="center_vertical"
                 app:layout_constraintRight_toLeftOf="@id/tvUserName"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +71,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"

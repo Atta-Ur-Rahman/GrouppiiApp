@@ -22,11 +22,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -88,6 +92,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     Dialog alertDialog;
 
+
+    String fcmToken;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
     protected LocationManager locationManager;
     String strLatitude, strLongitude;
@@ -103,6 +109,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
         getCurrentLocationPermission();
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("fetching_fcm_failed", String.valueOf(task.getException()));
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                       fcmToken = task.getResult();
+
+                        Log.d("zmatoken", fcmToken);
+
+//                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
     }
@@ -133,7 +161,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void ApiCallForSignUp() {
         try {
-            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, String.valueOf(Calendar.getInstance().getTime()), "android", "user", strLatitude, strLongitude);
+            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword,fcmToken, "android", "user", strLatitude, strLongitude);
             signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
                 @Override
                 public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
@@ -308,7 +336,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     strLatitude = String.valueOf(latitude);
                     strLongitude = String.valueOf(longitude);
-
 
 
                     valid = true;

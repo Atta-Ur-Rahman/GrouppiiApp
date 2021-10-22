@@ -73,7 +73,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     @BindView(R.id.ivAddPayment)
     ImageView ivAddPayment;
 
-
     @BindView(R.id.ivBack)
     ImageView ivBack;
     @BindView(R.id.tvPartiallyPaid)
@@ -269,7 +268,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             case R.id.ivAddPayment:
                 addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.containerPayment, AddPaymentFragment.newInstance())
+                        .replace(R.id.containerPayment, AddPaymentFragment.newInstance("0", "AddPayment"))
                         .commitNow();
                 break;
             case R.id.ivAddPaymentBack:

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,9 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
 
     @BindView(R.id.tvNoUserFound)
     TextView tvNoUserFound;
+
+//    @BindView(R.id.progress)
+//    ProgressBar progress;
 
 
     @Override
@@ -210,6 +214,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
 
 
     private void getAllUserFun() {
+//        progress.setVisibility(View.VISIBLE);
         allUserChatAdapter.clearApplications();
         jsonObjectGetAllUsers = new JSONObject();
         try {
@@ -254,6 +259,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         @Override
         public void call(Object... args) {
             if (mSocket.connected()) {
+//                progress.setVisibility(View.GONE);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -291,7 +297,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                 }
 
                                 //check condition if user id and user
-                                if (!strTitleName.equals("")) {
+                                if (!strTitleName.equals("") && !strTitleName.equals("unpublished")) {
                                     if (strGroupType.equals("group")) {
                                         if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
                                             addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);

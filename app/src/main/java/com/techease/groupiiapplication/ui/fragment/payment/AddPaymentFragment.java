@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,17 +25,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.getAllTrip.User;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -58,7 +66,7 @@ import retrofit2.Response;
 public class AddPaymentFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
-    @BindView(R.id.spUserName)
+    @BindView(R.id.spUserNameFragment)
     Spinner spUserName;
     Dialog addActivityTypeDialog;
     Dialog dialog;
@@ -74,12 +82,20 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     SwitchCompat swAddGroupPayment;
     LinearLayout llPaymentMethod;
     LinearLayout llTaxi, llBus, llReserv, llFlight;
+    String strPaid;
+
 
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
     CustomSpinnerAdapter customSpinnerAdapter;
 
-    public static AddPaymentFragment newInstance() {
+
+    String strEditID = "0", strEditType = "null";
+
+    public static AddPaymentFragment newInstance(String strEditPaymentID, String strEditPaymentType) {
         AddPaymentFragment fragment = new AddPaymentFragment();
+        fragment.strEditType = strEditPaymentType;
+        fragment.strEditID = strEditPaymentID;
+
         return fragment;
     }
 
@@ -97,8 +113,8 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         spUserName.setAdapter(customSpinnerAdapter);
 
         ivAddPaymentBack = parentView.findViewById(R.id.ivAddPaymentBack);
-        ivType = parentView.findViewById(R.id.ivType);
-        llPaymentMethod = parentView.findViewById(R.id.llPaymentMethod);
+        ivType = parentView.findViewById(R.id.ivTypeFragment);
+        llPaymentMethod = parentView.findViewById(R.id.llPaymentMethodFragment);
 
 
         tillPaymentTitle = parentView.findViewById(R.id.tilPaymentTitle);
@@ -106,21 +122,21 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         tillPaymentAmount = parentView.findViewById(R.id.tillAmount);
         tillShortDescription = parentView.findViewById(R.id.tilAddPaymentShortDescription);
 
-        etPaymentTitle = parentView.findViewById(R.id.etPaymentTitle);
-        etPaymentDate = parentView.findViewById(R.id.etAddPaymentDate);
-        etPaymentAmount = parentView.findViewById(R.id.etAmount);
-        etShortDescription = parentView.findViewById(R.id.etAddPaymentShortDescription);
+        etPaymentTitle = parentView.findViewById(R.id.etPaymentTitleFragment);
+        etPaymentDate = parentView.findViewById(R.id.etAddPaymentDateFragment);
+        etPaymentAmount = parentView.findViewById(R.id.etAmountFragment);
+        etShortDescription = parentView.findViewById(R.id.etAddPaymentShortDescriptionFragment);
 
-        tvAddPayment = parentView.findViewById(R.id.tvPaymentAdd);
-        swAddGroupPayment = parentView.findViewById(R.id.swAddGroupPayment);
+        tvAddPayment = parentView.findViewById(R.id.tvPaymentAddFragment);
+        swAddGroupPayment = parentView.findViewById(R.id.swAddGroupPaymentFragment);
 
 
 //        spUserName = parentView.findViewById(R.id.spUserName);
         spUserName.setOnItemSelectedListener(this);
-        ivVisa = parentView.findViewById(R.id.ivVisa);
-        ivMasterCard = parentView.findViewById(R.id.ivMastercard);
-        ivJcb = parentView.findViewById(R.id.ivJcb);
-        ivAmericanCard = parentView.findViewById(R.id.ivAmericanExpress);
+        ivVisa = parentView.findViewById(R.id.ivVisaFragment);
+        ivMasterCard = parentView.findViewById(R.id.ivMastercardFragment);
+        ivJcb = parentView.findViewById(R.id.ivJcbFragment);
+        ivAmericanCard = parentView.findViewById(R.id.ivAmericanExpressFragment);
 
         strIsPersonal = "1";
         swAddGroupPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -136,6 +152,17 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
 
         GetUserTrip();
+
+
+        try {
+            if (strEditType.equals("RecentTransaction")) {
+                getPaymentForEditExpenses();
+            }
+
+        } catch (Exception e) {
+
+        }
+
 
         return parentView;
     }
@@ -160,41 +187,45 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     }
 
 
-    @OnClick({R.id.tvPaymentAdd, R.id.ivAddPaymentBack, R.id.ivType, R.id.ivVisa, R.id.ivMastercard, R.id.ivJcb, R.id.ivAmericanExpress, R.id.etAddPaymentDate,})
+    @OnClick({R.id.tvPaymentAddFragment, R.id.ivAddPaymentBack, R.id.ivTypeFragment, R.id.ivVisaFragment, R.id.ivMastercardFragment, R.id.ivJcbFragment, R.id.ivAmericanExpressFragment, R.id.etAddPaymentDateFragment,})
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
 
-            case R.id.tvPaymentAdd:
+            case R.id.tvPaymentAddFragment:
                 if (isValidAddPayment()) {
-                    ApiCallForAddPayment();
+                    if (strEditType.equals("RecentTransaction")) {
+                        ApiCallForEditPayment();
+                    } else {
+                        ApiCallForAddPayment();
+                    }
                 }
                 break;
-            case R.id.ivVisa:
+            case R.id.ivVisaFragment:
                 HighliteImage(ivVisa, ivMasterCard, ivJcb, ivAmericanCard);
                 strPaymentMethod = "Visa";
 
                 break;
-            case R.id.ivMastercard:
+            case R.id.ivMastercardFragment:
                 HighliteImage(ivMasterCard, ivVisa, ivJcb, ivAmericanCard);
                 strPaymentMethod = "Mastercard";
 
                 break;
-            case R.id.ivJcb:
+            case R.id.ivJcbFragment:
                 HighliteImage(ivJcb, ivMasterCard, ivVisa, ivAmericanCard);
                 strPaymentMethod = "JCB";
 
                 break;
-            case R.id.ivAmericanExpress:
+            case R.id.ivAmericanExpressFragment:
                 HighliteImage(ivAmericanCard, ivMasterCard, ivJcb, ivVisa);
                 strPaymentMethod = "American Express";
                 break;
-            case R.id.etAddPaymentDate:
+            case R.id.etAddPaymentDateFragment:
                 DateUtills.GetDatePickerDialog(etPaymentDate, getActivity());
                 break;
 
-            case R.id.ivType:
+            case R.id.ivTypeFragment:
                 activityTripTypeDialog();
                 break;
             case R.id.llTaxi:
@@ -270,7 +301,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     }
 
     private void ApiCallForAddPayment() {
-        String strPaid;
+
         if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
             //zero for paid
             strPaid = "0";
@@ -279,6 +310,9 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
             strPaid = "1";
             strIsPersonal = "0";
         }
+
+//        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
+
 
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
@@ -295,6 +329,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                     etPaymentAmount.setText("");
                     etShortDescription.setText("");
 
+                    PaymentsFragment.aBooleanHideKeyboard = true;
                     callBackListener.onPaymentAdddCallBack();
                     ConnectParticipantCostsBackClick.setMyBoolean(true);
 
@@ -332,6 +367,62 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     }
 
+
+    private void ApiCallForEditPayment() {
+
+
+//        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
+
+
+        dialog.show();
+        Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().editPayment(strEditID, AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
+                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
+        addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
+            @Override
+            public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
+
+                Log.d("zma addpayment", String.valueOf(response));
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    etPaymentTitle.setText("");
+                    etPaymentDate.setText("");
+                    etPaymentAmount.setText("");
+                    etShortDescription.setText("");
+                    PaymentsFragment.aBooleanHideKeyboard = true;
+                    ConnectParticipantCostsBackClick.setMyBoolean(true);
+
+                    KeyBoardUtils.hideKeyboard(requireActivity());
+                    KeyBoardUtils.closeKeyboard(getActivity());
+                    requireActivity().finish();
+
+
+                } else {
+                    dialog.dismiss();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddPaymentResponse> call, Throwable t) {
+                Log.d("zma addpayment error", String.valueOf(t.getMessage()));
+                dialog.dismiss();
+                if (t.getMessage().equals("java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 52 path $.data")) {
+                    Toast.makeText(getActivity(), "Payment amount incorrect", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
 
     @SuppressLint("ResourceType")
     private boolean isValidAddPayment() {
@@ -402,5 +493,84 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
             swAddGroupPayment.setVisibility(View.GONE);
 
         }
+
     }
+
+
+    private void getPaymentForEditExpenses() {
+
+        dialog.show();
+        Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()));
+        getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+
+
+                    for (RecentTransaction recentTransaction : response.body().getData().getRecentTransaction()) {
+
+
+                        if (recentTransaction.getId() == Integer.parseInt(strEditID)) {
+                            Log.d("zmaresponse" + strEditID, String.valueOf(response.body().getData().getRecentTransaction().get(0).getId()));
+
+
+                            etPaymentTitle.setText(recentTransaction.getName());
+                            etPaymentDate.setText(DateUtills.getEditDateFormate(recentTransaction.getDate()));
+                            etPaymentAmount.setText(recentTransaction.getAmount() + "");
+                            etShortDescription.setText(recentTransaction.getShortDesc());
+                            strIsPersonal = recentTransaction.getIsPersonal() + "";
+                            strPaymentUser = recentTransaction.getUserid() + "";
+                            strPaid = recentTransaction.getPaid() + "";
+
+
+                            if (strPaid.equals("1")) {
+                                swAddGroupPayment.setVisibility(View.GONE);
+                            }
+
+
+                            Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
+
+                            tvAddPayment.setText("Update");
+                            if (recentTransaction.getIsPersonal() == 0) {
+                                swAddGroupPayment.setChecked(true);
+                            }
+
+                            if (recentTransaction.getTypeImage() != null) {
+                                switch (recentTransaction.getTypeImage()) {
+                                    case "taxi":
+                                        Glide.with(requireActivity()).load(R.mipmap.taxi_wheel).into(ivType);
+                                        break;
+                                    case "bus":
+                                        Glide.with(requireActivity()).load(R.mipmap.transfer).into(ivType);
+                                        break;
+                                    case "hotel":
+                                        Glide.with(requireActivity()).load(R.mipmap.reserv_selected).into(ivType);
+                                        break;
+                                    case "Flight":
+                                        Glide.with(requireActivity()).load(R.mipmap.flight).into(ivType);
+                                        break;
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                } else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 }

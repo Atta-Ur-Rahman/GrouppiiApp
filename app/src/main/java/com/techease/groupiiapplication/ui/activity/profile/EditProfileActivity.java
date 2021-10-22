@@ -1,5 +1,6 @@
 package com.techease.groupiiapplication.ui.activity.profile;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -12,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -50,6 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -142,7 +145,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 }
 
                 if (sourceFile != null) {
-                    ApiCallForUpdatePic();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        ApiCallForUpdatePic();
+                    }
                 }
                 break;
 
@@ -311,8 +316,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void ApiCallForUpdatePic() {
         dialog.show();
+
+
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part picture = MultipartBody.Part.createFormData("picture", sourceFile.getAbsoluteFile().getName(), requestFile);
         RequestBody BodyName = RequestBody.create("upload-test", MediaType.parse("text/plain"));

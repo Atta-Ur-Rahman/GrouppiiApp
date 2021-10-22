@@ -19,7 +19,7 @@ public class ApiClass {
 
     public static void apiCallForTripDelete(Context context, ApiCallback callback, String tripId) {
 
-        Toast.makeText(context, tripId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, tripId, Toast.LENGTH_SHORT).show();
         Call<DeleteTripResponse> deleteTripResponseCall = BaseNetworking.ApiInterface().deleteTrip(tripId);
         deleteTripResponseCall.enqueue(new Callback<DeleteTripResponse>() {
             @Override

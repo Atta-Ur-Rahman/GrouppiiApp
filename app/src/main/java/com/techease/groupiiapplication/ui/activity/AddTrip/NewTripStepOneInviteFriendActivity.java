@@ -266,10 +266,24 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
                 if (isValid()) {
 
+                    for (int i = 0; i < addTripDataModels.size(); i++) {
+                        Log.d("zmadata", addTripDataModels.get(i).getEmail() + "   " + addTripDataModels.get(i).getPhone());
+                    }
+
+
                     boolean emailExist = true;
                     for (int i = 0; i < addTripDataModels.size(); i++) {
                         if (strEmail.equals(addTripDataModels.get(i).getEmail())) {
                             Toast.makeText(this, "email exist", Toast.LENGTH_SHORT).show();
+                            emailExist = false;
+
+
+                        }
+                    }
+
+                    for (int i = 0; i < addTripDataModels.size(); i++) {
+                        if (strPhoneNumber.equals(addTripDataModels.get(i).getPhone())) {
+                            Toast.makeText(this, "phone number exist", Toast.LENGTH_SHORT).show();
                             emailExist = false;
                         }
                     }

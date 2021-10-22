@@ -131,6 +131,8 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                         stringArrayList.add(String.valueOf(userList.get(i).getPicture()));
                     }
 
+                    Log.d("zmadate", data.getFromdate() + "");
+
 
 //                    dialog.show();
                     new Thread() {
@@ -145,7 +147,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
                             bundle.putString("title", data.getTitle());
                             bundle.putString("trip_type", "Past Trip");
                             bundle.putString("description", data.getDescription());
-                            bundle.putString("date", data.getFromdate());
+                            bundle.putString("start_date", data.getFromdate());
+                            bundle.putString("end_date", data.getTodate());
+                            bundle.putString("pay_date", data.getPayDate());
                             bundle.putString("location", data.getLocation());
                             bundle.putStringArrayList("users", stringArrayList);
                             bundle.putBoolean("is_createdby", data.isIsCreatedby());

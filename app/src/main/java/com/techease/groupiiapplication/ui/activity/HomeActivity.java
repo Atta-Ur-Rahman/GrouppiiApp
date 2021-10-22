@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,7 +22,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -95,7 +99,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvSettings;
 
 
-
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
@@ -126,7 +129,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         fm.beginTransaction().add(R.id.container, fragmentSettings, "2").hide(fragmentSettings).commit();
         fm.beginTransaction().add(R.id.container, fragmentTrip, "1").commit();
 
-
         try {
             if (AppRepository.mLat(this).equals("null") || AppRepository.mLng(this).equals("null")) {
                 getCurrentLocationPermission();
@@ -153,7 +155,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     strLongitude = String.valueOf(longitude);
                     ApiCallForUpdateLatLng();
 
-
                 }
 
             }
@@ -165,6 +166,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }).check();
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @OnClick({R.id.llTrip, R.id.llChat, R.id.llActivity, R.id.llSettings, R.id.fab})
@@ -249,7 +251,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab:
 
                 Intent intent = new Intent(HomeActivity.this, NewTripStepOneInviteFriendActivity.class);
-                startActivity( intent);
+                startActivity(intent);
                 Animatoo.animateZoom(this);
 
                 break;

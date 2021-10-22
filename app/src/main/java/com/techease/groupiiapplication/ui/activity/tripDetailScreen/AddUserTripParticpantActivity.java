@@ -232,26 +232,13 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                     for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
                         if (strEmail.equals(TripDetailScreenActivity.userParticipaintsList.get(i).getEmail())) {
                             Toast.makeText(this, "email exist", Toast.LENGTH_SHORT).show();
+                            emailExist = false;
+                        }
+                    }
 
-                            Balloon balloon = new Balloon.Builder(this)
-                                    .setArrowSize(10)
-                                    .setArrowOrientation(ArrowOrientation.TOP)
-                                    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-                                    .setArrowPosition(0.5f)
-                                    .setWidth(BalloonSizeSpec.WRAP)
-                                    .setHeight(65)
-                                    .setTextSize(15f)
-                                    .setCornerRadius(4f)
-                                    .setAlpha(0.9f)
-                                    .setText("You can access your profile from now on.")
-                                    .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                                    .setTextIsHtml(true)
-                                    .setIconDrawable(ContextCompat.getDrawable(this, R.drawable.grouppii_logo))
-                                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-//                                    .setOnBalloonClickListener(onBalloonClickListener)
-                                    .setBalloonAnimation(BalloonAnimation.FADE)
-                                    .build();
-                            balloon.shouldShowUp();
+                    for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
+                        if (strPhoneNumber.equals(TripDetailScreenActivity.userParticipaintsList.get(i).getPhone())) {
+                            Toast.makeText(this, "phone number exist", Toast.LENGTH_SHORT).show();
                             emailExist = false;
                         }
                     }

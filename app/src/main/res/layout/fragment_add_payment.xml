@@ -63,7 +63,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvPaymentAdd"
+            android:id="@+id/tvPaymentAddFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@id/rlAddActivity">
 
             <ImageView
-                android:id="@+id/ivType"
+                android:id="@+id/ivTypeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/round_bg"
@@ -96,7 +96,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swAddGroupPayment"
+            android:id="@+id/swAddGroupPaymentFragment"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/add_activity_sw_iv_height"
             android:layout_marginStart="@dimen/widget_margin_left_right"
@@ -131,7 +131,7 @@
                 app:boxStrokeWidthFocused="0dp">
 
                 <EditText
-                    android:id="@+id/etPaymentTitle"
+                    android:id="@+id/etPaymentTitleFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -170,7 +170,7 @@
                     app:boxStrokeWidthFocused="0dp">
 
                     <EditText
-                        android:id="@+id/etAddPaymentDate"
+                        android:id="@+id/etAddPaymentDateFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -224,7 +224,7 @@
                     app:boxStrokeWidthFocused="0dp">
 
                     <EditText
-                        android:id="@+id/etAmount"
+                        android:id="@+id/etAmountFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -264,7 +264,7 @@
                 android:layout_height="match_parent">
 
                 <Spinner
-                    android:id="@+id/spUserName"
+                    android:id="@+id/spUserNameFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawSelectorOnTop="true" />
@@ -276,6 +276,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvSource"
+            android:visibility="gone"
+
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
@@ -284,10 +286,10 @@
             app:cardBackgroundColor="@color/light_gry"
             app:cardCornerRadius="@dimen/cv_widget_corner_radius"
             app:cardElevation="@dimen/card_view_elevation"
-            app:layout_constraintTop_toBottomOf="@id/cvAddDescription">
+            app:layout_constraintTop_toBottomOf="@id/cvAddDescriptionFragment">
 
             <LinearLayout
-                android:id="@+id/llPaymentMethod"
+                android:id="@+id/llPaymentMethodFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -295,13 +297,13 @@
                 android:paddingStart="@dimen/widget_margin">
 
                 <ImageView
-                    android:id="@+id/ivVisa"
+                    android:id="@+id/ivVisaFragment"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/visa" />
 
                 <ImageView
-                    android:id="@+id/ivMastercard"
+                    android:id="@+id/ivMastercardFragment"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="@dimen/widget_margin"
@@ -310,7 +312,7 @@
 
 
                 <ImageView
-                    android:id="@+id/ivJcb"
+                    android:id="@+id/ivJcbFragment"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="@dimen/widget_margin"
@@ -318,7 +320,7 @@
 
 
                 <ImageView
-                    android:id="@+id/ivAmericanExpress"
+                    android:id="@+id/ivAmericanExpressFragment"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:scaleType="fitXY"
@@ -330,7 +332,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvAddDescription"
+            android:id="@+id/cvAddDescriptionFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/widget_margin_left_right"
@@ -353,7 +355,7 @@
                 app:hintTextAppearance="@style/HintText">
 
                 <EditText
-                    android:id="@+id/etAddPaymentShortDescription"
+                    android:id="@+id/etAddPaymentShortDescriptionFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"

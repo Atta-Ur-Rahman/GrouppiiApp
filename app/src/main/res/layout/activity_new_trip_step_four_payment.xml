@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvVerify"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/text_view_edittext_height"
         android:layout_marginTop="@dimen/widget_margin"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"
         android:progress="100"
-        app:layout_constraintTop_toBottomOf="@id/tvVerify" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
 
     <TextView

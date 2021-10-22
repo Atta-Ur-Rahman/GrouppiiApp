@@ -24,7 +24,7 @@
 
 
         <TextView
-            android:id="@+id/tvVerify"
+            android:id="@+id/tvStepTripeTitle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
@@ -44,10 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="21dp"
             android:progress="25"
-            app:layout_constraintTop_toBottomOf="@id/tvVerify" />
+            app:layout_constraintTop_toBottomOf="@id/tvStepTripeTitle" />
 
         <TextView
-            android:id="@+id/tv_short_msg"
+            android:id="@+id/tvSteps"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"

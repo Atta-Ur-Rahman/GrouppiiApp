@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -11,9 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -35,7 +40,6 @@ public class DateUtills {
     public static void GetDatePickerDialog(EditText tvSetDate, Context context) {
 
         int mYear, mMonth, mDay;
-
         String date = AppRepository.mTripStartDate(context);
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -245,6 +249,31 @@ public class DateUtills {
         } catch (Exception e) {
         }
         return "";
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getEditDateFormate(String timestamp) {
+//        try {
+//            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//            SimpleDateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT_1);
+//            Date date = null;
+//            date = inputFormat.parse(timestamp);
+//            String formattedDate = outputFormat.format(date);
+//            System.out.println(formattedDate); // prints 10-04-2018
+//            Log.d("zma date", formattedDate);
+//            return formattedDate;
+//        } catch (Exception e) {
+//        }
+
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(timestamp, inputFormatter);
+        String formattedDate = outputFormatter.format(date);
+        System.out.println(formattedDate); // prints 10-04-2018
+        return formattedDate;
     }
 
 

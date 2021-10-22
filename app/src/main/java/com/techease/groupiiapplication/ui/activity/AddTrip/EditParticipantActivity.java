@@ -212,6 +212,8 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.tvDeleteParticipants:
+
+
                 ApiCallForDeleteTripUser();
                 break;
 

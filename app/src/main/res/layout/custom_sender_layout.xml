@@ -57,17 +57,33 @@
             android:id="@+id/message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/widget_margin_left_right"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/message_image"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
-                android:layout_marginStart="@dimen/spacing"
-                android:padding="3dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/my_message_image"
+                android:padding="1dp"
+                app:cardBackgroundColor="@color/purple_500"
+                app:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:id="@+id/message_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@color/colorPrimary" />
+
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/video_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@color/colorPrimary" />
+
 
             <ProgressBar
                 android:id="@+id/progress"

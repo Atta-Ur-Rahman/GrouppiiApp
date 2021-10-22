@@ -27,9 +27,11 @@
                 android:src="@mipmap/manage_participants" />
 
             <ImageView
+                android:visibility="gone"
                 style="@style/ActionItemIcon"
                 android:src="@mipmap/manage_bookings" />
             <ImageView
+                android:visibility="gone"
                 style="@style/ActionItemIcon"
                 android:src="@mipmap/request_a_payment" />
             <ImageView
@@ -64,12 +66,14 @@
                 android:text="Manage participants"/>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvManageBooking"
                 style="@style/ActionItem"
                 android:background="?attr/selectableItemBackground"
                 android:text="Manage booking"/>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvRequestPayment"
                 style="@style/ActionItem"
                 android:background="?attr/selectableItemBackground"

@@ -74,14 +74,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
 
     public ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
     public Dialog dialog;
-
     private List<Marker> markers = new ArrayList<>();
-    ViewGroup infoWindow;
     MarkerOptions markerOptions;
-    int globleCount = 0;
     GoogleMap googleMap;
-    ArrayList<Integer> integerArrayList = new ArrayList<>();
-    boolean firstTimeRunMap = false;
     @BindView(R.id.ivClose)
     ImageView ivClose;
 
@@ -114,21 +109,10 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         ButterKnife.bind(this, view);
         dialog = AlertUtils.createProgressDialog(getActivity());
-
         dialog.setCancelable(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        });
+        dialog.setOnCancelListener(dialog -> getActivity().finish());
 
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        ivClose.setOnClickListener(v -> getActivity().finish());
         return view;
     }
 
@@ -137,85 +121,11 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
         userParticipaintsList.clear();
         this.googleMap = googleMap;
 
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(getActivity()));
-        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
-            @Override
-            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
-                if (response.isSuccessful()) {
-//                    dialog.dismiss();
-                    userParticipaintsList.addAll(response.body().getData());
-                    for (int i = 0; i < userParticipaintsList.size(); i++) {
-                        new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
-                    }
+        userParticipaintsList.addAll(TripDetailScreenActivity.paymentUserParticipaintsList);
+        for (int i = 0; i < userParticipaintsList.size(); i++) {
+            new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
+        }
 
-//                    Log.d("zmaimge", "map" + userParticipaintsList.get(0));
-
-               /*     try {
-//                        Log.d("zmaimge", "map" + userParticipaintsList.size());
-                        do {
-                            Log.d("zmaimge", "load");
-//
-//                            Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
-//                                @Override
-//                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-////                                    Log.d("zmaimge", "loadBitmap");
-////                                    if (!TextUtils.isEmpty(userParticipaintsList.get(globleCount).getLongitude())) {
-//                                    Log.d("zmaimge", "" + globleCount+  bitmap);
-//
-//                                    globleCount++;
-
-                            try {
-//                                        Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
-//                                                Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
-//                                                icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), bitmap))));
-//                                        marker.setTitle(userParticipaintsList.get(globleCount).getName());
-//                                        markers.add(marker);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//
-//                                }
-//                            });
-
-
-                        } while (globleCount < userParticipaintsList.size());
-
-//                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//                        for (Marker marker : markers) {
-//                            builder.include(marker.getPosition());
-//                        }
-//                        LatLngBounds bounds = builder.build();
-//
-//                        int padding = 0; // offset from edges of the map in pixels
-//                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-//                        googleMap.animateCamera(cu);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-*/
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddTripResponse> call, Throwable t) {
-                dialog.dismiss();
-                Toast.makeText(getActivity(), String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -293,19 +203,17 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-//        imageView.setImageBitmap(bitmap);
-        Log.d("zma", "bitmap" + bitmap);
-
+//        Log.d("zma", "bitmap" + bitmap);
         dialog.dismiss();
 
         try {
-            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(anIntPosition).getLatitude()),
-                    Double.parseDouble(userParticipaintsList.get(anIntPosition).getLongitude()))).
+            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(anIntPosition).getLatitude().trim()),
+                    Double.parseDouble(userParticipaintsList.get(anIntPosition).getLongitude().trim()))).
                     icon(BitmapDescriptorFactory.fromBitmap(MapsFragment.createCustomMarker(context, bitmap))));
             marker.setTitle(userParticipaintsList.get(anIntPosition).getName());
             markers.add(marker);
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
-//            Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
+//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
+            Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -319,7 +227,7 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
             }
             LatLngBounds bounds = builder.build();
 
-            int padding = 0; // offset from edges of the map in pixels
+            int padding = 100; // offset from edges of the map in pixels
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
             googleMap.animateCamera(cu);
         } catch (Exception e) {
@@ -329,6 +237,13 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
 
     }
 }
+
+
+
+
+
+
+
 
 /*
     @SuppressLint("StaticFieldLeak")
@@ -398,6 +313,107 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
 
         }
     }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+    Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(getActivity()));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+@Override
+public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+        if (response.isSuccessful()) {
+//                    dialog.dismiss();
+//                    userParticipaintsList.addAll(response.body().getData());
+//                    for (int i = 0; i < userParticipaintsList.size(); i++) {
+//                        new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
+//                    }
+
+        Log.d("zmauser", "map" + userParticipaintsList);
+
+               *//*     try {
+//                        Log.d("zmaimge", "map" + userParticipaintsList.size());
+                        do {
+                            Log.d("zmaimge", "load");
+//
+//                            Picasso.get().load(userParticipaintsList.get(globleCount).getPicture()).into(new Target() {
+//                                @Override
+//                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+////                                    Log.d("zmaimge", "loadBitmap");
+////                                    if (!TextUtils.isEmpty(userParticipaintsList.get(globleCount).getLongitude())) {
+//                                    Log.d("zmaimge", "" + globleCount+  bitmap);
+//
+//                                    globleCount++;
+
+                            try {
+//                                        Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(globleCount).getLatitude()),
+//                                                Double.parseDouble(userParticipaintsList.get(globleCount).getLongitude()))).
+//                                                icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getActivity(), bitmap))));
+//                                        marker.setTitle(userParticipaintsList.get(globleCount).getName());
+//                                        markers.add(marker);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//
+//                                }
+//                            });
+
+
+                        } while (globleCount < userParticipaintsList.size());
+
+//                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//                        for (Marker marker : markers) {
+//                            builder.include(marker.getPosition());
+//                        }
+//                        LatLngBounds bounds = builder.build();
+//
+//                        int padding = 0; // offset from edges of the map in pixels
+//                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+//                        googleMap.animateCamera(cu);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+*//*
+        }
+        }
+
+@Override
+public void onFailure(Call<AddTripResponse> call, Throwable t) {
+        dialog.dismiss();
+        Toast.makeText(getActivity(), String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+        });*/
 
 
 

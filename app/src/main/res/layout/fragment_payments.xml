@@ -135,10 +135,10 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-    <TextView
-        android:id="@+id/tvRecentTransaction"
+    <RelativeLayout
+        android:id="@+id/llRecentTransaction"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="@dimen/widget_margin_left_right"
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginRight="@dimen/widget_margin_left_right"
@@ -149,8 +149,28 @@
         android:textSize="@dimen/main_heading_text_size"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mcvPayment" />
+        app:layout_constraintTop_toBottomOf="@id/mcvPayment">
 
+        <TextView
+            android:id="@+id/tvRecentTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/widget_margin"
+            android:gravity="center_vertical"
+            android:text="Recent Transactions"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_heading_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tvRecentTransaction"
+            android:src="@drawable/ic_baseline_east_24" />
+
+
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -161,14 +181,14 @@
             android:id="@+id/tvNoRecentTransactionsFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/fifty_dp"
             android:paddingLeft="20sp"
             android:text="No recent transaction found"
             android:textSize="@dimen/main_heading_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_centerHorizontal="true" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <ScrollView
@@ -180,13 +200,13 @@
                 android:id="@+id/rvRecentTransaction"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="true"
                 android:layout_margin="@dimen/widget_margin"
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="130dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:paddingBottom="130dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvRecentTransaction" />
 
         </ScrollView>

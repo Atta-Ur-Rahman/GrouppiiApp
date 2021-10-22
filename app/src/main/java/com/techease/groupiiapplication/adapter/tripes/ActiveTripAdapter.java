@@ -93,7 +93,9 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
                 bundle.putString("image", data.getCoverimage());
                 bundle.putString("title", data.getTitle());
                 bundle.putString("trip_type", "Active Trip");
-                bundle.putString("date", data.getFromdate());
+                bundle.putString("start_date", data.getFromdate());
+                bundle.putString("end_date", data.getTodate());
+                bundle.putString("pay_date", data.getPayDate());
                 bundle.putString("description", data.getDescription());
                 bundle.putString("location", data.getLocation());
                 bundle.putBoolean("is_createdby", data.isIsCreatedby());

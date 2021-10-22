@@ -43,8 +43,6 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
         Glide.with(context).load(AppRepository.mUserProfileImage(context)).placeholder(R.drawable.user).into(holder.imageView);
 
         try {
@@ -81,7 +79,6 @@ public class UserTripCircleImagesAdapter extends RecyclerView.Adapter<UserTripCi
                 holder.relativeLayout.setVisibility(View.GONE);
             }
         }
-
     }
 
     @Override

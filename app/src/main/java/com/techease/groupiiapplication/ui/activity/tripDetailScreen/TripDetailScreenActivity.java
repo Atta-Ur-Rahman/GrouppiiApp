@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,6 +52,8 @@ import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.adapter.tripes.TabsViewPagerAdapter;
 import com.techease.groupiiapplication.adapter.tripes.UserTripCircleImagesAdapter;
 import com.techease.groupiiapplication.adapter.tripDetail.TripParticipantsAdapter;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
@@ -63,8 +66,10 @@ import com.techease.groupiiapplication.interfaceClass.AddPaymentOnBackListener;
 import com.techease.groupiiapplication.interfaceClass.ClickPartiallyPaidTripListener;
 import com.techease.groupiiapplication.interfaceClass.ClickRecentTransactionListener;
 import com.techease.groupiiapplication.interfaceClass.EditActivityDayPlanListener;
+import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.ParticipantBackListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentsTabsFragment;
@@ -83,7 +88,6 @@ import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.FileUtils;
 import com.techease.groupiiapplication.utils.GeneralUtills;
-import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.NumberFormatUtil;
 
 import org.json.JSONException;
@@ -97,6 +101,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -105,7 +110,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TripDetailScreenActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentOnBackListener, AddActivityBackListener, EditActivityDayPlanListener, AddPaymentCallBackListener, ParticipantBackListener, ClickRecentTransactionListener, ClickPartiallyPaidTripListener {
+public class TripDetailScreenActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentOnBackListener, AddActivityBackListener, EditActivityDayPlanListener, AddPaymentCallBackListener, ParticipantBackListener, ClickRecentTransactionListener, ClickPartiallyPaidTripListener, EditPaymentCallBackListener {
 
     @BindView(R.id.tvTripTypeName)
     TextView tvTripTypeName;
@@ -206,7 +211,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     File sourceFile;
     Dialog addPhotoDialog;
 
-    String strTripDate, strTitle, strPhoto, strPaymentUser;
+    String strTitle, strTripDescription, strLocation, strTripType, strTripStartDate, strTripEndDate, strTripPayDate, strPhoto, strPaymentUser;
     Dialog dialog;
 
     EditText etPhotoName;
@@ -219,6 +224,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     String tripID;
     int userID;
+
+    boolean aBooleanEditScreen;
 
     public static UserTripCircleImagesAdapter userTripCircleImagesAdapter;
 
@@ -238,13 +245,21 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         Bundle bundle = getIntent().getExtras();
         strTitle = bundle.getString("title");
+        strTripDescription = bundle.getString("description");
         strPhoto = bundle.getString("image");
-        strTripDate = bundle.getString("date");
+        strTripStartDate = bundle.getString("start_date");
+        strTripEndDate = bundle.getString("end_date");
+        strTripPayDate = bundle.getString("pay_date");
+        strLocation = bundle.getString("location");
 
+        strTripType = bundle.getString("trip_type");
+
+        aBooleanEditScreen = bundle.getBoolean("edit");
         aBooleanIsCreatedBy = bundle.getBoolean("is_createdby");
-        tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripDate)) + " days left");
 
-        AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripDate)).commit();
+        tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(strTripStartDate)) + " days left");
+
+        AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripStartDate)).commit();
 
         userID = AppRepository.mUserID(this);
         tripID = AppRepository.mTripIDForUpdation(this);
@@ -256,9 +271,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
         Glide.with(this).load(strPhoto).into(ivTripImage);
         tvTripTitle.setText(strTitle);
-        tvTripTypeName.setText(bundle.getString("trip_type"));
-        tvDescription.setText(bundle.getString("description"));
-        tvLocation.setText(bundle.getString("location"));
+        tvTripTypeName.setText(strTripType);
+        tvDescription.setText(strTripDescription);
+        tvLocation.setText(strLocation);
 
         stringArrayList = bundle.getStringArrayList("users");
         userTripCircleImagesAdapter = new UserTripCircleImagesAdapter(TripDetailScreenActivity.this, TripFragment.userList);
@@ -286,13 +301,78 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         mBottomSheetDialog.show();
 
         TextView tvCancel = mBottomSheetDialog.findViewById(R.id.tvCancel);
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBottomSheetDialog.dismiss();
+        tvCancel.setOnClickListener(v -> mBottomSheetDialog.dismiss());
+
+        TextView tvCancelTrip = mBottomSheetDialog.findViewById(R.id.tvCancelTrip);
+        tvCancelTrip.setOnClickListener(v -> {
+
+
+            if (aBooleanIsCreatedBy) {
+                BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder(this)
+                        .setTitle("Cancel Trip?")
+                        .setMessage("Are you sure want to cancel this trip?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", (dialogInterface, which) -> {
+                            ApiCallback apiCallback = success -> {
+                                TripDetailScreenActivity.this.finish();
+                                Toast.makeText(TripDetailScreenActivity.this, "Trip cancel successfully", Toast.LENGTH_SHORT).show();
+                                return false;
+                            };
+                            ApiClass.apiCallForTripDelete(TripDetailScreenActivity.this, apiCallback, tripID);
+                            dialogInterface.dismiss();
+                        })
+                        .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                        .build();
+
+                // Show Dialog
+                mBottomSheetDialogd.show();
+            } else {
+                Toast.makeText(TripDetailScreenActivity.this, "Trip cancel admin only", Toast.LENGTH_SHORT).show();
             }
+
         });
 
+
+        TextView tvShareTrip = mBottomSheetDialog.findViewById(R.id.tvShareTrip);
+        tvShareTrip.setOnClickListener(v -> {
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                String shareMessage = "\nLet me recommend you this application\n\n";
+                shareMessage = shareMessage + "https://www.grouppii.com/hello/GrouppiiApp?tripid=" + AppRepository.mTripIDForUpdation(this) + "\n\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "choose one"));
+            } catch (Exception e) {
+                //e.toString();
+            }
+
+        });
+
+
+        TextView tvEditTrip = mBottomSheetDialog.findViewById(R.id.tvEditTrip);
+        tvEditTrip.setOnClickListener(v -> {
+            TripFragment.aBooleanRefreshAllTripApi = true;
+
+            if (aBooleanIsCreatedBy) {
+                mBottomSheetDialog.dismiss();
+                Intent intent = new Intent(this, NewTripStepTwoAddDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("image", strPhoto);
+                bundle.putString("title", strTitle);
+                bundle.putString("trip_type", strTripType);
+                bundle.putString("start_date", strTripStartDate);
+                bundle.putString("end_date", strTripEndDate);
+                bundle.putString("pay_date", strTripPayDate);
+                bundle.putBoolean("edit", true);
+                bundle.putString("description", strTripDescription);
+                bundle.putString("location", strLocation);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Addmin only", Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView tvParticipants = mBottomSheetDialog.findViewById(R.id.tvManageParticipants);
         tvParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -594,7 +674,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         tvPayDate = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPayDate);
         tvPayDaysLeft = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
         tvParticipantsCostsCount = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvParticipantsCostsCount);
-        tvPaymentsDaysLeft=llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
+        tvPaymentsDaysLeft = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
 
         viewpagerExpenditures = llBottomSheetPartiallyPaidTrip.findViewById(R.id.viewpagerExpenditures);
         tabsPartiallyPaid = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tabsPartiallyPaid);
@@ -936,7 +1016,11 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             addTripDataModel.setUserid((long) userID);
             addTripDataModel.setName(AppRepository.mUserName(TripDetailScreenActivity.this));
             addTripDataModel.setPicture(AppRepository.mUserProfileImage(TripDetailScreenActivity.this));
+            addTripDataModel.setLatitude(AppRepository.mLat(TripDetailScreenActivity.this));
+            addTripDataModel.setLongitude(AppRepository.mLng(TripDetailScreenActivity.this));
+
             paymentUserParticipaintsList.add(addTripDataModel);
+//            userParticipaintsList.add(addTripDataModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -981,6 +1065,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             aBooleanResfreshGetUserTrip = false;
             tripParticipantsAdapter.notifyDataSetChanged();
             userTripCircleImagesAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -1010,9 +1095,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         addPaymentBottomSheetBehavior.setHideable(true);
         addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         getPaymentExpenses();
-
-
-        Toast.makeText(this, "paymentresrsh", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -1058,7 +1140,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-
     private void setupWindowAnimations() {
         Fade fade = new Fade();
         fade.setDuration(1000);
@@ -1067,6 +1148,14 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         Slide slide = new Slide();
         slide.setDuration(1000);
         getWindow().setReturnTransition(slide);
+    }
+
+    @Override
+    public void onEditPaymentCallBack() {
+        addPaymentBottomSheetBehavior.setHideable(true);
+        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        getPaymentExpenses();
+
     }
 }
 

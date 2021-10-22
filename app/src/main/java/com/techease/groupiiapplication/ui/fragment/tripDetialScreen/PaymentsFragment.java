@@ -31,11 +31,13 @@ import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.Sh
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.ClickPartiallyPaidTripListener;
 import com.techease.groupiiapplication.interfaceClass.ClickRecentTransactionListener;
+import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ParticipantCostsBackClickChangedListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.NumberFormatUtil;
 
 import java.util.ArrayList;
@@ -80,6 +82,7 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     ArrayList<RecentTransaction> recentTransactions = new ArrayList<>();
     ArrayList<GroupExpenditure> groupExpendituresItems = new ArrayList<>();
 
+    private EditPaymentCallBackListener editPaymentCallBackListener;
 
     ClickPartiallyPaidTripListener clickPartiallyPaidTripListener;
 
@@ -91,6 +94,9 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     int strUserID;
     RecentTransctionAdapter recentTransctionAdapter;
     ClickRecentTransactionListener clickParticipantCostsListener;
+
+
+    public static boolean aBooleanHideKeyboard = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +116,9 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         if (getActivity() instanceof ClickPartiallyPaidTripListener)
             clickPartiallyPaidTripListener = (ClickPartiallyPaidTripListener) getActivity();
 
+        if (getActivity() instanceof EditPaymentCallBackListener)
+            editPaymentCallBackListener = (EditPaymentCallBackListener) getActivity();
+
         ButterKnife.bind(this, view);
         circularSeekBar.setEnabled(false);
         getPaymentExpenses();
@@ -123,7 +132,9 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         ConnectParticipantCostsBackClick.addClickListener(new ParticipantCostsBackClickChangedListener() {
             @Override
             public void OnMyBooleanClickChanged() {
+                editPaymentCallBackListener.onEditPaymentCallBack();
                 getPaymentExpenses();
+                Toast.makeText(getActivity(), "update", Toast.LENGTH_SHORT).show();
 //                InputMethodManager imm = (InputMethodManager) getActivity()
 //                        .getSystemService(Context.INPUT_METHOD_SERVICE);
 //
@@ -172,6 +183,11 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
                         tvNoRecentTransactionsFound.setTransitionVisibility(View.GONE);
                     }
 
+                    if (aBooleanHideKeyboard) {
+                        aBooleanHideKeyboard = false;
+                        KeyBoardUtils.hideKeyboard(getActivity());
+                        KeyBoardUtils.closeKeyboard(getActivity());
+                    }
 
                     try {
                         tvPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 public class AppRepository {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
-    public static String mConfig = "com.techease.newApp";
+    public static String mConfig = "com.techease.grouppii";
 
 
     public static SharedPreferences mGetValue(Context context) {

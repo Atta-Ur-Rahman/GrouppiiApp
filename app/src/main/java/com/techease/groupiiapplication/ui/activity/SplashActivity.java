@@ -4,6 +4,7 @@ package com.techease.groupiiapplication.ui.activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -43,6 +44,17 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+
+        Uri uri = getIntent().getData();
+        String strUsername = "";
+        if (uri != null) {
+            strUsername = uri.getQueryParameter("tripid");
+//            Toast.makeText(this, strUsername, Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            // Your app will pop up even if http://www.myurl.com/sso is clicked, so better to handle null uri
+        }
 //        Geocoder gcd = new Geocoder(this, Locale.getDefault());
 //        List<Address> addresses = null;
 //        try {

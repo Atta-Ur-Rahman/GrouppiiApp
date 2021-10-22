@@ -21,11 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddPaymentsTabsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddPaymentsTabsFragment extends Fragment implements View.OnClickListener {
 
 
@@ -33,7 +28,7 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
     TabLayout tabsAddPaymentTypes;
     @BindView(R.id.viewpagerAddPaymentsTypes)
     ViewPager viewpagerAddPaymentsTypes;
-    public static int anIntViewPagerPosition;
+    public static int anIntViewPagerPosition = 0;
     private AddPaymentOnBackListener addPaymentOnBackListener;
 
 
@@ -65,19 +60,16 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new AddPaymentFragment(), "Add Payments");
         adapter.addFragment(new AddPaymentFragment(), "Add Expenses");
-
         viewPager.setAdapter(adapter);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                anIntViewPagerPosition = position;
             }
 
             @Override
             public void onPageSelected(int position) {
-                anIntViewPagerPosition = position;
             }
 
             @Override
@@ -85,6 +77,7 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
 
             }
         });
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -96,5 +89,11 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
                 addPaymentOnBackListener.onPaymentBack();
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        anIntViewPagerPosition = viewpagerAddPaymentsTypes.getCurrentItem();
     }
 }

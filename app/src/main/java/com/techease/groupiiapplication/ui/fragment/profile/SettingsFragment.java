@@ -2,7 +2,9 @@ package com.techease.groupiiapplication.ui.fragment.profile;
 
 import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -77,7 +79,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.rlSignOut:
-                AppRepository.mPutValue(getActivity()).putBoolean("loggedIn", false).commit();
+
+                SharedPreferences settings = getActivity().getSharedPreferences("com.techease.grouppii", Context.MODE_PRIVATE);
+                settings.edit().clear().commit();
                 getActivity().finishAffinity();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;

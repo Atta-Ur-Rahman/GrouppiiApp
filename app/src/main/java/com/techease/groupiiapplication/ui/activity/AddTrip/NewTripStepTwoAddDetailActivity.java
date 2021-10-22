@@ -21,11 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,9 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.textfield.TextInputLayout;
@@ -52,14 +50,13 @@ import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityId
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.fragment.PlacesAutoCompleteAdapter;
+import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DateUtills;
-import com.techease.groupiiapplication.utils.FileUtils;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
-import com.techease.groupiiapplication.utils.StringHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,13 +79,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.ivBack)
     ImageView ivBack;
     @BindView(R.id.btnNext)
     Button btnNext;
 
+    @BindView(R.id.tvSteps)
+    TextView tvSteps;
 
     @BindView(R.id.tilTripTitle)
     TextInputLayout tilTripTitle;
@@ -124,7 +123,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     ProgressBar progressBar;
 
 
-    String strTripTitle, strDescription, strLocation, strStartDate, strEndDate, strPayByDate;
+    String strTripTitle, strDescription, strLocation, strStartDate, strEndDate, strPayByDate, strPhoto;
 
 
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
@@ -137,6 +136,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @BindView(R.id.ivCover)
     ImageView ivCoverImage;
 
+    @BindView(R.id.tvStepTripeTitle)
+    TextView tvStepTripeTitle;
 
     @BindView(R.id.llCoverImage)
     RelativeLayout rlCoverImage;
@@ -162,6 +163,9 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
     PlacesClient placesClient;
 
+    boolean aBooleanEdit = false;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,22 +176,56 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         ProcessBarAnimation();
 
         Places.initialize(this, getResources().getString(R.string.google_maps_key));
+        Bundle bundle = getIntent().getExtras();
+        try {
+            aBooleanEdit = bundle.getBoolean("edit");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
+        if (aBooleanEdit) {
 
+            tvSteps.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+
+            tvStepTripeTitle.setText("Edit Tripe");
+            btnNext.setText("Update");
+
+            strTripTitle = bundle.getString("title");
+            strDescription = bundle.getString("description");
+            strPhoto = bundle.getString("image");
+            strStartDate = DateUtills.getEditDateFormate(bundle.getString("start_date"));
+            strEndDate = DateUtills.getEditDateFormate(bundle.getString("end_date"));
+            strPayByDate = DateUtills.getEditDateFormate(bundle.getString("pay_date"));
+            strLocation = bundle.getString("location");
+
+
+            ivCoverImage.setVisibility(View.VISIBLE);
+            Glide.with(this).load(strPhoto).into(ivCoverImage);
+            etTripTitle.setText(strTripTitle);
+            etTripTitle.selectAll();
+            etDescription.setText(strDescription);
+            etDescription.selectAll();
+            autoCompleteTextView.setText(strLocation);
+
+            etTripStartDate.setText((strStartDate));
+            etTripEndDate.setText((strEndDate));
+            etTripPayByDate.setText((strPayByDate));
+
+
+        }
 
 
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
 
         autoCompleteCitiesAdapter = new AutoCompleteCitiesAdapter(this, hotelCityIdDataList);
-            autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
+        autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
 
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
 
 //                Toast.makeText(NewTripStepTwoAddDetailActivity.this, autoCompleteTextView.getText().toString(), Toast.LENGTH_SHORT).show();
                 // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
@@ -211,7 +249,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
                     mResult = new StringBuilder();
                     for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                        HotelCityIdData hotelCityIdData=new HotelCityIdData();
+                        HotelCityIdData hotelCityIdData = new HotelCityIdData();
 //                        hotelCityIdData.setCityId(Integer.parseInt(prediction.getPlaceId()));
                         hotelCityIdData.setCityName(String.valueOf(prediction.getFullText(null)));
                         hotelCityIdDataList.add(hotelCityIdData);
@@ -241,10 +279,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
             }
         });
-
-
-
-
 
 
 //
@@ -348,8 +382,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 //
 //                formList.add(m_li);
             }
-
-
 
 
         } catch (JSONException e) {
@@ -641,13 +673,14 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 @Override
                 public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
                     if (response.isSuccessful()) {
-
-//                    finish();
-
-                        Log.d("zmadate", response.body().getData().getStartdate());
-
                         AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
-                        startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+                        if (aBooleanEdit) {
+                            NewTripStepTwoAddDetailActivity.this.finish();
+                            Toast.makeText(NewTripStepTwoAddDetailActivity.this, "Trip updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+
+                        }
                         dialog.dismiss();
                         Log.d("zma uploddImage", String.valueOf(sourceFile));
                     }
@@ -675,7 +708,13 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                         Log.d("zmadate", response.body().getData().getStartdate());
 
                         AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
-                        startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+                        if (aBooleanEdit) {
+                            TripFragment.aBooleanRefreshAllTripApi = true;
+                            NewTripStepTwoAddDetailActivity.this.finish();
+                            Toast.makeText(NewTripStepTwoAddDetailActivity.this, "Trip updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
+                        }
                         dialog.dismiss();
                         Log.d("zma uploddImage", String.valueOf(sourceFile));
                     }

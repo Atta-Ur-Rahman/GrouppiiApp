@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6bf0da8503723aa7c5b3cfba57a2119b/transformed/jetified-MagicalExoPlayer-2.0.7/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6bf0da8503723aa7c5b3cfba57a2119b/transformed/jetified-MagicalExoPlayer-2.0.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6bf0da8503723aa7c5b3cfba57a2119b/transformed/jetified-MagicalExoPlayer-2.0.7/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.HamidrezaAmz/MagicalExoPlayer/2.0.7/d734fdd8a4ae016bc860340195636dee70221759/MagicalExoPlayer-2.0.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

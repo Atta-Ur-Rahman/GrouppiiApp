@@ -241,6 +241,23 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
+    @POST("trips/uodateexpenses")
+    Call<AddPaymentResponse> editPayment(
+            @Field("payment_id") String payment_id,
+            @Field("tripid") String tripId,
+            @Field("userid") int userId,
+            @Field("amount") String amount,
+            @Field("type_image") String type_image,
+            @Field("name") String name,
+            @Field("date") String date,
+            @Field("short_desc") String short_desc,
+            @Field("is_personal") String is_personal,
+            @Field("paid_by") String paid_by,
+            @Field("source") String source,
+            @Field("paid") String paid);
+
+
+    @FormUrlEncoded
     @POST("trips/getexpenses")
     Call<GetPaymentExpensesResponse> getPaymentExpenses(
             @Field("tripid") String tripId,

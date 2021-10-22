@@ -40,7 +40,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/main_heading_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tv_short_msg"
+            app:layout_constraintEnd_toStartOf="@id/tvSteps"
             app:layout_constraintStart_toEndOf="@id/ivBack"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +54,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvTripTitle" />
 
         <TextView
-            android:id="@+id/tv_short_msg"
+            android:id="@+id/tvSteps"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
