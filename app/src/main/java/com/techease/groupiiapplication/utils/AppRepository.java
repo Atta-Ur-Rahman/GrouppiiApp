@@ -99,6 +99,12 @@ public class AppRepository {
 
     }
 
+    public static boolean addPaymentOnStepFour(Context context) {
+        return mGetValue(context).getBoolean("add_payment_on_step_four", false);
+
+    }
+
+
     public static boolean mOneTimeStartTimer(Context context) {
         return mGetValue(context).getBoolean("one_time_start_timer", true);
 

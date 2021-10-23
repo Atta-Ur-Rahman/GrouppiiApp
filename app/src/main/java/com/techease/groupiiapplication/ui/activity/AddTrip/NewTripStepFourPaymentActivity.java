@@ -23,24 +23,37 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.adapter.payment.RecentTransctionAdapter;
 import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.FullPaid;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GroupExpenditure;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.PartialPaid;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
+import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.SharesNoCost;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentOnBackListener;
+import com.techease.groupiiapplication.interfaceClass.AddPaymentOnSetpFourCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.ClickPartiallyPaidTripListener;
+import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentFragment;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
+import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DateUtills;
@@ -57,7 +70,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentCallBackListener, AddPaymentOnBackListener {
+public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentCallBackListener, AddPaymentOnBackListener, AddPaymentOnSetpFourCallBackListener {
 
 
     Dialog addActivityTypeDialog;
@@ -112,9 +125,29 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     TextView tvAddPayment;
     SwitchCompat switchCompatGroupActivity, swAddGroupPayment;
 
+    String strPaid;
+
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
 
     CustomSpinnerAdapter customSpinnerAdapter;
+
+
+    @BindView(R.id.tvNoRecentTransactionsFound)
+    TextView tvNoRecentTransactionsFound;
+    @BindView(R.id.rvRecentTransaction)
+    RecyclerView rvRecentTransaction;
+    RecentTransctionAdapter recentTransctionAdapter;
+
+    ArrayList<RecentTransaction> recentTransactions = new ArrayList<>();
+    ArrayList<GroupExpenditure> groupExpendituresItems = new ArrayList<>();
+
+
+    ClickPartiallyPaidTripListener clickPartiallyPaidTripListener;
+
+
+    public static ArrayList<FullPaid> fullPaidArrayList = new ArrayList<>();
+    public static ArrayList<PartialPaid> partialPaidArrayList = new ArrayList<>();
+    public static ArrayList<SharesNoCost> sharesNoCostArrayList = new ArrayList<>();
 
 
     @Override
@@ -131,6 +164,13 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 
         addPaymentBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddPayment);
+
+
+        recentTransctionAdapter = new RecentTransctionAdapter(this, recentTransactions);
+        rvRecentTransaction.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        rvRecentTransaction.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(this));
+        rvRecentTransaction.setAdapter(recentTransctionAdapter);
+
 
         addPaymentBottomSheet();
 
@@ -267,6 +307,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
                 break;
             case R.id.ivAddPayment:
                 addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                AppRepository.mPutValue(this).putBoolean("add_payment_on_step_four", true).commit();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.containerPayment, AddPaymentFragment.newInstance("0", "AddPayment"))
                         .commitNow();
@@ -371,7 +412,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(strTripID, AppRepository.mUserID(this),
-                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, "0");
+                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, "1");
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
@@ -408,13 +449,15 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
     private void getPaymentExpenses() {
         dialog.show();
-        Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(strTripID, AppRepository.mUserID(this));
+        Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
+
+                    recentTransactions.addAll(response.body().getData().getRecentTransaction());
                     tvPartiallyPaidPercentage.setText(response.body().getData().getPaidPercent() + "%");
                     tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
 //                    circularSeekBar.setProgress(response.body().getData().getPaidPercent());
@@ -488,6 +531,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 
     private void ApiCallGetUserTrip() {
+        dialog.show();
         userList.clear();
         try {
             AddTripDataModel addTripDataModel = new AddTripDataModel();
@@ -495,22 +539,26 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripIDForUpdation(this)));
             addTripDataModel.setUserid((long) AppRepository.mUserID(this));
             addTripDataModel.setName(AppRepository.mUserName(NewTripStepFourPaymentActivity.this));
+            addTripDataModel.setPicture(AppRepository.mUserProfileImage(NewTripStepFourPaymentActivity.this));
+            addTripDataModel.setLatitude(AppRepository.mLat(NewTripStepFourPaymentActivity.this));
+            addTripDataModel.setLongitude(AppRepository.mLng(NewTripStepFourPaymentActivity.this));
             userList.add(addTripDataModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        dialog.show();
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + strTripID);
-        getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
+
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(this));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     userList.addAll(response.body().getData());
-                    customSpinnerAdapter.notifyDataSetChanged();
 
-                    Log.d("zmauser", "" + userList);
+                    CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(NewTripStepFourPaymentActivity.this, userList);
+                    spUserName.setAdapter(customAdapter);
+
 
                 }
             }
@@ -533,6 +581,24 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     @Override
     public void onPaymentAdddCallBack() {
 
+        addPaymentBottomSheetBehavior.setHideable(true);
+        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        etPaymentTitle.setText("");
+        etPaymentDate.setText("");
+        etPaymentAmount.setText("");
+        etShortDescription.setText("");
+        getPaymentExpenses();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+
+    @Override
+    public void onAddPaymentOnSetpFourBack() {
         addPaymentBottomSheetBehavior.setHideable(true);
         addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         etPaymentTitle.setText("");

@@ -36,9 +36,11 @@ import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.Ge
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.AddPaymentOnSetpFourCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepFourPaymentActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
@@ -85,6 +87,8 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     String strPaid;
 
 
+    AddPaymentOnSetpFourCallBackListener addPaymentOnSetpFourCallBackListener;
+
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
     CustomSpinnerAdapter customSpinnerAdapter;
 
@@ -108,6 +112,8 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         if (getActivity() instanceof AddPaymentCallBackListener)
             callBackListener = (AddPaymentCallBackListener) getActivity();
 
+        if (getActivity() instanceof AddPaymentOnSetpFourCallBackListener)
+            addPaymentOnSetpFourCallBackListener = (AddPaymentOnSetpFourCallBackListener) getActivity();
 
         customSpinnerAdapter = new CustomSpinnerAdapter(getActivity(), userList);
         spUserName.setAdapter(customSpinnerAdapter);
@@ -154,6 +160,12 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         GetUserTrip();
 
 
+        if (AppRepository.addPaymentOnStepFour(getActivity())) {
+            strPaid = "1";
+            ApiCallGetUserTrip();
+        }
+
+
         try {
             if (strEditType.equals("RecentTransaction")) {
                 getPaymentForEditExpenses();
@@ -165,25 +177,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
 
         return parentView;
-    }
-
-    private void getUser() {
-
-        Call<AddTripResponse> getGalleryPhotoResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gallery/" + AppRepository.mTripIDForUpdation(getActivity()));
-        getGalleryPhotoResponseCall.enqueue(new Callback<AddTripResponse>() {
-            @Override
-            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
-                if (response.isSuccessful()) {
-                    userList.addAll(response.body().getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddTripResponse> call, Throwable t) {
-
-            }
-        });
-
     }
 
 
@@ -314,6 +307,10 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 //        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
 
 
+        if (AppRepository.addPaymentOnStepFour(getActivity())) {
+            strPaid = "1";
+        }
+
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
@@ -329,15 +326,21 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                     etPaymentAmount.setText("");
                     etShortDescription.setText("");
 
-                    PaymentsFragment.aBooleanHideKeyboard = true;
-                    callBackListener.onPaymentAdddCallBack();
-                    ConnectParticipantCostsBackClick.setMyBoolean(true);
 
-                    PaymentsFragment paymentsFragment = new PaymentsFragment();
-                    paymentsFragment.getPaymentExpenses();
+                    if (!AppRepository.addPaymentOnStepFour(getActivity())) {
+                        PaymentsFragment.aBooleanHideKeyboard = true;
+                        callBackListener.onPaymentAdddCallBack();
+                        ConnectParticipantCostsBackClick.setMyBoolean(true);
 
-                    KeyBoardUtils.hideKeyboard(requireActivity());
-                    KeyBoardUtils.closeKeyboard(getActivity());
+                        PaymentsFragment paymentsFragment = new PaymentsFragment();
+                        paymentsFragment.getPaymentExpenses();
+
+                        KeyBoardUtils.hideKeyboard(requireActivity());
+                        KeyBoardUtils.closeKeyboard(getActivity());
+                    } else {
+                        addPaymentOnSetpFourCallBackListener.onAddPaymentOnSetpFourBack();
+                    }
+
 
                 } else {
                     dialog.dismiss();
@@ -568,6 +571,48 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
                 dialog.dismiss();
+            }
+        });
+    }
+
+
+    private void ApiCallGetUserTrip() {
+        dialog.show();
+        userList.clear();
+        try {
+            AddTripDataModel addTripDataModel = new AddTripDataModel();
+            addTripDataModel.setEmail(AppRepository.mEmail(getActivity()));
+            addTripDataModel.setTripid(Long.valueOf(AppRepository.mTripIDForUpdation(getActivity())));
+            addTripDataModel.setUserid((long) AppRepository.mUserID(getActivity()));
+            addTripDataModel.setName(AppRepository.mUserName(getActivity()));
+            addTripDataModel.setPicture(AppRepository.mUserProfileImage(getActivity()));
+            addTripDataModel.setLatitude(AppRepository.mLat(getActivity()));
+            addTripDataModel.setLongitude(AppRepository.mLng(getActivity()));
+            userList.add(addTripDataModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(getActivity()));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @Override
+            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    userList.addAll(response.body().getData());
+
+                    CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(getActivity(), userList);
+                    spUserName.setAdapter(customAdapter);
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddTripResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }

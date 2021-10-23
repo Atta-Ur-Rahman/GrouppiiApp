@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     dialog.dismiss();
                     Log.d("zma login", String.valueOf(response.message()));
                     if (response.isSuccessful()) {
-                        try {
+//                        try {
                             AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
 
                             AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
@@ -152,9 +152,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             LoginActivity.this.startActivity(mainIntent);
                             LoginActivity.this.finishAffinity();
                             Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password_email), Toast.LENGTH_SHORT).show();

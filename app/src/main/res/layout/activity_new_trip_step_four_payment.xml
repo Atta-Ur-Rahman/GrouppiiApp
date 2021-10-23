@@ -2,272 +2,311 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gry"
     tools:context=".ui.activity.AddTrip.NewTripStepFourPaymentActivity">
 
-    <ImageView
-        android:id="@+id/ivBack"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/widget_margin"
-        android:layout_marginTop="@dimen/widget_margin"
-        android:background="@drawable/round_bg"
-        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/text_view_edittext_height"
-        android:layout_marginTop="@dimen/widget_margin"
-        android:gravity="center"
-        android:text="New Trip"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/main_heading_text_size"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:progress="100"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-
-    <TextView
-        android:id="@+id/tvSteps"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/text_view_edittext_height"
-        android:layout_marginTop="@dimen/widget_margin"
-        android:layout_marginRight="@dimen/widget_margin_left_right"
-        android:gravity="center"
-        android:text="Steps 4/4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvPaymentTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/widget_margin"
             android:layout_marginTop="@dimen/widget_margin"
-            android:drawableLeft="@mipmap/payment"
-            android:drawablePadding="@dimen/widget_margin"
-            android:gravity="center_vertical"
-            android:text="Payments"
-            android:textSize="@dimen/main_heading_text_size"
-            android:textStyle="bold"
+            android:background="@drawable/round_bg"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mcvPayment"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_margin="@dimen/widget_margin_left_right"
-            app:cardBackgroundColor="#1D2868"
-            app:cardCornerRadius="@dimen/cv_widget_corner_radius"
-            app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csPayment"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="20dp"
-                    app:cs_circle_color="@color/progress_un_fill_color"
-                    app:cs_circle_progress_color="@color/circle_color"
-                    app:cs_circle_stroke_width="7dp"
-                    app:cs_max="100"
-                    app:cs_negative_enabled="true"
-                    app:cs_pointer_color="@color/circle_color"
-                    app:cs_pointer_halo_color="@color/circle_color"
-                    app:cs_pointer_halo_color_ontouch="@color/circle_color"
-                    app:cs_pointer_stroke_width="20dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="144dp" />
-
-                <LinearLayout
-                    android:id="@+id/llProgessBarText"
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
-                    <TextView
-                        android:id="@+id/tvPercentage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Partially paid"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/middle_text_size"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvPercentage" />
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tvPartiallyPaidtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/widget_margin"
-                    android:text="Partially paid"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/middle_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/csPayment" />
-
-
-                <TextView
-                    android:id="@+id/tvPartiallyPaid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/widget_margin"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/middle_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/csPayment" />
-
-                <View
-                    android:id="@+id/viewLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="@dimen/widget_margin"
-                    android:background="@color/light_gry"
-                    app:layout_constraintTop_toBottomOf="@+id/tvPartiallyPaid" />
-
-
-                <TextView
-                    android:id="@+id/tvPaidNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fifty_dp"
-                    android:layout_marginTop="@dimen/widget_margin"
-                    android:paddingLeft="20sp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/middle_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintRight_toLeftOf="@id/tvPaid"
-                    app:layout_constraintTop_toBottomOf="@id/viewLine" />
-
-
-                <TextView
-                    android:id="@+id/tvPaid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fifty_dp"
-                    android:layout_marginTop="@dimen/widget_margin"
-                    android:layout_marginRight="@dimen/widget_margin"
-                    android:paddingLeft="7dp"
-                    android:text="Paid"
-                    android:paddingTop="3dp"
-                    android:textColor="@color/light_gry"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/viewLine" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-
         <TextView
-            android:id="@+id/tvRecentTransaction"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            android:drawablePadding="@dimen/widget_margin"
-            android:gravity="center_vertical"
-            android:text="Recent Transactions"
-            android:textColor="@color/black"
-            android:textSize="@dimen/main_heading_text_size"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mcvPayment" />
-
-
-        <TextView
-            android:id="@+id/tvNoRecentTransactionsFound"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fifty_dp"
-            android:paddingLeft="20sp"
-            android:text="No recent transaction found"
+            android:gravity="center"
+            android:text="New Trip"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/main_heading_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRecentTransaction" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-        <Button
-            android:id="@+id/btnDone"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:progress="100"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+
+        <TextView
+            android:id="@+id/tvSteps"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginRight="@dimen/widget_margin_left_right"
-            android:layout_marginBottom="@dimen/widget_margin_left_right"
-            android:background="@drawable/round_button_conner"
-            android:text="Done"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:gravity="center"
+            android:text="Steps 4/4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/ivAddPayment"
-            android:layout_width="@dimen/fifty_dp"
-            android:layout_height="@dimen/fifty_dp"
-            android:layout_margin="@dimen/widget_margin_left_right"
-            android:background="@mipmap/add"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btnDone"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/progressBar">
+
+            <TextView
+                android:id="@+id/tvPaymentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:drawableLeft="@mipmap/payment"
+                android:drawablePadding="@dimen/widget_margin"
+                android:gravity="center_vertical"
+                android:text="Payments"
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcvPayment"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_margin="@dimen/widget_margin_left_right"
+                app:cardBackgroundColor="#1D2868"
+                app:cardCornerRadius="@dimen/cv_widget_corner_radius"
+                app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <me.tankery.lib.circularseekbar.CircularSeekBar
+                        android:id="@+id/csPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="20dp"
+                        app:cs_circle_color="@color/progress_un_fill_color"
+                        app:cs_circle_progress_color="@color/circle_color"
+                        app:cs_circle_stroke_width="7dp"
+                        app:cs_max="100"
+                        app:cs_negative_enabled="true"
+                        app:cs_pointer_color="@color/circle_color"
+                        app:cs_pointer_halo_color="@color/circle_color"
+                        app:cs_pointer_halo_color_ontouch="@color/circle_color"
+                        app:cs_pointer_stroke_width="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:layout_editor_absoluteX="144dp" />
+
+                    <LinearLayout
+                        android:id="@+id/llProgessBarText"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/tvPercentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Partially paid"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/middle_text_size"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvPercentage" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tvPartiallyPaidtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/widget_margin"
+                        android:text="Partially paid"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/middle_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/csPayment" />
+
+
+                    <TextView
+                        android:id="@+id/tvPartiallyPaid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/widget_margin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/middle_text_size"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/csPayment" />
+
+                    <View
+                        android:id="@+id/viewLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.7dp"
+                        android:layout_marginTop="@dimen/widget_margin"
+                        android:background="@color/light_gry"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPartiallyPaid" />
+
+
+                    <TextView
+                        android:id="@+id/tvPaidNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fifty_dp"
+                        android:layout_marginTop="@dimen/widget_margin"
+                        android:paddingLeft="20sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/middle_text_size"
+                        android:textStyle="bold"
+                        app:layout_constraintRight_toLeftOf="@id/tvPaid"
+                        app:layout_constraintTop_toBottomOf="@id/viewLine" />
+
+
+                    <TextView
+                        android:id="@+id/tvPaid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fifty_dp"
+                        android:layout_marginTop="@dimen/widget_margin"
+                        android:layout_marginRight="@dimen/widget_margin"
+                        android:paddingLeft="7dp"
+                        android:paddingTop="3dp"
+                        android:text="Paid"
+                        android:textColor="@color/light_gry"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/viewLine" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <RelativeLayout
+                android:id="@+id/llRecentTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                android:drawablePadding="@dimen/widget_margin"
+                android:gravity="center_vertical"
+                android:text="Recent Transactions"
+                android:textColor="@color/black"
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mcvPayment">
+
+                <TextView
+                    android:id="@+id/tvRecentTransaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/widget_margin"
+                    android:gravity="center_vertical"
+                    android:text="Recent Transactions"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/main_heading_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_baseline_east_24" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvNoRecentTransactionsFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fifty_dp"
+                android:paddingLeft="20sp"
+                android:text="No recent transaction found"
+                android:textSize="@dimen/main_heading_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llRecentTransaction" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/widget_margin"
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="130dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/btnDone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llRecentTransaction" />
+
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                android:layout_marginBottom="@dimen/widget_margin_left_right"
+                android:background="@drawable/round_button_conner"
+                android:text="Done"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/ivAddPayment"
+                android:layout_width="@dimen/fifty_dp"
+                android:layout_height="@dimen/fifty_dp"
+                android:layout_margin="@dimen/widget_margin_left_right"
+                android:background="@mipmap/add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/btnDone"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/llBottomSheetBehaviorId"
+                layout="@layout/custom_bottom_sheet_add_payment" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/llBottomSheetBehaviorId"
-            layout="@layout/custom_bottom_sheet_add_payment" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

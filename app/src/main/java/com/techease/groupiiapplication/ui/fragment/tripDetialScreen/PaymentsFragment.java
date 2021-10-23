@@ -35,6 +35,7 @@ import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListene
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ParticipantCostsBackClickChangedListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentFragment;
 import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
@@ -97,6 +98,13 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
 
 
     public static boolean aBooleanHideKeyboard = false;
+
+
+    public static PaymentsFragment newInstance() {
+        PaymentsFragment fragment = new PaymentsFragment();
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

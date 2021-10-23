@@ -67,22 +67,27 @@
                 app:cardBackgroundColor="@color/purple_500"
                 app:cardCornerRadius="5dp">
 
-                <ImageView
-                    android:id="@+id/message_image"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:src="@color/colorPrimary" />
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/message_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/video_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_ondemand_video_24" />
 
 
             </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/video_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@color/colorPrimary" />
 
 
             <ProgressBar

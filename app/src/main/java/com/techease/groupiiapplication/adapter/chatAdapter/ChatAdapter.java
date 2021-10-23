@@ -189,7 +189,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessageView, tvDate, tvName;
-        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage, ivMessageImage;
+        private ImageView ivSentAndReceiveMessage, ivSeenMessage, ivSentMessage, ivMessageImage, ivVideo;
         private ProgressBar progressBar;
         private FrameLayout messageLayout;
 
@@ -203,6 +203,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             messageLayout = itemView.findViewById(R.id.message_layout);
             ivMessageImage = itemView.findViewById(R.id.message_image);
             progressBar = itemView.findViewById(R.id.progress);
+            ivVideo = itemView.findViewById(R.id.video_image);
             ivSentAndReceiveMessage = itemView.findViewById(R.id.ivSentAndReceiveMessage);
 
 
@@ -235,7 +236,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 //                    chatImages.add(message);
                     String extension = message.substring(message.lastIndexOf("."));
 
-                    if (extension.equals("mp4")) {
+                    if (extension.equals(".mp4")) {
+                        ivVideo.setVisibility(View.VISIBLE);
+                    } else {
+                        ivVideo.setVisibility(View.GONE);
 
                     }
 
