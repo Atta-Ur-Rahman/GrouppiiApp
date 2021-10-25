@@ -95,7 +95,6 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
 
         }
 
-
         Glide.with(context).load(chatAllUserDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivGroupChatImage);
 
 //        if (chatAllUserDataModel.getChatType().equals("group")) {

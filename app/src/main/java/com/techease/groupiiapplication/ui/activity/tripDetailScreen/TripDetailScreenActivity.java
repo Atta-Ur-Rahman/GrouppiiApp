@@ -243,6 +243,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         setupWindowAnimations();
         dialog = AlertUtils.createProgressDialog(this);
 
+        //boolean use in Add new trip step four activity
+        AppRepository.mPutValue(this).putBoolean("add_payment_on_step_four", false).commit();
         Bundle bundle = getIntent().getExtras();
         strTitle = bundle.getString("title");
         strTripDescription = bundle.getString("description");
@@ -287,6 +289,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         initializeBottomSheet();
         ApiCallGetUserTrip();
 
+
+        bottomSheetBehavior.setHideable(true);
 
     }
 
@@ -383,7 +387,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
-                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList, aBooleanIsCreatedBy);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList, aBooleanIsCreatedBy,tvNoActiveTripFound);
                 rvTripParticipants.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(TripDetailScreenActivity.this));
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
@@ -922,8 +926,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     private void getPaymentExpenses() {
         dialog.show();
 
-        groupExpendituresItems.clear();
-        personalExpendituresItems.clear();
+
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
@@ -944,6 +947,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     tvPaymentsDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(response.body().getData().getTripdate())) + " days left");
 
                     tvParticipantsCostsCount.setText(response.body().getData().getFullyPaidUsers() + " Paid," + response.body().getData().getPartialPaidUsers() + " Partially," + response.body().getData().getNotPaidUsers() + " Not");
+
+                    groupExpendituresItems.clear();
+                    personalExpendituresItems.clear();
+
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
                     personalExpendituresItems.addAll(response.body().getData().getPersonalExpenditures());
                     ConnectExpenditures.setMyBooleanListener(true);

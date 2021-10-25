@@ -373,10 +373,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     private void ApiCallForEditPayment() {
 
-
-//        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
-
-
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().editPayment(strEditID, AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
@@ -515,11 +511,8 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
                     for (RecentTransaction recentTransaction : response.body().getData().getRecentTransaction()) {
 
-
                         if (recentTransaction.getId() == Integer.parseInt(strEditID)) {
                             Log.d("zmaresponse" + strEditID, String.valueOf(response.body().getData().getRecentTransaction().get(0).getId()));
-
-
                             etPaymentTitle.setText(recentTransaction.getName());
                             etPaymentDate.setText(DateUtills.getEditDateFormate(recentTransaction.getDate()));
                             etPaymentAmount.setText(recentTransaction.getAmount() + "");
@@ -534,7 +527,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                             }
 
 
-                            Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
 
                             tvAddPayment.setText("Update");
                             if (recentTransaction.getIsPersonal() == 0) {

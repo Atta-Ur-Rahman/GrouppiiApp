@@ -406,7 +406,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 //                                            }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-                                            Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
@@ -428,10 +428,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            etMessageView.setText("");
-                            tvSend.setEnabled(true);
-                            dialog.dismiss();
-                            ivSendFile.setEnabled(true);
                             if (aBooleanChaResfresh) {
                                 aBooleanChaResfresh = false;
                                 try {
@@ -460,7 +456,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                     Log.d("zma message send sho", "" + jsonObject);
                                     if (strChatType.equals("user")) {
-
                                         if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
@@ -470,6 +465,13 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
+                                    Log.d("zmauser", AppRepository.mUserID(ChatsActivity.this) + "   " + fromUser);
+                                    if (fromUser.equals(String.valueOf(AppRepository.mUserID(ChatsActivity.this)))) {
+                                        etMessageView.setText("");
+                                        tvSend.setEnabled(true);
+                                        ivSendFile.setEnabled(true);
+                                    }
+                                    dialog.dismiss();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -482,14 +484,12 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-
     private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String userType, String isSent, String isRead, String messageType) {
         mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, userType, isSent, isRead, messageType));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
 
     }
-
 
     private void scrollToBottom() {
         rvMessage.scrollToPosition(chatAdapter.getItemCount() - 1);
@@ -549,6 +549,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mSocket.disconnect();
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }

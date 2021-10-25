@@ -32,6 +32,7 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.Upcoming;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -152,7 +153,10 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         setProfileImageAndName();
-        if (aBooleanRefreshAllTripApi) {
+        if (HomeActivity.aBooleanAddedTripApi) {
+            apiCallGetTripDetail();
+
+        } else if (aBooleanRefreshAllTripApi) {
             apiCallGetTripDetail();
             aBooleanRefreshAllTripApi = false;
         }
@@ -183,6 +187,13 @@ public class TripFragment extends Fragment implements View.OnClickListener {
                     setupViewPager(viewPager);
                     tabLayout.setupWithViewPager(viewPager);
 
+
+                    if (HomeActivity.aBooleanAddedTripApi) {
+                        HomeActivity.aBooleanAddedTripApi = false;
+                        viewPager.setCurrentItem(1);
+
+                    }
+
                 } else {
                     dialog.dismiss();
                 }
@@ -197,8 +208,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

@@ -49,6 +49,7 @@ import com.techease.groupiiapplication.adapter.addTrip.AutoCompleteCitiesAdapter
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.fragment.PlacesAutoCompleteAdapter;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -734,5 +735,11 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (HomeActivity.aBooleanAddedTripApi) {
+            finish();
+        }
+    }
 }

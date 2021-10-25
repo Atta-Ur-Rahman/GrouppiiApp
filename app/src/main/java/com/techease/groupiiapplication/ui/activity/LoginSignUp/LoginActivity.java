@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.profile.EditProfileActivity;
@@ -127,14 +128,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void ApiCallForSignIn() {
 
 
-        Call<LogInResponse> logInResponseCall = BaseNetworking.ApiInterface().login(strEmail, strPassword);
-        logInResponseCall.enqueue(new Callback<LogInResponse>() {
+        Call<LoginResponse> logInResponseCall = BaseNetworking.ApiInterface().login(strEmail, strPassword);
+        logInResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    Log.d("zma login", String.valueOf(response.message()));
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
 //                        try {
                             AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
 
@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<LogInResponse> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.d("zma login error", String.valueOf(t.getMessage()));
                 Toast.makeText(LoginActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

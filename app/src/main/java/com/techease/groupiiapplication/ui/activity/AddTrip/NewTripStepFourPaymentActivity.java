@@ -204,10 +204,15 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             @Override
             public void onResponse(Call<PublishTripResponse> call, Response<PublishTripResponse> response) {
                 if (response.isSuccessful()) {
-                    TripFragment.aBooleanRefreshAllTripApi = true;
-                    Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
-                    NewTripStepFourPaymentActivity.this.startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
-                    NewTripStepFourPaymentActivity.this.finishAffinity();
+
+
+                    HomeActivity.aBooleanAddedTripApi = true;
+                    finish();
+
+//                    Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
+//                    NewTripStepFourPaymentActivity.this.startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(NewTripStepFourPaymentActivity.this).toBundle());
+//                    NewTripStepFourPaymentActivity.this.finishAffinity();
+
                     dialog.dismiss();
 
                 }

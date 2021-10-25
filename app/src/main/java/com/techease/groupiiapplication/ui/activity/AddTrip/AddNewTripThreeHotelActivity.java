@@ -35,6 +35,7 @@ import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.AreaD
 import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.CriteriaDataObject;
 import com.techease.groupiiapplication.dataModel.addTrips.ogodaHotelObject.MainHotelObject;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.WebViewActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -417,6 +418,14 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
 //                startActivity(new Intent(this, NewTripStepFourPaymentActivity.class));
                 break;
 
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (HomeActivity.aBooleanAddedTripApi) {
+            finish();
         }
     }
 }

@@ -113,6 +113,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentTrip;
 
+    public static boolean aBooleanAddedTripApi = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

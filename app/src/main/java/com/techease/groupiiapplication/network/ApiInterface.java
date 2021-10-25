@@ -3,6 +3,7 @@ package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -64,7 +65,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("users/login")
-    Call<LogInResponse> login(
+    Call<LoginResponse> login(
             @Field("email") String userEmail,
             @Field("password") String userPassword);
 

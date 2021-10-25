@@ -36,11 +36,14 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     private Context context;
     private List<AddTripDataModel> userList;
     private boolean isCreatedBy;
+    TextView tvNotFound;
 
-    public TripParticipantsAdapter(Context context, List<AddTripDataModel> userList, boolean IsCreateBy) {
+    public TripParticipantsAdapter(Context context, List<AddTripDataModel> userList, boolean IsCreateBy, TextView tvNotFount) {
         this.userList = userList;
         this.context = context;
         this.isCreatedBy = IsCreateBy;
+        this.tvNotFound = tvNotFount;
+
 
     }
 
@@ -97,6 +100,12 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
 
     @Override
     public int getItemCount() {
+        if (userList.size() == 0) {
+            tvNotFound.setVisibility(View.VISIBLE);
+        } else {
+            tvNotFound.setVisibility(View.GONE);
+
+        }
         return userList.size();
     }
 

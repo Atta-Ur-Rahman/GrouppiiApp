@@ -47,6 +47,7 @@ import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripRespons
 import com.techease.groupiiapplication.dataModel.addTrips.createTrip.CreateTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -717,5 +718,13 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         etPhone.setSelection(etPhone.getText().length());
         ContactLayoutGone();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (HomeActivity.aBooleanAddedTripApi) {
+            finish();
+        }
     }
 }
