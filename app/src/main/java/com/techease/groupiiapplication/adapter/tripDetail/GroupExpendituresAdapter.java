@@ -80,13 +80,13 @@ public class GroupExpendituresAdapter extends RecyclerView.Adapter<GroupExpendit
 
 
         TextView tvExpenditureTitle, tvShortDescription;
-        ImageView ivMenuDot, ivType;
+        ImageView ivEditPersonalExpendature, ivType;
 
         MyViewHolder(View view) {
             super(view);
             tvExpenditureTitle = view.findViewById(R.id.tvExpenditureTitle);
             tvShortDescription = view.findViewById(R.id.tvShortDescription);
-            ivMenuDot = view.findViewById(R.id.ivMenuDot);
+            ivEditPersonalExpendature = view.findViewById(R.id.ivEditPersonalExpendature);
             ivType = view.findViewById(R.id.ivType);
 
 

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatAllUserDataModel;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
+import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.text.ParseException;
@@ -109,12 +110,14 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
 
                 Intent intent = new Intent(context, ChatsActivity.class);
                 Bundle bundle = new Bundle();
+
                 bundle.putString("title_name", chatAllUserDataModel.getTitleName());
                 bundle.putString("tripId", chatAllUserDataModel.getTripId());
                 bundle.putString("toUserId", chatAllUserDataModel.getToUser());
                 bundle.putString("type", chatAllUserDataModel.getMessage());
                 bundle.putString("picture", chatAllUserDataModel.getPicture());
 
+                Constants.currentUserChatId = chatAllUserDataModel.getToUser();
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
             }

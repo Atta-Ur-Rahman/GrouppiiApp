@@ -1,12 +1,12 @@
-package com.techease.groupiiapplication.chat.images.imageModel;
+package com.techease.groupiiapplication.dataModel.notifications;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class ImagesUploadResponse{
+public class GetNotificationsResponse{
 
 	@SerializedName("data")
-	private List<String> data;
+	private List<NotificationsDataItem> data;
 
 	@SerializedName("success")
 	private boolean success;
@@ -14,7 +14,7 @@ public class ImagesUploadResponse{
 	@SerializedName("message")
 	private String message;
 
-	public List<String> getData(){
+	public List<NotificationsDataItem> getData(){
 		return data;
 	}
 

@@ -1,8 +1,7 @@
-package com.techease.groupiiapplication.chat;
+package com.techease.groupiiapplication.chat.view.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.potyvideo.library.AndExoPlayerView;
@@ -10,11 +9,9 @@ import com.techease.groupiiapplication.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.http.Url;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 

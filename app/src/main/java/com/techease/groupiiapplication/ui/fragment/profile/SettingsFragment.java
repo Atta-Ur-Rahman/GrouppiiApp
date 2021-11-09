@@ -17,9 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
@@ -57,11 +59,20 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.ivProfilePicture)
     ImageView ivProfilePicture;
 
+    @BindView(R.id.swNotification)
+    SwitchCompat swNotification;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
         setProfileImage();
+
+        swNotification.setChecked(AppRepository.mNotification(getActivity()));
+        swNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AppRepository.mPutValue(getActivity()).putBoolean("notification", isChecked).commit();
+
+        });
 
         return view;
     }

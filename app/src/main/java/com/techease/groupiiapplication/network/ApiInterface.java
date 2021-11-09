@@ -2,8 +2,9 @@
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
-import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
+import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
 import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
+import com.techease.groupiiapplication.dataModel.notifications.GetNotificationsResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
@@ -56,7 +57,7 @@ public interface ApiInterface {
             @Field("name") String name,
             @Field("email") String userEmail,
             @Field("password") String userPassword,
-            @Field("fcm_token") String fcmToken,
+            @Field("phone") String phoneNumber,
             @Field("device_type") String deviceType,
             @Field("usertype") String userType,
             @Field("latitude") String latitude,
@@ -67,7 +68,8 @@ public interface ApiInterface {
     @POST("users/login")
     Call<LoginResponse> login(
             @Field("email") String userEmail,
-            @Field("password") String userPassword);
+            @Field("password") String userPassword,
+            @Field("token") String fcmToken);
 
 
     @FormUrlEncoded
@@ -216,6 +218,16 @@ public interface ApiInterface {
 
     @GET
     Call<AddTripResponse> getUserTrip(
+            @Url String url);
+
+
+    @GET
+    Call<GetSingleTripResponse> getTripById(
+            @Url String id);
+
+
+    @GET
+    Call<GetNotificationsResponse> getAllNotification(
             @Url String url);
 
 

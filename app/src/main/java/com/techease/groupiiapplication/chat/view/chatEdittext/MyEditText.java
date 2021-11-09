@@ -1,4 +1,4 @@
-package com.techease.groupiiapplication.chat;
+package com.techease.groupiiapplication.chat.view.chatEdittext;
 
 import android.content.Context;
 import android.os.Bundle;

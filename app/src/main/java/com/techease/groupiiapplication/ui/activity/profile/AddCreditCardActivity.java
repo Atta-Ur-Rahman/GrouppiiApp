@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.techease.groupiiapplication.MapsFragment;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.ui.fragment.profile.AddCreditCardFragment;
 

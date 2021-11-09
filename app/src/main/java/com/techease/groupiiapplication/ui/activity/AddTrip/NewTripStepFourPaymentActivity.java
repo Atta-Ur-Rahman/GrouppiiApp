@@ -56,6 +56,7 @@ import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
+import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
@@ -83,6 +84,8 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
     ProgressBar progressBar;
     Dialog dialog;
 
+    @BindView(R.id.tvTripTitle)
+    TextView tvTripTitle;
     @BindView(R.id.ivAddPayment)
     ImageView ivAddPayment;
 
@@ -159,9 +162,9 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         dialog = AlertUtils.createProgressDialog(this);
         circularSeekBar.setEnabled(false);
         ProcessBarAnimation();
+        tvTripTitle.setText(AppRepository.mTripTitleName(this));
 
         strTripID = AppRepository.mTripIDForUpdation(this);
-
 
         addPaymentBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheetAddPayment);
 
@@ -204,9 +207,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
             @Override
             public void onResponse(Call<PublishTripResponse> call, Response<PublishTripResponse> response) {
                 if (response.isSuccessful()) {
-
-
-                    HomeActivity.aBooleanAddedTripApi = true;
+                    Constants.aBooleanAddedTripApi = true;
                     finish();
 
 //                    Intent mainIntent = new Intent(NewTripStepFourPaymentActivity.this, HomeActivity.class);
@@ -255,15 +256,12 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
 
         strIsPersonal = "1";
-        swAddGroupPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    strIsPersonal = "0";
-                } else {
-                    strIsPersonal = "1";
+        swAddGroupPayment.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                strIsPersonal = "0";
+            } else {
+                strIsPersonal = "1";
 
-                }
             }
         });
 
@@ -281,8 +279,6 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         ivJcb.setOnClickListener(this);
         ivAmericanCard.setOnClickListener(this);
 
-
-        Log.d("zma usr", "" + TripFragment.userList);
 
 
     }
@@ -403,12 +399,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         addActivityTypeDialog.show();
         AlertUtils.doKeepDialog(addActivityTypeDialog);
         addActivityTypeDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
-        addActivityTypeDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
 
-            }
-        });
 
     }
 
@@ -443,7 +434,7 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
 
             @Override
             public void onFailure(Call<AddPaymentResponse> call, Throwable t) {
-                Log.d("zma addpayment error", String.valueOf(t.getMessage()));
+//                Log.d("zma addpayment error", String.valueOf(t.getMessage()));
 
                 Toast.makeText(NewTripStepFourPaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

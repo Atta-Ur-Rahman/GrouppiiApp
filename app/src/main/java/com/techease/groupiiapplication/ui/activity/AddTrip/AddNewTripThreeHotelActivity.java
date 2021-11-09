@@ -39,6 +39,7 @@ import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.WebViewActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
@@ -424,7 +425,7 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
     @Override
     protected void onResume() {
         super.onResume();
-        if (HomeActivity.aBooleanAddedTripApi) {
+        if (Constants.aBooleanAddedTripApi) {
             finish();
         }
     }

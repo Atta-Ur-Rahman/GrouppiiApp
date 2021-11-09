@@ -84,9 +84,16 @@ public class ActiveTripAdapter extends RecyclerView.Adapter<ActiveTripAdapter.My
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
-                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+
+                if (data.isIsCreatedby()) {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+                } else {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getTripid())).commit();
+
+                }
 
                 TripFragment.userList = data.getUsers();
+
 
                 Intent intent = new Intent(context, TripDetailScreenActivity.class);
                 Bundle bundle = new Bundle();

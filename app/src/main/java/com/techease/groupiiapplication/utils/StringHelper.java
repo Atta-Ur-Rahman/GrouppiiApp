@@ -19,19 +19,17 @@ import java.util.Random;
 import java.util.UUID;
 
 
-
-
 public class StringHelper {
     public static final String BLANK = "";
-    public static final String NULL  = "null";
-    public static final String SPAC  = "[|]";
+    public static final String NULL = "null";
+    public static final String SPAC = "[|]";
     public static final String SPAC2 = "[/]";
 
 
     private static final char[] symbols;
     private static final char[] symbolsNumber;
     private static final Random mRandom = new Random();
-    private static char[] mChBuffer     = null;
+    private static char[] mChBuffer = null;
 
     static {
         char ch;
@@ -74,8 +72,7 @@ public class StringHelper {
                 hexString.append(h);
             }
             return hexString.toString();
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             return BLANK;
         }
     }
@@ -84,8 +81,7 @@ public class StringHelper {
         String decodedString = BLANK;
         try {
             decodedString = URLDecoder.decode(str, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
         }
         return decodedString;
     }
@@ -95,8 +91,7 @@ public class StringHelper {
         try {
             encodedString = URLEncoder.encode(str, "UTF-8");
             encodedString = encodedString.replace("+", "%20");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             encodedString = str;
         }
         return encodedString;
@@ -136,8 +131,7 @@ public class StringHelper {
             @SuppressWarnings("unused")
             URL url = new URL(data);
             barcodeDataIsUrl = true;
-        }
-        catch (MalformedURLException exc) {
+        } catch (MalformedURLException exc) {
             barcodeDataIsUrl = false;
         }
         return barcodeDataIsUrl;
@@ -163,7 +157,7 @@ public class StringHelper {
     public static String generateRandomCode(int length) {
         if (mChBuffer == null || mChBuffer.length != length)
             mChBuffer = new char[length];
-        for (int i = 0; i < mChBuffer.length; i ++) {
+        for (int i = 0; i < mChBuffer.length; i++) {
             mChBuffer[i] = symbols[mRandom.nextInt(symbols.length)];
         }
         return new String(mChBuffer);
@@ -172,18 +166,16 @@ public class StringHelper {
     public static String generateRandomNumber(int length) {
         if (mChBuffer == null || mChBuffer.length != length)
             mChBuffer = new char[length];
-        for (int i = 0; i < mChBuffer.length; i ++) {
+        for (int i = 0; i < mChBuffer.length; i++) {
             mChBuffer[i] = symbolsNumber[mRandom.nextInt(symbolsNumber.length)];
         }
         return new String(mChBuffer);
     }
 
-    public static float decodeFloat(String str)
-    {
+    public static float decodeFloat(String str) {
         if (StringHelper.isEmpty(str))
             return 0;
-        if (str.contains(","))
-        {
+        if (str.contains(",")) {
             NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
             Number aaa = null;
             float ret;
@@ -195,9 +187,7 @@ public class StringHelper {
                 ret = 0;
             }
             return ret;
-        }
-        else
-        {
+        } else {
             return Float.parseFloat(str);
         }
     }
@@ -218,19 +208,16 @@ public class StringHelper {
         }
     }
 
-    public static String encodeCurrencyThousand(float value)
-    {
+    public static String encodeCurrencyThousand(float value) {
         return makeMoneyType(String.valueOf(value));
     }
 
-    public static String encodeCurrency(float value)
-    {
+    public static String encodeCurrency(float value) {
         String strResult = String.format("%.2f", value).replace(",", ".");
         return strResult;
     }
 
-    public static String encodePercent(float value)
-    {
+    public static String encodePercent(float value) {
         String strResult = String.format("%.1f", value).replace(",", ".");
         return strResult;
     }
@@ -261,8 +248,7 @@ public class StringHelper {
     }
 
 
-
-    public static int getRandomNumber(int min, int max){
+    public static int getRandomNumber(int min, int max) {
         Random r = new Random();
         int random = r.nextInt(max - min + 1) + min;
         return random;
@@ -313,18 +299,20 @@ public class StringHelper {
         }
     }
 
-    public static String getFrontSubString(String totalString, String str){
+    public static String getFrontSubString(String totalString, String str) {
         String[] split = totalString.split(str);
         String firstSubString = split[0];
         return firstSubString;
     }
 
-    public static String getDateRandomString(){
+    public static String getDateRandomString() {
         Random r = new Random();
         int i1 = (r.nextInt(80) + 65);
 
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + i1 ;
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + i1;
         return timeStamp;
     }
+
+    public static boolean checkFirebase = true;
 
 }

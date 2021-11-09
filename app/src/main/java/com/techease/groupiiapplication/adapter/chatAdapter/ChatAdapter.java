@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,10 +23,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.chat.VideoPlayerActivity;
-import com.techease.groupiiapplication.chat.images.ChatImagePreviewActivity;
+import com.techease.groupiiapplication.chat.view.ui.VideoPlayerActivity;
+import com.techease.groupiiapplication.chat.view.ui.ChatImagePreviewActivity;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.ImagePreviewActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
@@ -84,13 +79,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         viewHolder.setMessage(message.getMessages(), message.getMessageType());
         viewHolder.tvDate.setText(message.getDate());
 
-
-//        Log.d("zm")
-
-
-        Log.d("zma message sent", DateUtills.getChatDateFormate(message.getDate()));
-
-
         if (message.getDate() != null) {
             viewHolder.setDate(DateUtills.getChatDateFormate(message.getDate()));
         }
@@ -99,10 +87,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
-        Log.d("zma message sent", message.getIsSent());
-        Log.d("zma message read", message.getIsRead());
-        Log.d("zma message rec", "" + message.getRecieverID());
-        Log.d("zma message user", "" + AppRepository.mUserID(context));
+//        Log.d("zm")
+//        Log.d("zma message sent", DateUtills.getChatDateFormate(message.getDate()));
+//        Log.d("zma message sent", message.getIsSent());
+//        Log.d("zma message read", message.getIsRead());
+//        Log.d("zma message rec", "" + message.getRecieverID());
+//        Log.d("zma message user", "" + AppRepository.mUserID(context));
+
 
         if (AppRepository.mUserID(context) == message.recieverID) {
 
@@ -126,10 +117,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
             }
 
-
-            Log.d("zma message", "read sho");
-
-
         }
 
 
@@ -139,7 +126,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
 
                 String extension = message.getMessages().substring(message.getMessages().lastIndexOf("."));
-                Log.d("zmaexitern", extension);
+//                Log.d("zmaexitern", extension);
 
                 if (extension.equals(".mp4")) {
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
@@ -229,7 +216,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
             try {
                 if (type.equals("image")) {
-                    Log.d("zmaimageinadapter", message);
+//                    Log.d("zmaimageinadapter", message);
 
                     tvMessageView.setVisibility(View.GONE);
                     messageLayout.setVisibility(View.VISIBLE);
@@ -267,7 +254,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     tvMessageView.setText(EmojiEncoder.decodeEmoji(message));
                 }
             } catch (Exception e) {
-                Log.d("error", "" + e.getMessage());
+                Log.d("chatadaptererror", "" + e.getMessage());
             }
 
         }

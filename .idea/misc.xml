@@ -26,7 +26,9 @@
         <entry key="app/src/main/res/drawable/thumb_drawable.xml" value="0.14444444444444443" />
         <entry key="app/src/main/res/drawable/vegitartian_icon_size.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/layout/activity_add_credit_card.xml" value="0.30462962962962964" />
-        <entry key="app/src/main/res/layout/activity_add_user_trip_particpant.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_add_invite_friend.xml" value="0.2222972972972973" />
+        <entry key="app/src/main/res/layout/activity_add_new_trip_three.xml" value="0.11486486486486487" />
+        <entry key="app/src/main/res/layout/activity_add_user_trip_particpant.xml" value="0.21433224755700325" />
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/activity_chat_image_preview.xml" value="0.2222972972972973" />
         <entry key="app/src/main/res/layout/activity_chats.xml" value="0.1300925925925926" />
@@ -37,7 +39,7 @@
         <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.2013888888888889" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.275" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_four_payment.xml" value="0.30462962962962964" />
-        <entry key="app/src/main/res/layout/activity_new_trip_step_one.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_new_trip_step_one.xml" value="0.21433224755700325" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_three.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_new_trip_step_two.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3004566210045662" />
@@ -61,6 +63,7 @@
         <entry key="app/src/main/res/layout/custom_gallery_photo_grid_view_layout.xml" value="0.3004566210045662" />
         <entry key="app/src/main/res/layout/custom_gallery_photo_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_menu_bottom_sheet.xml" value="0.16203703703703703" />
+        <entry key="app/src/main/res/layout/custom_notification_layout.xml" value="0.22006688963210702" />
         <entry key="app/src/main/res/layout/custom_participaints_costs_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_recent_transaction_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_reciever_message.xml" value="0.22006688963210702" />
@@ -69,6 +72,7 @@
         <entry key="app/src/main/res/layout/custom_trip_expenditures_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/custom_user_sppinner_layout.xml" value="0.3004566210045662" />
         <entry key="app/src/main/res/layout/fragment_active.xml" value="0.2101851851851852" />
+        <entry key="app/src/main/res/layout/fragment_activity.xml" value="0.11486486486486487" />
         <entry key="app/src/main/res/layout/fragment_add_and_edit_day_plane.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_add_credit_card.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_add_payment.xml" value="0.30462962962962964" />
@@ -89,9 +93,11 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/fragment_trip.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/layout/fragment_un_publish.xml" value="0.3004566210045662" />
+        <entry key="app/src/main/res/layout/fragment_upcomming.xml" value="0.2222972972972973" />
         <entry key="app/src/main/res/layout/gallery_photos_recylerview.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/place_recycler_item_layout.xml" value="0.30462962962962964" />
         <entry key="app/src/main/res/layout/toast_image_layout.xml" value="0.2222972972972973" />
+        <entry key="app/src/main/res/menu/options_menu.xml" value="0.21644736842105264" />
       </map>
     </option>
   </component>

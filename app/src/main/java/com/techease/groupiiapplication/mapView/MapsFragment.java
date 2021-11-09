@@ -1,30 +1,17 @@
-package com.techease.groupiiapplication;
+package com.techease.groupiiapplication.mapView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.media.MediaMetadataCompat;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,31 +30,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
+import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
-import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
-import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
-import com.techease.groupiiapplication.utils.AppRepository;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapsFragment extends Fragment implements View.OnClickListener {
 
@@ -123,13 +97,24 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
 
         userParticipaintsList.addAll(TripDetailScreenActivity.paymentUserParticipaintsList);
         for (int i = 0; i < userParticipaintsList.size(); i++) {
-            new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
+
+
+//            String strPicture=userParticipaintsList.get(i).getPicture();
+
+            if (userParticipaintsList.get(i).getLatitude() != null) {
+                new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
+            }
         }
 
 
     }
 
     public static Bitmap createCustomMarker(Context context, Bitmap image) {
+
+
+        if (image == null) {
+            Toast.makeText(newInstance().getActivity(), "null", Toast.LENGTH_SHORT).show();
+        }
 
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
         CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
@@ -197,6 +182,8 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        Log.d("zmaurl", stringUrl);
         return bitmap;
     }
 
@@ -212,7 +199,7 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
                     icon(BitmapDescriptorFactory.fromBitmap(MapsFragment.createCustomMarker(context, bitmap))));
             marker.setTitle(userParticipaintsList.get(anIntPosition).getName());
             markers.add(marker);
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
             Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package com.techease.groupiiapplication.firebase;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,23 +10,43 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;import android.text.TextUtils;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
+import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
+import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
+import com.techease.groupiiapplication.ui.activity.SplashActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
+import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.StringHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -38,6 +60,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String msg, productName;
     private NotificationUtils notificationUtils;
     Intent intent = new Intent();
+    private static int count = 0;
+
+    private NotificationManager notificationManager;
+
+    ArrayList<String> arrayListMessages = new ArrayList<>();
+
 
     /**
      * Called when message is received.
@@ -48,257 +76,258 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+
+
+        JSONObject jsonObject = new JSONObject(remoteMessage.getData());
+        Log.d("zmanotificationdata", "  " + remoteMessage.getData());
+
+        String strTitle = null;
+
 //        try {
-            Map<String, String> data = remoteMessage.getData();
-//            String myCustomKey = data.get("notificationType");
-
-
 //
-//            JSONObject jsonObject = new JSONObject());
-            Log.d("zmachat data",data+"");
-
-//            int orderId = jsonObject.getInt("orderId");
-//            msg = jsonObject.getString("notificationType");
-//            int userID = jsonObject.getInt("userId");
-//            productName = jsonObject.getString("productName");
-//            if (jsonObject.has("price")) {
-//                String price = jsonObject.getString("price");
-//                if (price != null) {
-//                    SharedPrefUtils.getEditor(this).putString("price", price).commit();
-//                } else {
-//                    SharedPrefUtils.getEditor(this).putString("price", "NA").commit();
-//                }
-//            }
-//            SharedPrefUtils.getEditor(this).putInt("orderId", orderId).commit();
-//            SharedPrefUtils.getEditor(this).putString("productName", productName).commit();
-//            SharedPrefUtils.getEditor(this).putInt("userId", userID).commit();
+////            String strFromUser = jsonObject.getString("messageType");
+////            String name = jsonObject.getString("name");
+////            String toUser = jsonObject.getString("touser");
+////            String picture = jsonObject.getString("picture");
+////            String strFromUser = jsonObject.getString("messageType");
+////            String strFromUser = jsonObject.getString("messageType");
+////            String strFromUser = jsonObject.getString("messageType");
 //
-//            SharedPrefUtils.getEditor(this).putInt("productID", jsonObject.getInt("productId")).commit();
-//            productName="Product: "+productName;
-//            Log.d("zma notification msg", msg);
-//            String msg = remoteMessage.getData().get("custom");
-//            if (msg.equals("newOrder")) {
-//                isNewOrder = true;
-//                isAcceptOffer = true;
-//                isRejectOffer = false;
-//                isDeliverOrder = false;
-//                isReviewOrder = false;
-//                SharedPrefUtils.getEditor(this).putBoolean("newOrder", true).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("acceptOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("rejectOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("orderDelivered", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("reviewOrder", false).commit();
-//                intent = new Intent(this, BottomNavigationActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                msg = "Waoow! You have a new order";
-//            } else if (msg.equals("acceptOrder")) {
-//                isNewOrder = false;
-//                isAcceptOffer = true;
-//                isRejectOffer = false;
-//                isDeliverOrder = false;
-//                isReviewOrder = false;
-//                SharedPrefUtils.getEditor(this).putBoolean("newOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("acceptOrder", true).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("rejectOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("orderDelivered", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("reviewOrder", false).commit();
-//                msg = "Congratulation! Your order has been accepted";
-//                startActivity(new Intent(this, ProductDetailActivity.class));
-//
-//            } else if (msg.equals("rejectOrder")) {
-//                isAcceptOffer = false;
-//                isNewOrder = false;
-//                isRejectOffer = true;
-//                isDeliverOrder = false;
-//                isReviewOrder = false;
-//                SharedPrefUtils.getEditor(this).putBoolean("newOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("acceptOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("rejectOrder", true).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("orderDelivered", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("reviewOrder", false).commit();
-//                 intent = new Intent(this, BottomNavigationActivity.class);
-//                msg = "Oops! Your order has been rejected";
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            } else if (msg.equals("deliverOrder")) {
-//                isAcceptOffer = false;
-//                isNewOrder = false;
-//                isRejectOffer = false;
-//                isDeliverOrder = true;
-//                isReviewOrder = false;
-//                SharedPrefUtils.getEditor(this).putBoolean("newOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("acceptOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("rejectOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("orderDelivered", true).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("reviewOrder", false).commit();
-//                intent = new Intent(this, BottomNavigationActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                msg = "Your order has been delivered!";
-//            } else if (msg.equals("reviewOrder")) {
-//                isAcceptOffer = false;
-//                isNewOrder = false;
-//                isRejectOffer = false;
-//                isDeliverOrder = false;
-//                isReviewOrder = true;
-//                SharedPrefUtils.getEditor(this).putBoolean("newOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("acceptOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("rejectOrder", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("orderDelivered", false).commit();
-//                SharedPrefUtils.getEditor(this).putBoolean("reviewOrder", true).commit();
+////            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+////            Bundle bundle = new Bundle();
+////            bundle.putString("title_name", jsonObject.getString("name"));
+////            bundle.putString("tripId", "12");
+////            bundle.putString("toUserId", jsonObject.getString("touser"));
+////            bundle.putString("type", jsonObject.getString("user"));
+////            bundle.putString("picture", jsonObject.getString("picture"));
+////
+////            strTitle = jsonObject.getString("messageType");
+////            intent.putExtras(bundle);
+////            getApplicationContext().startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) getApplicationContext()).toBundle());
 //
 //
-//                SharedPrefUtils.getEditor(this).putString("stars", jsonObject.getString("stars")).commit();
-//                SharedPrefUtils.getEditor(this).putString("reviewerProfilePic", jsonObject.getString("userprofilePicture")).commit();
-//                SharedPrefUtils.getEditor(this).putString("reviewerName", jsonObject.getString("userName")).commit();
-//                SharedPrefUtils.getEditor(this).putString("reviewComment", jsonObject.getString("review")).commit();
-//                SharedPrefUtils.getEditor(this).putString("reviewProductName", jsonObject.getString("productName")).commit();
-//                intent = new Intent(this, BottomNavigationActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            Log.d("zma", "chat");
+////            Log.d("zmachat data",  "strFromUser" + strFromUser);
 //
-//
-//            }
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
 
 
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//        String channelId = "Default";
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-//                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle("Soxs")
-//                .setContentText(remoteMessage.getNotification().getBody()).setAutoCancel(true).setContentIntent(pendingIntent);
-//
-//        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-                        | PendingIntent.FLAG_ONE_SHOT);
-        String channelId = "Default";
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.grouppii_logo)
-                .setContentTitle(msg)
-                .setContentText(productName).setAutoCancel(true).setContentIntent(pendingIntent);
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        handleNotification(remoteMessage.getNotification().getBody());
+        String title = "";
+        String message = "";
+        PendingIntent pendingIntent = null;
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(channel);
-        }
-        manager.notify(0, builder.build());
-    }
+        if (remoteMessage.getData().size() > 0 && StringHelper.checkFirebase) {
+            Log.e(TAG, "Received notification1");
+
+//            Log.e(TAG, "Received notification1" + remoteMessage.getData());
+
+            // Parse if twilio notification  or not
+            if (StringHelper.isEmpty(remoteMessage.getData().get("n_type"))) {
+
+//                pendingIntent =
+//                        PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+//            } else {
 
 
-    private void handleNotification(String message) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                // General notification
+                Intent chatActivityIntent = new Intent(getApplicationContext(), ChatsActivity.class);
 
-            // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
-        } else {
-            // If the app is in background, firebase itself handles the notification
-        }
-    }
+                Intent intent = null;
+                if (AppRepository.isLoggedIn(this)) {
 
-    private void handleDataMessage(JSONObject json) {
-        Log.e(TAG, "push json: " + json.toString());
-
-        try {
-            JSONObject data = json.getJSONObject("data");
-
-            String title = data.getString("title");
-            String message = data.getString("message");
-            boolean isBackground = data.getBoolean("is_background");
-            String imageUrl = data.getString("image");
-            String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
-
-            Log.e(TAG, "title: " + title);
-            Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "timestamp: " + timestamp);
+                    try {
 
 
-            if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-                // app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                        if (jsonObject.get("messageType").equals("chat")) {
 
-                // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
-            } else {
-                // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                resultIntent.putExtra("message", message);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title_name", jsonObject.getString("name"));
+                            bundle.putString("toUserId", jsonObject.getString("fromuser"));
+                            bundle.putString("type", "user");
+                            bundle.putString("picture", jsonObject.getString("picture"));
+                            chatActivityIntent.putExtras(bundle);
 
-                // check for image attachment
-                if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+
+                        }
+
+
+                        if (jsonObject.getString("messageType").equals("group")) {
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title_name", jsonObject.getString("title"));
+                            bundle.putString("tripId", jsonObject.getString("tripid"));
+                            bundle.putString("type", "group");
+                            bundle.putString("picture", jsonObject.getString("picture"));
+                            chatActivityIntent.putExtras(bundle);
+
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    intent = new Intent(this, LoginActivity.class);
+                }
+                pendingIntent =
+                        PendingIntent.getActivity(this, 0, chatActivityIntent, PendingIntent.FLAG_ONE_SHOT);
+            }
+
+
+            if (remoteMessage.getNotification() != null) {
+                title = remoteMessage.getNotification().getTitle();
+                try {
+                    message = jsonObject.getString("message");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    message = remoteMessage.getNotification().getBody();
+
+                }
+
+            }
+
+            if (StringHelper.isEmpty(title) || StringHelper.isEmpty(message)) {
+                return;
+            }
+
+
+            //You should use an actual ID instead, If not, messages are collapsed...
+            int notificationId = new Random().nextInt(60000);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.default_notification_channel_id), "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+
+                // Configure the notification channel.
+                notificationChannel.setDescription("Channel description");
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(R.color.purple_500);
+                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                notificationChannel.enableVibration(true);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+            if (StringHelper.isEmpty(remoteMessage.getData().get("n_type"))) {
+
+                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+                arrayListMessages.add(message);
+                // Sets a title for the Inbox style big view
+                inboxStyle.setBigContentTitle(title + ":");
+                // Moves events into the big view
+                for (int i = 0; i < arrayListMessages.size(); i++) {
+                    inboxStyle.addLine(arrayListMessages.get(i));
+                }
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                                .setAutoCancel(true)
+                                .setSound(defaultSoundUri)
+                                .setStyle(inboxStyle)
+                                .setContentIntent(pendingIntent)
+                                .setOnlyAlertOnce(false);
+//        notificationBuilder.setStyle(inboxStyle);
+                notificationBuilder.setSmallIcon(R.drawable.grouppii_logo);
+                notificationBuilder.setColor(ContextCompat.getColor(getBaseContext(), R.color.purple_500));
+                notificationManager.notify(0, notificationBuilder.build());
+            } else {
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                                .setContentTitle(title)
+                                .setAutoCancel(true)
+                                .setSound(defaultSoundUri)
+                                .setContentText(message)
+                                .setContentIntent(pendingIntent)
+                                .setOnlyAlertOnce(false);
+
+
+                notificationBuilder.setSmallIcon(R.drawable.grouppii_logo);
+                notificationBuilder.setColor(ContextCompat.getColor(getBaseContext(), R.color.purple_500));
+
+                notificationManager.notify(notificationId, notificationBuilder.build());
+            }
+
+        }
+    }
+
+
+    private void sendNotification(String title, String messageBody) {
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+//you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//Add Any key-value to pass extras to intent
+        intent.putExtra("pushnotification", "yes");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//For Android Version Orio and greater than orio.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel mChannel = new NotificationChannel("Sesame", "Sesame", importance);
+            mChannel.setDescription(messageBody);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+//For Android Version lower than oreo.
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Seasame");
+        mBuilder.setContentTitle(title)
+                .setContentText(messageBody)
+                .setSmallIcon(R.drawable.grouppii_logo)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.grouppii_logo))
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setColor(Color.parseColor("#FFD600"))
+                .setContentIntent(pendingIntent)
+                .setChannelId("Sesame")
+                .setPriority(NotificationCompat.PRIORITY_LOW);
+
+        mNotifyManager.notify(count, mBuilder.build());
+        count++;
+    }
+
+
+    private void GetTripById(String strTripID) {
+        Call<GetSingleTripResponse> getSingleTripResponseCall = BaseNetworking.ApiInterface().getTripById("trips/getsingletrip/" + strTripID);
+        getSingleTripResponseCall.enqueue(new Callback<GetSingleTripResponse>() {
+            @Override
+            public void onResponse(Call<GetSingleTripResponse> call, Response<GetSingleTripResponse> response) {
+                if (response.isSuccessful()) {
+
+
+                    Intent intent = new Intent(getApplicationContext(), TripDetailScreenActivity.class);
+                    Bundle bundle = new Bundle();
+                    AppRepository.mPutValue(getApplicationContext()).putString("tripIDForUpdation", String.valueOf(response.body().getData().getId())).commit();
+
+                    bundle.putString("image", response.body().getData().getCoverimage());
+                    bundle.putString("title", response.body().getData().getTitle());
+                    bundle.putString("trip_type", response.body().getData().getStatus());
+                    bundle.putString("start_date", response.body().getData().getFromdate());
+                    bundle.putString("end_date", response.body().getData().getTodate());
+                    bundle.putString("pay_date", response.body().getData().getPayDate());
+                    bundle.putString("description", response.body().getData().getDescription());
+                    bundle.putString("location", response.body().getData().getLocation());
+                    bundle.putBoolean("is_createdby", false);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+
                 }
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
-        }
-    }
 
-    /**
-     * Showing notification with text only
-     */
-    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
-        notificationUtils = new NotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
-    }
+            @Override
+            public void onFailure(Call<GetSingleTripResponse> call, Throwable t) {
 
-    /**
-     * Showing notification with text and image
-     */
-    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
-        notificationUtils = new NotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
-    }
+            }
+        });
 
-    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
-
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
-        inboxStyle.addLine(message);
-
-        Notification notification;
-        notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentTitle(title)
-                .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
-                .setStyle(inboxStyle)
-                .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), icon))
-                .setContentText(message)
-                .build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(Config.NOTIFICATION_ID, notification);
-    }
-
-    private long getTimeMilliSec(String timeStamp) {
-        return 0;
-    }
-
-
+}
 }

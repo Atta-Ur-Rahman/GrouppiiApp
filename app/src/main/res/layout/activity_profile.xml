@@ -252,6 +252,7 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -267,6 +268,7 @@
 
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:layout_marginTop="@dimen/widget_margin"
@@ -319,6 +321,7 @@
 
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:background="?attr/selectableItemBackground"
@@ -341,6 +344,7 @@
                     android:src="@drawable/vrbo_logo"/>
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivTripadvisor"
@@ -376,6 +380,7 @@
                 android:background="@android:color/darker_gray" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:background="?attr/selectableItemBackground"
@@ -422,6 +427,7 @@
             </RelativeLayout>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.4dp"
                 android:layout_marginLeft="@dimen/widget_margin_left_right"
@@ -429,6 +435,7 @@
                 android:background="@android:color/darker_gray" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_height"
                 android:background="?attr/selectableItemBackground"

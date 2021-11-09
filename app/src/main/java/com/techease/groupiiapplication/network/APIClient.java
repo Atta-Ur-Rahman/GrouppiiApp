@@ -18,7 +18,6 @@ public class APIClient {
     private static Retrofit retrofit = null;
     private static Retrofit retrofitHotel = null;
 
-
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS);

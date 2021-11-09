@@ -27,6 +27,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.fredporciuncula.phonemoji.PhonemojiFlagTextView;
+import com.fredporciuncula.phonemoji.PhonemojiTextInputEditText;
+import com.fredporciuncula.phonemoji.PhonemojiTextInputLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
     boolean valid;
-    String strName, strEmail, strPassword, strAgainPassword;
+    String strName, strEmail, strPassword, strPhoneNumber, strAgainPassword;
 
     @BindView(R.id.tilName)
     TextInputLayout tilName;
@@ -83,6 +86,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     TextInputLayout tilAgainPassword;
     @BindView(R.id.etAgainPassword)
     EditText etAgainPassword;
+
+
+    @BindView(R.id.tilPhonemojiTextInputLayout)
+    PhonemojiTextInputLayout tilPhonemojiTextInputLayout;
+    @BindView(R.id.phonemojiTextInputEditText)
+    PhonemojiTextInputEditText phonemojiTextInputEditText;
 
 
     @BindView(R.id.btnSignUp)
@@ -109,28 +118,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         alertDialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
         getCurrentLocationPermission();
-
-
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.d("fetching_fcm_failed", String.valueOf(task.getException()));
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                       fcmToken = task.getResult();
-
-                        Log.d("zmatoken", fcmToken);
-
-//                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, msg);
-//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
     }
@@ -161,7 +148,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void ApiCallForSignUp() {
         try {
-            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword,fcmToken, "android", "user", strLatitude, strLongitude);
+            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, strPhoneNumber,"android", "user", strLatitude, strLongitude);
             signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
                 @Override
                 public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
@@ -169,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     Log.d("zma signup response", String.valueOf(response));
 
                     if (response.code() == 400) {
-                        Toast.makeText(SignUpActivity.this, "The email has already been taken", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "The email or phone number has already been taken", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -216,6 +203,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         strEmail = etEmail.getText().toString();
         strPassword = etPassword.getText().toString();
         strAgainPassword = etAgainPassword.getText().toString();
+        strPhoneNumber = phonemojiTextInputEditText.getText().toString();
         if (strName.isEmpty()) {
             valid = false;
             tilName.setErrorEnabled(true);
@@ -236,10 +224,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         }
 
-        if (!GeneralUtills.isValidPassword(strPassword)) {
+
+        if (strPhoneNumber.isEmpty() || strPhoneNumber.length() < 5) {
+            tilPhonemojiTextInputLayout.setErrorEnabled(true);
+            tilPhonemojiTextInputLayout.setError(getString(R.string.valid_email));
+            valid = false;
+        } else {
+            tilPhonemojiTextInputLayout.setError(null);
+            tilPhonemojiTextInputLayout.setErrorEnabled(false);
+
+        }
+
+
+        if (strPassword.isEmpty() || strPassword.length() < 6) {
             valid = false;
             tilPassword.setErrorEnabled(true);
-            tilPassword.setError(getString(R.string.password_should_be_six));
+            tilPassword.setError(getString(R.string.password_validation));
 
         } else {
             tilPassword.setError(null);

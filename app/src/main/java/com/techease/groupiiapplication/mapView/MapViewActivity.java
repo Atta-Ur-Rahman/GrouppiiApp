@@ -1,8 +1,10 @@
-package com.techease.groupiiapplication;
+package com.techease.groupiiapplication.mapView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.techease.groupiiapplication.R;
 
 import java.util.Objects;
 

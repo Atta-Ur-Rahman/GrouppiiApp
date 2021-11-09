@@ -1,4 +1,4 @@
-package com.techease.groupiiapplication.chat.images;
+package com.techease.groupiiapplication.chat.view.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
@@ -11,14 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ortiz.touchview.TouchImageView;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.chat.view.animation.DepthTransformation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

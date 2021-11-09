@@ -55,6 +55,7 @@ import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
+import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
@@ -127,11 +128,11 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     String strTripTitle, strDescription, strLocation, strStartDate, strEndDate, strPayByDate, strPhoto;
 
 
-    private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
-
     @BindView(R.id.places_recycler_view)
     RecyclerView recyclerView;
 
+    double latitude = 0.0;
+    double longitude = 0.0;
     private StringBuilder mResult;
 
     @BindView(R.id.ivCover)
@@ -143,8 +144,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @BindView(R.id.llCoverImage)
     RelativeLayout rlCoverImage;
 
-
-    private static final int REQUEST_CODE_SELECT_PICTURE = 3;
     File sourceFile;
 
     AutoCompleteCitiesAdapter autoCompleteCitiesAdapter;
@@ -161,10 +160,9 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @BindView(R.id.autocompleteCity)
     AutoCompleteTextView autoCompleteTextView;
 
-
-    PlacesClient placesClient;
-
     boolean aBooleanEdit = false;
+
+    static String strTripName = null;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -175,6 +173,10 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
         ProcessBarAnimation();
+
+
+        ///clear trip start date
+        AppRepository.mPutValue(this).putString("trip_start_date", "").commit();
 
         Places.initialize(this, getResources().getString(R.string.google_maps_key));
         Bundle bundle = getIntent().getExtras();
@@ -201,6 +203,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             strPayByDate = DateUtills.getEditDateFormate(bundle.getString("pay_date"));
             strLocation = bundle.getString("location");
 
+            AppRepository.mPutValue(this).putString("trip_start_date", strStartDate).commit();
+
 
             ivCoverImage.setVisibility(View.VISIBLE);
             Glide.with(this).load(strPhoto).into(ivCoverImage);
@@ -224,6 +228,19 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         autoCompleteCitiesAdapter = new AutoCompleteCitiesAdapter(this, hotelCityIdDataList);
         autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
 
+
+
+
+        try {
+            latitude = Double.parseDouble(AppRepository.mLat(this));
+            longitude = Double.parseDouble(AppRepository.mLng(this));
+        } catch (Exception e) {
+            latitude = 33.6969485;
+            longitude = 72.9692551;
+        }
+
+
+
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -234,14 +251,13 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
                 // Create a RectangularBounds object.
                 RectangularBounds bounds = RectangularBounds.newInstance(
-                        new LatLng(-33.880490, 151.184363), //dummy lat/lng
-                        new LatLng(-33.858754, 151.229596));
+                        new LatLng(latitude, longitude), //app lat/lng
+                        new LatLng(latitude, longitude));
                 // Use the builder to create a FindAutocompletePredictionsRequest.
                 FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                         // Call either setLocationBias() OR setLocationRestriction().
                         .setLocationBias(bounds)
                         //.setLocationRestriction(bounds)
-
                         .setSessionToken(token)
                         .setQuery(autoCompleteTextView.getText().toString())
                         .build();
@@ -280,20 +296,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
             }
         });
-
-
-//
-//        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        mAutoCompleteAdapter.setClickListener(this);
-//        recyclerView.setAdapter(mAutoCompleteAdapter);
-//        mAutoCompleteAdapter.notifyDataSetChanged();
-
-
-//        getCityIdes();
-
-//        autoCompleteTextView.addTextChangedListener(filterTextWatcher);
-
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
@@ -307,108 +309,10 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putInt("cityID", cityID).commit();
                 AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("cityName", strLocation).commit();
 
-//                try {
-////                    apiCallGetTripDetail();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
 
             }
         });
 
-    }
-
-
-  /*  private TextWatcher filterTextWatcher = new TextWatcher() {
-        public void afterTextChanged(Editable s) {
-            if (!s.toString().equals("")) {
-                mAutoCompleteAdapter.getFilter().filter(s.toString());
-                if (recyclerView.getVisibility() == View.GONE) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                }
-            } else {
-                if (recyclerView.getVisibility() == View.VISIBLE) {
-                    recyclerView.setVisibility(View.GONE);
-                }
-            }
-        }
-
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-    };
-
-
-    @Override
-    public void click(Place place) {
-
-
-        AppRepository.mPutValue(this).putString("cityName", place.getName()).commit();
-        autoCompleteTextView.setText(place.getAddress() + "");
-        Toast.makeText(this, place.getAddress() + ", " + place.getLatLng().latitude + place.getLatLng().longitude, Toast.LENGTH_SHORT).show();
-
-    }*/
-
-    private void getCityIdes() {
-
-
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONArray m_jArry = obj.getJSONArray("cities");
-            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> m_li;
-
-
-            for (int i = 0; i < m_jArry.length(); i++) {
-                JSONObject jo_inside = m_jArry.getJSONObject(i);
-//                Log.d("Details-->", jo_inside.getString("city"));
-                String city_id = jo_inside.getString("city_id");
-                String cityName = jo_inside.getString("city");
-
-                HotelCityIdData hotelCityIdData = new HotelCityIdData();
-                hotelCityIdData.setCityId(Integer.parseInt(city_id));
-                hotelCityIdData.setCityName(cityName);
-                hotelCityIdDataList.add(hotelCityIdData);
-
-
-//                //Add your values in your `ArrayList` as below:
-//                m_li = new HashMap<String, String>();
-//                m_li.put("city id", city_id);
-//                m_li.put("city name", cityName);
-//
-//                formList.add(m_li);
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = null;
-            try {
-                is = getAssets().open("hotel_json.json");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
 
 
@@ -458,7 +362,10 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             public void onPermissionsChecked(MultiplePermissionsReport report) {
 
 
-                chooseAction();
+                Log.d("zmapermissions", report.getDeniedPermissionResponses().size() + "   " + report.getGrantedPermissionResponses().size());
+                if (report.getGrantedPermissionResponses().size() == 4) {
+                    chooseAction();
+                }
             }
 
             @Override
@@ -475,37 +382,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 .compress(1024)            //Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start();
-
-//        File dir = FileUtils.getDiskCacheDir(this, "temp");
-//        if (!dir.exists()) {
-//            dir.mkdirs();
-//        }
-//        String name = StringHelper.getDateRandomString() + ".png";
-//        sourceFile = new File(dir, name);
-//        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
-//
-//        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
-//        pickIntent.setType("image/*");
-//
-//        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.cover_image));
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
-//
-//        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
     }
 
-    boolean checkActionType(Intent data) {
-        boolean isCamera = true;
-        if (data != null) {
-            String action = data.getAction();
-            if ((data.getData() == null) && (data.getClipData() == null)) {
-                isCamera = true;
-            } else {
-                isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
-            }
-        }
-        return isCamera;
-    }
 
     public Uri getPickImageResultUri(Intent data) {
         boolean isCamera = true;
@@ -517,12 +395,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     }
 
 
-    void finishWithResult() {
-        Intent intent = new Intent();
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-    }
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -532,41 +404,11 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             imageUri = getPickImageResultUri(data);
             ivCoverImage.setVisibility(View.VISIBLE);
             ivCoverImage.setImageURI(imageUri);
-//            Glide.with(this).load(imageUri).into(ivCoverImage);
             sourceFile = new File(imageUri.getPath());
-
-//            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
-
         } else {
             ivCoverImage.setVisibility(View.GONE);
         }
 
-//        switch (requestCode) {
-//
-//            case REQUEST_CODE_SELECT_PICTURE:
-//                if (checkActionType(data)) { // Camera
-//                    Uri imageUri = getPickImageResultUri(data);
-//                    ivCoverImage.setVisibility(View.VISIBLE);
-//                    Glide.with(this).load(imageUri).into(ivCoverImage);
-//                    sourceFile = new File(imageUri.getPath());
-//
-//                    sourceFile = FileUtils.compressImage(this, sourceFile);
-//
-//                } else {  // Gallery
-//                    if (data.getData() != null) {
-//                        Uri uri = data.getData();
-//                        sourceFile = FileUtils.getFile(this, uri);
-////                        sourceFile = FileUtils.compressImage(this, originFile);
-//                        ivCoverImage.setVisibility(View.VISIBLE);
-//                        Glide.with(this).load(uri).into(ivCoverImage);
-//
-//                    }
-//                }
-
-//                break;
-//        }
-//
-//
     }
 
 
@@ -641,11 +483,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         }
 
         if (sourceFile == null) {
-//            valid = false;
-
             sourceFile = null;
-
-//            Toast.makeText(this, "required cover image", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -676,9 +514,12 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                     if (response.isSuccessful()) {
                         AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
                         if (aBooleanEdit) {
+                            Constants.aBooleanDetailTripScreenRefresh = true;
                             NewTripStepTwoAddDetailActivity.this.finish();
                             Toast.makeText(NewTripStepTwoAddDetailActivity.this, "Trip updated successfully", Toast.LENGTH_SHORT).show();
                         } else {
+
+                            strTripName = response.body().getData().getTitle();
                             startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
 
                         }
@@ -704,16 +545,14 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 public void onResponse(Call<AddTripDetailResponse> call, Response<AddTripDetailResponse> response) {
                     if (response.isSuccessful()) {
 
-//                    finish();
-
-                        Log.d("zmadate", response.body().getData().getStartdate());
-
                         AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString("trip_start_date", response.body().getData().getStartdate()).commit();
                         if (aBooleanEdit) {
-                            TripFragment.aBooleanRefreshAllTripApi = true;
+                            Constants.aBooleanDetailTripScreenRefresh = true;
+                            Constants.aBooleanRefreshAllTripApi = true;
                             NewTripStepTwoAddDetailActivity.this.finish();
                             Toast.makeText(NewTripStepTwoAddDetailActivity.this, "Trip updated successfully", Toast.LENGTH_SHORT).show();
                         } else {
+                            AppRepository.mPutValue(NewTripStepTwoAddDetailActivity.this).putString(response.body().getData().getTitle(), "trip_title_name").commit();
                             startActivity(new Intent(NewTripStepTwoAddDetailActivity.this, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation(NewTripStepTwoAddDetailActivity.this).toBundle());
                         }
                         dialog.dismiss();
@@ -738,7 +577,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
     @Override
     protected void onResume() {
         super.onResume();
-        if (HomeActivity.aBooleanAddedTripApi) {
+        if (Constants.aBooleanAddedTripApi) {
             finish();
         }
     }

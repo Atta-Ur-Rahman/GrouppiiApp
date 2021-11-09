@@ -45,6 +45,7 @@ import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.GPSTracker;
+import com.techease.groupiiapplication.utils.StringHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,8 +113,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     final Fragment fragmentSettings = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentTrip;
-
-    public static boolean aBooleanAddedTripApi = false;
 
 
 
@@ -295,4 +294,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StringHelper.checkFirebase = true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StringHelper.checkFirebase = false;
+
+    }
 }

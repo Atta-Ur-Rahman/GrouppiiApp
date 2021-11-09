@@ -1,17 +1,16 @@
 package com.techease.groupiiapplication.ui.fragment.tripes;
 
+import static com.techease.groupiiapplication.utils.Constants.aBooleanRefreshAllTripApi;
+
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,14 +30,15 @@ import com.techease.groupiiapplication.dataModel.getAllTrip.Unpublish;
 import com.techease.groupiiapplication.dataModel.getAllTrip.Upcoming;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.profile.ProfileActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,7 +64,6 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    public static boolean aBooleanRefreshAllTripApi = true;
     public static ViewPager viewPagerTrip;
     public static List<Active> activeList = new ArrayList<>();
     public static List<Past> pastList = new ArrayList<>();
@@ -134,7 +133,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         adapter.addFragment(new ActiveFragment(), "Active");
         adapter.addFragment(new UpcomingFragment(), "Upcoming");
         adapter.addFragment(new PastFragment(), "Past");
-        adapter.addFragment(new UnPublishFragment(), "Suggestions");
+        adapter.addFragment(new UnPublishFragment(), "G Rec");
         viewPager.setAdapter(adapter);
 
     }
@@ -153,8 +152,9 @@ public class TripFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         setProfileImageAndName();
-        if (HomeActivity.aBooleanAddedTripApi) {
+        if (Constants.aBooleanAddedTripApi) {
             apiCallGetTripDetail();
+
 
         } else if (aBooleanRefreshAllTripApi) {
             apiCallGetTripDetail();
@@ -183,16 +183,26 @@ public class TripFragment extends Fragment implements View.OnClickListener {
                     unpublishList.addAll(response.body().getData().getUnpublish());
 //                    Collections.reverse(activeList);
 //                    Collections.reverse(upcomingList);
-                    Collections.reverse(pastList);
+//                    Collections.reverse(pastList);
                     setupViewPager(viewPager);
                     tabLayout.setupWithViewPager(viewPager);
 
 
-                    if (HomeActivity.aBooleanAddedTripApi) {
-                        HomeActivity.aBooleanAddedTripApi = false;
-                        viewPager.setCurrentItem(1);
 
-                    }
+                    if (Constants.aBooleanAddedTripApi) {
+                        Constants.aBooleanAddedTripApi = false;
+
+                        if (upcomingList.size() > 0) {
+                            viewPager.setCurrentItem(1);
+                        }
+                        ConnectChatResfresh.setMyBoolean(true);
+
+                    }else {
+
+                        if (upcomingList.size() > 0) {
+                            viewPager.setCurrentItem(1);
+                        }
+                   }
 
                 } else {
                     dialog.dismiss();

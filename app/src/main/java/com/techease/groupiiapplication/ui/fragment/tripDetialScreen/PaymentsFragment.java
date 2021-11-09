@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,8 +75,8 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     RecyclerView rvRecentTransaction;
 
 
-    @BindView(R.id.tvRecentTransaction)
-    TextView tvRecentTransaction;
+    @BindView(R.id.llRecentTransaction)
+    RelativeLayout llRecentTransaction;
 
     @BindView(R.id.tvPaymentPaid)
     TextView tvPaymentPaid;
@@ -221,14 +223,14 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
-    @OnClick({R.id.mcvPayment, R.id.tvRecentTransaction})
+    @OnClick({R.id.mcvPayment, R.id.llRecentTransaction})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mcvPayment:
                 clickPartiallyPaidTripListener.goClickPartiallyPaidTrip();
                 break;
-            case R.id.tvRecentTransaction:
+            case R.id.llRecentTransaction:
                 clickParticipantCostsListener.goClickRecentTransaction();
                 break;
 

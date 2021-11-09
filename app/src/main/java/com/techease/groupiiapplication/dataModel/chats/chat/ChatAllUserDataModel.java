@@ -1,12 +1,12 @@
 package com.techease.groupiiapplication.dataModel.chats.chat;
 
 public class ChatAllUserDataModel {
-    String titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt,picture;
+    String titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture, currentChatUserId;
 
     public ChatAllUserDataModel() {
     }
 
-    public ChatAllUserDataModel(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt,String picture) {
+    public ChatAllUserDataModel(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt, String picture, String strCurrentChatUserId) {
         this.titleName = titleName;
         this.chatTime = chatTime;
         this.chatType = chatType;
@@ -15,7 +15,8 @@ public class ChatAllUserDataModel {
         this.toUser = toUser;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.picture=picture;
+        this.picture = picture;
+        this.currentChatUserId = strCurrentChatUserId;
     }
 
     public String getTitleName() {
@@ -85,7 +86,16 @@ public class ChatAllUserDataModel {
     public String getPicture() {
         return picture;
     }
+
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getCurrentChatUserId() {
+        return currentChatUserId;
+    }
+
+    public void setCurrentChatUserId(String currentChatUserId) {
+        this.currentChatUserId = currentChatUserId;
     }
 }

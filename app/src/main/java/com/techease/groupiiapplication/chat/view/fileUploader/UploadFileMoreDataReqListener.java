@@ -1,4 +1,4 @@
-package com.techease.groupiiapplication.chat.images;
+package com.techease.groupiiapplication.chat.view.fileUploader;
 
 import org.json.JSONException;
 

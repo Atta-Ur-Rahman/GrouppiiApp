@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
@@ -29,10 +31,13 @@ import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,7 +89,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
         strName = bundle.getString("name");
         strEmail = bundle.getString("email");
         strPhoneNumber = bundle.getString("phone");
-        strTripId = bundle.getString("trip_id");
+        strTripId = AppRepository.mTripIDForUpdation(this);
         strSharedCost = bundle.getString("shared_cost");
         aBooleanIsTripDetailScreen = bundle.getBoolean("aBooleanIsTripDetailScreen");
 
@@ -145,14 +150,29 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     private void ApiCallForEditParticipants() {
         dialog.show();
         NewTripStepOneInviteFriendActivity.addTripDataModels.clear();
+
+        if (strName.equals("")) {
+            String email = "test@test.de";
+            String[] For_split_email = email.split("[@._]");
+            strName = For_split_email[0];
+        }
+        if (strPhoneNumber.equals("")) {
+            strPhoneNumber = "null";
+        }
+
+
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strSharedCost,
                 strTripId, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+
+                Log.d("zma response", String.valueOf(response));
+
+
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    Log.d("zma response", String.valueOf(response.message()));
                     Toast.makeText(EditParticipantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
                     if (response.message().equals("OK")) {
                         etEmail.setText("");
@@ -168,7 +188,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                             TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
 
                             TripFragment.userList.clear();
-                            for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
+                            for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
                                 User user = new User();
                                 user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
                                 user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
@@ -180,6 +200,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                             }
                             finish();
                         } else {
+                            dialog.dismiss();
                             NewTripStepOneInviteFriendActivity.addTripDataModels.addAll(response.body().getData());
                             NewTripStepOneInviteFriendActivity.addTripAdapter.notifyDataSetChanged();
                             finish();
@@ -206,15 +227,24 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvUpdateParticipant:
-
                 if (isValid()) {
                     ApiCallForEditParticipants();
                 }
                 break;
             case R.id.tvDeleteParticipants:
+                BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder(this)
+                        .setTitle("Delete Participant?")
+                        .setMessage("Are you sure you want to this participant?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", (dialogInterface, which) -> {
+                            ApiCallForDeleteTripUser();
+                            dialogInterface.dismiss();
+                        })
+                        .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                        .build();
 
-
-                ApiCallForDeleteTripUser();
+                // Show Dialog
+                mBottomSheetDialogd.show();
                 break;
 
             case R.id.ivBack:
@@ -237,7 +267,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                     } catch (Exception e) {
                         e.printStackTrace();
                         AllUsersChatFragment.aBooleanRefreshSocket = true;
-//                            Log.d("zmaerror", e.getMessage());
                     }
                     ApiCallGetUserTrip();
                 } else {
@@ -266,7 +295,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
                         TripFragment.userList.clear();
-                        for (int i = 0; i <TripDetailScreenActivity. userParticipaintsList.size(); i++) {
+                        for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
                             User user = new User();
                             user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
                             user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));

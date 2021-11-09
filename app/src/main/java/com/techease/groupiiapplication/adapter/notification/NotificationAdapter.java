@@ -13,18 +13,18 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.notifications.NotificationsDataItem;
 
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
 
     private Context context;
-    private List<AddTripDataModel> addTripDataModels;
+    private List<NotificationsDataItem> notificationsDataItems;
 
 
-    public NotificationAdapter(Context context, List<AddTripDataModel> addTripDataModel) {
-        this.addTripDataModels = addTripDataModel;
+    public NotificationAdapter(Context context, List<NotificationsDataItem> notificationsDataItems) {
+        this.notificationsDataItems = notificationsDataItems;
         this.context = context;
 
     }
@@ -41,29 +41,29 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-//        AddTripDataModel addTripDataModel = addTripDataModels.get(position);
+        NotificationsDataItem addTripDataModel = notificationsDataItems.get(position);
 
-//        holder.tvTitle.setText(String.valueOf(addTripDataModel.getPhone()));
-//        holder.tvStartEndDate.setText(String.valueOf(addTripDataModel.getEmail()));
+        holder.tvTitle.setText(String.valueOf(addTripDataModel.getTitle()));
+        holder.tvNotificationMessage.setText(String.valueOf(addTripDataModel.getNotification()));
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return notificationsDataItems.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate;
+        TextView tvTitle, tvNotificationMessage;
         ImageView ivAddTripTick;
 
         MyViewHolder(View view) {
             super(view);
-//            tvTitle = view.findViewById(R.id.tvTitleName);
-//            tvStartEndDate = view.findViewById(R.id.tvEmail);
+            tvTitle = view.findViewById(R.id.tvTitleName);
+            tvNotificationMessage = view.findViewById(R.id.tvNotificationMessage);
 //            ivAddTripTick = view.findViewById(R.id.ivTick);
 
         }

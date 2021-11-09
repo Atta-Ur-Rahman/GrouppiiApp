@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -76,6 +77,8 @@ public class DateUtills {
             datePickerDialog.show();
         } catch (ParseException e) {
             e.printStackTrace();
+            Toast.makeText(context, "Please first select start date", Toast.LENGTH_SHORT).show();
+
         }
 
 
@@ -105,11 +108,15 @@ public class DateUtills {
 
                         tvSetDate.setText(selectedDate);
 
+                        ////set trip start date
+                        AppRepository.mPutValue(context).putString("trip_start_date", selectedDate).commit();
+
                         try {
                             GetDatePickerNext7Days(tvNext7Day, selectedDate);
                             GetDatePickerNext14Days(tvNext14Days, selectedDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
+                            Toast.makeText(context, "Please first select start date", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -250,7 +257,6 @@ public class DateUtills {
         }
         return "";
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
@@ -56,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     Dialog dialog;
 
+    String fcmToken;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().hide();
         dialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("fetching_fcm_failed", String.valueOf(task.getException()));
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        fcmToken = task.getResult();
+
+                        Log.d("zmatoken", fcmToken);
+
+//                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @SuppressLint("ResourceType")
@@ -127,8 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void ApiCallForSignIn() {
 
-
-        Call<LoginResponse> logInResponseCall = BaseNetworking.ApiInterface().login(strEmail, strPassword);
+        Call<LoginResponse> logInResponseCall = BaseNetworking.ApiInterface().login(strEmail, strPassword, fcmToken);
         logInResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -136,22 +164,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     dialog.dismiss();
                     if (response.body().isSuccess()) {
 //                        try {
-                            AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
 
-                            AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("lat", String.valueOf(response.body().getData().getLatitude())).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("lng", String.valueOf(response.body().getData().getLongitude())).commit();
-                            AppRepository.mPutValue(LoginActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("lat", String.valueOf(response.body().getData().getLatitude())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("lng", String.valueOf(response.body().getData().getLongitude())).commit();
+                        AppRepository.mPutValue(LoginActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
 
 
-                            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                            LoginActivity.this.startActivity(mainIntent);
-                            LoginActivity.this.finishAffinity();
-                            Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+                        Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                        LoginActivity.this.startActivity(mainIntent);
+                        LoginActivity.this.finishAffinity();
+                        Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+
+
+                        Log.d("zmaresponse",response.body().getData().getFcmToken()+"");
 //                        } catch (Exception e) {
 //                            e.printStackTrace();
 //                        }

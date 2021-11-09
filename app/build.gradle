@@ -90,6 +90,15 @@ dependencies {
     implementation 'androidx.viewpager:viewpager:1.0.0'
 
 
+    //MultiImageView
+    implementation "com.github.stfalcon-studio:StfalconFixturer-android:0.1"
+
+
+
+    //phone number formater
+    implementation 'com.fredporciuncula:phonemoji:1.2.0'
+
+
 
     // Material Dialog Library
     implementation 'dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.2'

@@ -110,6 +110,11 @@ public class AppRepository {
 
     }
 
+    public static boolean mNotification(Context context) {
+        return mGetValue(context).getBoolean("notification", true);
+
+    }
+
 
     public static boolean mEditDayPlanActivity(Context context) {
         return mGetValue(context).getBoolean("mEditDayPlanActivity", true);
@@ -126,6 +131,11 @@ public class AppRepository {
 
     public static String mDetailRestaurantName(Context context) {
         return mGetValue(context).getString("detail_restaurant_name", "");
+    }
+
+
+    public static String mTripTitleName(Context context) {
+        return mGetValue(context).getString("trip_title_name", "");
     }
 
 

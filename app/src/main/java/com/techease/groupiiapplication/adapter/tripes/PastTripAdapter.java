@@ -80,8 +80,12 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         holder.tvStartEndDate.setText(DateUtills.getDateFormate(data.getFromdate()));
 
         holder.tvLocation.setText(data.getLocation());
+
         holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
+        holder.tvDaysLeft.setText("Complete trip");
+
+        ///happaned
 
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvUsers.addItemDecoration(new GeneralUtills.OverlapDecoration());
@@ -119,8 +123,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             public void onClick(View view) {
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
-                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
 
+                if (data.isIsCreatedby()) {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+                } else {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getTripid())).commit();
+
+                }
 
                 if (data.getTitle().equals("unpublished")) {
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class));

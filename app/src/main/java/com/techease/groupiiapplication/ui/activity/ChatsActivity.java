@@ -16,13 +16,10 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,15 +36,17 @@ import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.chatAdapter.ChatAdapter;
-import com.techease.groupiiapplication.chat.MyEditText;
-import com.techease.groupiiapplication.chat.images.FileUploader;
+import com.techease.groupiiapplication.chat.view.chatEdittext.MyEditText;
+import com.techease.groupiiapplication.chat.view.fileUploader.FileUploader;
 import com.techease.groupiiapplication.dataModel.chats.chat.ChatModel;
 import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.socket.ChatApplication;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.EmojiEncoder;
+import com.techease.groupiiapplication.utils.StringHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,13 +112,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     private static final String TAG = "MainActivity";
     private static final String URL = "http://192.168.0.103:8090";
-    private static String UPLOAD_FILE_PATH = "/sdcard/com.irule.activity-1.apk"; // Make sure file exists ..
 
-
-//    private SocketIOClient mClient;
-
-    private String strTripId, strCheckToUserID = "", strToUserId, strUsername, strMessageType, strChatType, strChatImageLink;
-    private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, senderImage, type;
+    private String strTripId, strCheckToUserID = "", strToUserId, strUsername, senderImage, strMessageType, strChatType, strChatImageLink;
+    private String message, toUser, fromUser, fromUserName, tripId, isSent, isRead, date, currentChatUserId = "", type;
     int userID;
 
     boolean aBooleanShowKeyboardListener = true, aBooleanChaResfresh = true;
@@ -201,7 +196,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         if (strChatType.equals("user")) {
             Glide.with(this).load(strChatImageLink).placeholder(R.drawable.user).into(ivChatImage);
         }
-        Log.d("zma trip id", strTripId);
+//        Log.d("zma trip id", strTripId);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rvMessage.setLayoutManager(mLayoutManager);
@@ -216,13 +211,12 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                         int flags, Bundle opts) {
                 //you will get your gif/png/jpg here in opts bundle
 
-                Log.d("zmabundle", inputContentInfo.getContentUri() + "");
+//                Log.d("zmabundle", inputContentInfo.getContentUri() + "");
 
 //                sendMessageFun("image", inputContentInfo.getContentUri()+"");
 //                File file=new File(inputContentInfo.getContentUri().getPath());
 //                chatImageFiles.add(String.valueOf(file));
 //                uploadFiles();
-
 
                 chatImageFiles.clear();
                 chatImageFiles.add(createCopyAndReturnRealPath(ChatsActivity.this, inputContentInfo.getContentUri()));
@@ -282,9 +276,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                         .setPreSelectedUrls(uris)                               //Pre selected Image Urls
                         .setSpanCount(5)                                               //Span count for gallery min 1 & max 5
                         .setMode(Options.Mode.All)                                     //Option to select only pictures or videos or both
-//                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
+                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
                         .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
-                        .setPath("/Grouppii/images");                                       //Custom Path For media Storage
+                        .setPath("/Grouppii/files");                                       //Custom Path For media Storage
 
 
                 Pix.start(this, options);
@@ -306,13 +300,12 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void sendMessageFun(String messageType, String strMessage) {
-
         if (strMessage.length() > 1) {
             JSONObject object = new JSONObject();
             try {
                 if (strChatType.equals("group")) {
                     object.put("userid", userID);
-                    object.put("touser", strToUserId);
+                    object.put("touser", null);
                     object.put("tripid", strTripId);
 
                 }
@@ -324,18 +317,17 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 object.put("type", messageType);
                 object.put("message", strMessage);
 
-//                Log.d("zmabas64", strMessage);
+//                Log.d("zmachat", "" + object);
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.d("zmasendmessage", e.getMessage());
+//                Log.d("zmasendmessage", e.getMessage());
             }
 
             ivSendFile.setEnabled(false);
             tvSend.setEnabled(false);
             mSocket.emit("sendmessage", object);
-//                    addMessage(String.valueOf(userID), fromUser, fromUserName, message, date, senderImage, type, isSent);
         }
     }
 
@@ -353,6 +345,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 objectGetAllMessages.put("userid", userID);
                 objectGetAllMessages.put("touser", strToUserId);
                 objectGetAllMessages.put("tripid", null);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -397,7 +390,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             strMessageType = data.getString("type");
 
 
-                                            Log.d("zmamessagetype", strMessageType);
 //                                            strToUserId.equals(fromUser) ||
 
 //                                            if ( strToUserId.equals(toUser)) {
@@ -428,23 +420,14 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (aBooleanChaResfresh) {
-                                aBooleanChaResfresh = false;
-                                try {
-                                    AllUsersChatFragment.aBooleanRefreshSocket = false;
-                                    ConnectChatResfresh.setMyBoolean(true);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-//                                    Log.d("zmaerror",e.getMessage());
-                                    AllUsersChatFragment.aBooleanRefreshSocket = true;
-                                }
-                            }
+
+                            Log.d("zma", "message send sho");
+
                             JSONObject jsonObject = (JSONObject) args[0];
                             try {
                                 if (jsonObject != null) {
                                     toUser = jsonObject.getString("touser");
                                     fromUser = jsonObject.getString("fromuser");
-//                                    fromUserName = jsonObject.getString("fromusername");
                                     message = jsonObject.getString("message");
                                     date = jsonObject.getString("created_at");
                                     tripId = jsonObject.getString("tripid");
@@ -452,11 +435,12 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
                                     isRead = jsonObject.getString("is_read");
                                     strMessageType = jsonObject.getString("type");
+                                    currentChatUserId = jsonObject.getString("id");
 
-
-                                    Log.d("zma message send sho", "" + jsonObject);
+//                                    Log.d("zma message send sho", "" + jsonObject);
                                     if (strChatType.equals("user")) {
-                                        if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)))) {
+//                                        Log.d("zmatestingIDs", "FromUserID = " + fromUser + "  and   " + "ToUserID = " + toUser + "   and  " + "AppUserID = " + AppRepository.mUserID(ChatsActivity.this)+"  and  CurrentChatID "+Constants.currentUserChatId);
+                                        if (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals(Constants.currentUserChatId))) {
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
@@ -465,7 +449,6 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
-                                    Log.d("zmauser", AppRepository.mUserID(ChatsActivity.this) + "   " + fromUser);
                                     if (fromUser.equals(String.valueOf(AppRepository.mUserID(ChatsActivity.this)))) {
                                         etMessageView.setText("");
                                         tvSend.setEnabled(true);
@@ -477,6 +460,19 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                 e.printStackTrace();
                             }
 
+
+                            if (aBooleanChaResfresh) {
+                                aBooleanChaResfresh = false;
+                                try {
+                                    AllUsersChatFragment.aBooleanRefreshSocket = false;
+                                    ConnectChatResfresh.setMyBoolean(true);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+//                                    Log.d("zmaerror",e.getMessage());
+                                    AllUsersChatFragment.aBooleanRefreshSocket = true;
+                                }
+                            }
+
                         }
                     });
                 }
@@ -485,7 +481,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     };
 
     private void addMessage(String from, String to, String fromUserName, String message, String date, String receiverImage, String userType, String isSent, String isRead, String messageType) {
-        mMessages.add(new ChatModel(Integer.parseInt(from), Integer.parseInt(to), fromUserName, message, date, receiverImage, userType, isSent, isRead, messageType));
+        mMessages.add(new ChatModel(AppRepository.mUserID(this), Integer.parseInt(to), fromUserName, message, date, receiverImage, userType, isSent, isRead, messageType));
         chatAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
 
@@ -544,12 +540,17 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         mSocket.connected();
         aBooleanOneTimeHistoryLoad = true;
         aBooleanChaResfresh = true;
+
+        StringHelper.checkFirebase = false;
+
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mSocket.disconnect();
+        StringHelper.checkFirebase = true;
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }
@@ -586,10 +587,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         if (keyboardListenersAttached) {
             return;
         }
-
         rootLayout = (ViewGroup) findViewById(R.id.rlRootLayout);
         rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
-
         keyboardListenersAttached = true;
     }
 
@@ -661,203 +660,4 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-//
-//                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
-//
-//                // populate layout with your image and text
-//                // or whatever you want to put in here
-//                ImageView imageView = new ImageView(getApplicationContext());
-//
-//                // adding image to be shown
-//                Glide.with(ChatsActivity.this).load(inputContentInfo.getContentUri()).into(imageView);
-//
-//                // adding image to linearlayout
-//                linearLayout.addView(imageView);
-//                Toast toast = new Toast(getApplicationContext());
-//
-//                // showing toast on bottom
-//                toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                toast.setDuration(Toast.LENGTH_LONG);
-//
-//                // setting view of toast to linear layout
-//                toast.setView(linearLayout);
-//                toast.show();
-
-    //recieving new messages from coach
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-
-
-            if (mSocket.connected()) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                try {
-                                    JSONObject data = (JSONObject) args[0];
-                                    sender = data.getString("fromuser");
-                                    reciever = data.getString("touser");
-                                    message = data.getString("message");
-                                    date = data.getString("created_at");
-                                    senderImage = data.getString("picture");
-                                    type = data.getString("type");
-
-
-                                    Log.d("type new", "this is type " + sender);
-
-                                    //checking and counting new messages
-//                                        if(strUserID.equals(sender)){
-//                                            int countMessage=GeneralUtilities.getSharedPreferences(getActivity()).getInt("message_count",0);
-//                                            countMessage++;
-//                                            GeneralUtilities.putIntValueInEditor(getActivity(),"message_count",countMessage);
-//                                        }
-
-                                    //adding new message to list
-                                    if (strToUserId.equals(reciever) || strToUserId.equals(sender)) {
-                                        addMessage(sender, reciever, message, date, senderImage, type);
-                                    }
-
-//                                        removeTyping();
-
-                                } catch (JSONException e) {
-                                    Toast.makeText(ChatsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
-
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        }
-
-    };
-*/
-
-
-//        etMessageView.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (null == strUsername) return;
-//                if (!mSocket.connected()) return;
-//
-//                if (!mTyping) {
-//                    mTyping = true;
-//                    JSONObject typingObject = new JSONObject();
-//                    try {
-//                        typingObject.put("username", strUsername);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    mSocket.emit("typing", typingObject);
-//                }
-//
-//                mTypingHandler.removeCallbacks(onTypingTimeout);
-//                mTypingHandler.postDelayed(onTypingTimeout, 600);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                removeTyping();
-//            }
-//        });
-
-
-//    private Emitter.Listener onTyping = new Emitter.Listener() {
-//        @Override
-//        public void call(final Object... args) {
-//
-//
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    JSONObject data = (JSONObject) args[0];
-//                    String username;
-//                    try {
-//                        username = data.getString("username");
-//                    } catch (JSONException e) {
-//                        Log.d("TAG", e.getMessage());
-//                        return;
-//                    }
-//
-//                    if (username == null || username.equals("")) {
-//                        removeTyping();
-//                    } else {
-//                        addTyping(username);
-//                    }
-//
-//
-//                }
-//            });
-//
-//        }
-//    };
-
-//
-//    private void addTyping(String username) {
-//        if (username.equals(strUsername)) {
-//            removeTyping();
-//        } else {
-//            layoutTyping.setVisibility(View.VISIBLE);
-//            tvSenderName.setText(username);
-//            scrollToBottom();
-//        }
-//
-//    }
-//
-//
-//    private void removeTyping() {
-//        layoutTyping.setVisibility(View.GONE);
-//    }
-//
-//    private Runnable onTypingTimeout = new Runnable() {
-//        @Override
-//        public void run() {
-//            if (!mTyping) return;
-//            mTyping = false;
-//            mSocket.emit("stop typing");
-//        }
-//    };
-
 

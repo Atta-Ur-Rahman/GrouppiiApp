@@ -21,11 +21,10 @@
             android:layout_height="50dp"
             android:layout_marginLeft="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/widget_margin"
-            android:src="@mipmap/backicon"
             android:padding="3dp"
+            android:src="@mipmap/backicon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/tvNewTrip"
@@ -59,7 +58,7 @@
             android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginRight="@dimen/widget_margin_left_right"
             android:gravity="center"
-            android:text="Steps 1/4"
+            android:text="Step 1/4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,8 +80,8 @@
             android:layout_height="0dp"
             android:animateLayoutChanges="true"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <TextView
@@ -111,28 +110,39 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <TextView
                 android:id="@+id/tvInviteFriendDetail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/text_view_edittext_height"
                 android:layout_marginLeft="@dimen/widget_margin_left_right"
-                android:layout_marginTop="@dimen/widget_margin_left_right"
-                android:layout_marginRight="@dimen/widget_margin_left_right"
-                android:gravity="left"
+                android:layout_marginTop="@dimen/widget_margin"
                 android:text="Invite friends on the trip press the + button to \nsend invitations"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTripParticipants" />
+
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvInviteFriendDetailText"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginLeft="@dimen/widget_margin_left_right"-->
+            <!--                android:layout_mearginTop="@dimen/widget_margin_left_right"-->
+            <!--                android:layout_marginRight="@dimen/widget_margin_left_right"-->
+            <!--                android:gravity="left"-->
+            <!--                android:text="Invite friends on the trip press the + button to \nsend invitations"-->
+            <!--                android:textSize="@dimen/text_size14sp"-->
+            <!--                android:textStyle="bold"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/tvTripParticipants" />-->
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvInviteFriend"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constrainedHeight="true"
                 android:layout_margin="@dimen/widget_margin"
+                app:layout_constrainedHeight="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvInviteFriendDetail" />
 
@@ -164,6 +174,7 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvEditParticipant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,6 +191,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:id="@+id/cvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,6 +224,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:id="@+id/cvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -242,7 +255,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.cardview.widget.CardView>
-
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvPhone"
@@ -291,7 +303,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvCheckBox"
+                android:id="@+id/cvAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/widget_margin_left_right"
@@ -315,25 +327,24 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMyContact"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_margin="@dimen/widget_margin"
                 android:background="@color/white"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cvPhone" />
-
+                app:layout_constraintBottom_toTopOf="@id/cvAdd"
+                app:layout_constraintTop_toBottomOf="@id/cbShareTripCost" />
 
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/ivDoneContact"
                 android:layout_width="@dimen/fifty_dp"
                 android:layout_height="@dimen/fifty_dp"
-                android:src="@drawable/done"
                 android:layout_marginTop="@dimen/widget_margin"
                 android:layout_marginRight="@dimen/widget_margin_left_right"
-                app:layout_constraintTop_toBottomOf="@id/rvMyContact"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:src="@drawable/done"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvMyContact" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

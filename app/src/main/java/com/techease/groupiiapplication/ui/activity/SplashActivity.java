@@ -1,6 +1,8 @@
 
 package com.techease.groupiiapplication.ui.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,9 +15,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
+import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.SignUpActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AppRepository;
 
 import org.json.JSONArray;
@@ -32,10 +39,15 @@ import butterknife.ButterKnife;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
     private Socket mSocket;
+
+    boolean aBooleanIsNotification = true;
 
 
     @Override
@@ -45,13 +57,59 @@ public class SplashActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
+        try {
+            Bundle intent = getIntent().getExtras();
+            if (getIntent().getExtras() != null) {
+                aBooleanIsNotification = false;
+                Intent chatActivityIntent = new Intent(SplashActivity.this, ChatsActivity.class);
+                if (intent.getString("messageType").equals("chat")) {
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title_name", intent.getString("name"));
+                    bundle.putString("toUserId", intent.getString("fromuser"));
+                    bundle.putString("type", "user");
+                    bundle.putString("picture", intent.getString("picture"));
+                    chatActivityIntent.putExtras(bundle);
+                    SplashActivity.this.startActivity(chatActivityIntent);
+                    SplashActivity.this.finish();
+
+                }
+
+
+                if (intent.getString("messageType").equals("group")) {
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title_name", intent.getString("title"));
+                    bundle.putString("toUserId", intent.getString("fromuser"));
+                    bundle.putString("tripId", intent.getString("tripid"));
+                    bundle.putString("type", "group");
+                    bundle.putString("picture", intent.getString("picture"));
+                    chatActivityIntent.putExtras(bundle);
+                    SplashActivity.this.startActivity(chatActivityIntent);
+                    SplashActivity.this.finish();
+
+                }
+
+
+                if (intent.getString("messageType").equals("trip")) {
+                    GetTripById(intent.getString("tripid"));
+                }
+            } else {
+                aBooleanIsNotification = true;
+            }
+
+        }catch (Exception p){
+            p.printStackTrace();
+        }
+
         Uri uri = getIntent().getData();
         String strUsername = "";
         if (uri != null) {
             strUsername = uri.getQueryParameter("tripid");
 //            Toast.makeText(this, strUsername, Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
 
             // Your app will pop up even if http://www.myurl.com/sso is clicked, so better to handle null uri
         }
@@ -70,22 +128,69 @@ public class SplashActivity extends AppCompatActivity {
 //            // do your stuff
 //        }
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        new Handler().postDelayed(new Runnable() {
+        new Handler().
+
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (AppRepository.isLoggedIn(SplashActivity.this)) {
+                            if (aBooleanIsNotification) {
+                                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                                SplashActivity.this.startActivity(mainIntent);
+                                SplashActivity.this.finish();
+                            }
+                        } else {
+                            Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+                            SplashActivity.this.startActivity(mainIntent);
+                            SplashActivity.this.finish();
+                        }
+                        finish();
+
+                    }
+                }, 000);
+
+
+    }
+
+    private void GetTripById(String strTripID) {
+        Call<GetSingleTripResponse> getSingleTripResponseCall = BaseNetworking.ApiInterface().getTripById("trips/getsingletrip/" + strTripID);
+        getSingleTripResponseCall.enqueue(new Callback<GetSingleTripResponse>() {
             @Override
-            public void run() {
-                if (AppRepository.isLoggedIn(SplashActivity.this)) {
-                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                    SplashActivity.this.startActivity(mainIntent);
+            public void onResponse(Call<GetSingleTripResponse> call, Response<GetSingleTripResponse> response) {
+                if (response.isSuccessful()) {
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+
+
+                    Intent intent = new Intent(SplashActivity.this, TripDetailScreenActivity.class);
+                    Bundle bundle = new Bundle();
+                    AppRepository.mPutValue(SplashActivity.this).putString("tripIDForUpdation", String.valueOf(response.body().getData().getId())).commit();
+
+                    bundle.putString("image", response.body().getData().getCoverimage());
+                    bundle.putString("title", response.body().getData().getTitle());
+                    bundle.putString("trip_type", response.body().getData().getStatus());
+                    bundle.putString("start_date", response.body().getData().getFromdate());
+                    bundle.putString("end_date", response.body().getData().getTodate());
+                    bundle.putString("pay_date", response.body().getData().getPayDate());
+                    bundle.putString("description", response.body().getData().getDescription());
+                    bundle.putString("location", response.body().getData().getLocation());
+                    bundle.putBoolean("is_createdby", false);
+                    intent.putExtras(bundle);
+                    SplashActivity.this.startActivity(intent);
                     SplashActivity.this.finish();
-                } else {
-                    Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                    SplashActivity.this.startActivity(mainIntent);
-                    SplashActivity.this.finish();
+
                 }
-                finish();
+            }
+
+            @Override
+            public void onFailure(Call<GetSingleTripResponse> call, Throwable t) {
 
             }
-        }, 000);
+        });
+    }
+
+
+}
+
 
 //        try {
 //            mSocket = IO.socket("http://104.131.66.116:9000/");
@@ -98,9 +203,6 @@ public class SplashActivity extends AppCompatActivity {
 //        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
 //        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
 //        mSocket.connect();
-
-    }
-
 
 //    private Emitter.Listener getOnNewMessage = new Emitter.Listener() {
 //        @Override
@@ -131,6 +233,3 @@ public class SplashActivity extends AppCompatActivity {
 ////            Log.d("zma", "dis connecting...");
 //        }
 //    };
-
-
-}

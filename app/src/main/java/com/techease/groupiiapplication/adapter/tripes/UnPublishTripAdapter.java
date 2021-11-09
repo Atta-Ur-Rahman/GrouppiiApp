@@ -66,8 +66,7 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
         holder.tvTitle.setText(data.getTitle());
         holder.tvStartEndDate.setText(DateUtills.getDateFormate(data.getFromdate()));
         holder.tvLocation.setText(data.getLocation());
-        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate()))+" days left");
-
+        holder.tvDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(data.getFromdate())) + " days left");
 
 
         holder.rvUsers.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -110,8 +109,8 @@ public class UnPublishTripAdapter extends RecyclerView.Adapter<UnPublishTripAdap
                 if (data.getTitle().equals("unpublished")) {
 //                    Log.d("zma tripid", String.valueOf(data.getId()));
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
-
-                } else {
+                    } else {
+                    AppRepository.mPutValue(context).putString(data.getTitle(), "trip_title_name").commit();
                     context.startActivity(new Intent(context, AddNewTripThreeHotelActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 
 //                    TripFragment.userList = data.getUsers();

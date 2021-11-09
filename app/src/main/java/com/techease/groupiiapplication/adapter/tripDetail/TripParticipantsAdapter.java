@@ -61,9 +61,13 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         AddTripDataModel user = userList.get(position);
 
         holder.tvTitle.setText(String.valueOf(user.getName()));
-        holder.tvEmail.setText(String.valueOf(user.getEmail()));
+        holder.tvEmail.setText(String.valueOf(user.getPhone()));
         Glide.with(context).load(user.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
 
+
+        if (String.valueOf(user.getName()).equals("null")){
+            holder.tvTitle.setText("No Name");
+        }
         Log.d("zmasharecost", user.getSharedCost() + "");
 
         if (String.valueOf(user.getSharedCost()).equals("1")) {
@@ -89,7 +93,7 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
                     intent.putExtras(bundle);
                     context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
                 } else {
-                    Toast.makeText(context, "Edit only admin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Only admin can manage participant", Toast.LENGTH_SHORT).show();
                 }
 
             }

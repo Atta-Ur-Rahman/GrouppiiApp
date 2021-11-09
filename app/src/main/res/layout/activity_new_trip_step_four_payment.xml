@@ -23,18 +23,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTripTitle"
+            android:layout_width="0dp"
             android:layout_height="@dimen/text_view_edittext_height"
             android:layout_marginTop="@dimen/widget_margin"
+            android:ellipsize="end"
             android:gravity="center"
+            android:lines="1"
+            android:paddingLeft="@dimen/widget_margin"
+            android:paddingRight="@dimen/widget_margin"
             android:text="New Trip"
             android:textColor="@android:color/black"
             android:textSize="@dimen/main_heading_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvSteps"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
@@ -44,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="21dp"
             android:progress="100"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvTripTitle" />
 
 
         <TextView

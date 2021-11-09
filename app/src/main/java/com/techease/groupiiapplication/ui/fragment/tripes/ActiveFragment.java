@@ -12,13 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripes.ActiveTripAdapter;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
+import com.techease.groupiiapplication.dataModel.notifications.GetNotificationsResponse;
 import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectSearch;
 import com.techease.groupiiapplication.interfaceClass.addGalleryPhoto.ConnectionSearchChangedListener;
+import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.utils.AppRepository;
 
 import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.techease.groupiiapplication.ui.fragment.tripes.TripFragment.activeList;
 
@@ -34,11 +41,13 @@ public class ActiveFragment extends Fragment {
     TextView tvNoActiveTripFound;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_active, container, false);
         ButterKnife.bind(this, view);
         initAdapter();
+
 
         return view;
     }

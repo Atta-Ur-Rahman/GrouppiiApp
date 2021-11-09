@@ -73,7 +73,7 @@ public class GropExpendituresTripFragment extends Fragment {
 
             }
         });
-        getPaymentExpenses();
+//        getPaymentExpenses();
 
 
         return view;
@@ -102,7 +102,7 @@ public class GropExpendituresTripFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -44,10 +44,10 @@
             android:name=".ui.activity.payments.EditPaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".chat.VideoPlayerActivity"
+            android:name=".chat.view.ui.VideoPlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".chat.images.ChatImagePreviewActivity"
+            android:name=".chat.view.ui.ChatImagePreviewActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.profile.AddCreditCardActivity"
@@ -67,7 +67,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MapViewActivity" />
+        <activity android:name=".mapView.MapViewActivity" />
         <activity android:name=".ui.activity.tripDetailScreen.AddUserTripParticpantActivity" />
         <activity android:name=".ui.activity.AddTrip.EditParticipantActivity" />
         <activity android:name=".ui.activity.WebViewActivity" />
@@ -171,6 +171,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@
 
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/ivEdit"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
@@ -38,10 +39,19 @@
         android:paddingStart="@dimen/widget_margin_left_right"
         android:paddingEnd="@dimen/widget_margin_left_right"
         android:layout_marginBottom="@dimen/widget_margin_left_right"
-        android:clipToPadding="false"
-        tools:showIn="@layout/custom_notification_layout"
-        tools:listitem="@layout/custom_notification_layout"
-        android:scrollbars="vertical" />
+        android:clipToPadding="false" />
 
+
+
+    <TextView
+        android:id="@+id/tvNotificationsNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:paddingLeft="20sp"
+        android:text="Notifications not found"
+        android:layout_marginTop="150dp"
+        android:textSize="@dimen/main_heading_text_size" />
 
 </RelativeLayout>

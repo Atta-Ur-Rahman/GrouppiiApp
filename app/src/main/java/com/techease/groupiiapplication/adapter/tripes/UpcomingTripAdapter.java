@@ -92,8 +92,12 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
                 AppRepository.mPutValue(context).putString("getFromdate", String.valueOf(data.getFromdate())).commit();
                 AppRepository.mPutValue(context).putString("tripID", String.valueOf(data.getTripid())).commit();
-                AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
 
+                if (data.isIsCreatedby()) {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getId())).commit();
+                } else {
+                    AppRepository.mPutValue(context).putString("tripIDForUpdation", String.valueOf(data.getTripid())).commit();
+                }
                 if (data.getTitle().equals("unpublished")) {
                     context.startActivity(new Intent(context, NewTripStepTwoAddDetailActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
 

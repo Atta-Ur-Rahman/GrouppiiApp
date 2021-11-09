@@ -154,44 +154,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void ApiCallForUpdateProfile() {
-        dialog.show();
-        Call<UpdateUserProfileResponse> updateProfilePicResponseCall = BaseNetworking.ApiInterface().updateProfile(AppRepository.mUserID(this) + "", strName, strEmail, "description", strPhoneNumber);
-        updateProfilePicResponseCall.enqueue(new Callback<UpdateUserProfileResponse>() {
-            @Override
-            public void onResponse(Call<UpdateUserProfileResponse> call, Response<UpdateUserProfileResponse> response) {
-                if (response.isSuccessful()) {
-                    AppRepository.mPutValue(EditProfileActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
-                    AppRepository.mPutValue(EditProfileActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
-                    AppRepository.mPutValue(EditProfileActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
-                    AppRepository.mPutValue(EditProfileActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
-                    Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
 
-                    dialog.dismiss();
-                } else {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                        Toast.makeText(EditProfileActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        Log.d("zmaerror", jsonObject.getString("message"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    dialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateUserProfileResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("zmaerror", t.getMessage());
-                Toast.makeText(EditProfileActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-    }
 
     private void checkImagePermission() {
         Dexter.withContext(this).withPermissions(
@@ -202,7 +165,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
-                cameraBuilder();
+
+                if (report.getGrantedPermissionResponses().size() == 4) {
+                    cameraBuilder();
+                }
             }
 
             @Override
@@ -291,7 +257,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
 //            ApiCallForUpdatePic();
 
-            Toast.makeText(this, String.valueOf(sourceFile.getAbsolutePath()), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, String.valueOf(sourceFile.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
 
             ivProfilePicture.setVisibility(View.VISIBLE);
@@ -316,6 +282,45 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    private void ApiCallForUpdateProfile() {
+        dialog.show();
+        Call<UpdateUserProfileResponse> updateProfilePicResponseCall = BaseNetworking.ApiInterface().updateProfile(AppRepository.mUserID(this) + "", strName, strEmail, "description", strPhoneNumber);
+        updateProfilePicResponseCall.enqueue(new Callback<UpdateUserProfileResponse>() {
+            @Override
+            public void onResponse(Call<UpdateUserProfileResponse> call, Response<UpdateUserProfileResponse> response) {
+                if (response.isSuccessful()) {
+                    AppRepository.mPutValue(EditProfileActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
+                    AppRepository.mPutValue(EditProfileActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
+                    AppRepository.mPutValue(EditProfileActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
+                    AppRepository.mPutValue(EditProfileActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
+                    Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    finish();
+                } else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                        Toast.makeText(EditProfileActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        Log.d("zmaerror", jsonObject.getString("message"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateUserProfileResponse> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("zmaerror", t.getMessage());
+                Toast.makeText(EditProfileActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void ApiCallForUpdatePic() {
         dialog.show();
@@ -335,6 +340,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     AppRepository.mPutValue(EditProfileActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
                     dialog.dismiss();
                     Toast.makeText(EditProfileActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    finish();
 
                 } else {
                     try {

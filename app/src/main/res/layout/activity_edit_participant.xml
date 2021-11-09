@@ -114,6 +114,9 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,9 +149,9 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:clickable="false"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,6 +184,9 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,13 +208,13 @@
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cvCheckBox"
+            android:id="@+id/cvAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/widget_margin_left_right"
+            app:cardBackgroundColor="@color/purple_500"
             app:cardCornerRadius="7dp"
             app:cardElevation="@dimen/card_view_elevation"
-            app:cardBackgroundColor="@color/purple_500"
             app:layout_constraintTop_toBottomOf="@id/cbShareTripCost">
 
 
@@ -228,8 +234,8 @@
             android:id="@+id/cvDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="@dimen/card_view_elevation"
             app:cardBackgroundColor="@android:color/holo_red_light"
+            app:cardElevation="@dimen/card_view_elevation"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView

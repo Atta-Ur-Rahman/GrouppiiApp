@@ -68,13 +68,14 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     public AllUserChatAdapter allUserChatAdapter;
 
     boolean isConnected;
-    String strUserID = "", strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
+    String strCurrentUserChatID = "", strUserID = "", strMessage, strGroupType = "", strDateAndTime = "", strTitleName = "", strGroupChatPicture = "", strTripID = "", strToUserId = "";
     private Socket mSocket;
     JSONObject jsonObjectGetAllUsers = new JSONObject();
     LinearLayoutManager linearLayoutManager;
     public static boolean aBooleanRefreshSocket = false;
     int baseUserID;
     private int STATE_BOUNCE_BACK;
+
 
     @BindView(R.id.tvNoUserFound)
     TextView tvNoUserFound;
@@ -99,6 +100,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
             @Override
             public void OnMyBooleanChanged() {
 
+                mSocket.connect();
                 getAllUserFun();
                 if (aBooleanRefreshSocket) {
                     aBooleanRefreshSocket = false;
@@ -150,35 +152,6 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search here...");
 
-/*
-        // Set-up of recycler-view's native item swiping.
-        ItemTouchHelper.Callback itemTouchHelperCallback = new ItemTouchHelper.Callback() {
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return makeMovementFlags(0, ItemTouchHelper.RIGHT);
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-                AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Item swiping is supported!")
-                        .setMessage("Recycler-view's native item swiping and the over-scrolling effect can co-exist! But, to get them to work WELL -- please apply the effect using the dedicated helper method!")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                allUserChatAdapter.notifyDataSetChanged();
-                            }
-                        })
-                        .create();
-                dialog.show();
-            }
-        };*/
-
         // Apply over-scroll in 'advanced form' - i.e. create an instance manually.
         mVertOverScrollEffect = new VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter(rvMessageList));
 
@@ -214,13 +187,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
 
 
     private void getAllUserFun() {
-//        progress.setVisibility(View.VISIBLE);
         allUserChatAdapter.clearApplications();
         jsonObjectGetAllUsers = new JSONObject();
         try {
             jsonObjectGetAllUsers.put("userid", baseUserID);
             mSocket.emit("getusers", jsonObjectGetAllUsers);
-            Log.d("zmajsaonarray", "zma call");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -265,14 +236,11 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                     public void run() {
                         Log.d("zmajsaonarray", "event call");
                         allUserChatAdapter.clearApplications();
-
-
                         try {
+                            mSocket.disconnect();
                             String data = args[0].toString();
                             JSONArray jsonArray = new JSONArray(data);
-
-                            Log.d("zmajsonarray", "Chat" + jsonArray);
-
+                            Log.d("zmaAllChatAllUser", jsonArray.toString());
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.getJSONObject(i);
@@ -294,17 +262,30 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
                                     strGroupChatPicture = c.getString("picture");
                                     strUserID = c.getString("userid");
                                     strDateAndTime = c.getString("created_at");
+                                    JSONObject jsonLatestMessage = c.getJSONObject("latest_message");
+                                    try {
+                                        strCurrentUserChatID = jsonLatestMessage.getString("id");
+                                        Log.d("zmachatuserid", strCurrentUserChatID);
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+//                                        strCurrentUserChatID = jsonLatestMessage.getString("message");
+//                                        strCurrentUserChatID = String.valueOf(jsonLatestMessage.getInt("id"));
+                                    Log.d("zmachatuserid", jsonLatestMessage.toString());
+
                                 }
 
                                 //check condition if user id and user
                                 if (!strTitleName.equals("") && !strTitleName.equals("unpublished")) {
                                     if (strGroupType.equals("group")) {
                                         if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture, "");
                                         }
                                     } else {
                                         if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture);
+                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture, strUserID);
                                         }
                                     }
                                 }
@@ -321,9 +302,9 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     };
 
 
-    private void addUserToList(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt, String picture) {
+    private void addUserToList(String titleName, String chatTime, String chatType, String message, String tripId, String toUser, String createdAt, String modifiedAt, String picture, String strCurrentCharUserID) {
 
-        chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture));
+        chatAllUserDataModels.add(new ChatAllUserDataModel(titleName, chatTime, chatType, message, tripId, toUser, createdAt, modifiedAt, picture, strCurrentCharUserID));
         allUserChatAdapter.notifyItemInserted(chatAllUserDataModels.size() - 1);
         allUserChatAdapter.notifyDataSetChanged();
 
@@ -347,6 +328,7 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
+        mSocket.connect();
         if (aBooleanRefreshSocket) {
             aBooleanRefreshSocket = false;
             getAllUserFun();
