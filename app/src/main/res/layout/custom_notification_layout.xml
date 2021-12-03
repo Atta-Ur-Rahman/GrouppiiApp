@@ -89,7 +89,7 @@
             android:layout_marginStart="@dimen/widget_margin_left_right"
             app:layout_constraintStart_toEndOf="@id/cvImage"
             app:layout_constraintLeft_toRightOf="@id/cvImage"
-            app:layout_constraintTop_toBottomOf="@id/tvEmail"/>
+            app:layout_constraintTop_toBottomOf="@id/tvParticipaintPhoneNumber"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

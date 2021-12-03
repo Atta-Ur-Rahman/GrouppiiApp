@@ -1,12 +1,9 @@
 package com.techease.groupiiapplication.adapter.addTrip;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,8 +23,6 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.api.TripUserDeleteCallback;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
-import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 
 import java.util.List;
 
@@ -58,15 +53,15 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
         AddTripDataModel addTripDataModel = addTripDataModels.get(position);
 
         holder.tvTitle.setText(String.valueOf(addTripDataModel.getName()));
-        holder.tvStartEndDate.setText(String.valueOf(addTripDataModel.getPhone()));
-
+        holder.tvParticipaintPhoneNumber.setText(String.valueOf(addTripDataModel.getPhone()));
 
         if (String.valueOf(addTripDataModel.getName()).equals("null")) {
-            holder.tvTitle.setText("No Name");
+            holder.tvTitle.setText(R.string.not_registered_user);
         }
         Glide.with(context).load(addTripDataModel.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
 
-        Log.d("zma trip data", "" + addTripDataModel.getSharedCost());
+        holder.tvParticipaintPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
 
         if (addTripDataModel.getSharedCost() == 1) {
             holder.cbShareTripCost.setChecked(true);
@@ -89,17 +84,16 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
                         switch (item.getItemId()) {
                             case R.id.navigation_delete:
                                 @SuppressLint("NotifyDataSetChanged") TripUserDeleteCallback userDeleteCallback = success -> {
-                                    if (success){
+                                    if (success) {
                                         addTripDataModels.remove(position);
                                         notifyDataSetChanged();
-                                    }else {
+                                    } else {
                                         Toast.makeText(context, "some went wrong", Toast.LENGTH_SHORT).show();
                                     }
-
                                     return false;
                                 };
 
-                                ApiClass.ApiCallForDeleteTripUser(userDeleteCallback,""+addTripDataModel.getTripid(),""+addTripDataModel.getUserid());
+                                ApiClass.ApiCallForDeleteTripUser(userDeleteCallback, "" + addTripDataModel.getTripid(), "" + addTripDataModel.getUserid());
 
                                 return true;
 
@@ -137,14 +131,14 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvStartEndDate;
+        TextView tvTitle, tvParticipaintPhoneNumber;
         ImageView ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
             super(view);
             tvTitle = view.findViewById(R.id.tvTitleName);
-            tvStartEndDate = view.findViewById(R.id.tvEmail);
+            tvParticipaintPhoneNumber = view.findViewById(R.id.tvParticipaintPhoneNumber);
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
             ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);

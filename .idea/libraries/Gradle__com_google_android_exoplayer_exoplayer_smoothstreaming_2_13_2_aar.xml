@@ -1,17 +1,16 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.exoplayer:exoplayer-smoothstreaming:2.13.2@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ced4577b0df5e44130a1eff828026657/transformed/jetified-exoplayer-smoothstreaming-2.13.2/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bdbaff9364c010efd315fe0a6ce49f7d/transformed/jetified-exoplayer-smoothstreaming-2.13.2/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/6f57e656f6b4fc7c494fd21ebd0b3b51/transformed/jetified-exoplayer-smoothstreaming-2.13.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-smoothstreaming/2.13.2/dd032f4f61f35788a371ea3bc9d10c858ff5e7c9/exoplayer-smoothstreaming-2.13.2-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-smoothstreaming/2.13.2/dd032f4f61f35788a371ea3bc9d10c858ff5e7c9/exoplayer-smoothstreaming-2.13.2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-smoothstreaming/2.13.2/a949382d62fe22e6f396a7c2ac76ab5600df3536/exoplayer-smoothstreaming-2.13.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-smoothstreaming/2.13.2/a949382d62fe22e6f396a7c2ac76ab5600df3536/exoplayer-smoothstreaming-2.13.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

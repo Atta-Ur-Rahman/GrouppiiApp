@@ -76,7 +76,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 }
 
-
                 if (intent.getString("messageType").equals("group")) {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
 

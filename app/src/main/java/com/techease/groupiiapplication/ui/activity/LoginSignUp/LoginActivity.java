@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         strEmail = etEmail.getText().toString();
         strPassword = etPassword.getText().toString();
 
-        if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+        if (strEmail.isEmpty()) {
             tilEmail.setErrorEnabled(true);
             tilEmail.setError(getString(R.string.valid_email));
             valid = false;

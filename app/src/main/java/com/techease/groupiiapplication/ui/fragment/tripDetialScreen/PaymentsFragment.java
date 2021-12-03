@@ -144,7 +144,6 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
             public void OnMyBooleanClickChanged() {
                 editPaymentCallBackListener.onEditPaymentCallBack();
                 getPaymentExpenses();
-                Toast.makeText(getActivity(), "update", Toast.LENGTH_SHORT).show();
 //                InputMethodManager imm = (InputMethodManager) getActivity()
 //                        .getSystemService(Context.INPUT_METHOD_SERVICE);
 //
@@ -195,8 +194,8 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
 
                     if (aBooleanHideKeyboard) {
                         aBooleanHideKeyboard = false;
-                        KeyBoardUtils.hideKeyboard(getActivity());
-                        KeyBoardUtils.closeKeyboard(getActivity());
+//                        KeyBoardUtils.hideKeyboard(getActivity());
+//                        KeyBoardUtils.closeKeyboard(getActivity());
                     }
 
                     try {

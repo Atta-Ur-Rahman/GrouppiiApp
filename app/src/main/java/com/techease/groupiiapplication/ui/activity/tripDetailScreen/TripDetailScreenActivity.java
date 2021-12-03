@@ -37,7 +37,6 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
-import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
@@ -75,8 +74,6 @@ import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatRes
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
-import com.techease.groupiiapplication.ui.activity.HomeActivity;
-import com.techease.groupiiapplication.ui.activity.SplashActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentsTabsFragment;
 import com.techease.groupiiapplication.ui.fragment.payment.ParticipantCostsTabsFragment;
@@ -178,7 +175,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     BottomSheetBehavior bottomSheetBehavior, addActivityBottomSheetBehavior, addPaymentBottomSheetBehavior, partiallyPaidTripBottomSheetBehavior, participantsBottomSheet, participantCostsBottomSheetBehaior;
 
     public static TripParticipantsAdapter tripParticipantsAdapter;
-    public static ArrayList<AddTripDataModel> userParticipaintsList = new ArrayList<>();
+    public static ArrayList<AddTripDataModel> userList = new ArrayList<>();
     public static ArrayList<AddTripDataModel> paymentUserParticipaintsList = new ArrayList<>();
     public static ArrayList<AddTripDataModel> userParticipaintsCircleList = new ArrayList<>();
 
@@ -264,7 +261,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         strTripType = bundle.getString("trip_type");
         aBooleanEditScreen = bundle.getBoolean("edit");
         aBooleanIsCreatedBy = bundle.getBoolean("is_createdby");
-
 
 
         AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripStartDate)).commit();
@@ -399,12 +395,12 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
-                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userParticipaintsList, aBooleanIsCreatedBy, tvNoActiveTripFound);
+                tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userList, aBooleanIsCreatedBy, tvNoActiveTripFound);
                 rvTripParticipants.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(TripDetailScreenActivity.this));
                 rvTripParticipants.setLayoutManager(new LinearLayoutManager(TripDetailScreenActivity.this, RecyclerView.VERTICAL, false));
                 rvTripParticipants.setAdapter(tripParticipantsAdapter);
 
-                if (userParticipaintsList.size() == 0) {
+                if (userList.size() == 0) {
                     tvNoActiveTripFound.setVisibility(View.VISIBLE);
                 } else {
                     tvNoActiveTripFound.setVisibility(View.GONE);
@@ -481,7 +477,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                             .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance())
                             .commitNow();
                 } else if (anIntViewPagerPosition == 2) {
-
                     if (aBooleanIsCreatedBy) {
                         addPaymentBottomSheetBehavior.setDraggable(false);
                         bottomSheetBehavior.setDraggable(false);
@@ -710,9 +705,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
 //        spUserName.setSelection(position);
-        Toast.makeText(TripDetailScreenActivity.this, userParticipaintsList.get(position).getUserid() + "", Toast.LENGTH_LONG).show();
+        Toast.makeText(TripDetailScreenActivity.this, userList.get(position).getUserid() + "", Toast.LENGTH_LONG).show();
 
-        strPaymentUser = String.valueOf(userParticipaintsList.get(position).getUserid());
+        strPaymentUser = String.valueOf(userList.get(position).getUserid());
 
     }
 
@@ -965,7 +960,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
     private void getPaymentExpenses() {
-        dialog.show();
+
+
+//        dialog.show();
 
 
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
@@ -974,7 +971,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
 //                    assert response.body() != null;
                     try {
                         tvPartiallyPaidPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));
@@ -983,7 +980,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    tvPartiallyPaid.setText(response.body().getData().getFullyPaidUsers() + "/" + response.body().getData().getTotalUsers());
+                    tvPartiallyPaid.setText(response.body().getData().getPartialPaidUsers() + "/" + response.body().getData().getTotalUsers());
                     tvPayDate.setText(DateUtills.getDateFormate(response.body().getData().getTripdate()));
                     tvPaymentsDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(response.body().getData().getTripdate())) + " days left");
 
@@ -997,13 +994,13 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     ConnectExpenditures.setMyBooleanListener(true);
 
                 } else {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
-                dialog.dismiss();
+//                dialog.dismiss();
             }
         });
     }
@@ -1055,7 +1052,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallGetUserTrip() {
         dialog.show();
-        userParticipaintsList.clear();
+        userList.clear();
         userParticipaintsCircleList.clear();
         paymentUserParticipaintsList.clear();
 
@@ -1082,18 +1079,34 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    userParticipaintsList.addAll(response.body().getData());
+                    userList.addAll(response.body().getData());
                     userParticipaintsCircleList.addAll(response.body().getData());
 
+                    ArrayList<AddTripDataModel> addTripDataModelsMain = new ArrayList<>();
+                    for (AddTripDataModel userParticipaintsList : response.body().getData()) {
+                        if (userParticipaintsList.getSharedCost() == 1) {
+                            AddTripDataModel addTripDataModel = new AddTripDataModel();
 
-                    for (AddTripDataModel addTripDataModel : response.body().getData()) {
-//                        paymentUserParticipaintsList
+                            if (userParticipaintsList.getName() == null) {
+                                addTripDataModel.setName(userParticipaintsList.getPhone());
+                            } else {
+                                addTripDataModel.setName(userParticipaintsList.getName());
+                            }
+                            addTripDataModel.setEmail(userParticipaintsList.getEmail());
+                            addTripDataModel.setTripid(userParticipaintsList.getTripid());
+                            addTripDataModel.setLatitude(userParticipaintsList.getLatitude());
+                            addTripDataModel.setLongitude(userParticipaintsList.getLongitude());
+                            addTripDataModel.setUserid(userParticipaintsList.getUserid());
+                            addTripDataModelsMain.add(addTripDataModel);
+                        }
                     }
-                    paymentUserParticipaintsList.addAll(response.body().getData());
 
-                    Log.d("zmaUserSecond", userParticipaintsList.size() + "");
+                    paymentUserParticipaintsList.addAll(addTripDataModelsMain);
 
-                    CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userParticipaintsList);
+
+                    Log.d("zmaUserSecond", userList.size() + "");
+
+                    CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userList);
                     spUserName.setAdapter(customAdapter);
 
 
@@ -1111,6 +1124,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
+//        ApiCallGetUserTrip();
         if (Constants.aBooleanDetailTripScreenRefresh) {
             Constants.aBooleanDetailTripScreenRefresh = false;
             TripEditedCallback tripEditedCallback = new TripEditedCallback() {
@@ -1141,7 +1155,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         if (aBooleanResfreshGetUserTrip) {
             aBooleanResfreshGetUserTrip = false;
             tripParticipantsAdapter.notifyDataSetChanged();
-            userTripCircleImagesAdapter.notifyDataSetChanged();
+//            userTripCircleImagesAdapter.notifyDataSetChanged();
 
         }
     }

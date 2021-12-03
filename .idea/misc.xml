@@ -5,8 +5,14 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18333333333333332" />
         <entry key="../../.gradle/caches/transforms-3/8da853fb88e2390b19fd94862ae278ff/transformed/jetified-pix-1.5.6/res/drawable-anydpi-v21/ic_videocam_black_24dp.xml" value="0.23043478260869565" />
+        <entry key="app/src/main/res/drawable/background_dialog.xml" value="0.22664473684210526" />
+        <entry key="app/src/main/res/drawable/checkbox_selector.xml" value="0.22664473684210526" />
+        <entry key="app/src/main/res/drawable/checkbox_selector_check.xml" value="0.22664473684210526" />
         <entry key="app/src/main/res/drawable/greenprogress.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/home_screen_background.xml" value="0.1625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.22664473684210526" />
+        <entry key="app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.22664473684210526" />
+        <entry key="app/src/main/res/drawable/ic_baseline_crop_square_24.xml" value="0.22664473684210526" />
         <entry key="app/src/main/res/drawable/ic_baseline_drag_indicator_24.xml" value="0.31461187214611874" />
         <entry key="app/src/main/res/drawable/image_thumbnail.xml" value="0.13986486486486485" />
         <entry key="app/src/main/res/drawable/line.xml" value="0.14444444444444443" />
@@ -32,9 +38,11 @@
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.16898148148148148" />
         <entry key="app/src/main/res/layout/activity_chat_image_preview.xml" value="0.2222972972972973" />
         <entry key="app/src/main/res/layout/activity_chats.xml" value="0.1300925925925926" />
-        <entry key="app/src/main/res/layout/activity_edit_participant.xml" value="0.16944444444444445" />
+        <entry key="app/src/main/res/layout/activity_code_verification.xml" value="0.21433224755700325" />
+        <entry key="app/src/main/res/layout/activity_edit_participant.xml" value="0.21433224755700325" />
         <entry key="app/src/main/res/layout/activity_edit_payment.xml" value="0.2222972972972973" />
         <entry key="app/src/main/res/layout/activity_edit_profile_activity.xml" value="0.30462962962962964" />
+        <entry key="app/src/main/res/layout/activity_forgot_sent_code.xml" value="0.21644736842105264" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.2013888888888889" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.275" />

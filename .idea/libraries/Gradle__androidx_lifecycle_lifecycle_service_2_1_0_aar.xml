@@ -1,15 +1,14 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.lifecycle:lifecycle-service:2.1.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7dbc1936c7ae30ed9d807261b33debac/transformed/jetified-lifecycle-service-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/79faf484d632a05b5ab46209f2baffca/transformed/jetified-lifecycle-service-2.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/02109975e0dc4dfd61780202043275c1/transformed/jetified-lifecycle-service-2.1.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-service/2.1.0/8fea0db3aaed284d86f63be3977c01b156585cb2/lifecycle-service-2.1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-service/2.1.0/8fea0db3aaed284d86f63be3977c01b156585cb2/lifecycle-service-2.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

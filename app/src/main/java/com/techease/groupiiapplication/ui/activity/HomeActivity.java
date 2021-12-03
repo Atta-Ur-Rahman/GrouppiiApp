@@ -124,6 +124,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
+
 //        TransformationCompat.onTransformationStartContainer(this);
 
         fm.beginTransaction().add(R.id.container, fragmentChatActivity, "4").hide(fragmentChatActivity).commit();

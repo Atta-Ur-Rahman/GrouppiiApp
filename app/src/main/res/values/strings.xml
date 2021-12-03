@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Grouppii</string>
     <string name="valid_name">Please write your name</string>
-    <string name="valid_email">Please write a valid email address</string>
+    <string name="valid_email">Please write a valid email or phone address</string>
     <string name="password_validation">Password should be six characters long</string>
     <string name="password_should_be_six">Your password must be 8–16 characters, and include at least one lowercase letter, one uppercase letter, and one number and one special character.</string>
     <string name="password_dont_match_validation">Password doesn\'t match</string>
@@ -9,7 +9,7 @@
     <string name="plesase_write_your_name">Please write your name</string>
     <string name="plesase_write_participant_name">Please write participant name</string>
 
-    <string name="plesase_write_your_phone_number">Please write valid phone number</string>
+    <string name="please_write_your_phone_number">Please write valid phone number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -63,6 +63,7 @@
     <string name="payments">Payments</string>
     <string name="photos">Photos</string>
     <string name="dosnotsharecost">Don\'t Share Costs</string>
+    <string name="not_registered_user">Not registered user</string>
 
 
 </resources>

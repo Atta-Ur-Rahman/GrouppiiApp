@@ -52,7 +52,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -392,7 +391,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (strPhoneNumber.length() > 0) {
             if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
                 valid = false;
-                etPhoneNumber.setError(getString(R.string.plesase_write_your_phone_number));
+                etPhoneNumber.setError(getString(R.string.please_write_your_phone_number));
 
             } else {
                 etPhoneNumber.setError(null);

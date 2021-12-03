@@ -61,7 +61,6 @@
         android:padding="@dimen/widget_margin"
         android:textColor="@color/purple_500"
         android:textColorHint="@color/gry_chat"
-        android:textCursorDrawable="@string/correct_number"
         app:cursorColor="@color/purple_500"
         app:cursorWidth="2dp"
         app:hideLineWhenFilled="false"

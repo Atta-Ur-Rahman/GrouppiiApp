@@ -44,11 +44,17 @@ public class NoShareCostsAdapter extends RecyclerView.Adapter<NoShareCostsAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        SharesNoCost recentTransaction= this.sharesNoCosts.get(position);
+        SharesNoCost sharesNoCost = this.sharesNoCosts.get(position);
 
         holder.circularSeekBar.setEnabled(false);
 
-        holder.tvTitileName.setText(recentTransaction.getName());
+        holder.tvTitileName.setText(sharesNoCost.getName());
+
+
+        if (sharesNoCost.getName() == null) {
+            holder.tvTitileName.setText("$" + sharesNoCost.getAmount() + "-Not Registered User");
+
+        }
         holder.tvDate.setText("Don't Share Cost");
 //        holder.circularSeekBar.setProgress(recentTransaction);
 
@@ -82,7 +88,6 @@ public class NoShareCostsAdapter extends RecyclerView.Adapter<NoShareCostsAdapte
             circularSeekBar = view.findViewById(R.id.csPayment);
 
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
-
 
 
         }

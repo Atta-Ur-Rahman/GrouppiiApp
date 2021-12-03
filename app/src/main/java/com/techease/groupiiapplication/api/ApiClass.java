@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
+import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.tripDelete.DeleteTripResponse;
 import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
@@ -17,6 +20,7 @@ import com.techease.groupiiapplication.ui.activity.HomeActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
+import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Constants;
 
 import retrofit2.Call;
@@ -118,6 +122,26 @@ public class ApiClass {
             public void onFailure(Call<GetSingleTripResponse> call, Throwable t) {
                 dialog.dismiss();
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    public static void GetTripUser(Context context, GetTripUserCallback getTripUserCallback) {
+
+
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().getUserTrip("trips/gettrip/" + AppRepository.mTripIDForUpdation(context));
+        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
+            @Override
+            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
+                getTripUserCallback.onGetTripUser(response);
+
+            }
+
+            @Override
+            public void onFailure(Call<AddTripResponse> call, Throwable t) {
+                getTripUserCallback.onGetTripUser(null);
 
             }
         });

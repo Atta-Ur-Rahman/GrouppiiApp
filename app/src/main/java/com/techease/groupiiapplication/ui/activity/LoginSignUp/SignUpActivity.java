@@ -148,7 +148,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void ApiCallForSignUp() {
         try {
-            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, strPhoneNumber,"android", "user", strLatitude, strLongitude);
+            Call<SignUpResponse> signUpResponseCall = BaseNetworking.ApiInterface().signUp(strName, strEmail, strPassword, strPhoneNumber.trim(),"android", "user", strLatitude, strLongitude);
             signUpResponseCall.enqueue(new Callback<SignUpResponse>() {
                 @Override
                 public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
@@ -203,7 +203,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         strEmail = etEmail.getText().toString();
         strPassword = etPassword.getText().toString();
         strAgainPassword = etAgainPassword.getText().toString();
-        strPhoneNumber = phonemojiTextInputEditText.getText().toString();
+        strPhoneNumber = phonemojiTextInputEditText.getText().toString().trim();
+        strPhoneNumber = strPhoneNumber.replace(" ", "");
+
         if (strName.isEmpty()) {
             valid = false;
             tilName.setErrorEnabled(true);

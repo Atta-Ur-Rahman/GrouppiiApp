@@ -15,8 +15,6 @@
         android:layout_marginTop="@dimen/widget_margin"
         android:layout_marginBottom="170dp"/>
 
-
-
     <TextView
         android:id="@+id/tvNoUnPublishTripFound"
         android:layout_width="match_parent"
@@ -24,7 +22,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:paddingLeft="20sp"
-        android:text="No suggestions trip found"
+        android:text="No R Rec trip found"
         android:layout_marginTop="@dimen/fifty_dp"
         android:textSize="@dimen/main_heading_text_size" />
 

@@ -59,7 +59,7 @@
             android:layout_marginTop="@dimen/widget_margin"
             android:layout_marginRight="@dimen/widget_margin_left_right"
             android:gravity="center"
-            android:text="Steps 4/4"
+            android:text="Step 4/4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.api.ApiCallback;
-import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.tripDetial.deleteTripUser.DeleteTripUserResponse;
@@ -31,8 +29,6 @@ import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +92,13 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
         etName.setText(strName);
         etEmail.setText(strEmail);
         etPhone.setText(strPhoneNumber);
+
+
+        if (strEmail.equals("null")){
+            etName.setText(R.string.not_registered_user);
+            etEmail.setText(R.string.not_registered_user);
+        }
+
         if (strSharedCost.equals("1")) {
             cbShareCost.setChecked(true);
         } else {
@@ -130,13 +133,13 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
 
-        if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-            tilEmail.setErrorEnabled(true);
-            tilEmail.setError(getString(R.string.valid_email));
-            valid = false;
-        } else {
-            tilEmail.setError(null);
-        }
+//        if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+//            tilEmail.setErrorEnabled(true);
+//            tilEmail.setError(getString(R.string.valid_email));
+//            valid = false;
+//        } else {
+//            tilEmail.setError(null);
+//        }
 
         if (!Connectivity.isConnected(this)) {
             valid = false;
@@ -145,7 +148,6 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
 
         return valid;
     }
-
 
     private void ApiCallForEditParticipants() {
         dialog.show();
@@ -173,7 +175,7 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
 
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    Toast.makeText(EditParticipantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(EditParticipantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
                     if (response.message().equals("OK")) {
                         etEmail.setText("");
                         etPhone.setText("");
@@ -181,20 +183,20 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                         cbShareCost.setChecked(false);
                         if (aBooleanIsTripDetailScreen) {
                             TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
-                            TripDetailScreenActivity.userParticipaintsList.clear();
-                            TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                            TripDetailScreenActivity.userList.clear();
+                            TripDetailScreenActivity.userList.addAll(response.body().getData());
                             TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
                             TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
                             TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
 
                             TripFragment.userList.clear();
-                            for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
+                            for (int i = 0; i < TripDetailScreenActivity.userList.size(); i++) {
                                 User user = new User();
-                                user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
-                                user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
-                                user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
-                                user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
-                                user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                                user.setName(TripDetailScreenActivity.userList.get(i).getName());
+                                user.setPicture(String.valueOf(TripDetailScreenActivity.userList.get(i).getPicture()));
+                                user.setTripid(TripDetailScreenActivity.userList.get(i).getTripid());
+                                user.setUserid(TripDetailScreenActivity.userList.get(i).getUserid());
+                                user.setSharedCost(TripDetailScreenActivity.userList.get(i).getSharedCost());
                                 TripFragment.userList.add(user);
 
                             }
@@ -291,17 +293,17 @@ public class EditParticipantActivity extends AppCompatActivity implements View.O
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     if (aBooleanIsTripDetailScreen) {
-                        TripDetailScreenActivity.userParticipaintsList.clear();
-                        TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                        TripDetailScreenActivity.userList.clear();
+                        TripDetailScreenActivity.userList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
                         TripFragment.userList.clear();
-                        for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
+                        for (int i = 0; i < TripDetailScreenActivity.userList.size(); i++) {
                             User user = new User();
-                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
-                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
-                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
-                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
-                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                            user.setName(TripDetailScreenActivity.userList.get(i).getName());
+                            user.setPicture(String.valueOf(TripDetailScreenActivity.userList.get(i).getPicture()));
+                            user.setTripid(TripDetailScreenActivity.userList.get(i).getTripid());
+                            user.setUserid(TripDetailScreenActivity.userList.get(i).getUserid());
+                            user.setSharedCost(TripDetailScreenActivity.userList.get(i).getSharedCost());
                             TripFragment.userList.add(user);
 
                         }

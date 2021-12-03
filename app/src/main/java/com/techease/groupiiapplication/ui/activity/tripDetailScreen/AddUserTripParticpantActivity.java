@@ -3,7 +3,6 @@ package com.techease.groupiiapplication.ui.activity.tripDetailScreen;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +13,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,11 +31,6 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.skydoves.balloon.ArrowOrientation;
-import com.skydoves.balloon.ArrowPositionRules;
-import com.skydoves.balloon.Balloon;
-import com.skydoves.balloon.BalloonAnimation;
-import com.skydoves.balloon.BalloonSizeSpec;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.MyContactsAdapter;
 import com.techease.groupiiapplication.adapter.gallery.RecyclerViewClickListener;
@@ -66,7 +61,7 @@ import retrofit2.Response;
 public class AddUserTripParticpantActivity extends AppCompatActivity implements View.OnClickListener, MyContactsAdapter.ContactsAdapterListener {
 
 
-    String strName, strEmail, strPhoneNumber, strShareCost = "0";
+    String strName = "", strEmail = "", strPhoneNumber, strShareCost = "0";
 
     @BindView(R.id.tilName)
     TextInputLayout tilName;
@@ -122,6 +117,8 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         ContactGetAndCheckPermission();
 
 
+        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         etPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -138,9 +135,9 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                 String text = editable.toString();
                 Log.d("zma text", text);
                 contactsAdapter.getFilter().filter(text);
-                if (tilEmail.getVisibility() == View.VISIBLE) {
-                    ContactLayoutVisible();
-                }
+//                if (tilEmail.getVisibility() == View.VISIBLE) {
+//                    ContactLayoutVisible();
+//                }
             }
         });
         cbShareCost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -159,30 +156,29 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
-        strName = etName.getText().toString();
-        strEmail = etEmail.getText().toString();
+//        strName = etName.getText().toString();
+//        strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
+        strPhoneNumber=strPhoneNumber.replace(" ","");
 
 
-        ///jogar jogar
+        if (strPhoneNumber.equals(AppRepository.mPhoneNumber(this))) {
+            valid = false;
+            tilPhone.setErrorEnabled(true);
+            tilPhone.setError(getString(R.string.please_write_your_phone_number) + " not admin phone");
+        }else
 
-
-        if (strPhoneNumber.length() < 1) {
-            if (strEmail.length() < 1) {
-                valid = false;
-            }
-        }
-        if (strEmail.length() < 1) {
-            if (strPhoneNumber.length() < 1) {
-                valid = false;
-            }
-        }
+//        if (strPhoneNumber.length() < 1) {
+//            if (strEmail.length() < 1) {
+//                valid = false;
+//            }
+//        }
 
         if (strPhoneNumber.length() > 0) {
             if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
                 valid = false;
                 tilPhone.setErrorEnabled(true);
-                tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
+                tilPhone.setError(getString(R.string.please_write_your_phone_number));
 
             } else {
                 tilPhone.setError(null);
@@ -190,27 +186,28 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             }
         }
 
-        if (strEmail.length() > 0) {
-            if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-                tilEmail.setErrorEnabled(true);
-                tilEmail.setError(getString(R.string.valid_email));
-                valid = false;
-            } else {
-                tilEmail.setError(null);
-            }
-        }
+//        if (strEmail.length() < 1) {
+//            if (strPhoneNumber.length() < 1) {
+//                valid = false;
+//            }
+//        }
+//
+//        if (strEmail.length() > 0) {
+//            if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+//                tilEmail.setErrorEnabled(true);
+//                tilEmail.setError(getString(R.string.valid_email));
+//                valid = false;
+//            } else {
+//                tilEmail.setError(null);
+//            }
+//        }
 
         if (!Connectivity.isConnected(this)) {
             valid = false;
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         }
 
-        if (strEmail.equals(AppRepository.mEmail(this))) {
 
-            valid = false;
-            tilEmail.setErrorEnabled(true);
-            tilEmail.setError(getString(R.string.valid_email) + " not admin email");
-        }
         return valid;
     }
 
@@ -229,15 +226,15 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
                 if (isValid()) {
 
                     boolean emailExist = true;
-                    for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
-                        if (strEmail.equals(TripDetailScreenActivity.userParticipaintsList.get(i).getEmail())) {
+                    for (int i = 0; i < TripDetailScreenActivity.userList.size(); i++) {
+                        if (strEmail.equals(TripDetailScreenActivity.userList.get(i).getEmail())) {
                             Toast.makeText(this, "email exist", Toast.LENGTH_SHORT).show();
                             emailExist = false;
                         }
                     }
 
-                    for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
-                        if (strPhoneNumber.equals(TripDetailScreenActivity.userParticipaintsList.get(i).getPhone())) {
+                    for (int i = 0; i < TripDetailScreenActivity.userList.size(); i++) {
+                        if (strPhoneNumber.equals(TripDetailScreenActivity.userList.get(i).getPhone())) {
                             Toast.makeText(this, "phone number exist", Toast.LENGTH_SHORT).show();
                             emailExist = false;
                         }
@@ -261,7 +258,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 
     private void ApiCallForAddInviteFriend() {
         dialog.show();
-        TripDetailScreenActivity.userParticipaintsList.clear();
+        TripDetailScreenActivity.userList.clear();
         TripDetailScreenActivity.userParticipaintsCircleList.clear();
         TripDetailScreenActivity.paymentUserParticipaintsList.clear();
 
@@ -276,38 +273,40 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
             e.printStackTrace();
         }
 
+        ApiCAllForAddInviteFriendWithGmailAndPhone();
 
-        if (strPhoneNumber.length() > 1) {
-            if (strEmail.length() > 1) {
-                ApiCAllForAddInviteFriendWithGmailAndPhone();
 
-//                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
-            }
-        }
-        if (strEmail.length() < 1) {
-            if (strPhoneNumber.length() < 1) {
-                ApiCAllForAddInviteFriendWithGmailAndPhone();
-//                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
-
-            }
-        }
-        if (strPhoneNumber.length() > 1 && strEmail.length() < 1) {
-            ApiCAllForAddInviteFriendWithPhone();
-//            Toast.makeText(this, "phone", Toast.LENGTH_SHORT).show();
-
-        }
-        if (strEmail.length() > 1 && strPhoneNumber.length() < 1) {
-            ApiCAllForAddInviteFriendWithGmail();
-//            Toast.makeText(this, "gmail", Toast.LENGTH_SHORT).show();
-
-        }
+//
+//        if (strPhoneNumber.length() > 1) {
+//            if (strEmail.length() > 1) {
+//                ApiCAllForAddInviteFriendWithGmailAndPhone();
+//
+////                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        if (strEmail.length() < 1) {
+//            if (strPhoneNumber.length() < 1) {
+//                ApiCAllForAddInviteFriendWithGmailAndPhone();
+////                Toast.makeText(this, "both", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
+//        if (strPhoneNumber.length() > 1 && strEmail.length() < 1) {
+//            ApiCAllForAddInviteFriendWithPhone();
+////            Toast.makeText(this, "phone", Toast.LENGTH_SHORT).show();
+//
+//        }
+//        if (strEmail.length() > 1 && strPhoneNumber.length() < 1) {
+//            ApiCAllForAddInviteFriendWithGmail();
+////            Toast.makeText(this, "gmail", Toast.LENGTH_SHORT).show();
+//
+//        }
 
 
     }
 
     private void ApiCAllForAddInviteFriendWithGmailAndPhone() {
-
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber, strShareCost,
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber.trim(), strShareCost,
                 AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
@@ -329,19 +328,19 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 
                         TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
                         TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
-                        TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
+                        TripDetailScreenActivity.userList.addAll(response.body().getData());
                         TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
                         TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
 
 
                         TripFragment.userList.clear();
-                        for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
+                        for (int i = 0; i < TripDetailScreenActivity.userList.size(); i++) {
                             User user = new User();
-                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
-                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
-                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
-                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
-                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
+                            user.setName(TripDetailScreenActivity.userList.get(i).getName());
+                            user.setPicture(String.valueOf(TripDetailScreenActivity.userList.get(i).getPicture()));
+                            user.setTripid(TripDetailScreenActivity.userList.get(i).getTripid());
+                            user.setUserid(TripDetailScreenActivity.userList.get(i).getUserid());
+                            user.setSharedCost(TripDetailScreenActivity.userList.get(i).getSharedCost());
                             TripFragment.userList.add(user);
                         }
                         finish();
@@ -366,129 +365,6 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         });
     }
 
-
-    private void ApiCAllForAddInviteFriendWithGmail() {
-
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmail(strName, strEmail, strShareCost,
-                AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
-        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
-            @Override
-            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
-                if (response.isSuccessful()) {
-                    dialog.dismiss();
-                    Log.d("zmaAddUser response", String.valueOf(response.message() + " " + response.code()));
-                    Toast.makeText(AddUserTripParticpantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
-                    if (response.message().equals("OK")) {
-                        try {
-                            AllUsersChatFragment.aBooleanRefreshSocket = false;
-                            ConnectChatResfresh.setMyBoolean(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            AllUsersChatFragment.aBooleanRefreshSocket = true;
-//                            Log.d("zmaerror", e.getMessage());
-                        }
-
-
-                        TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
-                        TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
-                        TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
-                        TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
-                        TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
-
-
-                        TripFragment.userList.clear();
-                        for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
-                            User user = new User();
-                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
-                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
-                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
-                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
-                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
-                            TripFragment.userList.add(user);
-
-                        }
-                        finish();
-
-                    }
-
-                } else {
-                    Log.d("zmaAddUser eresponse", String.valueOf(response.message() + " " + response.code()));
-
-                    dialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddTripResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("zmaaddparticipantgmail", t.getMessage());
-                Toast.makeText(AddUserTripParticpantActivity.this, "phone number already exist", Toast.LENGTH_SHORT).show();
-
-//                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-    private void ApiCAllForAddInviteFriendWithPhone() {
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost,
-                AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
-        addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
-            @Override
-            public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
-                if (response.isSuccessful()) {
-                    dialog.dismiss();
-                    Log.d("zmaAddUser response", String.valueOf(response.message() + " " + response.code()));
-                    Toast.makeText(AddUserTripParticpantActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
-                    if (response.message().equals("OK")) {
-                        try {
-                            AllUsersChatFragment.aBooleanRefreshSocket = false;
-                            ConnectChatResfresh.setMyBoolean(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            AllUsersChatFragment.aBooleanRefreshSocket = true;
-//                            Log.d("zmaerror", e.getMessage());
-                        }
-
-
-                        TripDetailScreenActivity.aBooleanResfreshGetUserTrip = true;
-                        TripDetailScreenActivity.userParticipaintsCircleList.addAll(response.body().getData());
-                        TripDetailScreenActivity.userParticipaintsList.addAll(response.body().getData());
-                        TripDetailScreenActivity.paymentUserParticipaintsList.addAll(response.body().getData());
-                        TripDetailScreenActivity.tripParticipantsAdapter.notifyDataSetChanged();
-
-
-                        TripFragment.userList.clear();
-                        for (int i = 0; i < TripDetailScreenActivity.userParticipaintsList.size(); i++) {
-                            User user = new User();
-                            user.setName(TripDetailScreenActivity.userParticipaintsList.get(i).getName());
-                            user.setPicture(String.valueOf(TripDetailScreenActivity.userParticipaintsList.get(i).getPicture()));
-                            user.setTripid(TripDetailScreenActivity.userParticipaintsList.get(i).getTripid());
-                            user.setUserid(TripDetailScreenActivity.userParticipaintsList.get(i).getUserid());
-                            user.setSharedCost(TripDetailScreenActivity.userParticipaintsList.get(i).getSharedCost());
-                            TripFragment.userList.add(user);
-
-                        }
-                        finish();
-
-                    }
-
-                } else {
-                    Log.d("zmaAddUser eresponse", String.valueOf(response.message() + " " + response.code()));
-
-                    dialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddTripResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("zmaaddparticipantphone", t.getMessage());
-                Toast.makeText(AddUserTripParticpantActivity.this, "please add participant email", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void initContactAdapter() {
 
         contactDataModelList.clear();
@@ -496,7 +372,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         rvMyContact.setHasFixedSize(true);
         listener = (view, position) -> {
             etPhone.setText(contactDataModelList.get(position).getNumContact());
-            ContactLayoutGone();
+//            ContactLayoutGone();
 
 
         };
@@ -573,7 +449,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     public void onContactSelected(ContactDataModel contact) {
         etPhone.setText(contact.getNumContact());
         etPhone.setSelection(etPhone.getText().length());
-        ContactLayoutGone();
+//        ContactLayoutGone();
 
     }
 }

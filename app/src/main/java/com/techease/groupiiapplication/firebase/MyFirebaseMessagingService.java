@@ -81,6 +81,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         JSONObject jsonObject = new JSONObject(remoteMessage.getData());
         Log.d("zmanotificationdata", "  " + remoteMessage.getData());
 
+
         String strTitle = null;
 
 //        try {
@@ -138,8 +139,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent intent = null;
                 if (AppRepository.isLoggedIn(this)) {
 
-                    try {
 
+                    try {
 
                         if (jsonObject.get("messageType").equals("chat")) {
 
@@ -147,7 +148,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             bundle.putString("title_name", jsonObject.getString("name"));
                             bundle.putString("toUserId", jsonObject.getString("fromuser"));
                             bundle.putString("type", "user");
-                            bundle.putString("picture", jsonObject.getString("picture"));
+//                            bundle.putString("picture", jsonObject.getString("picture"));
                             chatActivityIntent.putExtras(bundle);
 
 
@@ -163,12 +164,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             bundle.putString("picture", jsonObject.getString("picture"));
                             chatActivityIntent.putExtras(bundle);
 
-
                         }
 
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.d("zmachatNotifiError", e.getMessage());
                     }
                 } else {
                     intent = new Intent(this, LoginActivity.class);
@@ -329,5 +330,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         });
 
-}
+    }
 }

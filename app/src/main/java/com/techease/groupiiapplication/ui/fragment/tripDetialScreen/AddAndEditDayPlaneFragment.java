@@ -100,7 +100,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
         if (AppRepository.mEditDayPlanActivity(getActivity())) {
             AppRepository.mPutValue(getActivity()).putBoolean("mEditDayPlanActivity", false).commit();
             tvAddActivityTitle.setText("Edit Activity");
-            tvAddActivity.setText("Edit");
+            tvAddActivity.setText("Save");
 
         }
 

@@ -79,8 +79,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
-        if (!chatAllUserDataModel.getCreatedAt().equals("null")) {
 
+        if (!chatAllUserDataModel.getCreatedAt().equals("null")) {
 
 //            holder.tvChatTime.setText(chatAllUserDataModel.getCreatedAt());
 

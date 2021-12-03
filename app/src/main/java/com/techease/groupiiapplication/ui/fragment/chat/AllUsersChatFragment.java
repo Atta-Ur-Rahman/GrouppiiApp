@@ -39,6 +39,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -231,70 +232,70 @@ public class AllUsersChatFragment extends Fragment implements View.OnClickListen
         public void call(Object... args) {
             if (mSocket.connected()) {
 //                progress.setVisibility(View.GONE);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("zmajsaonarray", "event call");
-                        allUserChatAdapter.clearApplications();
-                        try {
-                            mSocket.disconnect();
-                            String data = args[0].toString();
-                            JSONArray jsonArray = new JSONArray(data);
-                            Log.d("zmaAllChatAllUser", jsonArray.toString());
+                requireActivity().runOnUiThread(() -> {
+                    Log.d("zmajsaonarray", "event call");
+                    allUserChatAdapter.clearApplications();
+                    try {
+                        mSocket.disconnect();
+                        String data = args[0].toString();
+                        JSONArray jsonArray = new JSONArray(data);
+                        Log.d("zmaAllChatAllUser", jsonArray.toString());
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.getJSONObject(i);
-                                strGroupType = c.getString("group_type");
-                                strTripID = c.getString("tripid");
-                                strToUserId = c.getString("touser");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.getJSONObject(i);
+                            strGroupType = c.getString("group_type");
+                            strTripID = c.getString("tripid");
+                            strToUserId = c.getString("touser");
 
-                                if (strGroupType.equals("group")) {
-                                    strUserID = "";
-                                    strDateAndTime = "null";
-                                    strTitleName = c.getString("group_title");
-                                    JSONArray jsonGroupUsers = c.getJSONArray("group_users");
-                                    for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
-                                        JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
-                                        strGroupChatPicture = groupUser.getString("picture");
-                                    }
-                                } else {
-                                    strTitleName = c.getString("name");
-                                    strGroupChatPicture = c.getString("picture");
-                                    strUserID = c.getString("userid");
-                                    strDateAndTime = c.getString("created_at");
-                                    JSONObject jsonLatestMessage = c.getJSONObject("latest_message");
-                                    try {
-                                        strCurrentUserChatID = jsonLatestMessage.getString("id");
-                                        Log.d("zmachatuserid", strCurrentUserChatID);
+                            if (strGroupType.equals("group")) {
+                                strUserID = "";
+                                strDateAndTime = "null";
+                                strTitleName = c.getString("group_title");
+                                JSONArray jsonGroupUsers = c.getJSONArray("group_users");
+                                for (int ii = 0; ii < jsonGroupUsers.length(); ii++) {
+                                    JSONObject groupUser = jsonGroupUsers.getJSONObject(ii);
+                                    strGroupChatPicture = groupUser.getString("picture");
+                                }
+                            } else {
+                                strTitleName = c.getString("name");
+                                strGroupChatPicture = c.getString("picture");
+                                strUserID = c.getString("userid");
+                                strDateAndTime = c.getString("created_at");
+                                JSONObject jsonLatestMessage = c.getJSONObject("latest_message");
+                                try {
+                                    strCurrentUserChatID = jsonLatestMessage.getString("id");
+                                    Log.d("zmachatuserid", strCurrentUserChatID);
 
 
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 //                                        strCurrentUserChatID = jsonLatestMessage.getString("message");
 //                                        strCurrentUserChatID = String.valueOf(jsonLatestMessage.getInt("id"));
-                                    Log.d("zmachatuserid", jsonLatestMessage.toString());
+                                Log.d("zmachatuserid", jsonLatestMessage.toString());
 
-                                }
+                            }
 
-                                //check condition if user id and user
-                                if (!strTitleName.equals("") && !strTitleName.equals("unpublished")) {
-                                    if (strGroupType.equals("group")) {
-                                        if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
-                                            addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture, "");
-                                        }
-                                    } else {
-                                        if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                            //check condition if user id and user
+                            if (!strTitleName.equals("") && !strTitleName.equals("unpublished")) {
+                                if (strGroupType.equals("group")) {
+                                    if (strToUserId.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                        addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture, "");
+                                    }
+                                } else {
+                                    if (strUserID.equals(String.valueOf(AppRepository.mUserID(getActivity())))) {
+                                        Log.d("zmatitle", strTitleName);
+                                        if (!strTitleName.equals("null")) {
                                             addUserToList(strTitleName, "1223", "text", strGroupType, strTripID, strToUserId, strDateAndTime, "modfa", strGroupChatPicture, strUserID);
                                         }
                                     }
                                 }
                             }
-
-                        } catch (
-                                JSONException e) {
-                            e.printStackTrace();
                         }
+
+                    } catch (
+                            JSONException e) {
+                        e.printStackTrace();
                     }
                 });
             }

@@ -46,17 +46,22 @@ public class FullyPaidAdapter extends RecyclerView.Adapter<FullyPaidAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        FullPaid recentTransaction = this.recentTransaction.get(position);
+        FullPaid fullPaid = this.recentTransaction.get(position);
 
         holder.circularSeekBar.setEnabled(false);
+        holder.tvTitileName.setText("$" + fullPaid.getAmount() + "-" + fullPaid.getName());
+        
+        if (fullPaid.getName()==null){
+            holder.tvTitileName.setText("$" + fullPaid.getAmount() + "-Not Registered User");
 
-        holder.tvTitileName.setText("$" + recentTransaction.getAmount() + "-" + recentTransaction.getName());
+        }
+
         holder.tvDate.setText("Fully Paid");
         holder.circularSeekBar.setProgress(100);
         holder.tvPersentage.setText("100%");
 
-        if (recentTransaction.getAmount() == null) {
-            holder.tvTitileName.setText("$0" + "-" + recentTransaction.getName());
+        if (fullPaid.getAmount() == null) {
+            holder.tvTitileName.setText("$0" + "-" + fullPaid.getName());
             holder.circularSeekBar.setProgress(0);
             holder.tvPersentage.setText("0%");
         }

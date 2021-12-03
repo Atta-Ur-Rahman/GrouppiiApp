@@ -1,14 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-location:18.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d77dd8993b2c6ed3fd6a27026aea335b/transformed/jetified-play-services-location-18.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fd13f3ac9afed392d4c6c48de65b065c/transformed/jetified-play-services-location-18.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ae0ad00d97dc8cbb91a176ab6366142f/transformed/jetified-play-services-location-18.0.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-location/18.0.0/21c0fe95fc8d679c87e65c85129c1191a8ca8625/play-services-location-18.0.0-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-location/18.0.0/21c0fe95fc8d679c87e65c85129c1191a8ca8625/play-services-location-18.0.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

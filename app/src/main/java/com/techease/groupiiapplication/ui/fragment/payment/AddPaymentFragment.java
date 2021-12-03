@@ -294,7 +294,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     }
 
     private void ApiCallForAddPayment() {
-
         if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
             //zero for paid
             strPaid = "0";
@@ -305,12 +304,9 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         }
 
 //        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
-
-
         if (AppRepository.addPaymentOnStepFour(getActivity())) {
             strPaid = "1";
         }
-
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
@@ -372,7 +368,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
 
     private void ApiCallForEditPayment() {
-
         dialog.show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().editPayment(strEditID, AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
@@ -507,7 +502,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-
 
                     for (RecentTransaction recentTransaction : response.body().getData().getRecentTransaction()) {
 

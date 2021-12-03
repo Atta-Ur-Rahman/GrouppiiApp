@@ -185,6 +185,7 @@
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
                     android:clickable="false"
+                    android:maxLength="20"
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:inputType="phone" />

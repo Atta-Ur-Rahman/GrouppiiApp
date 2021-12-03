@@ -165,13 +165,10 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
         this.markers = markers;
         this.markerOptions = markerOptions;
         this.anIntPosition = anIntPosition;
-
-
     }
 
     @Override
     protected Bitmap doInBackground(String... url) {
-
 
         String stringUrl = url[0];
         bitmap = null;

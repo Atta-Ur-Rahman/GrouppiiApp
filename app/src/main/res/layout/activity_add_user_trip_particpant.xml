@@ -137,6 +137,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="#D7F7F7"
+                    android:maxLength="20"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 

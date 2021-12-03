@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.techease.groupiiapplication.R;
-import com.techease.groupiiapplication.api.ApiCallback;
-import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
-import com.techease.groupiiapplication.dataModel.tripDetial.getUserTrip.GetUserTripData;
 import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
 
 import java.util.List;
@@ -43,8 +42,6 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         this.context = context;
         this.isCreatedBy = IsCreateBy;
         this.tvNotFound = tvNotFount;
-
-
     }
 
     @Override
@@ -61,42 +58,38 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         AddTripDataModel user = userList.get(position);
 
         holder.tvTitle.setText(String.valueOf(user.getName()));
-        holder.tvEmail.setText(String.valueOf(user.getPhone()));
+        holder.tvParticipaintPhoneNumber.setText(formatNumber(String.valueOf(user.getPhone())));
         Glide.with(context).load(user.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
 
-
-        if (String.valueOf(user.getName()).equals("null")){
-            holder.tvTitle.setText("No Name");
+        if (String.valueOf(user.getName()).equals("null")) {
+            holder.tvTitle.setText(R.string.not_registered_user);
         }
-        Log.d("zmasharecost", user.getSharedCost() + "");
+
 
         if (String.valueOf(user.getSharedCost()).equals("1")) {
             holder.cbShareTripCost.setChecked(true);
         } else {
             holder.cbShareTripCost.setChecked(false);
-
         }
 
-        holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isCreatedBy) {
-                    Intent intent = new Intent(context, EditParticipantActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", user.getName());
-                    bundle.putString("email", user.getEmail() + "");
-                    bundle.putString("phone", user.getPhone() + "");
-                    bundle.putString("userId", String.valueOf(user.getUserid()));
-                    bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
-                    bundle.putString("trip_id", String.valueOf(user.getTripid()));
-                    bundle.putBoolean("aBooleanIsTripDetailScreen", true);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
-                } else {
-                    Toast.makeText(context, "Only admin can manage participant", Toast.LENGTH_SHORT).show();
-                }
 
+            holder.ivParticipantEdit.setOnClickListener(v -> {
+            if (isCreatedBy) {
+                Intent intent = new Intent(context, EditParticipantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", user.getName());
+                bundle.putString("email", user.getEmail() + "");
+                bundle.putString("phone", user.getPhone() + "");
+                bundle.putString("userId", String.valueOf(user.getUserid()));
+                bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
+                bundle.putString("trip_id", String.valueOf(user.getTripid()));
+                bundle.putBoolean("aBooleanIsTripDetailScreen", true);
+                intent.putExtras(bundle);
+                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+            } else {
+                Toast.makeText(context, "Only admin can manage participant", Toast.LENGTH_SHORT).show();
             }
+
         });
 
 
@@ -116,20 +109,37 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvEmail;
-        ImageView ivAddTripTick, ivUser, ivParticipantEdit;
+        TextView tvTitle, tvParticipaintPhoneNumber;
+        ImageView  ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
 
         MyViewHolder(View view) {
             super(view);
             tvTitle = view.findViewById(R.id.tvTitleName);
-            tvEmail = view.findViewById(R.id.tvEmail);
+            tvParticipaintPhoneNumber = view.findViewById(R.id.tvParticipaintPhoneNumber);
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
             ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);
 
 
         }
+    }
+
+
+    private String formatNumber(String unformattedNumber){
+        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        String countryCode = "us";//tm.getSimCountryIso();
+
+        String formattedNumber;
+        if(Build.VERSION.SDK_INT >= 21) {
+            formattedNumber = PhoneNumberUtils.formatNumberToE164(unformattedNumber, countryCode);
+        } else {
+            formattedNumber = PhoneNumberUtils.formatNumber(unformattedNumber);
+        }
+        if(formattedNumber == null){
+            formattedNumber = unformattedNumber.replaceAll("[-,+]","");
+        }
+        return formattedNumber;
     }
 
 

@@ -182,6 +182,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
         Bundle bundle = getIntent().getExtras();
+
         tvUserName.setText(bundle.getString("title_name"));
 
         strTripId = bundle.getString("tripId");

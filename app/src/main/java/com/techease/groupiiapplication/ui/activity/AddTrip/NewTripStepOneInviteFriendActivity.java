@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -51,7 +52,6 @@ import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.Constants;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
-import com.techease.groupiiapplication.utils.PhoneNumberValidator;
 import com.techease.groupiiapplication.utils.ProgressBarAnimation;
 
 import java.util.ArrayList;
@@ -251,8 +251,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 //                        clAddInvite.setVisibility(View.VISIBLE);
 //                        clInviteFriend.setVisibility(View.GONE);
 //                    } else {
-                        onBackPressed();
-                        apiCallForTripDelete();
+                    onBackPressed();
+                    apiCallForTripDelete();
 //                    }
                 } else {
                     ContactLayoutGone();
@@ -261,6 +261,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                 break;
 
             case R.id.tvSendInviteFriend:
+
 
                 if (isValid()) {
 
@@ -329,11 +330,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         }
     }
 
-
     private void ApiCallForAddInviteFriendWithPhone() {
         dialog.show();
         addTripDataModels.clear();
-        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber, strShareCost, strTripID, AppRepository.mUserID(this));
+        Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber.trim(), strShareCost, strTripID, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
             public void onResponse(Call<AddTripResponse> call, Response<AddTripResponse> response) {
@@ -376,15 +376,27 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     }
 
 
-    @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
         strName = etName.getText().toString();
         strEmail = etEmail.getText().toString();
-        strPhoneNumber = etPhone.getText().toString();
+        strPhoneNumber = etPhone.getText().toString().trim();
+        strPhoneNumber = strPhoneNumber.replace(" ", "");
 
 
+        if (strPhoneNumber.equals(AppRepository.mPhoneNumber(this))) {
+            valid = false;
+            tilPhone.setErrorEnabled(true);
+            tilPhone.setError(getString(R.string.please_write_your_phone_number) + " not admin phone");
+        } else if (!android.util.Patterns.PHONE.matcher(strPhoneNumber).matches()) {
+            valid = false;
+            tilPhone.setErrorEnabled(true);
+            tilPhone.setError(getString(R.string.please_write_your_phone_number));
 
+        } else {
+            tilPhone.setError(null);
+            tilPhone.setErrorEnabled(false);
+        }
 
 
      /*   if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
@@ -407,39 +419,39 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             tilName.setErrorEnabled(false);
         }*/
 
-
-        if (strPhoneNumber.length() < 1) {
-            if (strEmail.length() < 1) {
-                valid = false;
-            }
-        }
-        if (strEmail.length() < 1) {
-            if (strPhoneNumber.length() < 1) {
-                valid = false;
-            }
-        }
-
-        if (strPhoneNumber.length() > 0) {
-            if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
-                valid = false;
-                tilPhone.setErrorEnabled(true);
-                tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
-
-            } else {
-                tilPhone.setError(null);
-                tilPhone.setErrorEnabled(false);
-            }
-        }
-
-        if (strEmail.length() > 0) {
-            if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-                tilEmail.setErrorEnabled(true);
-                tilEmail.setError(getString(R.string.valid_email));
-                valid = false;
-            } else {
-                tilEmail.setError(null);
-            }
-        }
+//
+//        if (strPhoneNumber.length() < 1) {
+//            if (strEmail.length() < 1) {
+//                valid = false;
+//            }
+//        }
+//        if (strEmail.length() < 1) {
+//            if (strPhoneNumber.length() < 1) {
+//                valid = false;
+//            }
+//        }
+//
+//        if (strPhoneNumber.length() > 0) {
+//            if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
+//                valid = false;
+//                tilPhone.setErrorEnabled(true);
+//                tilPhone.setError(getString(R.string.plesase_write_your_phone_number));
+//
+//            } else {
+//                tilPhone.setError(null);
+//                tilPhone.setErrorEnabled(false);
+//            }
+//        }
+//
+//        if (strEmail.length() > 0) {
+//            if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+//                tilEmail.setErrorEnabled(true);
+//                tilEmail.setError(getString(R.string.valid_email));
+//                valid = false;
+//            } else {
+//                tilEmail.setError(null);
+//            }
+//        }
         if (!Connectivity.isConnected(this)) {
             valid = false;
             Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
@@ -523,6 +535,9 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         rvInviteFriend.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvInviteFriend.setAdapter(addTripAdapter);
         rvInviteFriend.setNestedScrollingEnabled(true);
+
+//        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
 
     }
 
@@ -621,6 +636,8 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @Override
     public void onContactSelected(ContactDataModel contact) {
         etPhone.setText(contact.getNumContact());
+        etName.setText(contact.getNameContact());
+
         etPhone.setSelection(etPhone.getText().length());
 //        ContactLayoutGone();
 
