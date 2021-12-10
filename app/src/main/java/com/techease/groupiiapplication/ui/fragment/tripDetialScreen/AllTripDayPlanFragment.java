@@ -1,12 +1,15 @@
 package com.techease.groupiiapplication.ui.fragment.tripDetialScreen;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +19,10 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripDetail.AllTripDayAdapter;
 import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
 import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayResponse;
+import com.techease.groupiiapplication.horizontalCalender.HorizontalCalendar;
+import com.techease.groupiiapplication.horizontalCalender.utils.HorizontalCalendarListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
+import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
@@ -39,6 +45,8 @@ import retrofit2.Response;
 
 public class AllTripDayPlanFragment extends Fragment {
 
+    int pos = 0;
+
     @BindView(R.id.rvAllTripDay)
     RecyclerView rvAllTripDay;
 
@@ -49,7 +57,7 @@ public class AllTripDayPlanFragment extends Fragment {
     DatePickerTimeline datePickerTimeline;
 
     public static TextView tvTripNotFound;
-
+    Dialog dialog;
 
     private TextView dateTimeDisplay;
     private Calendar calendar;
@@ -71,11 +79,102 @@ public class AllTripDayPlanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_trip_day_plan, container, false);
         ButterKnife.bind(this, view);
+        dialog = AlertUtils.createProgressDialog(getActivity());
         tvTripNotFound = tvTripDayNotFound;
 //        dialog = AlertUtils.createProgressDialog(getActivity());
         ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
         initAdapter();
         CustomDatePicker();
+
+
+        Calendar startDate = Calendar.getInstance();
+
+
+        String strStartDate = AppRepository.mTripStartDate(getActivity());
+        String strEndDate = AppRepository.mTripEndDate(getActivity());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            int mYear = 0, mMonth = 0, mDay = 0;
+
+            Date dt = df.parse(strStartDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH) - 5;
+
+            startDate.set(Calendar.DAY_OF_MONTH, mDay);
+            startDate.set(Calendar.MONTH, mMonth);
+            startDate.set(Calendar.YEAR, mYear);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Calendar endDate = Calendar.getInstance();
+        try {
+            int mYear = 0, mMonth = 0, mDay = 0;
+            Date dt = df.parse(strEndDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH) + 5;
+
+            endDate.set(Calendar.DAY_OF_MONTH, mDay);
+            endDate.set(Calendar.MONTH, mMonth);
+            endDate.set(Calendar.YEAR, mYear);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+        /* end after 1 month from now */
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .configure()
+                .formatTopText("MMM")
+                .formatMiddleText("dd")
+                .formatBottomText("EEE")
+                .textSize(14f, 24f, 14f)
+                .showTopText(true)
+                .showBottomText(true)
+                .textColor(Color.LTGRAY, getResources().getColor(R.color.purple_500))
+                .end()
+                .build();
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar calendar, int position) {
+
+
+//                calendar.add(Calendar.DATE, -1);
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+                Date date = calendar.getTime();
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                String inActiveDate = null;
+                inActiveDate = format1.format(date);
+
+                Log.d("zmadatecalender", inActiveDate);
+
+                try {
+                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()), inActiveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+        });
+
 
         return view;
     }
@@ -99,36 +198,24 @@ public class AllTripDayPlanFragment extends Fragment {
             c.setTime(dt);
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH) - 3;
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-
-//        Log.d("zma date", year + " " + month + " " + day);
-//
-//
-//        String strDates = DateUtills.setDateAddDayTripFormate(AppRepository.mGetFromdate(getActivity()));
-//
-//        StringTokenizer tokens = new StringTokenizer(strDates, ",");
-////        String first = tokens.nextToken();// this will contain "Fruit"
-////        String second = tokens.nextToken();
-//
-//        String year = tokens.nextToken();
-//        String month = tokens.nextToken();
-//        String day = tokens.nextToken();
-//        Log.d("zma date", year + " " + month + " " + day);
-
         datePickerTimeline.setInitialDate(mYear, mMonth, mDay);
+
+
         // Set a date Selected Listener
         datePickerTimeline.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int dayOfWeek) {
                 // Do Something
-                strDate = year + "-" + month + "-" + day;
+                strDate = year + "-" + month + 1 + "-" + day;
+
                 try {
-                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()));
+                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()), "");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -136,9 +223,9 @@ public class AllTripDayPlanFragment extends Fragment {
 
             @Override
             public void onDisabledDateSelected(int year, int month, int day, int dayOfWeek, boolean isDisabled) {
-                strDate = year + "-" + month + "-" + day;
+//                strDate = year + "-" + month + "-" + day;
                 try {
-                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()));
+                    ApiCallAllTirpGetByDate(AppRepository.mTripIDForUpdation(getActivity()), "");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -147,6 +234,7 @@ public class AllTripDayPlanFragment extends Fragment {
     }
 
     public static void ApiCallAllTirp(String tripId) {
+        Log.d("zmadate", tripId + "");
 
         addTripDataModels.clear();
         Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getAllTripDayResponse("tripdays/getall/" + tripId);
@@ -179,9 +267,11 @@ public class AllTripDayPlanFragment extends Fragment {
     }
 
 
-    public void ApiCallAllTirpGetByDate(String userId) throws ParseException {
+    public void ApiCallAllTirpGetByDate(String userId, String strDate) throws ParseException {
 
-        Log.d("zmadate", strDate);
+        dialog.show();
+//        Log.d("zmadate", DateUtills.getDateActivityDayFormate(strDate));
+
 
         addTripDataModels.clear();
         Call<AllTripDayResponse> allTripDayResponseCall = BaseNetworking.ApiInterface().getTripByDate(strDate, userId);
@@ -189,7 +279,7 @@ public class AllTripDayPlanFragment extends Fragment {
             @Override
             public void onResponse(Call<AllTripDayResponse> call, Response<AllTripDayResponse> response) {
                 if (response.isSuccessful()) {
-//                    dialog.dismiss();
+                    dialog.dismiss();
                     addTripDataModels.addAll(response.body().getData());
                     Collections.reverse(addTripDataModels);
                     allTripDayAdapter.notifyDataSetChanged();
@@ -199,7 +289,7 @@ public class AllTripDayPlanFragment extends Fragment {
                         tvTripDayNotFound.setVisibility(View.GONE);
                     }
                 } else {
-//                    dialog.dismiss();
+                    dialog.dismiss();
                 }
 
                 Log.d("zma trip day", String.valueOf(response));
@@ -208,7 +298,7 @@ public class AllTripDayPlanFragment extends Fragment {
             @Override
             public void onFailure(Call<AllTripDayResponse> call, Throwable t) {
 
-//                dialog.dismiss();
+                dialog.dismiss();
                 Log.d("zma trip day error", String.valueOf(t));
 
             }

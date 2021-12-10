@@ -256,18 +256,12 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
 
                     dialog.dismiss();
-//                    Log.d("zma", String.valueOf(response.message()));
-
                     AllTripDayPlanFragment.ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
 
 
-                    //add activity bottom sheet
-//                    addActivityBottomSheetBehavior.setHideable(true);
-//                    addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    addActivityBackListener.onAddActivityBack();
 
-
-                    Toast.makeText(getActivity(), "successful", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(TripDetailScreenActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Activity added successfully", Toast.LENGTH_SHORT).show();
 
                     etActivityDate.setText("");
                     etActivityNote.setText("");

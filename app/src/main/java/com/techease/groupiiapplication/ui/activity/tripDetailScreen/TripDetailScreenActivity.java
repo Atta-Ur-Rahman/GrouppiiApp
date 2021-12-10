@@ -264,6 +264,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
 
         AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripStartDate)).commit();
+        AppRepository.mPutValue(this).putString("trip_end_date", DateUtills.changeDateTripStartDateFormate(strTripEndDate)).commit();
 
         userID = AppRepository.mUserID(this);
         tripID = AppRepository.mTripIDForUpdation(this);
@@ -472,10 +473,24 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 break;
             case R.id.ivAddActivity:
                 if (anIntViewPagerPosition == 0) {
+                    addActivityBottomSheetBehavior.setDraggable(false);
+                    bottomSheetBehavior.setDraggable(false);
                     addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance())
                             .commitNow();
+                } else if (anIntViewPagerPosition == 1) {
+                    if (aBooleanIsCreatedBy) {
+                        addPaymentBottomSheetBehavior.setDraggable(false);
+                        bottomSheetBehavior.setDraggable(false);
+//                        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                        getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.containerPayment, AddPaymentsTabsFragment.newInstance())
+//                                .commitNow();
+                    } else {
+                        Toast.makeText(this, "payment add only admin", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else if (anIntViewPagerPosition == 2) {
                     if (aBooleanIsCreatedBy) {
                         addPaymentBottomSheetBehavior.setDraggable(false);
@@ -732,10 +747,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 
-                if (position == 0 || position == 2 || position == 3) {
+                if (position == 0 || position == 1 || position == 2 || position == 3) {
                     ivAddActivity.setVisibility(View.VISIBLE);
                 } else {
-                    ivAddActivity.setVisibility(View.GONE);
+//                    ivAddActivity.setVisibility(View.GONE);
                 }
                 if (position == 0) {
                     changeTextColdrTab(R.color.purple_500, R.color.gry, R.color.gry, R.color.gry);
@@ -1163,6 +1178,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     @Override
     public void onAddActivityBack() {
         addActivityBottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setDraggable(true);
         addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 

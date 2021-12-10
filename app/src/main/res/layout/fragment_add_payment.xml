@@ -69,7 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginRight="@dimen/widget_margin_left_right"
             android:gravity="center_vertical"
-            android:text="Add"
+            android:text="Save"
             android:textColor="@color/purple_500"
             android:textSize="@dimen/main_heading_text_size"
             android:textStyle="bold"
@@ -103,7 +103,7 @@
             android:layout_marginTop="@dimen/widget_margin_left_right"
             android:layout_marginEnd="@dimen/widget_margin_left_right"
             android:checked="false"
-            android:text="Group "
+            android:text="@string/personal"
             android:theme="@style/SCBSwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rlAddActivity" />

@@ -77,7 +77,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     String strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
     TextInputLayout tillPaymentTitle, tillPaymentDate, tillPaymentAmount, tillShortDescription;
     EditText etPaymentTitle, etPaymentDate, etPaymentAmount, etShortDescription;
-    String strIsPersonal = "0", strActivityType, strPersonal = "1";
+    String strIsPersonal = "1", strActivityType, strPersonal = "1";
     ImageView ivAddPaymentBack, ivType;
     ImageView ivVisa, ivMasterCard, ivAmericanCard, ivJcb;
     TextView tvAddPayment;
@@ -143,22 +143,22 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         ivMasterCard = parentView.findViewById(R.id.ivMastercardFragment);
         ivJcb = parentView.findViewById(R.id.ivJcbFragment);
         ivAmericanCard = parentView.findViewById(R.id.ivAmericanExpressFragment);
-
-        strIsPersonal = "1";
         swAddGroupPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     strIsPersonal = "0";
+                    swAddGroupPayment.setText(getResources().getString(R.string.group));
                 } else {
                     strIsPersonal = "1";
+                    swAddGroupPayment.setText(getResources().getString(R.string.personal));
+
+
                 }
             }
         });
 
-
         GetUserTrip();
-
 
         if (AppRepository.addPaymentOnStepFour(getActivity())) {
             strPaid = "1";
@@ -300,7 +300,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         } else {
             //one for expenses
             strPaid = "1";
-            strIsPersonal = "0";
+            strIsPersonal = "1";
         }
 
 //        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
@@ -308,6 +308,9 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
             strPaid = "1";
         }
         dialog.show();
+
+
+        Toast.makeText(getActivity(), strIsPersonal+"", Toast.LENGTH_SHORT).show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
                 strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
@@ -317,22 +320,21 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                 Log.d("zma addpayment", String.valueOf(response));
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-                    etPaymentTitle.setText("");
-                    etPaymentDate.setText("");
-                    etPaymentAmount.setText("");
-                    etShortDescription.setText("");
+//                    etPaymentTitle.setText("");
+//                    etPaymentDate.setText("");
+//                    etPaymentAmount.setText("");
+//                    etShortDescription.setText("");
 
 
                     if (!AppRepository.addPaymentOnStepFour(getActivity())) {
-                        PaymentsFragment.aBooleanHideKeyboard = true;
                         callBackListener.onPaymentAdddCallBack();
                         ConnectParticipantCostsBackClick.setMyBoolean(true);
 
                         PaymentsFragment paymentsFragment = new PaymentsFragment();
                         paymentsFragment.getPaymentExpenses();
 
-                        KeyBoardUtils.hideKeyboard(requireActivity());
-                        KeyBoardUtils.closeKeyboard(getActivity());
+//                        KeyBoardUtils.hideKeyboard(requireActivity());
+//                        KeyBoardUtils.closeKeyboard(getActivity());
                     } else {
                         addPaymentOnSetpFourCallBackListener.onAddPaymentOnSetpFourBack();
                     }
@@ -381,8 +383,7 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                     etPaymentTitle.setText("");
                     etPaymentDate.setText("");
                     etPaymentAmount.setText("");
-                    etShortDescription.setText("");
-                    PaymentsFragment.aBooleanHideKeyboard = true;
+                    etShortDescription.setText(""); 
                     ConnectParticipantCostsBackClick.setMyBoolean(true);
 
                     KeyBoardUtils.hideKeyboard(requireActivity());

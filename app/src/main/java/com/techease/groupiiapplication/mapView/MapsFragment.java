@@ -94,12 +94,12 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
         dialog.show();
         userParticipaintsList.clear();
         this.googleMap = googleMap;
-
-        userParticipaintsList.addAll(TripDetailScreenActivity.paymentUserParticipaintsList);
+        userParticipaintsList.addAll(TripDetailScreenActivity.userParticipaintsCircleList);
         for (int i = 0; i < userParticipaintsList.size(); i++) {
 
 
-//            String strPicture=userParticipaintsList.get(i).getPicture();
+//            String strPicture = userParticipaintsList.get(i).getPicture();
+//            Log.d("zmapicture", strPicture);
 
             if (userParticipaintsList.get(i).getLatitude() != null) {
                 new GetImageFromUrl(dialog, getActivity(), userParticipaintsList, googleMap, markers, markerOptions, i).execute(userParticipaintsList.get(i).getPicture());
@@ -111,10 +111,10 @@ public class MapsFragment extends Fragment implements View.OnClickListener {
 
     public static Bitmap createCustomMarker(Context context, Bitmap image) {
 
-
-        if (image == null) {
-            Toast.makeText(newInstance().getActivity(), "null", Toast.LENGTH_SHORT).show();
-        }
+//
+//        if (image == null) {
+//            Toast.makeText(newInstance().getActivity(), "null", Toast.LENGTH_SHORT).show();
+//        }
 
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
         CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
@@ -191,15 +191,16 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
         dialog.dismiss();
 
         try {
-            Marker marker = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(anIntPosition).getLatitude().trim()),
+            Marker markerMap = googleMap.addMarker(markerOptions.position(new LatLng(Double.parseDouble(userParticipaintsList.get(anIntPosition).getLatitude().trim()),
                     Double.parseDouble(userParticipaintsList.get(anIntPosition).getLongitude().trim()))).
                     icon(BitmapDescriptorFactory.fromBitmap(MapsFragment.createCustomMarker(context, bitmap))));
-            marker.setTitle(userParticipaintsList.get(anIntPosition).getName());
-            markers.add(marker);
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13));
+            markerMap.setTitle(userParticipaintsList.get(anIntPosition).getName());
+            markers.add(markerMap);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerMap.getPosition(), 13));
             Log.d("zmaName", userParticipaintsList.get(anIntPosition).getName() + "  " + anIntPosition);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("zmamaperror", e.getMessage());
 
         }
 
@@ -216,6 +217,8 @@ class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
             googleMap.animateCamera(cu);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("zmamapbounderror", e.getMessage());
+
         }
 
 

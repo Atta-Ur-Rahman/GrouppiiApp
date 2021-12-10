@@ -133,7 +133,7 @@ public class TripFragment extends Fragment implements View.OnClickListener {
         adapter.addFragment(new ActiveFragment(), "Active");
         adapter.addFragment(new UpcomingFragment(), "Upcoming");
         adapter.addFragment(new PastFragment(), "Past");
-        adapter.addFragment(new UnPublishFragment(), "G Rec");
+//        adapter.addFragment(new UnPublishFragment(), "G Rec");
         viewPager.setAdapter(adapter);
 
     }

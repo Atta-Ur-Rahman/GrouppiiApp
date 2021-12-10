@@ -30,6 +30,7 @@ public class DateUtills {
 
 
     public static final String DATE_FORMAT_1 = "yyyy-mm-dd";
+    public static final String DATE_FORMAT_3 = "yyyy-m-dd";
     public static final String DATE_FORMAT_2 = "MM/dd/yyyy";
 
 
@@ -259,6 +260,22 @@ public class DateUtills {
     }
 
 
+    public static String getDateActivityDayFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT_3);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT_1);
+            Date date = null;
+            date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getEditDateFormate(String timestamp) {
 //        try {
@@ -468,8 +485,19 @@ public class DateUtills {
     }
 
 
-    public static String getNextMonthDate(String inputDate) throws ParseException {
+    public static String getFormatedDate(String inputDate) throws ParseException {
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = dateFormat.parse(inputDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String yesterdayAsString = dateFormat.format(calendar.getTime());
+
+        return yesterdayAsString;
+    }
+
+
+    public static String getNextMonthDate(String inputDate) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = dateFormat.parse(inputDate);
         Calendar calendar = Calendar.getInstance();

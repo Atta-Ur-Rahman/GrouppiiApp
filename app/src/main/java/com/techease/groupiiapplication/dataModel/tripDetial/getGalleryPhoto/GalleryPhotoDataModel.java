@@ -4,7 +4,8 @@ package com.techease.groupiiapplication.dataModel.tripDetial.getGalleryPhoto;
 import com.google.gson.annotations.SerializedName;
 
 public class GalleryPhotoDataModel {
-
+    @SerializedName("id")
+    private int id;
     @SerializedName("date")
     private String mDate;
     @SerializedName("file")
@@ -13,6 +14,10 @@ public class GalleryPhotoDataModel {
     private String mTime;
     @SerializedName("title")
     private String mTitle;
+
+    public int getId() {
+        return id;
+    }
 
     public String getDate() {
         return mDate;

@@ -68,7 +68,6 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     TextView tvBalance;
     @BindView(R.id.tvPaidNumber)
     TextView tvPaidNumber;
-
     @BindView(R.id.tvNoRecentTransactionsFound)
     TextView tvNoRecentTransactionsFound;
     @BindView(R.id.rvRecentTransaction)
@@ -99,12 +98,8 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     ClickRecentTransactionListener clickParticipantCostsListener;
 
 
-    public static boolean aBooleanHideKeyboard = false;
-
-
     public static PaymentsFragment newInstance() {
         PaymentsFragment fragment = new PaymentsFragment();
-
         return fragment;
     }
 
@@ -139,20 +134,9 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         rvRecentTransaction.setAdapter(recentTransctionAdapter);
 
 
-        ConnectParticipantCostsBackClick.addClickListener(new ParticipantCostsBackClickChangedListener() {
-            @Override
-            public void OnMyBooleanClickChanged() {
-                editPaymentCallBackListener.onEditPaymentCallBack();
-                getPaymentExpenses();
-//                InputMethodManager imm = (InputMethodManager) getActivity()
-//                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-//
-//                if (imm.isAcceptingText()) {
-//                    Toast.makeText(getActivity(), "Software Keyboard was shown", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(getActivity(), "Software Keyboard was not shown", Toast.LENGTH_SHORT).show();
-//                }
-            }
+        ConnectParticipantCostsBackClick.addClickListener(() -> {
+            editPaymentCallBackListener.onEditPaymentCallBack();
+            getPaymentExpenses();
         });
 
 
@@ -190,12 +174,6 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
                         tvNoRecentTransactionsFound.setTransitionVisibility(View.VISIBLE);
                     } else {
                         tvNoRecentTransactionsFound.setTransitionVisibility(View.GONE);
-                    }
-
-                    if (aBooleanHideKeyboard) {
-                        aBooleanHideKeyboard = false;
-//                        KeyBoardUtils.hideKeyboard(getActivity());
-//                        KeyBoardUtils.closeKeyboard(getActivity());
                     }
 
                     try {

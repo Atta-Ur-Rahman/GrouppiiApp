@@ -2,6 +2,7 @@
 package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
+import com.techease.groupiiapplication.dataModel.deleteGalleryImage.DeleteGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
 import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
 import com.techease.groupiiapplication.dataModel.notifications.GetNotificationsResponse;
@@ -37,6 +38,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 public interface ApiInterface {
@@ -315,5 +317,8 @@ public interface ApiInterface {
             @Field("cvc") String cvc,
             @Field("stripeid") String stripId);
 
+    @GET("trips/photo/{photo_ID}")
+    Call<DeleteGalleryPhotoResponse> deletePhotoFromGallery(
+            @Path("photo_ID") String photoId);
 
 }

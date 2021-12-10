@@ -71,6 +71,9 @@ public class AppRepository {
     public static String mTripStartDate(Context context) {
         return String.valueOf(mGetValue(context).getString("trip_start_date", null));
     }
+    public static String mTripEndDate(Context context) {
+        return String.valueOf(mGetValue(context).getString("trip_end_date", null));
+    }
 
     public static String mPhoneNumber(Context context) {
         return String.valueOf(mGetValue(context).getString("mPhoneNumber", null));

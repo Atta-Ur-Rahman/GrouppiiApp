@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.techease.groupiiapplication.R;
@@ -30,7 +31,6 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
     ViewPager viewpagerAddPaymentsTypes;
     public static int anIntViewPagerPosition = 0;
     private AddPaymentOnBackListener addPaymentOnBackListener;
-
 
     public static AddPaymentsTabsFragment newInstance() {
         AddPaymentsTabsFragment fragment = new AddPaymentsTabsFragment();
@@ -52,11 +52,30 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
             addPaymentOnBackListener = (AddPaymentOnBackListener) getActivity();
         setupViewPagerForTabsPaymentsTypes(viewpagerAddPaymentsTypes);
         tabsAddPaymentTypes.setupWithViewPager(viewpagerAddPaymentsTypes);
+        tabsAddPaymentTypes.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //do stuff here
+                anIntViewPagerPosition = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
     }
 
     private void setupViewPagerForTabsPaymentsTypes(ViewPager viewPager) {
+
+
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new AddPaymentFragment(), "Add Payments");
         adapter.addFragment(new AddPaymentFragment(), "Add Expenses");
@@ -70,6 +89,8 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
 
             @Override
             public void onPageSelected(int position) {
+                anIntViewPagerPosition = position;
+
             }
 
             @Override
@@ -77,6 +98,7 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
 
             }
         });
+
 
     }
 
@@ -86,14 +108,10 @@ public class AddPaymentsTabsFragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivBack:
+                anIntViewPagerPosition = 0;
                 addPaymentOnBackListener.onPaymentBack();
                 break;
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        anIntViewPagerPosition = viewpagerAddPaymentsTypes.getCurrentItem();
-    }
 }

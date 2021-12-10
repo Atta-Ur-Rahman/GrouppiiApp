@@ -64,6 +64,8 @@
     <string name="photos">Photos</string>
     <string name="dosnotsharecost">Don\'t Share Costs</string>
     <string name="not_registered_user">Not registered user</string>
+    <string name="personal">Personal</string>
+    <string name="group">Group</string>
 
 
 </resources>

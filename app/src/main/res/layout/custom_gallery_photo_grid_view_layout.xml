@@ -61,13 +61,23 @@
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/ivDeleteGalleryPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/widget_margin"
+            android:src="@drawable/ic_baseline_close_24" />
+
+
+        <ImageView
             android:id="@+id/ivShareGalleryPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_baseline_share_24"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/widget_margin"/>
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="@dimen/widget_margin"
+            android:src="@drawable/ic_baseline_share_24" />
 
     </RelativeLayout>
 
