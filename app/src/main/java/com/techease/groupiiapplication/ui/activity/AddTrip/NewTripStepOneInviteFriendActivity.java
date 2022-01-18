@@ -82,7 +82,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     RecyclerView rvInviteFriend;
 
     boolean valid;
-    String strName, strEmail, strPhoneNumber, strShareCost = "0";
+    String strName="nulll", strEmail, strPhoneNumber, strShareCost = "0";
 
     @BindView(R.id.tilName)
     TextInputLayout tilName;
@@ -138,6 +138,10 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
     @BindView(R.id.rvMyContact)
     RecyclerView rvMyContact;
     String strTripID;
+
+    public ArrayList<AddTripDataModel> userListRegister = new ArrayList<>();
+    public ArrayList<AddTripDataModel> userListNotRegister = new ArrayList<>();
+
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -239,6 +243,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         });
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.ivBack, R.id.ivAddUserTrip, R.id.clAddInvite, R.id.clInviteFriend, R.id.btnNext, R.id.tvSendInviteFriend, R.id.etPhone, R.id.ivDoneContact})
     @Override
@@ -330,9 +335,13 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         }
     }
 
+
     private void ApiCallForAddInviteFriendWithPhone() {
         dialog.show();
         addTripDataModels.clear();
+        if (strName.equals("null")) {
+            strName = strPhoneNumber;
+        }
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithPhone(strName, strPhoneNumber.trim(), strShareCost, strTripID, AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
             @Override
@@ -342,6 +351,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                     Log.d("zma response", String.valueOf(response.message()));
                     Toast.makeText(NewTripStepOneInviteFriendActivity.this, String.valueOf(response.body().getMessage()), Toast.LENGTH_SHORT).show();
                     if (response.message().equals("OK")) {
+                        strName = "null";
                         clAddInvite.setVisibility(View.VISIBLE);
                         clInviteFriend.setVisibility(View.GONE);
                         btnNext.setVisibility(View.VISIBLE);
@@ -352,7 +362,24 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
                         addTripDataModels.addAll(response.body().getData());
                         btnNext.setVisibility(View.VISIBLE);
                         Collections.reverse(addTripDataModels);
+
+                        userListNotRegister.clear();
+                        userListRegister.clear();
+                        for (AddTripDataModel addTripDataModel : addTripDataModels) {
+                            if (addTripDataModel.getType().equals("registered")) {
+                                userListRegister.add(addTripDataModel);
+                            }
+                            if (addTripDataModel.getType().equals("notregistered")) {
+                                userListNotRegister.add(addTripDataModel);
+                            }
+                        }
+
+
+                        addTripDataModels.clear();
+                        addTripDataModels.addAll(userListRegister);
+                        addTripDataModels.addAll(userListNotRegister);
                         addTripAdapter.notifyDataSetChanged();
+
                         tvInviteFriendNotFound.setVisibility(View.GONE);
 
                         Log.d("zma user", "" + addTripDataModels);
@@ -378,7 +405,6 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
 
     private boolean isValid() {
         valid = true;
-        strName = etName.getText().toString();
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString().trim();
         strPhoneNumber = strPhoneNumber.replace(" ", "");
@@ -638,6 +664,7 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
         etPhone.setText(contact.getNumContact());
         etName.setText(contact.getNameContact());
 
+        strName = contact.getNameContact();
         etPhone.setSelection(etPhone.getText().length());
 //        ContactLayoutGone();
 

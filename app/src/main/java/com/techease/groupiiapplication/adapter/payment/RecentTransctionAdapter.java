@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
 import com.techease.groupiiapplication.ui.activity.payments.EditPaymentActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.util.List;

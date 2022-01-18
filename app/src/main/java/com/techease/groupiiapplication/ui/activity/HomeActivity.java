@@ -44,6 +44,7 @@ import com.techease.groupiiapplication.ui.fragment.tripes.TripFragment;
 import com.techease.groupiiapplication.ui.fragment.chat.AllUsersChatFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.DialogBuilder;
 import com.techease.groupiiapplication.utils.GPSTracker;
 import com.techease.groupiiapplication.utils.StringHelper;
 
@@ -115,7 +116,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     Fragment active = fragmentTrip;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +124,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         dialog = AlertUtils.createProgressDialog(this);
 
+
+//        DialogBuilder.showAlertDialog(this, "");
 
 //        TransformationCompat.onTransformationStartContainer(this);
 

@@ -38,6 +38,7 @@ import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClick
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ParticipantCostsBackClickChangedListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentFragment;
+import com.techease.groupiiapplication.ui.fragment.payment.ParticipantCostsTabsFragment;
 import com.techease.groupiiapplication.utils.AnimationRVUtill;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.KeyBoardUtils;
@@ -64,23 +65,25 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
 
     @BindView(R.id.tvPercentage)
     TextView tvPercentage;
-    @BindView(R.id.tvPartiallyPaid)
-    TextView tvBalance;
     @BindView(R.id.tvPaidNumber)
     TextView tvPaidNumber;
+    @BindView(R.id.tvPaid)
+    TextView tvPaid;
     @BindView(R.id.tvNoRecentTransactionsFound)
     TextView tvNoRecentTransactionsFound;
     @BindView(R.id.rvRecentTransaction)
     RecyclerView rvRecentTransaction;
-
 
     @BindView(R.id.llRecentTransaction)
     RelativeLayout llRecentTransaction;
 
     @BindView(R.id.tvPaymentPaid)
     TextView tvPaymentPaid;
-    ArrayList<GetPaymentExpensesDataModel> getPaymentExpensesData = new ArrayList<>();
 
+    @BindView(R.id.tvPartiallyPaid)
+    TextView tvPartiallyPaid;
+    @BindView(R.id.tvPartiallyPaidTop)
+    TextView tvPartiallyPaidTop;
     ArrayList<RecentTransaction> recentTransactions = new ArrayList<>();
     ArrayList<GroupExpenditure> groupExpendituresItems = new ArrayList<>();
 
@@ -96,7 +99,6 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
     int strUserID;
     RecentTransctionAdapter recentTransctionAdapter;
     ClickRecentTransactionListener clickParticipantCostsListener;
-
 
     public static PaymentsFragment newInstance() {
         PaymentsFragment fragment = new PaymentsFragment();
@@ -133,12 +135,17 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
         rvRecentTransaction.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(getActivity()));
         rvRecentTransaction.setAdapter(recentTransctionAdapter);
 
-
         ConnectParticipantCostsBackClick.addClickListener(() -> {
             editPaymentCallBackListener.onEditPaymentCallBack();
             getPaymentExpenses();
         });
 
+
+        tvPartiallyPaidTop.setVisibility(View.GONE);
+        tvPartiallyPaid.setText("Payments will be shown here.");
+        tvPaymentPaid.setVisibility(View.INVISIBLE);
+        tvPaidNumber.setVisibility(View.GONE);
+        tvPaid.setVisibility(View.GONE);
 
         Log.d("zma user id", "" + AppRepository.mUserID(getActivity()));
         Log.d("zma trip id", "" + AppRepository.mTripIDForUpdation(getActivity()));
@@ -147,7 +154,6 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
 
     public void getPaymentExpenses() {
 
-        Log.d("zmaids", strTripID + "     " + strUserID);
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(strTripID, strUserID);
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -176,24 +182,44 @@ public class PaymentsFragment extends Fragment implements View.OnClickListener, 
                         tvNoRecentTransactionsFound.setTransitionVisibility(View.GONE);
                     }
 
+
                     try {
+                        tvPaymentPaid.setText("$" + NumberFormatUtil.PaymentFormat(response.body().getData().getRecievedpayment()) + " / " + "$" + NumberFormatUtil.PaymentFormat(response.body().getData().getTotalpayment()));
                         tvPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));
                         circularSeekBar.setProgress(Float.parseFloat(NumberFormatUtil.FormatPercentageShowCircle(response.body().getData().getPaidPercent())));
+
+                        if (NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()).equals("0%")) {
+                            tvPartiallyPaidTop.setVisibility(View.GONE);
+                            tvPartiallyPaid.setText("Payments will be shown here.");
+                            tvPaymentPaid.setVisibility(View.INVISIBLE);
+                            tvPaidNumber.setVisibility(View.GONE);
+                            tvPaid.setVisibility(View.GONE);
+                            mcvPayment.setClickable(false);
+                        } else {
+                            tvPartiallyPaidTop.setVisibility(View.VISIBLE);
+                            tvPartiallyPaid.setText("Partially paid");
+                            tvPaymentPaid.setVisibility(View.VISIBLE);
+                            tvPaidNumber.setVisibility(View.VISIBLE);
+                            tvPaid.setVisibility(View.VISIBLE);
+                            mcvPayment.setClickable(true);
+
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
+                        mcvPayment.setClickable(false);
+
+
                     }
                     groupExpendituresItems.addAll(response.body().getData().getGroupExpenditures());
-                    tvPaymentPaid.setText("$" + response.body().getData().getRecievedpayment() + " / " + "$" + response.body().getData().getTotalpayment());
 
-                    Log.d("zma payment response", "" + response.body().getData().getGroupExpenditures());
 
                 }
             }
 
+
             @Override
             public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
-//                Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-
                 Log.d("zma payment response", "" + t.getMessage());
 
             }

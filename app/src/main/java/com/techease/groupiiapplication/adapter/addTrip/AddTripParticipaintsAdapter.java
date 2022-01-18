@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.api.TripUserDeleteCallback;
@@ -68,6 +69,18 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
         } else {
             holder.cbShareTripCost.setChecked(false);
         }
+
+        if (String.valueOf(addTripDataModel.getType()).equals("notregistered")) {
+            holder.tvNotRegesterUser.setVisibility(View.VISIBLE);
+            holder.tvNotRegesterUser.setText("You invited "+addTripDataModel.getName() +" to the group" );
+            holder.materialCardView.setVisibility(View.GONE);
+
+        } else {
+            holder.tvNotRegesterUser.setVisibility(View.GONE);
+            holder.materialCardView.setVisibility(View.VISIBLE);
+
+        }
+
 
         holder.ivParticipantEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,9 +144,11 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvParticipaintPhoneNumber;
+        TextView tvTitle, tvParticipaintPhoneNumber,tvNotRegesterUser;
         ImageView ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
+        MaterialCardView materialCardView;
+
 
         MyViewHolder(View view) {
             super(view);
@@ -142,6 +157,9 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
             ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);
+            materialCardView = view.findViewById(R.id.cvTrip);
+            tvNotRegesterUser = view.findViewById(R.id.tvNotRegesterUser);
+
 
         }
     }

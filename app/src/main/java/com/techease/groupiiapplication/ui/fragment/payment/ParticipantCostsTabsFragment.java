@@ -1,5 +1,7 @@
 package com.techease.groupiiapplication.ui.fragment.payment;
 
+import static com.techease.groupiiapplication.utils.Constants.IS_FROM_NEW_SET_SCREEN;
+
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.techease.groupiiapplication.R;
@@ -47,6 +50,10 @@ public class ParticipantCostsTabsFragment extends Fragment implements View.OnCli
     @BindView(R.id.ivBack)
     ImageView ivBack;
 
+    @BindView(R.id.rlTop)
+    RelativeLayout rlTop;
+    @BindView(R.id.vMinusIcon)
+    View vMinusIcon;
     private ParticipantBackListener participantBackListener;
 
 
@@ -54,6 +61,13 @@ public class ParticipantCostsTabsFragment extends Fragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.fragment_participant_costs, container, false);
         ButterKnife.bind(this, parentView);
+
+        if (!IS_FROM_NEW_SET_SCREEN) {
+            ivBack.setVisibility(View.GONE);
+            vMinusIcon.setVisibility(View.GONE);
+            IS_FROM_NEW_SET_SCREEN = true;
+            rlTop.setVisibility(View.GONE);
+        }
         init();
 
 

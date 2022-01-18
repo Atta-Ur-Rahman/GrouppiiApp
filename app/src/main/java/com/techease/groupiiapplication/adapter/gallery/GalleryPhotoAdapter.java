@@ -1,6 +1,7 @@
 package com.techease.groupiiapplication.adapter.gallery;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,8 +48,7 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
     private List<GalleryPhotoDataModel> galleryPhotoDataModels;
     private int layout_id;
     String fileUri;
-
-
+    private long mLastClickTime = 0;
     public GalleryPhotoAdapter(Context context, List<GalleryPhotoDataModel> galleryPhotoDataModels, int layout) {
         this.galleryPhotoDataModels = galleryPhotoDataModels;
         this.context = context;
@@ -69,7 +71,14 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         Glide.with(context).load(data.getFile()).placeholder(R.drawable.progress_animation).into(holder.ivGalleryPhoto);
         holder.tvTitle.setText(data.getTitle());
         holder.tvHotelPrice.setText(DateUtills.getPhotoGalleryDateFormate(data.getDate() + "" + data.getTime()));
-        holder.ivShareGalleryPhoto.setOnClickListener(v -> shareImage(data.getFile()));
+
+        holder.ivShareGalleryPhoto.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            shareImage(data.getFile());
+        });
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ImagePreviewActivity.class);
@@ -78,7 +87,20 @@ public class GalleryPhotoAdapter extends RecyclerView.Adapter<GalleryPhotoAdapte
         });
 
         holder.ivDeleteGalleryPhoto.setOnClickListener(v -> {
-            ApiCallDeletePhoto(data.getId());
+
+            BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder((Activity) context)
+                    .setTitle("Delete Photo?")
+                    .setMessage("Are you sure you want to this photo?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialogInterface, which) -> {
+                        ApiCallDeletePhoto(data.getId());
+                        dialogInterface.dismiss();
+                    })
+                    .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                    .build();
+
+            // Show Dialog
+            mBottomSheetDialogd.show();
         });
 
     }

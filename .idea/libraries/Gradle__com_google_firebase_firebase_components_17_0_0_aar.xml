@@ -1,7 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-components:17.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bf831ce8b7932a375091efa449b9bc49/transformed/jetified-firebase-components-17.0.0/res" />
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bf831ce8b7932a375091efa449b9bc49/transformed/jetified-firebase-components-17.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bf831ce8b7932a375091efa449b9bc49/transformed/jetified-firebase-components-17.0.0/res" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bf831ce8b7932a375091efa449b9bc49/transformed/jetified-firebase-components-17.0.0/AndroidManifest.xml" />

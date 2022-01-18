@@ -2,8 +2,8 @@
   <library name="Gradle: com.github.skydoves:balloon:1.3.9@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4fdbe8d6f12ec2a5dc5b5abf61ec4070/transformed/jetified-balloon-1.3.9/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4fdbe8d6f12ec2a5dc5b5abf61ec4070/transformed/jetified-balloon-1.3.9/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4fdbe8d6f12ec2a5dc5b5abf61ec4070/transformed/jetified-balloon-1.3.9/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4fdbe8d6f12ec2a5dc5b5abf61ec4070/transformed/jetified-balloon-1.3.9/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.github.skydoves/balloon/1.3.9/b7fae788738c9fb48b0db20a28b8cdf308662891/balloon-1.3.9-javadoc.jar!/" />

@@ -39,17 +39,20 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllTripDayPlanFragment extends Fragment {
+public class AllTripDayPlanFragment extends Fragment implements View.OnClickListener {
 
     int pos = 0;
 
     @BindView(R.id.rvAllTripDay)
     RecyclerView rvAllTripDay;
 
+    @BindView(R.id.tvAllDayPlan)
+    TextView tvAllDayPlan;
     @BindView(R.id.tvTripDayNotFound)
     TextView tvTripDayNotFound;
 
@@ -319,4 +322,14 @@ public class AllTripDayPlanFragment extends Fragment {
     }
 
 
+    @OnClick({R.id.tvAllDayPlan})
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.tvAllDayPlan:
+                ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
+                break;
+        }
+    }
 }

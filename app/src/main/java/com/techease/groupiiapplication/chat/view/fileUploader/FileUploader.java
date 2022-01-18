@@ -142,7 +142,7 @@ public class FileUploader {
     }
 
     private void uploadSingleFile(final int index) {
-        PRRequestBody fileBody = new PRRequestBody(files[index]);
+        PRRequestBody fileBody = new PRRequestBody(files[index  ]);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(filekey, files[index].getName(), fileBody);
         Call<ImagesUploadResponse> call;
         if (auth_token.isEmpty()) {

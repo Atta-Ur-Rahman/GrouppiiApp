@@ -1,94 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/widget_margin"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    android:orientation="vertical">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvTrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/widget_margin">
+        android:layout_margin="@dimen/widget_margin"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="@dimen/widget_margin_left_right"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/widget_margin">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="@dimen/widget_margin_left_right"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dubai" />
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/tvTitleName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:text="Babby Farell"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cvImage"
+                app:layout_constraintStart_toEndOf="@id/cvImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvParticipaintPhoneNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginRight="@dimen/widget_margin_left_right"
+                android:gravity="center_vertical"
+                android:text="03038060226"
+                android:textSize="@dimen/text_size14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cvImage"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
+
+
+            <CheckBox
+                android:id="@+id/cbShareTripCost"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/widget_margin_left_right"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:button="@drawable/checkbox_selector"
+                android:clickable="false"
+                android:src="@drawable/ic_baseline_done_24"
+                android:text="Share trip cost"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:theme="@style/checkBox"
+                app:layout_constraintLeft_toRightOf="@+id/cvImage"
+                app:layout_constraintTop_toBottomOf="@id/tvParticipaintPhoneNumber" />
+
 
             <ImageView
-                android:id="@+id/ivUser"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/dubai" />
-        </androidx.cardview.widget.CardView>
+                android:id="@+id/ivParticipantEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/widget_margin"
+                android:src="@drawable/dots"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 
-        <TextView
-            android:id="@+id/tvTitleName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:text="Babby Farell"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textsize16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/cvImage"
-            app:layout_constraintStart_toEndOf="@id/cvImage"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tvNotRegesterUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/widget_margin_left_right"
+        android:layout_marginRight="@dimen/widget_margin_left_right"
+        android:layout_gravity="center_vertical"
+        android:drawableLeft="@drawable/user_icon"
+        android:drawableTint="@color/grey"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size14sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cvImage"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
 
 
-        <TextView
-            android:id="@+id/tvParticipaintPhoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginRight="@dimen/widget_margin_left_right"
-            android:gravity="center_vertical"
-            android:text="03038060226"
-            android:textSize="@dimen/text_size14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cvImage"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleName" />
-
-
-        <CheckBox
-            android:id="@+id/cbShareTripCost"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginLeft="@dimen/widget_margin_left_right"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:button="@drawable/checkbox_selector"
-            android:clickable="false"
-            android:src="@drawable/ic_baseline_done_24"
-            android:text="Share trip cost"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            android:theme="@style/checkBox"
-            app:layout_constraintLeft_toRightOf="@+id/cvImage"
-            app:layout_constraintTop_toBottomOf="@id/tvParticipaintPhoneNumber" />
-
-
-        <ImageView
-            android:id="@+id/ivParticipantEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:src="@drawable/dots"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

@@ -47,6 +47,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.addTrip.AutoCompleteCitiesAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
+import com.techease.groupiiapplication.dataModel.addTrips.publishTrip.PublishTripResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDetail.AddTripDetailResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
@@ -229,8 +230,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         autoCompleteTextView.setAdapter(autoCompleteCitiesAdapter);
 
 
-
-
         try {
             latitude = Double.parseDouble(AppRepository.mLat(this));
             longitude = Double.parseDouble(AppRepository.mLng(this));
@@ -238,7 +237,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             latitude = 33.6969485;
             longitude = 72.9692551;
         }
-
 
 
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
@@ -256,6 +254,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 // Use the builder to create a FindAutocompletePredictionsRequest.
                 FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                         // Call either setLocationBias() OR setLocationRestriction().
+                        .setCountries(Constants.COUNTRIES)
                         .setLocationBias(bounds)
                         //.setLocationRestriction(bounds)
                         .setSessionToken(token)
@@ -573,6 +572,8 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
 
     }
+
+
 
     @Override
     protected void onResume() {

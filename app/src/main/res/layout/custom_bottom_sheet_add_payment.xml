@@ -27,7 +27,7 @@
             tools:ignore="MissingConstraints">
 
         <View
-            android:id="@+id/ivMinusIcon"
+            android:id="@+id/vMinusIcon"
             android:layout_width="30dp"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/widget_margin"
@@ -46,7 +46,7 @@
             android:orientation="horizontal"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:layout_constraintTop_toBottomOf="@id/vMinusIcon"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -266,7 +266,6 @@
             app:cardCornerRadius="@dimen/cv_widget_corner_radius"
             app:cardElevation="@dimen/card_view_elevation"
             app:layout_constraintTop_toBottomOf="@id/cvEndDate">
-
 
             <RelativeLayout
                 android:layout_width="match_parent"

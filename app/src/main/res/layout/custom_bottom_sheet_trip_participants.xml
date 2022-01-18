@@ -50,6 +50,8 @@
             app:layout_constraintTop_toBottomOf="@id/viewMinusIcon" />
 
 
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTripParticipants"
             android:layout_width="match_parent"
@@ -57,6 +59,7 @@
             android:layout_marginStart="@dimen/widget_margin_left_right"
             android:layout_marginTop="@dimen/tendp"
             android:layout_marginEnd="@dimen/widget_margin_left_right"
+            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 

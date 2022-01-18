@@ -19,20 +19,23 @@ public class AddTripDataModel {
     private Long mUserid;
     @SerializedName("name")
     private String mName;
+    @SerializedName("type")
+    private String mType;
+
     @SerializedName("latitude")
     private String latitude;
     @SerializedName("longitude")
     private String longitude;
 
 
+
+
     public String getEmail() {
         return mEmail;
     }
-
     public void setEmail(String email) {
         mEmail = email;
     }
-
     public String getPhone() {
         return mPhone;
     }
@@ -40,7 +43,6 @@ public class AddTripDataModel {
     public void setPhone(String phone) {
         mPhone = phone;
     }
-
     public String getPicture() {
         return mPicture;
     }
@@ -74,6 +76,13 @@ public class AddTripDataModel {
     }
 
 
+
+    public void setType(String name) {
+        mType = name;
+    }
+    public String getType(){
+        return mType;
+    }
     public String getName() {
         return mName;
     }

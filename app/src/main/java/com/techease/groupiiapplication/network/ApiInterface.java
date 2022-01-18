@@ -3,10 +3,13 @@ package com.techease.groupiiapplication.network;
 
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
 import com.techease.groupiiapplication.dataModel.deleteGalleryImage.DeleteGalleryPhotoResponse;
+import com.techease.groupiiapplication.dataModel.deleteRsvp.DeleteRsvpResponse;
+import com.techease.groupiiapplication.dataModel.getReserveModel.GetAllReserveResponse;
 import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
 import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
 import com.techease.groupiiapplication.dataModel.notifications.GetNotificationsResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
+import com.techease.groupiiapplication.dataModel.reserveModel.AddReserveResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPhotoToGallery.AddPhotoToGalleryResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
@@ -186,6 +189,23 @@ public interface ApiInterface {
             @Field("userid") int userId,
             @Field("type") String type);
 
+    @FormUrlEncoded
+    @POST("tripdays/update")
+    Call<AddTripDayResponse> updateTripDay(
+            @Field("id") String id,
+            @Field("title") String title,
+            @Field("description") String description,
+            @Field("date") String date,
+            @Field("time") String time,
+            @Field("tripid") String tripId,
+            @Field("userid") int userId,
+            @Field("type") String type);
+
+
+    @GET("tripdays/delete/{dayPlanID}")
+    Call<DeleteRsvpResponse> deleteDayPlan(
+            @Path("dayPlanID") String dayPlanID);
+
 
     @Multipart
     @POST("trips/photo")
@@ -321,4 +341,54 @@ public interface ApiInterface {
     Call<DeleteGalleryPhotoResponse> deletePhotoFromGallery(
             @Path("photo_ID") String photoId);
 
+
+    @Multipart
+    @POST("reserve/add")
+    Call<AddReserveResponse> addReserveDetail(
+            @Part("tripid") RequestBody tripID,
+            @Part("confirmation_code") RequestBody tripConfirmation,
+            @Part("title") RequestBody title,
+            @Part("address") RequestBody address,
+            @Part("fromdate") RequestBody startDate,
+            @Part("todate") RequestBody endDate,
+            @Part("is_done") RequestBody isDone,
+            @Part MultipartBody.Part photo,
+            @Part("image") RequestBody fileName);
+
+
+    @Multipart
+    @POST("reserve/update")
+    Call<AddReserveResponse> editReserveDetail(
+            @Part("id") RequestBody rsvpID,
+            @Part("confirmation_code") RequestBody tripConfirmation,
+            @Part("tripid") RequestBody tripID,
+            @Part("title") RequestBody title,
+            @Part("address") RequestBody address,
+            @Part("fromdate") RequestBody startDate,
+            @Part("todate") RequestBody endDate,
+            @Part("is_done") RequestBody isDone,
+            @Part MultipartBody.Part photo,
+            @Part("image") RequestBody fileName);
+
+    @Multipart
+    @POST("reserve/update")
+    Call<AddReserveResponse> editReserveWithImageDetail(
+            @Part("id") RequestBody rsvpID,
+            @Part("confirmation_code") RequestBody tripConfirmation,
+            @Part("tripid") RequestBody tripID,
+            @Part("title") RequestBody title,
+            @Part("address") RequestBody address,
+            @Part("fromdate") RequestBody startDate,
+            @Part("todate") RequestBody endDate,
+            @Part("is_done") RequestBody isDone);
+
+
+    @GET("reserve/getall/{tripID}")
+    Call<GetAllReserveResponse> getAllReserve(
+            @Path("tripID") String tripID);
+
+
+    @GET("reserve/delete/{RsvpID}")
+    Call<DeleteRsvpResponse> deleteReserve(
+            @Path("RsvpID") String rsvpID);
 }

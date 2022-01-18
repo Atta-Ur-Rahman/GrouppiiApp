@@ -22,7 +22,7 @@
         android:orientation="vertical">
 
         <View
-            android:id="@+id/ivMinusIcon"
+            android:id="@+id/vMinusIcon"
             android:layout_width="@dimen/top_minus_width"
             android:layout_height="4dp"
             android:layout_marginTop="@dimen/widget_margin"
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon">
+            app:layout_constraintTop_toBottomOf="@id/vMinusIcon">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
@@ -198,7 +198,7 @@
             app:labelVisibilityMode="labeled"
             app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:layout_constraintTop_toBottomOf="@id/vMinusIcon"
             app:menu="@menu/navigation" />
 
         <androidx.viewpager.widget.ViewPager

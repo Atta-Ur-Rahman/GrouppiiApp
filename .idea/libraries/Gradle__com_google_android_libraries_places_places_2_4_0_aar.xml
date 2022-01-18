@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.libraries.places:places:2.4.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bd64c4fe01f7f63861de5e40fac4ab4a/transformed/jetified-places-2.4.0/res" />
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bd64c4fe01f7f63861de5e40fac4ab4a/transformed/jetified-places-2.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bd64c4fe01f7f63861de5e40fac4ab4a/transformed/jetified-places-2.4.0/res" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bd64c4fe01f7f63861de5e40fac4ab4a/transformed/jetified-places-2.4.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

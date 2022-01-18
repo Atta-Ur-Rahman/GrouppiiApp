@@ -61,7 +61,7 @@ import retrofit2.Response;
 public class AddUserTripParticpantActivity extends AppCompatActivity implements View.OnClickListener, MyContactsAdapter.ContactsAdapterListener {
 
 
-    String strName = "", strEmail = "", strPhoneNumber, strShareCost = "0";
+    String strName = "null", strEmail = "", strPhoneNumber, strShareCost = "0";
 
     @BindView(R.id.tilName)
     TextInputLayout tilName;
@@ -159,14 +159,14 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 //        strName = etName.getText().toString();
 //        strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhone.getText().toString();
-        strPhoneNumber=strPhoneNumber.replace(" ","");
+        strPhoneNumber = strPhoneNumber.replace(" ", "");
 
 
         if (strPhoneNumber.equals(AppRepository.mPhoneNumber(this))) {
             valid = false;
             tilPhone.setErrorEnabled(true);
             tilPhone.setError(getString(R.string.please_write_your_phone_number) + " not admin phone");
-        }else
+        } else
 
 //        if (strPhoneNumber.length() < 1) {
 //            if (strEmail.length() < 1) {
@@ -174,17 +174,17 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
 //            }
 //        }
 
-        if (strPhoneNumber.length() > 0) {
-            if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
-                valid = false;
-                tilPhone.setErrorEnabled(true);
-                tilPhone.setError(getString(R.string.please_write_your_phone_number));
+            if (strPhoneNumber.length() > 0) {
+                if (!PhoneNumberValidator.isValidPhoneNumber(strPhoneNumber)) {
+                    valid = false;
+                    tilPhone.setErrorEnabled(true);
+                    tilPhone.setError(getString(R.string.please_write_your_phone_number));
 
-            } else {
-                tilPhone.setError(null);
-                tilPhone.setErrorEnabled(false);
+                } else {
+                    tilPhone.setError(null);
+                    tilPhone.setErrorEnabled(false);
+                }
             }
-        }
 
 //        if (strEmail.length() < 1) {
 //            if (strPhoneNumber.length() < 1) {
@@ -306,6 +306,9 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     }
 
     private void ApiCAllForAddInviteFriendWithGmailAndPhone() {
+        if (strName.equals("null")) {
+            strName = strPhoneNumber;
+        }
         Call<AddTripResponse> addTripResponseCall = BaseNetworking.ApiInterface().addTripWithGmailAndPhone(strName, strEmail, strPhoneNumber.trim(), strShareCost,
                 AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         addTripResponseCall.enqueue(new Callback<AddTripResponse>() {
@@ -372,6 +375,8 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         rvMyContact.setHasFixedSize(true);
         listener = (view, position) -> {
             etPhone.setText(contactDataModelList.get(position).getNumContact());
+            strName = contactDataModelList.get(position).getNameContact();
+            Toast.makeText(AddUserTripParticpantActivity.this, "", Toast.LENGTH_SHORT).show();
 //            ContactLayoutGone();
 
 
@@ -448,7 +453,9 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
     @Override
     public void onContactSelected(ContactDataModel contact) {
         etPhone.setText(contact.getNumContact());
+        strName = contact.getNameContact();
         etPhone.setSelection(etPhone.getText().length());
+
 //        ContactLayoutGone();
 
     }

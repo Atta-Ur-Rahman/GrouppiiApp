@@ -140,6 +140,10 @@ public class DateUtills {
 
     }
 
+
+
+
+
     public static void GetDatePickerNext14Days(EditText tvSetDate, String dt) throws ParseException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -203,6 +207,8 @@ public class DateUtills {
     }
 
 
+
+
     public static String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_2);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -257,7 +263,25 @@ public class DateUtills {
         } catch (Exception e) {
         }
         return "";
+
     }
+
+
+    public static String getRsvpDateFormate(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("LLL dd");
+            Date date = null;
+            date = inputFormat.parse(timestamp);
+            String formattedDate = outputFormat.format(date);
+            System.out.println(formattedDate); // prints 10-04-2018
+            Log.d("zma date", formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
 
 
     public static String getDateActivityDayFormate(String timestamp) {

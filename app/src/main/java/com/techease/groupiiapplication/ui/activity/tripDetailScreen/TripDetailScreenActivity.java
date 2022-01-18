@@ -47,6 +47,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.api.TripEditedCallback;
 import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
 import com.techease.groupiiapplication.mapView.MapViewActivity;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.gallery.Connect;
@@ -75,7 +76,7 @@ import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.ChatsActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
-import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentsTabsFragment;
+import com.techease.groupiiapplication.ui.fragment.payment.AddPaymentFragment;
 import com.techease.groupiiapplication.ui.fragment.payment.ParticipantCostsTabsFragment;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.AddAndEditDayPlaneFragment;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.tripExpenditures.GropExpendituresTripFragment;
@@ -179,6 +180,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public static ArrayList<AddTripDataModel> paymentUserParticipaintsList = new ArrayList<>();
     public static ArrayList<AddTripDataModel> userParticipaintsCircleList = new ArrayList<>();
 
+    public ArrayList<AddTripDataModel> userListRegister = new ArrayList<>();
+    public ArrayList<AddTripDataModel> userListNotRegister = new ArrayList<>();
+
 
     RecyclerView rvTripParticipants;
     LinearLayoutManager linearLayoutManager;
@@ -192,8 +196,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     TextView tvDaysLeft;
 
     TextView tvPaymentsDaysLeft;
-
-    boolean aBooleanAddImage = true, aBooleanIsCreatedBy = false;
+    public static boolean aBooleanAddImage = true, aBooleanIsCreatedBy = false;
     ArrayList<String> stringArrayList = new ArrayList<>();
     private static final int REQUEST_CODE_SELECT_PICTURE = 3;
 
@@ -208,7 +211,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     TabLayout tabsPartiallyPaid;
 
 
-    TextView tvPartiallyPaid, tvPayDate, tvPayDaysLeft, tvParticipantsCostsCount, tvPartiallyPaidPercentage, tvNoActiveTripFound;
+    TextView tvPartiallyPaidPaymente, tvPayDate, tvPayDaysLeft, tvParticipantsCostsCount, tvPartiallyPaidPercentage, tvNoActiveTripFound;
     CircularSeekBar circularSeekBar;
     ImageView ivBackPartiallyPaid, ivAddTripParticipant;
     int anIntViewPagerPosition = 0;
@@ -262,7 +265,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         aBooleanEditScreen = bundle.getBoolean("edit");
         aBooleanIsCreatedBy = bundle.getBoolean("is_createdby");
 
-
+        Constants.TRIP_NAME = strTitle;
         AppRepository.mPutValue(this).putString("trip_start_date", DateUtills.changeDateTripStartDateFormate(strTripStartDate)).commit();
         AppRepository.mPutValue(this).putString("trip_end_date", DateUtills.changeDateTripStartDateFormate(strTripEndDate)).commit();
 
@@ -394,6 +397,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 participantsBottomSheet.setDraggable(false);
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+
 //                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
                 tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userList, aBooleanIsCreatedBy, tvNoActiveTripFound);
@@ -411,7 +415,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         });
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("NonConstantResourceId")
@@ -436,7 +439,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 bundle.putString("type", "group");
                 bundle.putString("picture", strPhoto);
 
-
                 intent.putExtras(bundle);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
 
@@ -451,6 +453,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.llDayPlan:
+
+//                addActivityBottomSheetBehavior.setDraggable(false);
+//                bottomSheetBehavior.setDraggable(false);
+
                 bottomSheetBehavior.setHideable(false);
                 viewPager.setCurrentItem(0);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -477,12 +483,19 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     bottomSheetBehavior.setDraggable(false);
                     addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance())
+                            .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(null,"add"))
                             .commitNow();
                 } else if (anIntViewPagerPosition == 1) {
                     if (aBooleanIsCreatedBy) {
-                        addPaymentBottomSheetBehavior.setDraggable(false);
-                        bottomSheetBehavior.setDraggable(false);
+
+                        startActivity(new Intent(this, AddReservsActivity.class), ActivityOptions.makeSceneTransitionAnimation((Activity) this).toBundle());
+
+
+//                        getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.container, AddReservsFragment.newInstance())
+//                                .commitNow();
+//                        addPaymentBottomSheetBehavior.setDraggable(false);
+//                        bottomSheetBehavior.setDraggable(false);
 //                        addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 //                        getSupportFragmentManager().beginTransaction()
 //                                .replace(R.id.containerPayment, AddPaymentsTabsFragment.newInstance())
@@ -497,7 +510,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                         bottomSheetBehavior.setDraggable(false);
                         addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.containerPayment, AddPaymentsTabsFragment.newInstance())
+                                .replace(R.id.containerPayment, AddPaymentFragment.newInstance("null","null"))
                                 .commitNow();
                     } else {
                         Toast.makeText(this, "payment add only admin", Toast.LENGTH_SHORT).show();
@@ -505,11 +518,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                 } else if (anIntViewPagerPosition == 3) {
 
-                    if (aBooleanAddImage) {
-//                        addPhotoDialog();
-                        checkImagePermission();
-                        aBooleanAddImage = false;
-                    }
+                    checkImagePermission();
+
                 }
                 break;
 
@@ -563,7 +573,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     Toast.makeText(this, "Participant add only admin", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
 
             case R.id.ivPartiallyBack:
                 bottomSheetBehavior.setDraggable(true);
@@ -694,10 +703,9 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         ivBackPartiallyPaid = llBottomSheetPartiallyPaidTrip.findViewById(R.id.ivPartiallyBack);
         circularSeekBar = llBottomSheetPartiallyPaidTrip.findViewById(R.id.csPayment);
         tvPartiallyPaidPercentage = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPercentage);
-        tvPartiallyPaid = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPartiallyPaid);
+        tvPartiallyPaidPaymente = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPartiallyPaid);
 
 
-        tvPartiallyPaid = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPartiallyPaid);
         tvPayDate = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvPayDate);
         tvPayDaysLeft = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvDaysLeft);
         tvParticipantsCostsCount = llBottomSheetPartiallyPaidTrip.findViewById(R.id.tvParticipantsCostsCount);
@@ -925,8 +933,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        aBooleanAddImage = true;
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             chatImageFiles.clear();
             ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
@@ -941,8 +947,13 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
             Uri imageUrdi = getPickImageResultUri(data);
 
-            ivGalleryPhoto.setImageURI(imageUrdi);
-            sourceFile = new File(imageUrdi.getPath());
+            try {
+                ivGalleryPhoto.setImageURI(imageUrdi);
+                sourceFile = new File(imageUrdi.getPath());
+
+            } catch (Exception e) {
+
+            }
 
 
             switch (requestCode) {
@@ -970,6 +981,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                     break;
             }
+
         }
     }
 
@@ -989,13 +1001,20 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //                    dialog.dismiss();
 //                    assert response.body() != null;
                     try {
+                        tvPartiallyPaidPaymente.setText("$" + NumberFormatUtil.PaymentFormat(response.body().getData().getRecievedpayment()) + " / " + "$" + NumberFormatUtil.PaymentFormat(response.body().getData().getTotalpayment()));
+
                         tvPartiallyPaidPercentage.setText(NumberFormatUtil.FormatPercentage(response.body().getData().getPaidPercent()));
                         circularSeekBar.setProgress(Float.parseFloat(NumberFormatUtil.FormatPercentageShowCircle(response.body().getData().getPaidPercent())));
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    tvPartiallyPaid.setText(response.body().getData().getPartialPaidUsers() + "/" + response.body().getData().getTotalUsers());
+
+
+                    if (response.body().getData().getRecievedpayment().equals("0.0"))
+//                    tvPartiallyPaid.setText(response.body().getData().getPartialPaidUsers() + "/" + response.body().getData().getTotalUsers());
+
                     tvPayDate.setText(DateUtills.getDateFormate(response.body().getData().getTripdate()));
                     tvPaymentsDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(response.body().getData().getTripdate())) + " days left");
 
@@ -1097,6 +1116,29 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     userList.addAll(response.body().getData());
                     userParticipaintsCircleList.addAll(response.body().getData());
 
+
+                    userListNotRegister.clear();
+                    userListRegister.clear();
+                    for (AddTripDataModel addTripDataModel : userList) {
+                        if (addTripDataModel.getType().equals("registered")) {
+                            userListRegister.add(addTripDataModel);
+                        }
+                        if (addTripDataModel.getType().equals("notregistered")) {
+
+                            userListNotRegister.add(addTripDataModel);
+                        }
+                    }
+
+
+                    userList.clear();
+                    userList.addAll(userListRegister);
+                    userList.addAll(userListNotRegister);
+
+                    for (AddTripDataModel addTripDataModel : userList) {
+                        Log.d("zmanotlist", addTripDataModel.getName());
+
+                    }
+
                     ArrayList<AddTripDataModel> addTripDataModelsMain = new ArrayList<>();
                     for (AddTripDataModel userParticipaintsList : response.body().getData()) {
                         if (userParticipaintsList.getSharedCost() == 1) {
@@ -1121,6 +1163,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                     Log.d("zmaUserSecond", userList.size() + "");
 
+
                     CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userList);
                     spUserName.setAdapter(customAdapter);
 
@@ -1134,6 +1177,21 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 Toast.makeText(TripDetailScreenActivity.this, String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    public static <T> List<AddTripDataModel> rearrange(List<AddTripDataModel> items, T input) {
+        int index = items.indexOf(input);
+        List<AddTripDataModel> copy;
+        if (index >= 0) {
+            copy = new ArrayList<AddTripDataModel>(items.size());
+            copy.add(items.get(index));
+            copy.addAll(items.subList(0, index));
+            copy.addAll(items.subList(index + 1, items.size()));
+        } else {
+            return items;
+        }
+        return copy;
     }
 
     @Override
@@ -1190,10 +1248,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
     @Override
-    public void goEditActivityDayPlan() {
+    public void goEditActivityDayPlan(AllTripDayDataModel allTripDayDataModel) {
         addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance())
+                .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(allTripDayDataModel,"Update"))
                 .commitNow();
     }
 

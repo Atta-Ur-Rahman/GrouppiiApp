@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.deleteRsvp.DeleteRsvpResponse;
 import com.techease.groupiiapplication.dataModel.tripDetial.addTripDay.AddTripDayResponse;
+import com.techease.groupiiapplication.dataModel.tripDetial.getAllTripDay.AllTripDayDataModel;
 import com.techease.groupiiapplication.interfaceClass.AddActivityBackListener;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
@@ -28,8 +32,10 @@ import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.DateUtills;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,12 +57,20 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
     String tripID;
     int userID;
     AddActivityBackListener addActivityBackListener;
+    @BindView(R.id.tvDeleteDayPlan)
+    TextView tvDeleteDayPlan;
 
-
+    public static AllTripDayDataModel allTripDayDataList = new AllTripDayDataModel();
     String strTripDate, strActivityTitle, strActivityDate, strActivityTime, strActivityNote;
 
-    public static AddAndEditDayPlaneFragment newInstance() {
+    public static String strAddType;
+
+    public static AddAndEditDayPlaneFragment newInstance(AllTripDayDataModel allTripDayDataModel, String strAddTyp) {
         AddAndEditDayPlaneFragment fragment = new AddAndEditDayPlaneFragment();
+        strAddType = strAddTyp;
+
+        if (allTripDayDataModel != null)
+            allTripDayDataList = allTripDayDataModel;
         return fragment;
     }
 
@@ -102,12 +116,39 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
             tvAddActivityTitle.setText("Edit Activity");
             tvAddActivity.setText("Save");
 
+            etActivityTitle.setText(allTripDayDataList.getTitle());
+            etActivityTime.setText(allTripDayDataList.getTime());
+            etActivityDate.setText(DateUtills.changeDateTripStartDateFormate(allTripDayDataList.getDate()));
+
+            etActivityNote.setText(allTripDayDataList.getDescription());
+
+
+            tvDeleteDayPlan.setVisibility(View.VISIBLE);
+            if (allTripDayDataList.getType() != null) {
+                switch (allTripDayDataList.getType()) {
+                    case "Taxi":
+                        Glide.with(getActivity()).load(R.mipmap.taxi_wheel).into(ivType);
+                        break;
+                    case "Bus":
+                        Glide.with(getActivity()).load(R.mipmap.transfer).into(ivType);
+                        break;
+                    case "hotel":
+                        Glide.with(getActivity()).load(R.mipmap.reserv_selected).into(ivType);
+                        break;
+                    case "Flight":
+                        Glide.with(getActivity()).load(R.mipmap.flight).into(ivType);
+                        break;
+                }
+            }
+        } else {
+            tvDeleteDayPlan.setVisibility(View.GONE);
+
         }
 
         return parentView;
     }
 
-    @OnClick({R.id.tvActivityAdd, R.id.ivActivityType, R.id.ivAddActivityBack, R.id.etAddActivityDate, R.id.etActivityTime})
+    @OnClick({R.id.tvDeleteDayPlan, R.id.tvActivityAdd, R.id.ivActivityType, R.id.ivAddActivityBack, R.id.etAddActivityDate, R.id.etActivityTime})
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -116,7 +157,11 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
             case R.id.tvActivityAdd:
 
                 if (isValid()) {
-                    ApiCallForAddDayActivity();
+                    if (strAddType.equals("Update")) {
+                        ApiCallForUpdateDayActivity();
+                    } else {
+                        ApiCallForAddDayActivity();
+                    }
                 }
                 break;
 
@@ -161,7 +206,47 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
                 strActivityType = "Hotel";
                 addActivityTypeDialog.dismiss();
                 break;
+            case R.id.tvDeleteDayPlan:
+
+                BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder(getActivity())
+                        .setTitle("Delete Plan?")
+                        .setMessage("Are you sure you want to this day plan?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", (dialogInterface, which) -> {
+                            ApiCallForDeleteDayPlan();
+                            dialogInterface.dismiss();
+                        })
+                        .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                        .build();
+
+                // Show Dialog
+                mBottomSheetDialogd.show();
+                break;
         }
+    }
+
+    private void ApiCallForDeleteDayPlan() {
+
+        Call<DeleteRsvpResponse> deleteRsvpResponseCall = BaseNetworking.ApiInterface().deleteDayPlan(String.valueOf(allTripDayDataList.getId()));
+        deleteRsvpResponseCall.enqueue(new Callback<DeleteRsvpResponse>() {
+            @Override
+            public void onResponse(Call<DeleteRsvpResponse> call, Response<DeleteRsvpResponse> response) {
+
+                Log.d("zmaresponse", response + "");
+                if (response.isSuccessful()) {
+                    AllTripDayPlanFragment.ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
+                    addActivityBackListener.onAddActivityBack();
+                } else {
+//                    Toast.makeText(getActivity(), "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteRsvpResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 
@@ -253,6 +338,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
         addTripDayResponseCall.enqueue(new Callback<AddTripDayResponse>() {
             @Override
             public void onResponse(Call<AddTripDayResponse> call, Response<AddTripDayResponse> response) {
+
                 if (response.isSuccessful()) {
 
                     dialog.dismiss();
@@ -262,6 +348,42 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
                     addActivityBackListener.onAddActivityBack();
 
                     Toast.makeText(getActivity(), "Activity added successfully", Toast.LENGTH_SHORT).show();
+
+                    etActivityDate.setText("");
+                    etActivityNote.setText("");
+                    etActivityTime.setText("");
+                    etActivityTitle.setText("");
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AddTripDayResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), String.valueOf(t.getMessage()), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+
+    private void ApiCallForUpdateDayActivity() {
+        dialog.show();
+        Call<AddTripDayResponse> addTripDayResponseCall = BaseNetworking.ApiInterface().updateTripDay(String.valueOf(allTripDayDataList.getId()), strActivityTitle, strActivityNote, strActivityDate, strActivityTime, allTripDayDataList.getTripid() + "", userID, strActivityType);
+        addTripDayResponseCall.enqueue(new Callback<AddTripDayResponse>() {
+            @Override
+            public void onResponse(Call<AddTripDayResponse> call, Response<AddTripDayResponse> response) {
+                if (response.isSuccessful()) {
+
+                    dialog.dismiss();
+                    AllTripDayPlanFragment.ApiCallAllTirp(AppRepository.mTripIDForUpdation(getActivity()));
+
+
+                    addActivityBackListener.onAddActivityBack();
+
+                    Toast.makeText(getActivity(), "Activity updated successfully", Toast.LENGTH_SHORT).show();
 
                     etActivityDate.setText("");
                     etActivityNote.setText("");

@@ -369,7 +369,6 @@ public class AddNewTripThreeHotelActivity extends AppCompatActivity implements V
         criteriaDataObject.setCityId(cityID);
         criteriaDataObject.setCheckInDate("2021-10-14");
         criteriaDataObject.setCheckOutDate("2021-10-15");
-
         mainObject.setCriteriaDataObject(criteriaDataObject);
 
 

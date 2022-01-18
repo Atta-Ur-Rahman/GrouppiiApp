@@ -311,4 +311,38 @@ public class GeneralUtills {
         return false;
     }
 
+
+
+    public static boolean PopupMenuDeleteAndEdit(ApiCallback apiCallback, Context context, ImageView tvLanguage, String tripId) {
+        PopupMenu popup = new PopupMenu(context, tvLanguage);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.bottom_language_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(
+//                        LoginSignupSelectionActivity.this,
+//                        "You Clicked : " + item.getTitle(),
+//                        Toast.LENGTH_SHORT
+//                ).show();
+
+//                tvLanguage.setText(item.getTitle().toString());
+                if (item.getTitle().toString().equals("Delete")) {
+                    ApiClass.apiCallForTripDelete(context, apiCallback, tripId);
+
+                }
+
+
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
+
+
+        return false;
+    }
+
 }

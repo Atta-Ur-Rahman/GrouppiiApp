@@ -8,6 +8,7 @@
     android:fillViewport="true"
     tools:context=".ui.fragment.payment.AddPaymentFragment">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,13 +18,12 @@
 
 
         <View
-            android:id="@+id/ivMinusIcon"
+            android:id="@+id/vMinusIcon"
             android:layout_width="30dp"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/widget_margin"
             android:background="@drawable/round_line_back"
             android:scaleType="fitXY"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +36,8 @@
             android:layout_margin="@dimen/widget_margin_left_right"
             android:orientation="horizontal"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivMinusIcon"
+            app:layout_constraintTop_toBottomOf="@id/vMinusIcon"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -96,6 +95,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.appcompat.widget.SwitchCompat
+            android:visibility="invisible"
             android:id="@+id/swAddGroupPaymentFragment"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/add_activity_sw_iv_height"

@@ -4,10 +4,9 @@
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/res" />
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/cf0f623393c56d506577f025a39dde0a/transformed/jetified-exoplayer-transformer-2.13.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-transformer/2.13.2/baa8b8aed70d4e602822586d22e47f2d48295576/exoplayer-transformer-2.13.2-javadoc.jar!/" />

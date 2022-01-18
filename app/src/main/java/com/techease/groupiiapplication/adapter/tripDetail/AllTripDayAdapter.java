@@ -69,7 +69,7 @@ public class AllTripDayAdapter extends RecyclerView.Adapter<AllTripDayAdapter.My
 //                String strData=allTripDayDataModel.getDate()+"{"+;
 //                AppRepository.mPutValue(context).putString("mDataDayPlanActivity", strData).commit();
 
-                editActivityDayPlanListener.goEditActivityDayPlan();
+                editActivityDayPlanListener.goEditActivityDayPlan(allTripDayDataModel);
             }
         });
 

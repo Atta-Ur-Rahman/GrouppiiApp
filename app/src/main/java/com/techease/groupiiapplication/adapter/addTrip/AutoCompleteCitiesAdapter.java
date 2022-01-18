@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.addTrips.OgodaHotel.HotelCityIdData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class AutoCompleteCitiesAdapter extends ArrayAdapter<HotelCityIdData> {
 
     public AutoCompleteCitiesAdapter(@NonNull Context context, @NonNull List<HotelCityIdData> hotelCityIdData) {
         super(context, 0, hotelCityIdData);
-        hotelCityIdDataList = new ArrayList<>(hotelCityIdData);
+        this.hotelCityIdDataList = hotelCityIdData;
         this.context = context;
     }
 

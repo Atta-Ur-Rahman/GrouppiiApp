@@ -24,9 +24,11 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.ui.activity.AddTrip.EditParticipantActivity;
+import com.techease.groupiiapplication.utils.Constants;
 
 import java.util.List;
 
@@ -61,8 +63,15 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         holder.tvParticipaintPhoneNumber.setText(formatNumber(String.valueOf(user.getPhone())));
         Glide.with(context).load(user.getPicture()).placeholder(R.drawable.user).into(holder.ivUser);
 
-        if (String.valueOf(user.getName()).equals("null")) {
-            holder.tvTitle.setText(R.string.not_registered_user);
+        if (String.valueOf(user.getType()).equals("notregistered")) {
+            holder.tvNotRegesterUser.setVisibility(View.VISIBLE);
+            holder.tvNotRegesterUser.setText("You invited "+user.getName() +" to the group" );
+            holder.materialCardView.setVisibility(View.GONE);
+
+        } else {
+            holder.tvNotRegesterUser.setVisibility(View.GONE);
+            holder.materialCardView.setVisibility(View.VISIBLE);
+
         }
 
 
@@ -73,7 +82,7 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
         }
 
 
-            holder.ivParticipantEdit.setOnClickListener(v -> {
+        holder.ivParticipantEdit.setOnClickListener(v -> {
             if (isCreatedBy) {
                 Intent intent = new Intent(context, EditParticipantActivity.class);
                 Bundle bundle = new Bundle();
@@ -109,9 +118,10 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvParticipaintPhoneNumber;
-        ImageView  ivUser, ivParticipantEdit;
+        TextView tvTitle, tvParticipaintPhoneNumber, tvNotRegesterUser;
+        ImageView ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
+        MaterialCardView materialCardView;
 
         MyViewHolder(View view) {
             super(view);
@@ -120,24 +130,26 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
             cbShareTripCost = view.findViewById(R.id.cbShareTripCost);
             ivUser = view.findViewById(R.id.ivUser);
             ivParticipantEdit = view.findViewById(R.id.ivParticipantEdit);
+            materialCardView = view.findViewById(R.id.cvTrip);
+            tvNotRegesterUser = view.findViewById(R.id.tvNotRegesterUser);
 
 
         }
     }
 
 
-    private String formatNumber(String unformattedNumber){
-        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+    private String formatNumber(String unformattedNumber) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String countryCode = "us";//tm.getSimCountryIso();
 
         String formattedNumber;
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             formattedNumber = PhoneNumberUtils.formatNumberToE164(unformattedNumber, countryCode);
         } else {
             formattedNumber = PhoneNumberUtils.formatNumber(unformattedNumber);
         }
-        if(formattedNumber == null){
-            formattedNumber = unformattedNumber.replaceAll("[-,+]","");
+        if (formattedNumber == null) {
+            formattedNumber = unformattedNumber.replaceAll("[-,+]", "");
         }
         return formattedNumber;
     }

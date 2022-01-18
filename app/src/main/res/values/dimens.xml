@@ -39,5 +39,8 @@
     <dimen name="app_screen_title">20sp</dimen>
     <dimen name="button_height">60dp</dimen>
 
+    <dimen name="icon_size_drawble">18dp</dimen>
+    <dimen name="widgitmargin5dp">5dp</dimen>
+
 
 </resources>

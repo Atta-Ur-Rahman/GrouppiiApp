@@ -51,7 +51,7 @@ public class DialogBuilder {
 
     public static void showAlertDialog(Context context,String strId) {
         AlertDialog dialog = new AlertDialog.Builder(context, R.style.CustomDialogTheme)
-                .setTitle("Nuke planet Jupiter?")
+                .setTitle("Invitation sent")
                 .setMessage("Note that nuking planet Jupiter will destroy everything in there.")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override

@@ -21,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,19 +32,16 @@ import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.adapter.tripDetail.CustomSpinnerAdapter;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripDataModel;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
-import com.techease.groupiiapplication.dataModel.getAllTrip.User;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.GetPaymentExpensesResponse;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
 import com.techease.groupiiapplication.dataModel.tripDetial.addPaymentExpenses.AddPaymentResponse;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentCallBackListener;
+import com.techease.groupiiapplication.interfaceClass.AddPaymentOnBackListener;
 import com.techease.groupiiapplication.interfaceClass.AddPaymentOnSetpFourCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.EditPaymentCallBackListener;
 import com.techease.groupiiapplication.interfaceClass.backParticipantsCostsClickInterface.ConnectParticipantCostsBackClick;
 import com.techease.groupiiapplication.network.BaseNetworking;
-import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepFourPaymentActivity;
-import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
-import com.techease.groupiiapplication.ui.activity.tripDetailScreen.getExpenditureExpensesListener.ConnectExpenditures;
 import com.techease.groupiiapplication.ui.fragment.tripDetialScreen.PaymentsFragment;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
@@ -56,7 +54,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,32 +64,33 @@ import retrofit2.Response;
 
 public class AddPaymentFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-
     @BindView(R.id.spUserNameFragment)
     Spinner spUserName;
     Dialog addActivityTypeDialog;
     Dialog dialog;
     boolean valid;
-    private AddPaymentCallBackListener callBackListener;
     String strPaymentTitle, strPaymentDate, strPaymentAmount, strPaymentShortDescription, strPaymentMethod = "VISA", strPaymentUser;
     TextInputLayout tillPaymentTitle, tillPaymentDate, tillPaymentAmount, tillShortDescription;
     EditText etPaymentTitle, etPaymentDate, etPaymentAmount, etShortDescription;
-    String strIsPersonal = "1", strActivityType, strPersonal = "1";
+    String strIsPersonal = "0", strActivityType, strPaid = "0";
     ImageView ivAddPaymentBack, ivType;
     ImageView ivVisa, ivMasterCard, ivAmericanCard, ivJcb;
     TextView tvAddPayment;
     SwitchCompat swAddGroupPayment;
     LinearLayout llPaymentMethod;
     LinearLayout llTaxi, llBus, llReserv, llFlight;
-    String strPaid;
 
+    @BindView(R.id.rlAddActivity)
+    RelativeLayout rlAddActivity;
+    @BindView(R.id.vMinusIcon)
+    View ivMinusIcon;
 
-    AddPaymentOnSetpFourCallBackListener addPaymentOnSetpFourCallBackListener;
+    private AddPaymentOnBackListener addPaymentOnBackListener;
+    private AddPaymentOnSetpFourCallBackListener addPaymentOnSetpFourCallBackListener;
+
 
     public ArrayList<AddTripDataModel> userList = new ArrayList<>();
     CustomSpinnerAdapter customSpinnerAdapter;
-
-
     String strEditID = "0", strEditType = "null";
 
     public static AddPaymentFragment newInstance(String strEditPaymentID, String strEditPaymentType) {
@@ -109,11 +107,18 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         View parentView = inflater.inflate(R.layout.fragment_add_payment, container, false);
         ButterKnife.bind(this, parentView);
         dialog = AlertUtils.createProgressDialog(getActivity());
-        if (getActivity() instanceof AddPaymentCallBackListener)
-            callBackListener = (AddPaymentCallBackListener) getActivity();
+
+        if (strEditType.equals("RecentTransaction")) {
+            rlAddActivity.setVisibility(View.GONE);
+            ivMinusIcon.setVisibility(View.GONE);
+        }
+
+        if (getActivity() instanceof AddPaymentOnBackListener)
+            addPaymentOnBackListener = (AddPaymentOnBackListener) getActivity();
 
         if (getActivity() instanceof AddPaymentOnSetpFourCallBackListener)
             addPaymentOnSetpFourCallBackListener = (AddPaymentOnSetpFourCallBackListener) getActivity();
+
 
         customSpinnerAdapter = new CustomSpinnerAdapter(getActivity(), userList);
         spUserName.setAdapter(customSpinnerAdapter);
@@ -136,7 +141,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
         tvAddPayment = parentView.findViewById(R.id.tvPaymentAddFragment);
         swAddGroupPayment = parentView.findViewById(R.id.swAddGroupPaymentFragment);
 
-
 //        spUserName = parentView.findViewById(R.id.spUserName);
         spUserName.setOnItemSelectedListener(this);
         ivVisa = parentView.findViewById(R.id.ivVisaFragment);
@@ -152,30 +156,21 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                 } else {
                     strIsPersonal = "1";
                     swAddGroupPayment.setText(getResources().getString(R.string.personal));
-
-
                 }
             }
         });
 
         GetUserTrip();
-
         if (AppRepository.addPaymentOnStepFour(getActivity())) {
-            strPaid = "1";
             ApiCallGetUserTrip();
         }
-
-
         try {
             if (strEditType.equals("RecentTransaction")) {
                 getPaymentForEditExpenses();
             }
-
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
-
-
         return parentView;
     }
 
@@ -183,9 +178,11 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     @OnClick({R.id.tvPaymentAddFragment, R.id.ivAddPaymentBack, R.id.ivTypeFragment, R.id.ivVisaFragment, R.id.ivMastercardFragment, R.id.ivJcbFragment, R.id.ivAmericanExpressFragment, R.id.etAddPaymentDateFragment,})
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
 
+            case R.id.ivAddPaymentBack:
+                addPaymentOnBackListener.onPaymentBack();
+                break;
             case R.id.tvPaymentAddFragment:
                 if (isValidAddPayment()) {
                     if (strEditType.equals("RecentTransaction")) {
@@ -294,49 +291,21 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
     }
 
     private void ApiCallForAddPayment() {
-        if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
-            //zero for paid
-            strPaid = "0";
-        } else {
-            //one for expenses
-            strPaid = "1";
-            strIsPersonal = "1";
-        }
-
-//        Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
-        if (AppRepository.addPaymentOnStepFour(getActivity())) {
-            strPaid = "1";
-        }
         dialog.show();
-
-
-        Toast.makeText(getActivity(), strIsPersonal+"", Toast.LENGTH_SHORT).show();
         Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().addPayment(AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
-                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
+                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, "0");
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
-
-                Log.d("zma addpayment", String.valueOf(response));
                 if (response.isSuccessful()) {
                     dialog.dismiss();
-//                    etPaymentTitle.setText("");
-//                    etPaymentDate.setText("");
-//                    etPaymentAmount.setText("");
-//                    etShortDescription.setText("");
 
-
-                    if (!AppRepository.addPaymentOnStepFour(getActivity())) {
-                        callBackListener.onPaymentAdddCallBack();
+                    if (strEditType.equals("RecentTransaction")) {
+                        addPaymentOnSetpFourCallBackListener.onAddPaymentOnSetpFourBack();
+                    } else {
                         ConnectParticipantCostsBackClick.setMyBoolean(true);
-
                         PaymentsFragment paymentsFragment = new PaymentsFragment();
                         paymentsFragment.getPaymentExpenses();
-
-//                        KeyBoardUtils.hideKeyboard(requireActivity());
-//                        KeyBoardUtils.closeKeyboard(getActivity());
-                    } else {
-                        addPaymentOnSetpFourCallBackListener.onAddPaymentOnSetpFourBack();
                     }
 
 
@@ -368,27 +337,25 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     }
 
-
     private void ApiCallForEditPayment() {
         dialog.show();
-        Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().editPayment(strEditID, AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()),
-                strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);
+        Call<AddPaymentResponse> addPaymentResponseCall = BaseNetworking.ApiInterface().editPayment(strEditID, AppRepository.mTripIDForUpdation(getActivity()), AppRepository.mUserID(getActivity()), strPaymentAmount, strActivityType, strPaymentTitle, strPaymentDate, strPaymentShortDescription, strIsPersonal, strPaymentUser, strPaymentMethod, strPaid);//0 for paid payment 1 for expenses
         addPaymentResponseCall.enqueue(new Callback<AddPaymentResponse>() {
             @Override
             public void onResponse(Call<AddPaymentResponse> call, Response<AddPaymentResponse> response) {
 
-                Log.d("zma addpayment", String.valueOf(response));
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     etPaymentTitle.setText("");
                     etPaymentDate.setText("");
                     etPaymentAmount.setText("");
-                    etShortDescription.setText(""); 
-                    ConnectParticipantCostsBackClick.setMyBoolean(true);
+                    etShortDescription.setText("");
 
-                    KeyBoardUtils.hideKeyboard(requireActivity());
-                    KeyBoardUtils.closeKeyboard(getActivity());
-                    requireActivity().finish();
+
+                    ConnectParticipantCostsBackClick.setMyBoolean(true);
+                    PaymentsFragment paymentsFragment = new PaymentsFragment();
+                    paymentsFragment.getPaymentExpenses();
+                    requireActivity().onBackPressed();
 
 
                 } else {
@@ -479,18 +446,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (AddPaymentsTabsFragment.anIntViewPagerPosition == 0) {
-            swAddGroupPayment.setVisibility(View.VISIBLE);
-        } else {
-            swAddGroupPayment.setVisibility(View.GONE);
-
-        }
-
-    }
-
 
     private void getPaymentForEditExpenses() {
 
@@ -515,14 +470,6 @@ public class AddPaymentFragment extends Fragment implements View.OnClickListener
                             strIsPersonal = recentTransaction.getIsPersonal() + "";
                             strPaymentUser = recentTransaction.getUserid() + "";
                             strPaid = recentTransaction.getPaid() + "";
-
-
-                            if (strPaid.equals("1")) {
-                                swAddGroupPayment.setVisibility(View.GONE);
-                            }
-
-
-//                            Toast.makeText(getActivity(), strPaid, Toast.LENGTH_SHORT).show();
 
                             tvAddPayment.setText("Update");
                             if (recentTransaction.getIsPersonal() == 0) {

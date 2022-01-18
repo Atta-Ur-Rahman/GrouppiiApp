@@ -57,6 +57,17 @@ public class SplashActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
+        Uri uri = getIntent().getData();
+        String strUsername = "";
+        if (uri != null) {
+            strUsername = uri.getQueryParameter("tripid");
+            Toast.makeText(this, strUsername, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(SplashActivity.this,HomeActivity.class));
+        } else {
+
+            // Your app will pop up even if http://www.myurl.com/sso is clicked, so better to handle null uri
+        }
+
         try {
             Bundle intent = getIntent().getExtras();
             if (getIntent().getExtras() != null) {
@@ -103,15 +114,8 @@ public class SplashActivity extends AppCompatActivity {
             p.printStackTrace();
         }
 
-        Uri uri = getIntent().getData();
-        String strUsername = "";
-        if (uri != null) {
-            strUsername = uri.getQueryParameter("tripid");
-//            Toast.makeText(this, strUsername, Toast.LENGTH_SHORT).show();
-        } else {
 
-            // Your app will pop up even if http://www.myurl.com/sso is clicked, so better to handle null uri
-        }
+
 //        Geocoder gcd = new Geocoder(this, Locale.getDefault());
 //        List<Address> addresses = null;
 //        try {

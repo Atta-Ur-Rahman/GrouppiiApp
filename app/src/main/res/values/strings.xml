@@ -18,7 +18,7 @@
 
     <string name="default_notification_channel_id">default_notification_channel_id</string>
 
-
+    <string name="plesase_write_your_confirmation">Please write your confirmation number</string>
 
     <string name="plesase_write_your_title">Please write your title</string>
     <string name="plesase_write_your_description">Please write your description</string>

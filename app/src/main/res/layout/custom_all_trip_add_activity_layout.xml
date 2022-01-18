@@ -38,14 +38,10 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/vertical_dot_line"/>
 
-
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -54,8 +50,7 @@
         android:paddingLeft="@dimen/widget_margin"
         android:paddingRight="@dimen/widget_margin"
         android:paddingBottom="@dimen/widget_margin"
-        android:layout_marginLeft="100dp"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="90dp"
         android:background="@drawable/round_bg">
 
 
@@ -78,7 +73,9 @@
             android:text="Babby Farell"
             android:textStyle="bold"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/widget_margin"
+            android:layout_marginTop="15dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintLeft_toRightOf="@id/ivTaxi"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/black"
