@@ -63,7 +63,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
     public static AllTripDayDataModel allTripDayDataList = new AllTripDayDataModel();
     String strTripDate, strActivityTitle, strActivityDate, strActivityTime, strActivityNote;
 
-    public static String strAddType;
+    public static String strAddType = "add";
 
     public static AddAndEditDayPlaneFragment newInstance(AllTripDayDataModel allTripDayDataModel, String strAddTyp) {
         AddAndEditDayPlaneFragment fragment = new AddAndEditDayPlaneFragment();
@@ -111,7 +111,7 @@ public class AddAndEditDayPlaneFragment extends Fragment implements View.OnClick
         switchCompatGroupActivity = parentView.findViewById(R.id.swAddGroupActivity);
 
 
-        if (AppRepository.mEditDayPlanActivity(getActivity())) {
+        if (strAddType.equals("Update")) {
             AppRepository.mPutValue(getActivity()).putBoolean("mEditDayPlanActivity", false).commit();
             tvAddActivityTitle.setText("Edit Activity");
             tvAddActivity.setText("Save");

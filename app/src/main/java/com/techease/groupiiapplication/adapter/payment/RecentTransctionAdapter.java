@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.techease.groupiiapplication.R;
 import com.techease.groupiiapplication.dataModel.payments.getPaymentsExpenses.RecentTransaction;
 import com.techease.groupiiapplication.ui.activity.payments.EditPaymentActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.DateUtills;
 
 import java.util.List;
@@ -57,12 +59,16 @@ public class RecentTransctionAdapter extends RecyclerView.Adapter<RecentTranscti
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, EditPaymentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("edit_payment_id", recentTransaction.getId() + "");
-                bundle.putString("edit_payment_type", "RecentTransaction");
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (TripDetailScreenActivity.aBooleanIsCreatedBy) {
+                    Intent intent = new Intent(context, EditPaymentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("edit_payment_id", recentTransaction.getId() + "");
+                    bundle.putString("edit_payment_type", "RecentTransaction");
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "Payment update and delete admin only", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

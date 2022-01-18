@@ -79,7 +79,6 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
         holder.tvMessage.setText(chatAllUserDataModel.getMessage());
 
 
-
         if (!chatAllUserDataModel.getCreatedAt().equals("null")) {
 
 //            holder.tvChatTime.setText(chatAllUserDataModel.getCreatedAt());
@@ -116,6 +115,8 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
                 bundle.putString("toUserId", chatAllUserDataModel.getToUser());
                 bundle.putString("type", chatAllUserDataModel.getMessage());
                 bundle.putString("picture", chatAllUserDataModel.getPicture());
+
+                Log.d("zmamessagetype", chatAllUserDataModel.getMessage());
 
                 Constants.currentUserChatId = chatAllUserDataModel.getToUser();
                 intent.putExtras(bundle);

@@ -327,7 +327,13 @@ public class AddReservsActivity extends AppCompatActivity implements View.OnClic
                 DateUtills.GetDatePickerDialog(etTripStartDate, AddReservsActivity.this);
                 break;
             case R.id.etTripEndtDate:
-                DateUtills.GetDatePickerDialog(etTripEndDate, AddReservsActivity.this);
+                if (!etTripStartDate.getText().toString().isEmpty()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        DateUtills.GetEndDatePickerDialog(etTripEndDate, AddReservsActivity.this, etTripStartDate.getText().toString());
+                    }
+                } else {
+                    Toast.makeText(AddReservsActivity.this, "first set start date", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.llCoverImage:

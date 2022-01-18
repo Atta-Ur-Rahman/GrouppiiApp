@@ -117,7 +117,7 @@ public class AddUserTripParticpantActivity extends AppCompatActivity implements 
         ContactGetAndCheckPermission();
 
 
-        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+//        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         etPhone.addTextChangedListener(new TextWatcher() {
             @Override

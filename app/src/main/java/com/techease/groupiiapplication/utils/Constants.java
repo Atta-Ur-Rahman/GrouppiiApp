@@ -15,7 +15,6 @@ public class Constants {
 
     public static boolean aBooleanGetImageForReserve = false;
 
-
-    public static boolean IS_FROM_STEP_4 = true;
+    public static boolean IS_CREATE_BY = true;
 
 }

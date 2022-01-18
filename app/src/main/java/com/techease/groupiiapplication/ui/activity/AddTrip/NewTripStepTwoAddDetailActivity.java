@@ -332,7 +332,13 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
                 DateUtills.GetStartDatePickerDialog(etTripStartDate, etTripEndDate, etTripPayByDate, this);
                 break;
             case R.id.etTripEndtDate:
-                DateUtills.GetDatePickerDialog(etTripEndDate, this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (!etTripEndDate.getText().toString().isEmpty()) {
+                        DateUtills.GetEndDatePickerDialog(etTripStartDate, this, etTripStartDate.getText().toString());
+                    } else {
+                        Toast.makeText(this, "start date not set", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             case R.id.etTripPayByDate:
                 DateUtills.GetDatePickerDialog(etTripPayByDate, this);
@@ -572,7 +578,6 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
 
 
     }
-
 
 
     @Override

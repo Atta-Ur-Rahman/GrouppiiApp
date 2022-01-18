@@ -28,6 +28,7 @@ import com.techease.groupiiapplication.dataModel.getReserveModel.GetReserveDataM
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepTwoAddDetailActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.AddReservsActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.DateUtills;
 import com.techease.groupiiapplication.utils.GeneralUtills;
 
@@ -79,60 +80,68 @@ public class AllReserveAdapter extends RecyclerView.Adapter<AllReserveAdapter.My
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(context, holder.itemView);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater()
-                        .inflate(R.menu.edit_delete_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().toString().equals("Delete")) {
-
-                            BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder((Activity) context)
-                                    .setTitle("Delete RSVP?")
-                                    .setMessage("Are you sure you want to this RSVP?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", (dialogInterface, which) -> {
-                                        ApiCallForDeleteRsvp(position, String.valueOf(getReserveDataModel.getId()));
-                                        dialogInterface.dismiss();
-                                    })
-                                    .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
-                                    .build();
-
-                            // Show Dialog
-                            mBottomSheetDialogd.show();
-
-                        }
 
 
-                        if (item.getTitle().toString().equals("Edit")) {
+                if (TripDetailScreenActivity.aBooleanIsCreatedBy) {
 
-                            Intent intent = new Intent(context, AddReservsActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("rsvpID", String.valueOf(getReserveDataModel.getId()));
-                            bundle.putString("image", getReserveDataModel.getImage());
-                            bundle.putString("title", getReserveDataModel.getTitle());
-                            bundle.putString("start_date", getReserveDataModel.getFromdate());
-                            bundle.putString("end_date", getReserveDataModel.getTodate());
-                            bundle.putString("status", String.valueOf(getReserveDataModel.getConfirmation()));
-                            bundle.putBoolean("edit", true);
-                            bundle.putString("location", getReserveDataModel.getAddress());
-                            intent.putExtras(bundle);
-                            context.startActivity(intent);
+                    PopupMenu popup = new PopupMenu(context, holder.itemView);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.edit_delete_menu, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getTitle().toString().equals("Delete")) {
+
+                                BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder((Activity) context)
+                                        .setTitle("Delete RSVP?")
+                                        .setMessage("Are you sure you want to this RSVP?")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Yes", (dialogInterface, which) -> {
+                                            ApiCallForDeleteRsvp(position, String.valueOf(getReserveDataModel.getId()));
+                                            dialogInterface.dismiss();
+                                        })
+                                        .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                                        .build();
+
+                                // Show Dialog
+                                mBottomSheetDialogd.show();
+
+                            }
+
+
+                            if (item.getTitle().toString().equals("Edit")) {
+
+                                Intent intent = new Intent(context, AddReservsActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("rsvpID", String.valueOf(getReserveDataModel.getId()));
+                                bundle.putString("image", getReserveDataModel.getImage());
+                                bundle.putString("title", getReserveDataModel.getTitle());
+                                bundle.putString("start_date", getReserveDataModel.getFromdate());
+                                bundle.putString("end_date", getReserveDataModel.getTodate());
+                                bundle.putString("status", String.valueOf(getReserveDataModel.getConfirmation()));
+                                bundle.putBoolean("edit", true);
+                                bundle.putString("location", getReserveDataModel.getAddress());
+                                intent.putExtras(bundle);
+                                context.startActivity(intent);
 //                            } else {
 //                                Toast.makeText(this, getString(R.string.admin_can_edit_trip_settings), Toast.LENGTH_SHORT).show();
 //                            }
 
+                            }
+
+
+                            return true;
                         }
+                    });
+
+                    popup.show(); //showing popup menu
 
 
-                        return true;
-                    }
-                });
-
-                popup.show(); //showing popup menu
-
+                } else {
+                    Toast.makeText(context, "Rsvp update and delete admin only", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

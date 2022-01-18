@@ -62,12 +62,7 @@ public class AllTripDayPlanFragment extends Fragment implements View.OnClickList
     public static TextView tvTripNotFound;
     Dialog dialog;
 
-    private TextView dateTimeDisplay;
-    private Calendar calendar;
-    private SimpleDateFormat dateFormat;
-    private String date;
 
-    //    Dialog dialog;
     String strDate, strNewDate;
 
     LinearLayoutManager linearLayoutManager;

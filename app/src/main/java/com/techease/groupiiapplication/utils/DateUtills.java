@@ -19,10 +19,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -85,6 +88,60 @@ public class DateUtills {
 
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void GetEndDatePickerDialog(EditText tvSetDate, Context context, String strEndDate) {
+
+        int mYear, mMonth, mDay;
+        String date = AppRepository.mTripStartDate(context);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dt = null;
+        try {
+            dt = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar newDate = Calendar.getInstance();
+                    newDate.set(year, monthOfYear, dayOfMonth);
+                    String selectedDate = simpledateformat.format(newDate.getTime());
+                    tvSetDate.setText(selectedDate);
+
+
+                }, mYear, mMonth, mDay);
+
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+
+            c.setTime(Objects.requireNonNull(sdf.parse(strEndDate)));
+            c.add(Calendar.DATE, 2);  // number of days to add
+            strEndDate = sdf.format(c.getTime());
+
+            Date mDate = sdf.parse(strEndDate);
+            assert mDate != null;
+            long timeInMilliseconds = mDate.getTime();
+            datePickerDialog.getDatePicker().setMinDate(timeInMilliseconds - 1000);
+            System.out.println("Date in milli :: " + timeInMilliseconds);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        datePickerDialog.show();
+
+
+    }
+
     public static void GetStartDatePickerDialog(EditText tvSetDate, EditText tvNext7Day, EditText tvNext14Days, Context context) {
 
         int mYear, mMonth, mDay;
@@ -139,9 +196,6 @@ public class DateUtills {
         tvSetDate.setText(dt);
 
     }
-
-
-
 
 
     public static void GetDatePickerNext14Days(EditText tvSetDate, String dt) throws ParseException {
@@ -205,8 +259,6 @@ public class DateUtills {
         }
         return str;
     }
-
-
 
 
     public static String getCurrentDate() {
@@ -281,7 +333,6 @@ public class DateUtills {
         }
         return "";
     }
-
 
 
     public static String getDateActivityDayFormate(String timestamp) {
