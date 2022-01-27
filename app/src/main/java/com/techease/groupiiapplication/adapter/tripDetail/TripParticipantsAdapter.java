@@ -100,6 +100,24 @@ public class TripParticipantsAdapter extends RecyclerView.Adapter<TripParticipan
             }
 
         });
+        holder.tvNotRegesterUser.setOnClickListener(v -> {
+            if (isCreatedBy) {
+                Intent intent = new Intent(context, EditParticipantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", user.getName());
+                bundle.putString("email", user.getEmail() + "");
+                bundle.putString("phone", user.getPhone() + "");
+                bundle.putString("userId", String.valueOf(user.getUserid()));
+                bundle.putString("shared_cost", String.valueOf(user.getSharedCost()));
+                bundle.putString("trip_id", String.valueOf(user.getTripid()));
+                bundle.putBoolean("aBooleanIsTripDetailScreen", true);
+                intent.putExtras(bundle);
+                context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+            } else {
+                Toast.makeText(context, "Only admin can manage participant", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
 
     }

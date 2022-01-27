@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.core:core:1.5.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f1848d1878b55b7b76b745f7c7ac29e/transformed/core-1.5.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ba5200b3785774348683658c18011b7b/transformed/core-1.5.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f1848d1878b55b7b76b745f7c7ac29e/transformed/core-1.5.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f1848d1878b55b7b76b745f7c7ac29e/transformed/core-1.5.0/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f1848d1878b55b7b76b745f7c7ac29e/transformed/core-1.5.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ba5200b3785774348683658c18011b7b/transformed/core-1.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ba5200b3785774348683658c18011b7b/transformed/core-1.5.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/ba5200b3785774348683658c18011b7b/transformed/core-1.5.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

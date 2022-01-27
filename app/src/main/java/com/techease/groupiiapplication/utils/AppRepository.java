@@ -29,10 +29,10 @@ public class AppRepository {
         return mGetValue(context).getString("auth_token", "");
     }
 
-//    public static String mTripId(Context context) {
-//        return mGetValue(context).getString("tripID", "");
-//    }
 
+    public static String mShareTripId(Context context) {
+        return mGetValue(context).getString("shareTripId", "linknotavailable");
+    }
 
     public static String mUrl(Context context) {
         return mGetValue(context).getString("url", "");
@@ -71,6 +71,7 @@ public class AppRepository {
     public static String mTripStartDate(Context context) {
         return String.valueOf(mGetValue(context).getString("trip_start_date", null));
     }
+
     public static String mTripEndDate(Context context) {
         return String.valueOf(mGetValue(context).getString("trip_end_date", null));
     }

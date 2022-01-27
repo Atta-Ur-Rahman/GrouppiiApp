@@ -2,6 +2,7 @@ package com.techease.groupiiapplication.ui.activity.profile;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +40,7 @@ import com.techease.groupiiapplication.dataModel.updateUserProfile.UpdateUserPro
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
+import com.techease.groupiiapplication.utils.Connectivity;
 import com.techease.groupiiapplication.utils.PhoneNumberValidator;
 
 import org.json.JSONException;
@@ -152,7 +156,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         }
     }
-
 
 
     private void checkImagePermission() {
@@ -280,6 +283,56 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+//
+//    @SuppressLint("ResourceType")
+//    private boolean isValid() {
+//        valid = true;
+//        strName = etName.getText().toString();
+//        strEmail = etEmail.getText().toString();
+//        strPhoneNumber = strPhoneNumber.replace(" ", "");
+//
+//        if (strName.isEmpty()) {
+//            valid = false;
+//            etName.setError(getString(R.string.plesase_write_your_name));
+//
+//        } else {
+//            etName.setError(null);
+//        }
+//
+//        if (strEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
+//            etEmail.setError(getString(R.string.valid_email));
+//            valid = false;
+//        } else {
+//            etEmail.setError(null);
+//
+//        }
+//
+//
+//        if (strPhoneNumber.isEmpty() || strPhoneNumber.length() < 5) {
+//            etPhoneNumber.setError(getString(R.string.valid_email));
+//            valid = false;
+//        } else {
+//            etPhoneNumber.setError(null);
+//
+//        }
+//
+//        if (!Connectivity.isConnected(this)) {
+//            valid = false;
+//            Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+//        }
+//
+//        try {
+//            if (ContextCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                valid = false;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
+//        return valid;
+//    }
 
     private void ApiCallForUpdateProfile() {
         dialog.show();
@@ -365,7 +418,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
     @SuppressLint("ResourceType")
     private boolean isValid() {
         valid = true;
@@ -373,7 +425,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         strEmail = etEmail.getText().toString();
         strPhoneNumber = etPhoneNumber.getText().toString();
 
-        if (strName.isEmpty()) {
+        if (strName.isEmpty() && strName.length() > 0) {
             valid = false;
             etName.setError(getString(R.string.plesase_write_your_name));
 

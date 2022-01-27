@@ -21,11 +21,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.dataModel.CommonResponse;
+import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
 import com.techease.groupiiapplication.dataModel.loginSignup.login.LogInResponse;
 import com.techease.groupiiapplication.dataModel.newLogin.LoginResponse;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.HomeActivity;
+import com.techease.groupiiapplication.ui.activity.SplashActivity;
 import com.techease.groupiiapplication.ui.activity.profile.EditProfileActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 import com.techease.groupiiapplication.utils.Connectivity;
@@ -72,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().hide();
         dialog = AlertUtils.createProgressDialog(this);
         initTextWatcher();
-
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -163,29 +166,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
                     dialog.dismiss();
                     if (response.body().isSuccess()) {
-//                        try {
-                        AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
-
-                        AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("lat", String.valueOf(response.body().getData().getLatitude())).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("lng", String.valueOf(response.body().getData().getLongitude())).commit();
-                        AppRepository.mPutValue(LoginActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
-
-
-                        Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                        LoginActivity.this.startActivity(mainIntent);
-                        LoginActivity.this.finishAffinity();
-                        Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+                        try {
+                            AppRepository.mPutValue(LoginActivity.this).putString("mUserPassword", strPassword).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putInt("userID", Integer.parseInt(response.body().getData().getId() + "")).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("mUserName", String.valueOf(response.body().getData().getName())).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("mUserEmail", String.valueOf(response.body().getData().getEmail())).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("mProfilePicture", String.valueOf(response.body().getData().getPicture())).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putBoolean("loggedIn", true).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("lat", String.valueOf(response.body().getData().getLatitude())).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("lng", String.valueOf(response.body().getData().getLongitude())).commit();
+                            AppRepository.mPutValue(LoginActivity.this).putString("mPhoneNumber", String.valueOf(response.body().getData().getPhone())).commit();
 
 
-                        Log.d("zmaresponse",response.body().getData().getFcmToken()+"");
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
+                            if (AppRepository.mShareTripId(LoginActivity.this).equals("linknotavailable")) {
+                                Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                LoginActivity.this.startActivity(mainIntent);
+                                LoginActivity.this.finishAffinity();
+                            } else {
+                                ApiCallAddUserToTrip(AppRepository.mShareTripId(LoginActivity.this));
+
+                            }
+
+                            Toast.makeText(LoginActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
 
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password_email), Toast.LENGTH_SHORT).show();
@@ -213,6 +220,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    private void ApiCallAddUserToTrip(String shareTripId) {
+        Call<CommonResponse> addUserToTrip = BaseNetworking.ApiInterface().addUserToTrip("" + AppRepository.mUserID(this), shareTripId);
+        addUserToTrip.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "You Added to this trip", Toast.LENGTH_SHORT).show();
+                    GetTripById(shareTripId);
+                    AppRepository.mPutValue(LoginActivity.this).putString("shareTripId", "linknotavailable").commit();
+
+                } else {
+                    Toast.makeText(LoginActivity.this, "Some went wrong please try again", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
     private void initTextWatcher() {
 
@@ -250,5 +280,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+
+    private void GetTripById(String strTripID) {
+        Call<GetSingleTripResponse> getSingleTripResponseCall = BaseNetworking.ApiInterface().getTripById("trips/getsingletrip/" + strTripID);
+        getSingleTripResponseCall.enqueue(new Callback<GetSingleTripResponse>() {
+            @Override
+            public void onResponse(Call<GetSingleTripResponse> call, Response<GetSingleTripResponse> response) {
+                if (response.isSuccessful()) {
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, TripDetailScreenActivity.class);
+                    Bundle bundle = new Bundle();
+                    AppRepository.mPutValue(LoginActivity.this).putString("tripIDForUpdation", String.valueOf(response.body().getData().getId())).commit();
+
+                    bundle.putString("image", response.body().getData().getCoverimage());
+                    bundle.putString("title", response.body().getData().getTitle());
+                    bundle.putString("trip_type", response.body().getData().getStatus());
+                    bundle.putString("start_date", response.body().getData().getFromdate());
+                    bundle.putString("end_date", response.body().getData().getTodate());
+                    bundle.putString("pay_date", response.body().getData().getPayDate());
+                    bundle.putString("description", response.body().getData().getDescription());
+                    bundle.putString("location", response.body().getData().getLocation());
+                    bundle.putBoolean("is_createdby", false);
+                    intent.putExtras(bundle);
+                    LoginActivity.this.startActivity(intent);
+                    LoginActivity.this.finish();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSingleTripResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 }

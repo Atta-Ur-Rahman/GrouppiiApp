@@ -1,12 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.exoplayer:exoplayer-hls:2.13.2@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/c462bb86013f21dcf08a56e1cabc7097/transformed/jetified-exoplayer-hls-2.13.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f35cc31588ace15dffce3c51ec94d17/transformed/jetified-exoplayer-hls-2.13.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/c462bb86013f21dcf08a56e1cabc7097/transformed/jetified-exoplayer-hls-2.13.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/c462bb86013f21dcf08a56e1cabc7097/transformed/jetified-exoplayer-hls-2.13.2/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/c462bb86013f21dcf08a56e1cabc7097/transformed/jetified-exoplayer-hls-2.13.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f35cc31588ace15dffce3c51ec94d17/transformed/jetified-exoplayer-hls-2.13.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f35cc31588ace15dffce3c51ec94d17/transformed/jetified-exoplayer-hls-2.13.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7f35cc31588ace15dffce3c51ec94d17/transformed/jetified-exoplayer-hls-2.13.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-hls/2.13.2/df74ba58da22a01a395a80cc3bbc5aaaf336e989/exoplayer-hls-2.13.2-javadoc.jar!/" />

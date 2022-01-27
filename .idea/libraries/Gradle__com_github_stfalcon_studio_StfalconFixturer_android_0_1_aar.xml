@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.stfalcon-studio:StfalconFixturer-android:0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5a68bad63ef59ca694680d771cdd3d7b/transformed/jetified-StfalconFixturer-android-0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5a68bad63ef59ca694680d771cdd3d7b/transformed/jetified-StfalconFixturer-android-0.1/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5a68bad63ef59ca694680d771cdd3d7b/transformed/jetified-StfalconFixturer-android-0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/3fc45f116aa1d6bacbabaa503e9848df/transformed/jetified-StfalconFixturer-android-0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/3fc45f116aa1d6bacbabaa503e9848df/transformed/jetified-StfalconFixturer-android-0.1/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/3fc45f116aa1d6bacbabaa503e9848df/transformed/jetified-StfalconFixturer-android-0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

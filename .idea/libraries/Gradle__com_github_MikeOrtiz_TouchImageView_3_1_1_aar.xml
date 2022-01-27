@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.MikeOrtiz:TouchImageView:3.1.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5bb32d5ac0c04ec4dea16a237839ca95/transformed/jetified-TouchImageView-3.1.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5bb32d5ac0c04ec4dea16a237839ca95/transformed/jetified-TouchImageView-3.1.1/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/5bb32d5ac0c04ec4dea16a237839ca95/transformed/jetified-TouchImageView-3.1.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/8fb8cc7c2bd254fde62c3400e3721482/transformed/jetified-TouchImageView-3.1.1/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/8fb8cc7c2bd254fde62c3400e3721482/transformed/jetified-TouchImageView-3.1.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/8fb8cc7c2bd254fde62c3400e3721482/transformed/jetified-TouchImageView-3.1.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

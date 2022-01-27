@@ -334,7 +334,7 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
             case R.id.etTripEndtDate:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (!etTripEndDate.getText().toString().isEmpty()) {
-                        DateUtills.GetEndDatePickerDialog(etTripStartDate, this, etTripStartDate.getText().toString());
+                        DateUtills.GetEndDatePickerDialog(etTripEndDate, this, etTripStartDate.getText().toString());
                     } else {
                         Toast.makeText(this, "start date not set", Toast.LENGTH_SHORT).show();
                     }
@@ -406,12 +406,15 @@ public class NewTripStepTwoAddDetailActivity extends AppCompatActivity implement
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            imageUri = getPickImageResultUri(data);
+            Uri getImage = getPickImageResultUri(data);
+            imageUri = getImage;
             ivCoverImage.setVisibility(View.VISIBLE);
             ivCoverImage.setImageURI(imageUri);
             sourceFile = new File(imageUri.getPath());
         } else {
-            ivCoverImage.setVisibility(View.GONE);
+            if (sourceFile == null)
+                ivCoverImage.setVisibility(View.GONE);
+
         }
 
     }

@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.thefinestartist:finestwebview:1.2.7@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/229ea0fbc545fce661376962453c5020/transformed/jetified-finestwebview-1.2.7/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/229ea0fbc545fce661376962453c5020/transformed/jetified-finestwebview-1.2.7/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/229ea0fbc545fce661376962453c5020/transformed/jetified-finestwebview-1.2.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/1044eb9b2671d41ad9c6b23404ad85d0/transformed/jetified-finestwebview-1.2.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/1044eb9b2671d41ad9c6b23404ad85d0/transformed/jetified-finestwebview-1.2.7/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/1044eb9b2671d41ad9c6b23404ad85d0/transformed/jetified-finestwebview-1.2.7/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.thefinestartist/finestwebview/1.2.7/3905d4c708e10209a48297c66ae86408302d5ec9/finestwebview-1.2.7-javadoc.jar!/" />

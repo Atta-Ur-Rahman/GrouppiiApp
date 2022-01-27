@@ -1,6 +1,7 @@
 
 package com.techease.groupiiapplication.network;
 
+import com.techease.groupiiapplication.dataModel.CommonResponse;
 import com.techease.groupiiapplication.dataModel.addCriditModel.AddCreditCardResponse;
 import com.techease.groupiiapplication.dataModel.deleteGalleryImage.DeleteGalleryPhotoResponse;
 import com.techease.groupiiapplication.dataModel.deleteRsvp.DeleteRsvpResponse;
@@ -391,4 +392,11 @@ public interface ApiInterface {
     @GET("reserve/delete/{RsvpID}")
     Call<DeleteRsvpResponse> deleteReserve(
             @Path("RsvpID") String rsvpID);
+
+
+    @FormUrlEncoded
+    @POST("trips/addusertotrip")
+    Call<CommonResponse> addUserToTrip(
+            @Field("userid") String userId,
+            @Field("tripid") String tripId);
 }

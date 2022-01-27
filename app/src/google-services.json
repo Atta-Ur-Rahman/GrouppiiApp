@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "954602418652",
+    "firebase_url": "https://ollie-369.firebaseio.com",
+    "project_id": "ollie-369",
+    "storage_bucket": "ollie-369.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954602418652:android:e83af906ff5eab3ee75f19",
+        "android_client_info": {
+          "package_name": "com.techease.groupiiapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954602418652-vd5rjgn8ni88sj85fj8rv37ei6r7rje9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techease.groupiiapplication",
+            "certificate_hash": "5fff08a9f5ee327d6b6e6711add6fe6293b78db1"
+          }
+        },
+        {
+          "client_id": "954602418652-aqku20e8tq29drqevfh9a1vbdp6sse7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsYr4lvTDxYbEJ8qm2Z4WvS7Q8IwxrYjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954602418652-aqku20e8tq29drqevfh9a1vbdp6sse7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -32,11 +32,15 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.api.ApiClass;
 import com.techease.groupiiapplication.dataModel.updateUserProfile.UpdateUserProfileResponse;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.AddTrip.NewTripStepOneInviteFriendActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.SignUpActivity;
 import com.techease.groupiiapplication.ui.activity.profile.EditProfileActivity;
+import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
 import com.techease.groupiiapplication.ui.fragment.SearchFragment;
 import com.techease.groupiiapplication.ui.fragment.notification.ActivityFragment;
 import com.techease.groupiiapplication.ui.fragment.profile.SettingsFragment;
@@ -64,6 +68,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -143,6 +148,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
 
 
     private void getCurrentLocationPermission() {

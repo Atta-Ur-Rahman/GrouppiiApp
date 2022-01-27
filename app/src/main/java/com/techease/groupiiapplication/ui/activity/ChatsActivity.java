@@ -304,7 +304,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void sendMessageFun(String messageType, String strMessage) {
-        if (strMessage.length() > 1) {
+        if (strMessage.length() > 0) {
             JSONObject object = new JSONObject();
             try {
                 if (strChatType.equals("group")) {
@@ -442,16 +442,16 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                                     currentChatUserId = jsonObject.getString("id");
                                     Log.d("zmatestingIDs", "type" + strChatType + "FromUserID = " + fromUser + "  and   " + "ToUserID = " + toUser + "   and  " + "AppUserID = " + AppRepository.mUserID(ChatsActivity.this) + "  and  CurrentChatID " + Constants.currentUserChatId);
 
-//                                    Log.d("zma message send sho", "" + jsonObject);
                                     if (strChatType.equals("user") && !toUser.equals("null")) {
-//                                        Log.d("zmatestingIDs", "FromUserID = " + fromUser + "  and   " + "ToUserID = " + toUser + "   and  " + "AppUserID = " + AppRepository.mUserID(ChatsActivity.this)+"  and  CurrentChatID "+Constants.currentUserChatId);
-                                        if (fromUser.equals("" + AppRepository.mUserID(ChatsActivity.this)) || (fromUser.equals(Constants.currentUserChatId))) {
+                                        if (toUser.equals("" + AppRepository.mUserID(ChatsActivity.this))) {
+                                            addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
+                                        } else if (toUser.equals(Constants.currentUserChatId)) {
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }
                                     }
+
                                     if (strChatType.equals("group")) {
 
-//                                        Log.d("zmatestingIDs", "FromUserID = " + fromUser + "  and   " + "ToUserID = " + toUser + "   and  " + "AppUserID = " + AppRepository.mUserID(ChatsActivity.this) + "  and  CurrentChatID " + Constants.currentUserChatId);
                                         if (strTripId.equals(tripId)) {
                                             addMessage(toUser, fromUser, "", message, date, "senderImage", type, isSent, isRead, strMessageType);
                                         }

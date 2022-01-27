@@ -116,9 +116,10 @@ public class AllUserChatAdapter extends RecyclerView.Adapter<AllUserChatAdapter.
                 bundle.putString("type", chatAllUserDataModel.getMessage());
                 bundle.putString("picture", chatAllUserDataModel.getPicture());
 
-                Log.d("zmamessagetype", chatAllUserDataModel.getMessage());
+                Log.d("zmamessagetype", chatAllUserDataModel.getToUser());
 
                 Constants.currentUserChatId = chatAllUserDataModel.getToUser();
+
                 intent.putExtras(bundle);
                 context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
             }

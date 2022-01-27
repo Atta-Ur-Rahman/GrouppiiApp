@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: com.iceteck.silicompressorr:silicompressor:2.2.4@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7dbf5385f2e5f09ea5f3ca63ffb7191b/transformed/jetified-silicompressor-2.2.4/jars/classes.jar!/" />
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7dbf5385f2e5f09ea5f3ca63ffb7191b/transformed/jetified-silicompressor-2.2.4/jars/libs/aspectjrt-1.7.3.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7dbf5385f2e5f09ea5f3ca63ffb7191b/transformed/jetified-silicompressor-2.2.4/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/7dbf5385f2e5f09ea5f3ca63ffb7191b/transformed/jetified-silicompressor-2.2.4/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a99d7b0fc0bbdcf6eabe6b8911d901d6/transformed/jetified-silicompressor-2.2.4/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a99d7b0fc0bbdcf6eabe6b8911d901d6/transformed/jetified-silicompressor-2.2.4/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a99d7b0fc0bbdcf6eabe6b8911d901d6/transformed/jetified-silicompressor-2.2.4/jars/libs/aspectjrt-1.7.3.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a99d7b0fc0bbdcf6eabe6b8911d901d6/transformed/jetified-silicompressor-2.2.4/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.iceteck.silicompressorr/silicompressor/2.2.4/a80552e3c2faa67a52909b153be20eea8c092ff5/silicompressor-2.2.4-javadoc.jar!/" />

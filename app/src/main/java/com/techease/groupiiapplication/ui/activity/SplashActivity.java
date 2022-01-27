@@ -3,26 +3,35 @@ package com.techease.groupiiapplication.ui.activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.techease.groupiiapplication.R;
+import com.techease.groupiiapplication.api.ApiCallback;
+import com.techease.groupiiapplication.dataModel.CommonResponse;
 import com.techease.groupiiapplication.dataModel.addTrips.addTrip.AddTripResponse;
 import com.techease.groupiiapplication.dataModel.getSingleTrip.GetSingleTripResponse;
+import com.techease.groupiiapplication.interfaceClass.refreshChat.ConnectChatResfresh;
 import com.techease.groupiiapplication.network.BaseNetworking;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.LoginActivity;
 import com.techease.groupiiapplication.ui.activity.LoginSignUp.SignUpActivity;
 import com.techease.groupiiapplication.ui.activity.tripDetailScreen.TripDetailScreenActivity;
+import com.techease.groupiiapplication.utils.AlertUtils;
 import com.techease.groupiiapplication.utils.AppRepository;
 
 import org.json.JSONArray;
@@ -36,6 +45,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -45,76 +55,82 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private Socket mSocket;
 
-    boolean aBooleanIsNotification = true;
+    boolean aBooleanIsNotification = false;
 
+    String shareTripId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
-
         Uri uri = getIntent().getData();
-        String strUsername = "";
         if (uri != null) {
-            strUsername = uri.getQueryParameter("tripid");
-            Toast.makeText(this, strUsername, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(SplashActivity.this,HomeActivity.class));
-        } else {
+            aBooleanIsNotification = true;
+            shareTripId = uri.getQueryParameter("tripid");
 
-            // Your app will pop up even if http://www.myurl.com/sso is clicked, so better to handle null uri
+            if (AppRepository.isLoggedIn(this)) {
+                ApiCallAddUserToTrip(shareTripId);
+            } else {
+                AppRepository.mPutValue(this).putString("shareTripId", shareTripId).commit();
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         }
-
         try {
             Bundle intent = getIntent().getExtras();
             if (getIntent().getExtras() != null) {
-                aBooleanIsNotification = false;
-                Intent chatActivityIntent = new Intent(SplashActivity.this, ChatsActivity.class);
-                if (intent.getString("messageType").equals("chat")) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                if (AppRepository.isLoggedIn(this)) {
+                    Intent chatActivityIntent = new Intent(SplashActivity.this, ChatsActivity.class);
+                    if (intent.getString("messageType").equals("chat")) {
+                        aBooleanIsNotification = true;
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title_name", intent.getString("name"));
-                    bundle.putString("toUserId", intent.getString("fromuser"));
-                    bundle.putString("type", "user");
-                    bundle.putString("picture", intent.getString("picture"));
-                    chatActivityIntent.putExtras(bundle);
-                    SplashActivity.this.startActivity(chatActivityIntent);
-                    SplashActivity.this.finish();
+                        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
 
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title_name", intent.getString("name"));
+                        bundle.putString("toUserId", intent.getString("fromuser"));
+                        bundle.putString("type", "user");
+                        bundle.putString("picture", intent.getString("picture"));
+                        chatActivityIntent.putExtras(bundle);
+                        SplashActivity.this.startActivity(chatActivityIntent);
+                        SplashActivity.this.finish();
+
+                    }
+
+                    if (intent.getString("messageType").equals("group")) {
+                        aBooleanIsNotification = true;
+
+                        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title_name", intent.getString("title"));
+                        bundle.putString("toUserId", intent.getString("fromuser"));
+                        bundle.putString("tripId", intent.getString("tripid"));
+                        bundle.putString("type", "group");
+                        bundle.putString("picture", intent.getString("picture"));
+                        chatActivityIntent.putExtras(bundle);
+                        SplashActivity.this.startActivity(chatActivityIntent);
+                        SplashActivity.this.finish();
+
+                    }
+
+
+                    if (intent.getString("messageType").equals("trip")) {
+                        GetTripById(intent.getString("tripid"));
+                    }
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
-
-                if (intent.getString("messageType").equals("group")) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title_name", intent.getString("title"));
-                    bundle.putString("toUserId", intent.getString("fromuser"));
-                    bundle.putString("tripId", intent.getString("tripid"));
-                    bundle.putString("type", "group");
-                    bundle.putString("picture", intent.getString("picture"));
-                    chatActivityIntent.putExtras(bundle);
-                    SplashActivity.this.startActivity(chatActivityIntent);
-                    SplashActivity.this.finish();
-
-                }
-
-
-                if (intent.getString("messageType").equals("trip")) {
-                    GetTripById(intent.getString("tripid"));
-                }
-            } else {
-                aBooleanIsNotification = true;
             }
 
-        }catch (Exception p){
+        } catch (Exception p) {
             p.printStackTrace();
+
         }
-
-
 
 //        Geocoder gcd = new Geocoder(this, Locale.getDefault());
 //        List<Address> addresses = null;
@@ -131,28 +147,50 @@ public class SplashActivity extends AppCompatActivity {
 //            // do your stuff
 //        }
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        new Handler().
 
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (AppRepository.isLoggedIn(SplashActivity.this)) {
-                            if (aBooleanIsNotification) {
+        if (!aBooleanIsNotification) {
+            new Handler().
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (AppRepository.isLoggedIn(SplashActivity.this)) {
+
                                 Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
                                 SplashActivity.this.startActivity(mainIntent);
                                 SplashActivity.this.finish();
+                            } else {
+                                Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+                                SplashActivity.this.startActivity(mainIntent);
+                                SplashActivity.this.finish();
                             }
-                        } else {
-                            Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                            SplashActivity.this.startActivity(mainIntent);
-                            SplashActivity.this.finish();
+                            finish();
+
                         }
-                        finish();
+                    }, 1000);
 
-                    }
-                }, 000);
+        }
+    }
 
+    private void ApiCallAddUserToTrip(String shareTripId) {
+        Call<CommonResponse> addUserToTrip = BaseNetworking.ApiInterface().addUserToTrip("" + AppRepository.mUserID(this), shareTripId);
+        addUserToTrip.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(SplashActivity.this, "You Added to this trip", Toast.LENGTH_SHORT).show();
+                    GetTripById(shareTripId);
+                } else {
+                    Toast.makeText(SplashActivity.this, "Some went wrong please try again", Toast.LENGTH_SHORT).show();
 
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                Toast.makeText(SplashActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void GetTripById(String strTripID) {
@@ -192,6 +230,37 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
+    private void invitationDialog() {
+        BottomSheetMaterialDialog mBottomSheetDialogd = new BottomSheetMaterialDialog.Builder(this)
+                .setTitle("Invitation Trip?")
+                .setMessage("Are you sure want to cancel this trip?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialogInterface, which) -> {
+                    ApiCallback apiCallback = success -> {
+                        SplashActivity.this.finish();
+                        ConnectChatResfresh.setMyBoolean(true);
+                        Toast.makeText(SplashActivity.this, "Trip cancel successfully", Toast.LENGTH_SHORT).show();
+                        return false;
+                    };
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                .build();
+
+        // Show Dialog
+        mBottomSheetDialogd.show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

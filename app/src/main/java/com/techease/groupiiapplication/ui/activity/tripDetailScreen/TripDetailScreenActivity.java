@@ -115,7 +115,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TripDetailScreenActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddPaymentOnBackListener, AddActivityBackListener, EditActivityDayPlanListener, AddPaymentCallBackListener, ParticipantBackListener, ClickRecentTransactionListener, ClickPartiallyPaidTripListener, EditPaymentCallBackListener {
+public class TripDetailScreenActivity extends AppCompatActivity implements View.OnClickListener, AddPaymentOnBackListener, AddActivityBackListener, EditActivityDayPlanListener, AddPaymentCallBackListener, ParticipantBackListener, ClickRecentTransactionListener, ClickPartiallyPaidTripListener, EditPaymentCallBackListener {
 
     @BindView(R.id.tvTripTypeName)
     TextView tvTripTypeName;
@@ -206,7 +206,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     TextView tvAddActivity;
     SwitchCompat switchCompatGroupActivity;
 
-
     ViewPager viewpagerExpenditures;
     TabLayout tabsPartiallyPaid;
 
@@ -218,7 +217,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     File sourceFile;
     Dialog addPhotoDialog;
 
-    String strTitle, strTripDescription, strLocation, strTripType, strTripStartDate, strTripEndDate, strTripPayDate, strPhoto, strPaymentUser;
+    String strTitle, strTripDescription, strLocation, strTripType, strTripStartDate, strTripEndDate, strTripPayDate, strPhoto;
     Dialog dialog;
 
     EditText etPhotoName;
@@ -227,7 +226,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @BindView(R.id.spUserName)
     Spinner spUserName;
-
 
     String tripID;
     int userID;
@@ -355,8 +353,8 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                String shareMessage = "\nLet me recommend you this application\n\n";
-                shareMessage = shareMessage + "https://www.grouppii.com/hello/GrouppiiApp?tripid=" + AppRepository.mTripIDForUpdation(this) + "\n\n";
+                String shareMessage = "\n" + AppRepository.mUserName(this) + " you wanted the upcoming trip\n\n";
+                shareMessage = shareMessage + "https://www.grouppii.com/GrouppiiApp?tripid=" + AppRepository.mTripIDForUpdation(this);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "choose one"));
             } catch (Exception e) {
@@ -397,8 +395,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 participantsBottomSheet.setDraggable(false);
                 participantsBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-
-//                Log.d("zma user", String.valueOf(TripFragment.userList));
                 linearLayoutManager = new LinearLayoutManager(TripDetailScreenActivity.this);
                 tripParticipantsAdapter = new TripParticipantsAdapter((TripDetailScreenActivity.this), userList, aBooleanIsCreatedBy, tvNoActiveTripFound);
                 rvTripParticipants.setLayoutAnimation(AnimationRVUtill.RecylerViewAnimation(TripDetailScreenActivity.this));
@@ -483,7 +479,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     bottomSheetBehavior.setDraggable(false);
                     addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(null,"add"))
+                            .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(null, "add"))
                             .commitNow();
                 } else if (anIntViewPagerPosition == 1) {
                     if (aBooleanIsCreatedBy) {
@@ -501,7 +497,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 //                                .replace(R.id.containerPayment, AddPaymentsTabsFragment.newInstance())
 //                                .commitNow();
                     } else {
-                        Toast.makeText(this, "payment add only admin", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Rsvp add only admin", Toast.LENGTH_SHORT).show();
                     }
 
                 } else if (anIntViewPagerPosition == 2) {
@@ -510,7 +506,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                         bottomSheetBehavior.setDraggable(false);
                         addPaymentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.containerPayment, AddPaymentFragment.newInstance("null","null"))
+                                .replace(R.id.containerPayment, AddPaymentFragment.newInstance("null", "null"))
                                 .commitNow();
                     } else {
                         Toast.makeText(this, "payment add only admin", Toast.LENGTH_SHORT).show();
@@ -716,30 +712,10 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
         setupViewPagerForTabsPartiallyPaidTrip(viewpagerExpenditures);
         tabsPartiallyPaid.setupWithViewPager(viewpagerExpenditures);
 
-
         circularSeekBar.setEnabled(false);
-
         ivBackPartiallyPaid.setOnClickListener(this);
 
     }
-
-
-    //Performing action onItemSelected and onNothing selected
-    @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-//        spUserName.setSelection(position);
-        Toast.makeText(TripDetailScreenActivity.this, userList.get(position).getUserid() + "", Toast.LENGTH_LONG).show();
-
-        strPaymentUser = String.valueOf(userList.get(position).getUserid());
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-        Toast.makeText(this, "nothing select", Toast.LENGTH_SHORT).show();
-    }
-
 
     private void setupViewPagerForTabs(ViewPager viewPager) {
         TabsViewPagerAdapter adapter = new TabsViewPagerAdapter(getSupportFragmentManager());
@@ -837,31 +813,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-    void addPhotoDialog() {
-        addPhotoDialog = new Dialog(this);
-        addPhotoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        addPhotoDialog.setCancelable(true);
-        addPhotoDialog.setContentView(R.layout.custom_add_photo_layout);
-        ivGalleryPhoto = addPhotoDialog.findViewById(R.id.ivPhoto);
-        etPhotoName = addPhotoDialog.findViewById(R.id.etPhotoName);
-        btnAddPhoto = addPhotoDialog.findViewById(R.id.btnAddPhoto);
-        ivGalleryPhoto.setOnClickListener(this);
-        btnAddPhoto.setOnClickListener(this);
-
-        addPhotoDialog.show();
-        AlertUtils.doKeepDialog(addPhotoDialog);
-        addPhotoDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
-
-        addPhotoDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                aBooleanAddImage = true;
-            }
-        });
-
-    }
-
-
     void chooseAction() {
 
         ArrayList<String> uris = new ArrayList<>();
@@ -875,34 +826,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                 .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
                 .setPath("/Grouppii/files");                                       //Custom Path For media Storage
 
-
         Pix.start(this, options);
-
-//        ImagePicker.with(this)
-//                .crop()                    //Crop image(Optional), Check Customization for more option
-//                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-//                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
-//                .start();
-
-
-//        File dir = FileUtils.getDiskCacheDir(this, "temp");
-//        if (!dir.exists()) {
-//            dir.mkdirs();
-//        }
-//
-//        String name = StringHelper.getDateRandomString() + ".png";
-//        sourceFile = new File(dir, name);
-//        Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(sourceFile));
-//
-//
-//        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
-//        pickIntent.setType("image/*");
-//
-//        Intent chooserIntent = Intent.createChooser(pickIntent, getString(R.string.choose_photo));
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{captureImageIntent});
-//
-//        startActivityForResult(chooserIntent, REQUEST_CODE_SELECT_PICTURE);
     }
 
     boolean checkActionType(Intent data) {
@@ -938,8 +862,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
             chatImageFiles.addAll(returnValue);
             sourceFile = new File(chatImageFiles.get(0));
-//            Uri imageUrdi = getPickImageResultUri(data);
-//            sourceFile = new File(imageUrdi.getPath());
+//
             ApiCallForAddPhotoToGallery();
 
 
@@ -988,18 +911,13 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void getPaymentExpenses() {
 
-
-//        dialog.show();
-
-
         Call<GetPaymentExpensesResponse> getPaymentExpensesResponseCall = BaseNetworking.ApiInterface().getPaymentExpenses(AppRepository.mTripIDForUpdation(this), AppRepository.mUserID(this));
         getPaymentExpensesResponseCall.enqueue(new Callback<GetPaymentExpensesResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<GetPaymentExpensesResponse> call, Response<GetPaymentExpensesResponse> response) {
                 if (response.isSuccessful()) {
-//                    dialog.dismiss();
-//                    assert response.body() != null;
+                    assert response.body() != null;
                     try {
                         tvPartiallyPaidPaymente.setText("$" + NumberFormatUtil.PaymentFormat(response.body().getData().getRecievedpayment()) + " / " + "$" + NumberFormatUtil.PaymentFormat(response.body().getData().getTotalpayment()));
 
@@ -1014,8 +932,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
                     if (response.body().getData().getRecievedpayment().equals("0.0"))
 //                    tvPartiallyPaid.setText(response.body().getData().getPartialPaidUsers() + "/" + response.body().getData().getTotalUsers());
-
-                    tvPayDate.setText(DateUtills.getDateFormate(response.body().getData().getTripdate()));
+                        tvPayDate.setText(DateUtills.getDateFormate(response.body().getData().getTripdate()));
                     tvPaymentsDaysLeft.setText(DateUtills.getTripDetailDayleft(DateUtills.changeDateFormate(response.body().getData().getTripdate())) + " days left");
 
                     tvParticipantsCostsCount.setText(response.body().getData().getFullyPaidUsers() + " Paid," + response.body().getData().getPartialPaidUsers() + " Partially," + response.body().getData().getNotPaidUsers() + " Not");
@@ -1027,14 +944,11 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     personalExpendituresItems.addAll(response.body().getData().getPersonalExpenditures());
                     ConnectExpenditures.setMyBooleanListener(true);
 
-                } else {
-//                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<GetPaymentExpensesResponse> call, Throwable t) {
-//                dialog.dismiss();
             }
         });
     }
@@ -1042,7 +956,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     private void ApiCallForAddPhotoToGallery() {
 
-        Log.d("zmaimage", chatImageFiles.get(0));
         dialog.show();
         RequestBody requestFile = RequestBody.create(sourceFile.getAbsoluteFile(), MediaType.parse("multipart/form-data"));
         final MultipartBody.Part CoverImage = MultipartBody.Part.createFormData("photo", sourceFile.getAbsoluteFile().getName(), requestFile);
@@ -1058,7 +971,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             public void onResponse(Call<AddPhotoToGalleryResponse> call, Response<AddPhotoToGalleryResponse> response) {
 
                 if (response.isSuccessful()) {
-//                    addPhotoDialog.dismiss();
                     sourceFile = null;
                     Connect.setMyBoolean(true);
                     dialog.dismiss();
@@ -1101,7 +1013,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
             addTripDataModel.setLongitude(AppRepository.mLng(TripDetailScreenActivity.this));
 
             paymentUserParticipaintsList.add(addTripDataModel);
-//            userParticipaintsList.add(addTripDataModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1161,9 +1072,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                     paymentUserParticipaintsList.addAll(addTripDataModelsMain);
 
 
-                    Log.d("zmaUserSecond", userList.size() + "");
-
-
                     CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(TripDetailScreenActivity.this, userList);
                     spUserName.setAdapter(customAdapter);
 
@@ -1180,31 +1088,15 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     }
 
 
-    public static <T> List<AddTripDataModel> rearrange(List<AddTripDataModel> items, T input) {
-        int index = items.indexOf(input);
-        List<AddTripDataModel> copy;
-        if (index >= 0) {
-            copy = new ArrayList<AddTripDataModel>(items.size());
-            copy.add(items.get(index));
-            copy.addAll(items.subList(0, index));
-            copy.addAll(items.subList(index + 1, items.size()));
-        } else {
-            return items;
-        }
-        return copy;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-//        ApiCallGetUserTrip();
         if (Constants.aBooleanDetailTripScreenRefresh) {
             Constants.aBooleanDetailTripScreenRefresh = false;
-            TripEditedCallback tripEditedCallback = new TripEditedCallback() {
-                @SuppressLint("SetTextI18n")
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public boolean onTripEdited(Response<GetSingleTripResponse> response) {
+
+            try {
+
+                TripEditedCallback tripEditedCallback = response -> {
                     if (response.isSuccessful()) {
                         Glide.with(TripDetailScreenActivity.this).load(response.body().getData().getCoverimage()).into(ivTripImage);
                         tvTripTitle.setText(response.body().getData().getTitle());
@@ -1217,18 +1109,19 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
                         strTripPayDate = response.body().getData().getPayDate();
 
                         AppRepository.mPutValue(TripDetailScreenActivity.this).putString("getFromdate", strTripStartDate).commit();
-
                     }
                     return false;
-                }
-            };
-            ApiClass.GetTripById(AppRepository.mTripIDForUpdation(this), this, dialog, tripEditedCallback);
+                };
+                ApiClass.GetTripById(AppRepository.mTripIDForUpdation(this), this, dialog, tripEditedCallback);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
         if (aBooleanResfreshGetUserTrip) {
             aBooleanResfreshGetUserTrip = false;
             tripParticipantsAdapter.notifyDataSetChanged();
-//            userTripCircleImagesAdapter.notifyDataSetChanged();
 
         }
     }
@@ -1251,7 +1144,7 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
     public void goEditActivityDayPlan(AllTripDayDataModel allTripDayDataModel) {
         addActivityBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(allTripDayDataModel,"Update"))
+                .replace(R.id.containerActivity, AddAndEditDayPlaneFragment.newInstance(allTripDayDataModel, "Update"))
                 .commitNow();
     }
 
@@ -1282,9 +1175,6 @@ public class TripDetailScreenActivity extends AppCompatActivity implements View.
 
     @Override
     public void goClickPartiallyPaidTrip() {
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.containerPartiallyPaidTrip, PartiallyPaidTripFragment.newInstance())
-//                .commitNow();
         partiallyPaidTripBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetBehavior.setDraggable(false);
         partiallyPaidTripBottomSheetBehavior.setDraggable(false);

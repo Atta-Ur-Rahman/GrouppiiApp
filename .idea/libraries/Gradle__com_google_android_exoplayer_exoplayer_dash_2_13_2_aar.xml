@@ -1,12 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.exoplayer:exoplayer-dash:2.13.2@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bce239f7945bce4437c7f7e4dd972f61/transformed/jetified-exoplayer-dash-2.13.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/019311d1d706a1d6746307068cbc215e/transformed/jetified-exoplayer-dash-2.13.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bce239f7945bce4437c7f7e4dd972f61/transformed/jetified-exoplayer-dash-2.13.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bce239f7945bce4437c7f7e4dd972f61/transformed/jetified-exoplayer-dash-2.13.2/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/bce239f7945bce4437c7f7e4dd972f61/transformed/jetified-exoplayer-dash-2.13.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/019311d1d706a1d6746307068cbc215e/transformed/jetified-exoplayer-dash-2.13.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/019311d1d706a1d6746307068cbc215e/transformed/jetified-exoplayer-dash-2.13.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/019311d1d706a1d6746307068cbc215e/transformed/jetified-exoplayer-dash-2.13.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-dash/2.13.2/65b59fdbfc304c5683edc6cddad4fdc9074e18aa/exoplayer-dash-2.13.2-javadoc.jar!/" />

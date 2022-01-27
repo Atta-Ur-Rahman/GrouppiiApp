@@ -66,13 +66,15 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
 
         if (addTripDataModel.getSharedCost() == 1) {
             holder.cbShareTripCost.setChecked(true);
+            holder.cbShareTripCost.setText("Share trip cost");
         } else {
             holder.cbShareTripCost.setChecked(false);
+            holder.cbShareTripCost.setText("Doesn't share trip cost");
         }
 
         if (String.valueOf(addTripDataModel.getType()).equals("notregistered")) {
             holder.tvNotRegesterUser.setVisibility(View.VISIBLE);
-            holder.tvNotRegesterUser.setText("You invited "+addTripDataModel.getName() +" to the group" );
+            holder.tvNotRegesterUser.setText("You invited " + addTripDataModel.getName() + " to the group");
             holder.materialCardView.setVisibility(View.GONE);
 
         } else {
@@ -144,7 +146,7 @@ public class AddTripParticipaintsAdapter extends RecyclerView.Adapter<AddTripPar
     class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTitle, tvParticipaintPhoneNumber,tvNotRegesterUser;
+        TextView tvTitle, tvParticipaintPhoneNumber, tvNotRegesterUser;
         ImageView ivUser, ivParticipantEdit;
         CheckBox cbShareTripCost;
         MaterialCardView materialCardView;

@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4e7677b08ebedb7d686d8a6257aab04e/transformed/jetified-MaterialDialog-2.2.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4e7677b08ebedb7d686d8a6257aab04e/transformed/jetified-MaterialDialog-2.2.2/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/4e7677b08ebedb7d686d8a6257aab04e/transformed/jetified-MaterialDialog-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/0a45d47641b92b8ae36c1aba138f22c3/transformed/jetified-MaterialDialog-2.2.2/res" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/0a45d47641b92b8ae36c1aba138f22c3/transformed/jetified-MaterialDialog-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/0a45d47641b92b8ae36c1aba138f22c3/transformed/jetified-MaterialDialog-2.2.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/dev.shreyaspatil.MaterialDialog/MaterialDialog/2.2.2/bded89b39b61340ef5602fb4996cc98e327ca1a9/MaterialDialog-2.2.2-javadoc.jar!/" />

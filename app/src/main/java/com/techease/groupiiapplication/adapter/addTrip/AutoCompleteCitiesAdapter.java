@@ -23,7 +23,7 @@ public class AutoCompleteCitiesAdapter extends ArrayAdapter<HotelCityIdData> {
 
     public AutoCompleteCitiesAdapter(@NonNull Context context, @NonNull List<HotelCityIdData> hotelCityIdData) {
         super(context, 0, hotelCityIdData);
-        this.hotelCityIdDataList = hotelCityIdData;
+        hotelCityIdDataList = new ArrayList<>(hotelCityIdData);
         this.context = context;
     }
 

@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.fxn769:pix:1.5.6@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/96b3e95c9dc080dfee565c61813844c6/transformed/jetified-pix-1.5.6/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/96b3e95c9dc080dfee565c61813844c6/transformed/jetified-pix-1.5.6/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/96b3e95c9dc080dfee565c61813844c6/transformed/jetified-pix-1.5.6/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/b33be3cee3ddbf4622eae763ff1eeca7/transformed/jetified-pix-1.5.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/b33be3cee3ddbf4622eae763ff1eeca7/transformed/jetified-pix-1.5.6/res" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/b33be3cee3ddbf4622eae763ff1eeca7/transformed/jetified-pix-1.5.6/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.fxn769/pix/1.5.6/452ef07fb797f4917a10b4c5ec02ff00712bbf86/pix-1.5.6-javadoc.jar!/" />

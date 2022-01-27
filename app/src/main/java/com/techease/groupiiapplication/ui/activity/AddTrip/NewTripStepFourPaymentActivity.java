@@ -66,7 +66,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener,EditPaymentCallBackListener, ClickRecentTransactionListener, AddPaymentOnBackListener, AddPaymentOnSetpFourCallBackListener, ClickPartiallyPaidTripListener {
+public class NewTripStepFourPaymentActivity extends AppCompatActivity implements View.OnClickListener, EditPaymentCallBackListener, ClickRecentTransactionListener, AddPaymentOnBackListener, AddPaymentOnSetpFourCallBackListener, ClickPartiallyPaidTripListener {
 
 
     @BindView(R.id.btnDone)
@@ -217,10 +217,9 @@ public class NewTripStepFourPaymentActivity extends AppCompatActivity implements
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 strPaymentAmount = etAmount.getText().toString();
-
-                if (!strPaymentAmount.isEmpty() && strPaymentAmount.length() > 1) {
+                double payment = Double.parseDouble(strPaymentAmount);
+                if (!strPaymentAmount.isEmpty() && strPaymentAmount.length() > 1 && payment > 0) {
                     ApiCallPublishTrip();
                     dialog.dismiss();
                 } else {

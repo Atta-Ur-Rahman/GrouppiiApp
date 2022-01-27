@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.fredporciuncula:phonemoji:1.2.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/17067c6e195e568e8a76c9215cc3c64a/transformed/jetified-phonemoji-1.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/17067c6e195e568e8a76c9215cc3c64a/transformed/jetified-phonemoji-1.2.0/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/17067c6e195e568e8a76c9215cc3c64a/transformed/jetified-phonemoji-1.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d97bf599933e4f66293f2087d53ea258/transformed/jetified-phonemoji-1.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d97bf599933e4f66293f2087d53ea258/transformed/jetified-phonemoji-1.2.0/res" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d97bf599933e4f66293f2087d53ea258/transformed/jetified-phonemoji-1.2.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/modules-2/files-2.1/com.fredporciuncula/phonemoji/1.2.0/b1bad11ab5f43f432a318d341b0dbfc80595c108/phonemoji-1.2.0-javadoc.jar!/" />

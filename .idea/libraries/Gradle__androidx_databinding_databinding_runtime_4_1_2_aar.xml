@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.databinding:databinding-runtime:4.1.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a62474aa3bec892aa59884dc677c8bb4/transformed/databinding-runtime-4.1.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a62474aa3bec892aa59884dc677c8bb4/transformed/databinding-runtime-4.1.2/res" />
-      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/a62474aa3bec892aa59884dc677c8bb4/transformed/databinding-runtime-4.1.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d79d94c19461b4fb4d719b20c0027d7b/transformed/databinding-runtime-4.1.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d79d94c19461b4fb4d719b20c0027d7b/transformed/databinding-runtime-4.1.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Desktop/EasySignSeekBar-master/gradle/caches/transforms-3/d79d94c19461b4fb4d719b20c0027d7b/transformed/databinding-runtime-4.1.2/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

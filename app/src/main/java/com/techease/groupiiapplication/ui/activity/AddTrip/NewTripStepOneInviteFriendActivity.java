@@ -204,8 +204,11 @@ public class NewTripStepOneInviteFriendActivity extends AppCompatActivity implem
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     strShareCost = "1";
+                    cbShareCost.setText("Share trip cost");
                 } else {
                     strShareCost = "0";
+                    cbShareCost.setText("Doesn't share trip cost");
+
                 }
             }
         });
